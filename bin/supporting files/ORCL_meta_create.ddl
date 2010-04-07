@@ -1,0 +1,665 @@
+  -- CREATES FOR CONNECTIONS TABLE   **
+  --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+  --   TABLESPACE:  TSMETA01
+  -------------------------------
+   CREATE TABLESPACE TSMETA01
+	DATAFILE 'TSMETA01.DAT' 
+	SIZE 2M;
+----
+  --   /****** Object:  Table  CONNECTIONS  ******/
+   CREATE TABLE CONNECTIONS
+      (
+      PROJECTNAME           VARCHAR  (20)  NOT NULL,
+      ENVIRONMENTNAME       VARCHAR  (20)  NOT NULL,
+      CONNECTIONNAME        VARCHAR  (20)  NOT NULL,
+      CONNECTIONDESCRIPTION CLOB           DEFAULT NULL,
+      CREATED_TIMESTAMP     TIMESTAMP      DEFAULT NULL,
+      UPDATED_TIMESTAMP     TIMESTAMP      DEFAULT NULL,
+      CREATED_USER_ID       VARCHAR (30)   DEFAULT NULL,
+      UPDATED_USER_ID       VARCHAR (30)   DEFAULT NULL,
+     	PRIMARY KEY
+     		(PROJECTNAME      ,
+      		ENVIRONMENTNAME   ,
+      		CONNECTIONNAME      ))
+       TABLESPACE TSMETA01  ;
+---------------------------------------------------------  
+    -- CREATES FOR CONNECTIONSATTR TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA02                                                                                                        
+  ---
+    CREATE TABLESPACE TSMETA02 
+	DATAFILE 'TSMETA02.DAT' 
+	SIZE 2M;                                                               
+  --                                                                            
+  --   /**** Object:  Table  CONNECTIONS  ****/
+     CREATE TABLE CONNECTIONSATTR
+     (
+     PROJECTNAME        VARCHAR (20) NOT NULL,
+     ENVIRONMENTNAME    VARCHAR (20) NOT NULL,
+     CONNECTIONNAME     VARCHAR (20) NOT NULL,
+     CONNECTIONATTRB    VARCHAR (24) NOT NULL,
+     CONNECTIONATTRBVALUE  VARCHAR (100) DEFAULT NULL,
+      PRIMARY KEY (
+        PROJECTNAME       ,
+        ENVIRONMENTNAME   ,
+        CONNECTIONNAME    ,
+        CONNECTIONATTRB    ))
+     TABLESPACE TSMETA02   ;                                   
+----------------------------------------------------------                                                                            
+    -- CREATES FOR DATASTORES TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA03
+    --
+   CREATE TABLESPACE TSMETA03 
+       DATAFILE 'TSMETA03.DAT'
+       SIZE 2M    ;
+  --
+  --  /**** OBJECT:  TABLE  DATASTORES  ****/
+  CREATE TABLE  DATASTORES
+   (
+    PROJECTNAME          VARCHAR  (20)  NOT NULL,
+    ENVIRONMENTNAME      VARCHAR  (20)  NOT NULL,
+    SYSTEMNAME           VARCHAR  (20)  NOT NULL,
+    ENGINENAME           VARCHAR  (20)  NOT NULL,
+    DATASTORENAME        VARCHAR  (20)  NOT NULL,
+    DSDIRECTION          VARCHAR  (1)   DEFAULT NULL,
+    DSTYPE               INT            DEFAULT 0,
+    DATASTOREDESCRIPTION  CLOB          DEFAULT NULL,
+    CREATED_TIMESTAMP    TIMESTAMP      DEFAULT NULL,
+    UPDATED_TIMESTAMP    TIMESTAMP      DEFAULT NULL,
+    CREATED_USER_ID      VARCHAR (30)   DEFAULT NULL,
+    UPDATED_USER_ID      VARCHAR (30)   DEFAULT NULL,
+    PRIMARY KEY
+    ( PROJECTNAME     ,
+      ENVIRONMENTNAME ,
+      SYSTEMNAME      ,
+      ENGINENAME      ,
+      DATASTORENAME
+     ))  TABLESPACE TSMETA03  ;
+  -------------------------------------------------------
+    -- CREATES FOR DATASTORESATTR TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA04
+ ---
+    CREATE TABLESPACE TSMETA04 
+      DATAFILE 'TSMETA04.DAT'
+       SIZE 2M    ;
+  --
+  --  /**** OBJECT:  TABLE  DATASTORESATTR  ****/
+  CREATE TABLE  DATASTORESATTR
+   (
+    PROJECTNAME           VARCHAR  (20)  NOT NULL,
+    ENVIRONMENTNAME       VARCHAR  (20)  NOT NULL,
+    SYSTEMNAME            VARCHAR  (20)  NOT NULL,
+    ENGINENAME            VARCHAR  (20)  NOT NULL,
+    DATASTORENAME         VARCHAR  (20)  NOT NULL,
+    DATASTOREATTRB        VARCHAR  (24)  NOT NULL,
+    DATASTOREATTRBVALUE   VARCHAR  (512) DEFAULT NULL,
+    PRIMARY KEY
+    (  PROJECTNAME     ,
+       ENVIRONMENTNAME ,
+       SYSTEMNAME      ,
+       ENGINENAME      ,
+       DATASTORENAME   ,
+       DATASTOREATTRB
+     ))  TABLESPACE TSMETA04  ;
+  ------------------------------------------------------
+    -- CREATES FOR DESCRIPTIONFIELDS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA05
+ --
+   CREATE TABLESPACE TSMETA05 
+      DATAFILE 'TSMETA05.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  DESCRIPTIONFIELDS  ****/
+  CREATE TABLE  DESCRIPTIONFIELDS
+    (
+      PROJECTNAME        VARCHAR (20)   NOT NULL,
+      ENVIRONMENTNAME    VARCHAR (20)   NOT NULL,
+      DESCRIPTIONNAME    VARCHAR (50)   NOT NULL,
+      FIELDNAME          VARCHAR (128)  NOT NULL,
+      PARENTNAME         VARCHAR (128)  DEFAULT NULL,
+      SEQNO              INT            DEFAULT 0,
+      DESCFIELDDESCRIPTION  CLOB        DEFAULT NULL,
+      NCHILDREN          INT            DEFAULT 0,
+      NLEVEL             INT            DEFAULT 0,
+      NTIMES             INT            DEFAULT 0,
+      NOCCNO             INT            DEFAULT 0,
+      DATATYPE           VARCHAR (30)   DEFAULT NULL,
+      NOFFSET            INT            DEFAULT 0,
+      NLENGTH            INT            DEFAULT 0,
+      NSCALE             INT            DEFAULT 0,
+      CANNULL            VARCHAR (3)    DEFAULT NULL,
+      ISKEY              VARCHAR (3)    DEFAULT NULL,
+      ORGNAME            VARCHAR (255)  DEFAULT NULL,
+      DATEFORMAT         VARCHAR (50)   DEFAULT NULL,
+      LABEL              VARCHAR (255)  DEFAULT NULL,
+      INITVAL            VARCHAR (255)  DEFAULT NULL,
+      RETYPE             VARCHAR (50)   DEFAULT NULL,
+      INVALID            VARCHAR (30)   DEFAULT NULL,
+      EXTTYPE            VARCHAR (50)   DEFAULT NULL,
+      IDENTVAL           VARCHAR (50)   DEFAULT NULL,
+      FOREIGNKEY         VARCHAR (255)  DEFAULT NULL,
+       PRIMARY KEY
+        ( PROJECTNAME     ,
+          ENVIRONMENTNAME ,
+          DESCRIPTIONNAME ,
+          FIELDNAME
+        ))  TABLESPACE TSMETA05   ;
+  -------------------------------------------------------------
+    -- CREATES FOR DESCRIPTIONS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA06
+    --
+   CREATE TABLESPACE TSMETA06 
+      DATAFILE 'TSMETA06.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  DESCRIPTIONS  ****/
+  CREATE TABLE  DESCRIPTIONS
+     (
+       PROJECTNAME            VARCHAR (20)   NOT NULL,
+       ENVIRONMENTNAME        VARCHAR (20)   NOT NULL,
+       DESCRIPTIONNAME        VARCHAR (50)   NOT NULL,
+       DESCRIPTIONTYPE        INT            DEFAULT NULL,
+       DESCRIPTIONDESCRIPTION  CLOB          DEFAULT NULL,
+       CREATED_TIMESTAMP      TIMESTAMP      DEFAULT NULL,
+       UPDATED_TIMESTAMP      TIMESTAMP      DEFAULT NULL,
+       CREATED_USER_ID        VARCHAR (30)   DEFAULT NULL,
+       UPDATED_USER_ID        VARCHAR (30)   DEFAULT NULL,
+          PRIMARY KEY
+            ( PROJECTNAME     ,
+              ENVIRONMENTNAME ,
+              DESCRIPTIONNAME
+        ))  TABLESPACE TSMETA06   ;
+  ---------------------------------------------------------------
+    -- CREATES FOR DESCRIPTIONSATTR TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA07
+ --
+   CREATE TABLESPACE TSMETA07 
+      DATAFILE 'TSMETA07.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  DESCRIPTIONSATTR  ****/
+  CREATE TABLE  DESCRIPTIONSATTR
+     (
+        PROJECTNAME            VARCHAR (20)   NOT NULL,
+        ENVIRONMENTNAME        VARCHAR (20)   NOT NULL,
+        DESCRIPTIONNAME        VARCHAR (50)   NOT NULL,
+        DESCRIPTIONATTRB       VARCHAR (24)   NOT NULL,
+        DESCRIPTIONATTRBVALUE  VARCHAR (512)  DEFAULT NULL,
+          PRIMARY KEY
+            ( PROJECTNAME     ,
+              ENVIRONMENTNAME ,
+              DESCRIPTIONNAME ,
+              DESCRIPTIONATTRB
+        ))  TABLESPACE TSMETA07   ;
+  ---------------------------------------------------------------
+     -- CREATES FOR DESCRIPTIONSELECT TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA08
+    --
+    --
+   CREATE TABLESPACE TSMETA08  
+      DATAFILE 'TSMETA08.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  DESCRIPTIONSELECT  ****/
+  CREATE TABLE  DESCRIPTIONSELECT
+     (
+     PROJECTNAME        VARCHAR (20)   NOT NULL,
+     ENVIRONMENTNAME    VARCHAR (20)   NOT NULL,
+     DESCRIPTIONNAME    VARCHAR (50)   NOT NULL,
+     SELECTIONNAME      VARCHAR (50)   NOT NULL,
+     ISSYSTEMSEL        INT            DEFAULT NULL,
+     SELECTDESCRIPTION  CLOB           DEFAULT NULL,
+       PRIMARY KEY
+        (  PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           DESCRIPTIONNAME ,
+           SELECTIONNAME
+        ))  TABLESPACE TSMETA08   ;
+  ---------------------------------------------------------------
+    -- CREATES FOR DESCRIPTSELFIELDS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA09
+    --
+   CREATE TABLESPACE TSMETA09 
+      DATAFILE 'TSMETA09.DAT'
+      SIZE 2M    ;
+  ----
+  --  /**** OBJECT: TABLE  DESCRIPTSELFIELDS  ****/
+  CREATE TABLE  DESCRIPTSELFIELDS
+     (
+      PROJECTNAME       VARCHAR (20)   NOT NULL,
+      ENVIRONMENTNAME   VARCHAR (20)   NOT NULL,
+      DESCRIPTIONNAME   VARCHAR (50)   NOT NULL,
+      SELECTIONNAME     VARCHAR (50)   NOT NULL,
+      FIELDNAME         VARCHAR (128)  NOT NULL,
+      SELECTFIELDDESCRIPTION VARCHAR (255)  DEFAULT NULL,
+        PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           DESCRIPTIONNAME ,
+           SELECTIONNAME,
+           FIELDNAME
+        ))  TABLESPACE TSMETA09   ;
+   --------------------------------------------------------------
+    -- CREATES FOR DSSELECTIONS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA10
+  --
+   CREATE TABLESPACE TSMETA10  
+      DATAFILE 'TSMETA10.DAT'
+      SIZE 2M    ;
+  ----
+  --  /**** OBJECT: TABLE  DSSELECTIONS  ****/
+  CREATE TABLE  DSSELECTIONS
+     (
+      PROJECTNAME        VARCHAR (20)   NOT NULL,
+      ENVIRONMENTNAME    VARCHAR (20)   NOT NULL,
+      SYSTEMNAME         VARCHAR (20)   NOT NULL,
+      ENGINENAME         VARCHAR (20)   NOT NULL,
+      DATASTORENAME      VARCHAR (20)   NOT NULL,
+      SELECTIONNAME      VARCHAR (50)   NOT NULL,
+      DESCRIPTIONNAME    VARCHAR (50)   NOT NULL,
+      PARENT             VARCHAR (20)   DEFAULT NULL,
+         PRIMARY KEY
+          ( PROJECTNAME     ,
+            ENVIRONMENTNAME ,
+            SYSTEMNAME    ,
+            ENGINENAME    ,
+            DATASTORENAME ,
+            SELECTIONNAME ,
+            DESCRIPTIONNAME
+          ))  TABLESPACE TSMETA10   ;
+  ------------------------------------------------------------
+    -- CREATES FOR DSSELFIELDS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA11
+  --
+   CREATE TABLESPACE TSMETA11 
+      DATAFILE 'TSMETA11.DAT'
+      SIZE 2M    ;
+  ----
+  --  /**** OBJECT: TABLE  DSSELFIELDS ****/
+    CREATE TABLE  DSSELFIELDS
+       (
+        PROJECTNAME             VARCHAR (20)   	NOT NULL,
+        ENVIRONMENTNAME         VARCHAR (20)   	NOT NULL,
+        SYSTEMNAME  		VARCHAR (20)   	NOT NULL,
+	ENGINENAME  		VARCHAR (20)   	NOT NULL,
+	DATASTORENAME  	 	VARCHAR (20)   	NOT NULL,
+	DESCRIPTIONNAME  	VARCHAR (50)   	NOT NULL,
+	SELECTIONNAME  	 	VARCHAR (50)   	NOT NULL,
+	FIELDNAME  		VARCHAR (128)  	NOT NULL,
+	PARENTNAME  		VARCHAR (20)   	DEFAULT NULL,
+	SEQNO  		 	INT     	DEFAULT 0,
+	DESCFIELDDESCRIPTION  	VARCHAR (255) 	DEFAULT NULL,
+	NCHILDREN  		INT 		DEFAULT 0,
+	NLEVEL  		INT 		DEFAULT 0,
+	NTIMES  		INT 		DEFAULT 0,
+	NOCCNO  		INT 		DEFAULT 0,
+	DATATYPE  		VARCHAR (30) 	DEFAULT NULL,
+	NOFFSET  		INT 		DEFAULT 0,
+	NLENGTH  		INT 		DEFAULT 0,
+	NSCALE  		INT 		DEFAULT 0,
+	CANNULL  		VARCHAR  (3) 	DEFAULT NULL,
+	ISKEY  		 	VARCHAR  (3) 	DEFAULT NULL,
+	ORGNAME  		VARCHAR  (255)	DEFAULT NULL,
+	DATEFORMAT  		VARCHAR  (50) 	DEFAULT NULL,
+	LABEL  		 	VARCHAR  (255)	DEFAULT NULL,
+	INITVAL  		VARCHAR  (255)	DEFAULT NULL,
+	RETYPE  		VARCHAR  (50) 	DEFAULT NULL,
+	INVALID  		VARCHAR  (30) 	DEFAULT NULL,
+	EXTTYPE  		VARCHAR  (50) 	DEFAULT NULL,
+	IDENTVAL  		VARCHAR  (50) 	DEFAULT NULL,
+	FOREIGNKEY  		VARCHAR  (255)	DEFAULT NULL, 
+          PRIMARY KEY
+            ( 	PROJECTNAME     ,
+              	ENVIRONMENTNAME ,
+              	SYSTEMNAME      ,
+		ENGINENAME,
+		DATASTORENAME   ,
+		DESCRIPTIONNAME ,
+		SELECTIONNAME   ,
+		FIELDNAME	 
+            ))  TABLESPACE TSMETA11   ;
+  ----------------------------------------------------------------
+    -- CREATES FOR ENGINES TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA12
+ ---
+   CREATE TABLESPACE TSMETA12 
+      DATAFILE 'TSMETA12.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  ENGINES  ****/
+  CREATE TABLE  ENGINES
+     (
+       PROJECTNAME        VARCHAR (20)    NOT NULL,
+       ENVIRONMENTNAME    VARCHAR (20)    NOT NULL,
+       SYSTEMNAME         VARCHAR (20)    NOT NULL,
+       ENGINENAME         VARCHAR (20)    NOT NULL,
+       ENGINEDESCRIPTION  CLOB            DEFAULT NULL,
+       CREATED_TIMESTAMP  TIMESTAMP       DEFAULT NULL,
+       UPDATED_TIMESTAMP  TIMESTAMP       DEFAULT NULL,
+       CREATED_USER_ID    VARCHAR (30)    DEFAULT NULL,
+       UPDATED_USER_ID    VARCHAR (30)    DEFAULT NULL,
+         PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           SYSTEMNAME      ,
+           ENGINENAME
+         ))  TABLESPACE TSMETA12   ;
+  ---------------------------------------------------------
+    -- CREATES FOR ENGINESATTR TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA13
+ --
+   CREATE TABLESPACE TSMETA13  
+     DATAFILE 'TSMETA13.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  ENGINESATTR  ****/
+  CREATE TABLE  ENGINESATTR
+     (
+      PROJECTNAME         VARCHAR (20)    NOT NULL,
+      ENVIRONMENTNAME     VARCHAR (20)    NOT NULL,
+      SYSTEMNAME          VARCHAR (20)    NOT NULL,
+      ENGINENAME          VARCHAR (20)    NOT NULL,
+      ENGINEATTRB         VARCHAR (24)    NOT NULL,
+      ENGINEATTRBVALUE    VARCHAR (512)   DEFAULT NULL,
+         PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           SYSTEMNAME      ,
+           ENGINENAME      ,
+           ENGINEATTRB
+         ))  TABLESPACE TSMETA13   ;
+  ---------------------------------------------------------
+     -- CREATES FOR ENVIRONMENTS  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA14
+ --
+   CREATE TABLESPACE TSMETA14 
+      DATAFILE 'TSMETA14.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  ENVIRONMENTS  ****/
+  CREATE TABLE  ENVIRONMENTS
+     (
+      PROJECTNAME         VARCHAR (20)   NOT NULL,
+      ENVIRONMENTNAME     VARCHAR (20)   NOT NULL,
+      ENVIRONMENTDESCRIPTION  CLOB       DEFAULT NULL,
+      CREATED_TIMESTAMP   TIMESTAMP      DEFAULT NULL,
+      UPDATED_TIMESTAMP   TIMESTAMP      DEFAULT NULL,
+      CREATED_USER_ID     VARCHAR  (30)  DEFAULT NULL,
+      UPDATED_USER_ID     VARCHAR  (30)  DEFAULT NULL,
+        PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME
+         ))  TABLESPACE TSMETA14   ;
+  ----------------------------------------------------------
+    -- CREATES FOR ENVIRONMENTSATTR  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA15
+ --
+   CREATE TABLESPACE TSMETA15  
+      DATAFILE 'TSMETA15.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  ENVIRONMENTSATTR  ****/
+  CREATE TABLE  ENVIRONMENTSATTR
+     (
+       PROJECTNAME         VARCHAR (20)   NOT NULL,
+       ENVIRONMENTNAME     VARCHAR (20)   NOT NULL,
+       ENVIRONMENTATTRB    VARCHAR (24)   NOT NULL,
+       ENVIRONMENTATTRBVALUE   VARCHAR (512)  DEFAULT NULL,
+         PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           ENVIRONMENTATTRB
+         ))  TABLESPACE TSMETA15   ;
+  ------------------------------------------------------------
+    -- CREATES FOR PROJECTATTR  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA16
+ --
+   CREATE TABLESPACE TSMETA16 
+      DATAFILE 'TSMETA16.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  PROJECTATTR  ****/
+  CREATE TABLE  PROJECTATTR
+     (
+       PROJECTNAME         VARCHAR (20)   NOT NULL,
+       PROJECTATTRB        VARCHAR (24)   NOT NULL,
+       PROJECTATTRBVALUE   VARCHAR (512)  DEFAULT NULL,
+         PRIMARY KEY
+         ( PROJECTNAME     ,
+           PROJECTATTRB
+         ))  TABLESPACE TSMETA16   ;
+  -------------------------------------------------------------
+    -- CREATES FOR PROJECTS  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA17
+ --
+   CREATE TABLESPACE TSMETA17  
+      DATAFILE 'TSMETA17.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  PROJECTS  ****/
+  CREATE TABLE  PROJECTS
+     (
+      PROJECTNAME          VARCHAR (20)   NOT NULL,
+      PROJECTDESCRIPTION   CLOB           DEFAULT NULL,
+      SECURITYATTR         VARCHAR (24)   DEFAULT NULL,
+      CREATED_TIMESTAMP    TIMESTAMP      DEFAULT NULL,
+      UPDATED_TIMESTAMP    TIMESTAMP      DEFAULT NULL,
+      CREATED_USER_ID      VARCHAR (30)   DEFAULT NULL,
+      UPDATED_USER_ID      VARCHAR (30)   DEFAULT NULL,
+        PRIMARY KEY
+         ( PROJECTNAME
+         ))  TABLESPACE  TSMETA17    ;
+  ---------------------------------------------------------------
+    -- CREATES FOR SYSTEMS  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:     TSMETA18
+  --
+   CREATE TABLESPACE TSMETA18  
+      DATAFILE 'TSMETA18.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  SYSTEMS  ****/
+    CREATE TABLE  SYSTEMS
+      (
+      PROJECTNAME         VARCHAR (20)   NOT NULL,
+      ENVIRONMENTNAME     VARCHAR (20)   NOT NULL,
+      SYSTEMNAME          VARCHAR (20)   NOT NULL,
+      SYSTEMDESCRIPTION   VARCHAR (255)  DEFAULT NULL,
+      CREATED_TIMESTAMP   TIMESTAMP      DEFAULT NULL,
+      UPDATED_TIMESTAMP   TIMESTAMP      DEFAULT NULL,
+      CREATED_USER_ID     VARCHAR (30)   DEFAULT NULL,
+      UPDATED_USER_ID     VARCHAR (30)   DEFAULT NULL,
+        PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           SYSTEMNAME
+         ))  TABLESPACE  TSMETA18   ;
+  ----------------------------------------------------------------
+    -- CREATES FOR SYSTEMSATTR  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA19
+ --
+   CREATE TABLESPACE TSMETA19  
+      DATAFILE 'TSMETA19.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  SYSTEMSATTR  ****/
+    CREATE TABLE  SYSTEMSATTR
+      (
+        PROJECTNAME         VARCHAR (20)   NOT NULL,
+        ENVIRONMENTNAME     VARCHAR (20)   NOT NULL,
+        SYSTEMNAME          VARCHAR (20)   NOT NULL,
+        SYSTEMATTRB         VARCHAR (24)   NOT NULL,
+        SYSTEMATTRBVALUE    VARCHAR (512)  DEFAULT NULL,
+        PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           SYSTEMNAME      ,
+           SYSTEMATTRB
+         ))  TABLESPACE  TSMETA19    ;
+  ---------------------------------------------------------------
+    -- CREATES FOR TASKDS TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA20
+ ---
+   CREATE TABLESPACE TSMETA20  
+      DATAFILE 'TSMETA20.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  TASKDS  ****/
+  CREATE TABLE  TASKDS
+     (
+       PROJECTNAME        VARCHAR (20)    NOT NULL,
+       ENVIRONMENTNAME    VARCHAR (20)    NOT NULL,
+       SYSTEMNAME         VARCHAR (20)    NOT NULL,
+       ENGINENAME         VARCHAR (20)    NOT NULL,
+       TASKNAME           VARCHAR (50)    NOT NULL,
+       TASKTYPE           INT            DEFAULT 0,
+       DATASTORENAME      VARCHAR (20)    NOT NULL,
+       DSDIRECTION        VARCHAR (1)     DEFAULT NULL,
+         PRIMARY KEY
+         ( PROJECTNAME     ,
+           ENVIRONMENTNAME ,
+           SYSTEMNAME      ,
+           ENGINENAME      ,
+           TASKNAME        ,
+           DATASTORENAME
+         ))  TABLESPACE  TSMETA20    ;
+  --------------------------------------------------------------
+    -- CREATES FOR TASKMAP  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA21
+ --
+   CREATE TABLESPACE TSMETA21  
+      DATAFILE 'TSMETA21.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  TASKMAP  ****/
+     CREATE TABLE  TASKMAP
+       (
+        PROJECTNAME        VARCHAR (20)  NOT NULL,
+        ENVIRONMENTNAME    VARCHAR (20)  NOT NULL,
+        SYSTEMNAME         VARCHAR (20)  NOT NULL,
+        ENGINENAME         VARCHAR (20)  NOT NULL,
+        TASKNAME           VARCHAR (50)  NOT NULL,
+        MAPPINGID          INT           NOT NULL,
+        TASKTYPE           INT           DEFAULT 0,
+        MAPPINGDESC        VARCHAR (255) DEFAULT '',
+        MAPPINGTARGET      VARCHAR (128) DEFAULT NULL,
+        SOURCETYPE         INT           DEFAULT 0,
+        TARGETTYPE         INT           DEFAULT 0,
+        ISMAPPED           VARCHAR (1)   DEFAULT '0',
+        MAPPINGSOURCEID    CLOB          DEFAULT NULL,
+        MAPPINGTARGETID    VARCHAR (128) DEFAULT NULL,
+        SOURCEPARENT       VARCHAR (20)  DEFAULT NULL,
+        TARGETPARENT       VARCHAR (20)  DEFAULT NULL,
+        SEQNO              INT           DEFAULT 0,
+        SOURCEDATASTORE    VARCHAR (20)  DEFAULT NULL,
+        TARGETDATASTORE    VARCHAR (20)  DEFAULT NULL,
+        MAPPINGSOURCE      CLOB          DEFAULT NULL,
+         PRIMARY KEY
+          (PROJECTNAME,
+           ENVIRONMENTNAME,
+           SYSTEMNAME,
+           ENGINENAME,
+           TASKNAME,
+           MAPPINGID
+          ))  TABLESPACE  TSMETA21    ;
+  -----------------------------------------------------------------
+    -- CREATES FOR TASKS  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA23
+ --
+   CREATE TABLESPACE TSMETA23  
+      DATAFILE 'TSMETA23.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE  TASKS  ****/
+     CREATE TABLE  TASKS
+       (
+         PROJECTNAME        VARCHAR (20)  NOT NULL,
+         ENVIRONMENTNAME    VARCHAR (20)  NOT NULL,
+         SYSTEMNAME         VARCHAR (20)  NOT NULL,
+         ENGINENAME         VARCHAR (20)  NOT NULL,
+         TASKNAME           VARCHAR (50)  NOT NULL,
+         TASKTYPE           INT           DEFAULT 0,
+         TASKSEQNO          INT           DEFAULT 0,
+         TASKDESCRIPTION    CLOB          DEFAULT NULL,
+         CREATED_TIMESTAMP  TIMESTAMP     DEFAULT NULL,
+         UPDATED_TIMESTAMP  TIMESTAMP     DEFAULT NULL,
+         CREATED_USER_ID    VARCHAR (30)  DEFAULT NULL,
+         UPDATED_USER_ID    VARCHAR (30)  DEFAULT NULL,
+          PRIMARY KEY
+            (PROJECTNAME,
+             ENVIRONMENTNAME,
+             SYSTEMNAME,
+             ENGINENAME,
+             TASKNAME
+          ))  TABLESPACE  TSMETA23   ;
+  -------------------------------------------------------------
+    -- CREATES FOR  VARIABLES  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR:
+    --   TABLESPACE:  TSMETA24
+ --
+   CREATE TABLESPACE TSMETA24  
+      DATAFILE 'TSMETA24.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE   VARIABLES  ****/
+    CREATE TABLE   VARIABLES
+       (
+         PROJECTNAME        VARCHAR (20)  NOT NULL,
+         ENVIRONMENTNAME    VARCHAR (20)  NOT NULL,
+         SYSTEMNAME         VARCHAR (20)  NOT NULL,
+         ENGINENAME         VARCHAR (20)  NOT NULL,
+         VARIABLENAME       VARCHAR (50)  NOT NULL,
+         VARIABLEDESCRIPTION   CLOB       DEFAULT NULL,
+          PRIMARY KEY
+            (PROJECTNAME,
+             ENVIRONMENTNAME,
+             SYSTEMNAME,
+             ENGINENAME,
+             VARIABLENAME
+          ))  TABLESPACE  TSMETA24    ;
+  -----------------------------------------------------------
+    -- CREATES FOR  VARIABLESATTR  TABLE   **
+    --  IF NEEDED -- DO A GLOBAL CHANGE FOR
+    --   TABLESPACE:  TSMETA25
+ --
+   CREATE TABLESPACE TSMETA25  
+      DATAFILE 'TSMETA25.DAT'
+      SIZE 2M    ;
+  --
+  --  /**** OBJECT: TABLE   VARIABLESATTR  ****/
+    CREATE TABLE   VARIABLESATTR
+       (
+         PROJECTNAME        VARCHAR (20)  NOT NULL,
+         ENVIRONMENTNAME    VARCHAR (20)  NOT NULL,
+         SYSTEMNAME         VARCHAR (20)  NOT NULL,
+         ENGINENAME         VARCHAR (20)  NOT NULL,
+         VARIABLENAME       VARCHAR (50)  NOT NULL,
+         VARIABLEATTRB      VARCHAR (24)  NOT NULL,
+         VARIABLEATTRBVALUE VARCHAR (512) DEFAULT NULL,
+          PRIMARY KEY
+            (PROJECTNAME,
+             ENVIRONMENTNAME,
+             SYSTEMNAME,
+             ENGINENAME,
+             VARIABLENAME,
+             VARIABLEATTRB
+          ))  TABLESPACE  TSMETA25    ;

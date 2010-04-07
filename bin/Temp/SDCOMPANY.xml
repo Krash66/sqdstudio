@@ -1,0 +1,8 @@
+<Database ID="SQDTSTDB" Name="SQDTSTDB" Att="~4~0">
+  <Segment ID="COMPANY" Att="SQDTSTDB~2~1">
+    <Segment ID="VENDOR" Att="COMPANY~0~2"/>
+    <Segment ID="DEPTMENT" Att="COMPANY~1~1">
+      <Segment ID="EMPLOYEE" Att="DEPTMENT~0~2"/>
+    </Segment>
+  </Segment>
+</Database>
