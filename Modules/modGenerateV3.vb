@@ -1312,18 +1312,33 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
         Try
             For Each ds As clsDatastore In ObjThis.Sources
-                If ds.ExtType <> "" Then
-                    If wGlobal(rc, ds, "EXTTYPE") = False Then
+                If ds.ExtTypeChar <> "" Then
+                    If wGlobal(rc, ds, "EXTTYPECHAR") = False Then
                         GoTo ErrorGoTo
                     End If
                 End If
-                If ds.IfNull <> "" Then
-                    If wGlobal(rc, ds, "IFNULL") = False Then
+                If ds.IfNullChar <> "" Then
+                    If wGlobal(rc, ds, "IFNULLCHAR") = False Then
                         GoTo ErrorGoTo
                     End If
                 End If
-                If ds.InValid <> "" Then
-                    If wGlobal(rc, ds, "INVALID") = False Then
+                If ds.InValidChar <> "" Then
+                    If wGlobal(rc, ds, "INVALIDCHAR") = False Then
+                        GoTo ErrorGoTo
+                    End If
+                End If
+                If ds.ExtTypeNum <> "" Then
+                    If wGlobal(rc, ds, "EXTTYPENUM") = False Then
+                        GoTo ErrorGoTo
+                    End If
+                End If
+                If ds.IfNullNum <> "" Then
+                    If wGlobal(rc, ds, "IFNULLNUM") = False Then
+                        GoTo ErrorGoTo
+                    End If
+                End If
+                If ds.InValidNum <> "" Then
+                    If wGlobal(rc, ds, "INVALIDNUM") = False Then
                         GoTo ErrorGoTo
                     End If
                 End If
@@ -2246,7 +2261,7 @@ errorgoto:
                     DSname = "'" & DSname & "'"
                 End If
             End If
-            
+
 
             '/// define formatted strings
             Dim FORds1 As String = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
@@ -2474,7 +2489,7 @@ ErrorGoTo:
                             RSname = ds.Restart & "#" & MQstr.Trim & "@MQS"
                         End If
                     End If
-                    
+
                 Case DS_ACCESSMETHOD_VSAM
                     RSname = ds.Restart
                 Case Else
@@ -3259,22 +3274,37 @@ ErrorGoTo:
             Dim Arg2 As String = ""
 
             Select Case AttrType
-                Case "EXTTYPE"
+                Case "EXTTYPECHAR"
                     Command = "EXTTYPE"
-                    Arg1 = ds.DatastoreName & "." & ds.ExtAll
-                    Arg2 = "DT" & ds.ExtType
+                    Arg1 = ds.DatastoreName & ".ALLCHAR"
+                    Arg2 = "DT" & ds.ExtTypeChar
 
-                Case "IFNULL"
+                Case "IFNULLCHAR"
                     Command = "IFNULL"
-                    Arg1 = ds.DatastoreName & "." & ds.IfnAll
-                    Arg2 = ds.IfNull
+                    Arg1 = ds.DatastoreName & ".ALLCHAR"
+                    Arg2 = ds.IfNullChar
 
-                Case "INVALID"
+                Case "INVALIDCHAR"
                     Command = "INVALID"
-                    Arg1 = ds.DatastoreName & "." & ds.InvAll
-                    Arg2 = ds.InValid
+                    Arg1 = ds.DatastoreName & ".ALLCHAR"
+                    Arg2 = ds.InValidChar
 
+                Case "EXTTYPENUM"
+                    Command = "EXTTYPE"
+                    Arg1 = ds.DatastoreName & ".ALLNUM"
+                    Arg2 = "DT" & ds.ExtTypeNum
+
+                Case "IFNULLNUM"
+                    Command = "IFNULL"
+                    Arg1 = ds.DatastoreName & ".ALLNUM"
+                    Arg2 = ds.IfNullNum
+
+                Case "INVALIDNUM"
+                    Command = "INVALID"
+                    Arg1 = ds.DatastoreName & ".ALLNUM"
+                    Arg2 = ds.InValidNum
             End Select
+
             Dim FORout As String = String.Format("{0}{1}{2}", Command & " ", Arg1 & " ", Arg2 & semi)
 
             objWriteSQD.WriteLine(FORout)
@@ -3952,6 +3982,7 @@ ErrorGoTo:
             objWriteINL.WriteLine(FORvar)
             objWriteTMP.WriteLine(FORvar)
             AddToLineNo(rc)
+            wBlankLine(rc)
             'wSemiLine(rc)
 
         Catch ex As Exception

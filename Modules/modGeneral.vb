@@ -184,7 +184,7 @@ Public Module modGeneral
             SetListItemByValue = True
 
         Catch ex As Exception
-            LogError(ex, "modGeneral SetListItemByValue")
+            LogError(ex, cmb.Name, "modGeneral SetListItemByValue")
             SetListItemByValue = False
         End Try
 

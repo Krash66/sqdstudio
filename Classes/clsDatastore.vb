@@ -29,12 +29,12 @@ Public Class clsDatastore
     '// Source Only
     Private m_DsCharacterCode As String = "" '//Defined by constants DS_CHARACTERCODE_XXXXXXXX
     'Global Field Properties
-    Private g_ExtType As String = ""
-    Private g_ExtAll As String = ""
-    Private g_IfNull As String = ""
-    Private g_IfnAll As String = ""
-    Private g_InValid As String = ""
-    Private g_InvAll As String = ""
+    Private g_ExtTypeChar As String = ""
+    Private g_ExtTypeNum As String = ""
+    Private g_IfNullChar As String = ""
+    Private g_IfNullNum As String = ""
+    Private g_InValidChar As String = ""
+    Private g_InValidNum As String = ""
 
     '//Extended Properties
     Private m_IsIMSPathData As String = "0"
@@ -1005,57 +1005,57 @@ Public Class clsDatastore
         End Set
     End Property
 
-    Public Property ExtType() As String
+    Public Property ExtTypeChar() As String
         Get
-            Return g_ExtType
+            Return g_ExtTypeChar
         End Get
         Set(ByVal value As String)
-            g_ExtType = value
+            g_ExtTypeChar = value
         End Set
     End Property
 
-    Public Property ExtAll() As String
+    Public Property ExtTypeNum() As String
         Get
-            Return g_ExtAll
+            Return g_ExtTypeNum
         End Get
         Set(ByVal value As String)
-            g_ExtAll = value
+            g_ExtTypeNum = value
         End Set
     End Property
 
-    Public Property IfNull() As String
+    Public Property IfNullChar() As String
         Get
-            Return g_IfNull
+            Return g_IfNullChar
         End Get
         Set(ByVal value As String)
-            g_IfNull = value
+            g_IfNullChar = value
         End Set
     End Property
 
-    Public Property IfnAll() As String
+    Public Property IfNullNum() As String
         Get
-            Return g_IfnAll
+            Return g_IfNullNum
         End Get
         Set(ByVal value As String)
-            g_IfnAll = value
+            g_IfNullNum = value
         End Set
     End Property
 
-    Public Property InValid() As String
+    Public Property InValidChar() As String
         Get
-            Return g_InValid
+            Return g_InValidChar
         End Get
         Set(ByVal value As String)
-            g_InValid = value
+            g_InValidChar = value
         End Set
     End Property
 
-    Public Property InvAll() As String
+    Public Property InValidNum() As String
         Get
-            Return g_InvAll
+            Return g_InValidNum
         End Get
         Set(ByVal value As String)
-            g_InvAll = value
+            g_InValidNum = value
         End Set
     End Property
 
@@ -2682,12 +2682,12 @@ NextSel:        '// next selection
             objWriteGlobal = New System.IO.StreamWriter(fsDSglobal)
 
             'Write Globals to File
-            objWriteGlobal.WriteLine(Me.ExtType)
-            objWriteGlobal.WriteLine(Me.ExtAll)
-            objWriteGlobal.WriteLine(Me.IfNull)
-            objWriteGlobal.WriteLine(Me.IfnAll)
-            objWriteGlobal.WriteLine(Me.InValid)
-            objWriteGlobal.WriteLine(Me.InvAll)
+            objWriteGlobal.WriteLine(Me.ExtTypeChar)
+            objWriteGlobal.WriteLine(Me.ExtTypeNum)
+            objWriteGlobal.WriteLine(Me.IfNullChar)
+            objWriteGlobal.WriteLine(Me.IfNullNum)
+            objWriteGlobal.WriteLine(Me.InValidChar)
+            objWriteGlobal.WriteLine(Me.InValidNum)
 
             objWriteGlobal.Close()
             fsDSglobal.Close()
@@ -2715,12 +2715,12 @@ NextSel:        '// next selection
             objReadGlobal = New System.IO.StreamReader(fsDSglobal)
 
             'Write Globals to File
-            Me.ExtType = objReadGlobal.ReadLine()
-            Me.ExtAll = objReadGlobal.ReadLine()
-            Me.IfNull = objReadGlobal.ReadLine()
-            Me.IfnAll = objReadGlobal.ReadLine()
-            Me.InValid = objReadGlobal.ReadLine()
-            Me.InvAll = objReadGlobal.ReadLine()
+            Me.ExtTypeChar = objReadGlobal.ReadLine()
+            Me.ExtTypeNum = objReadGlobal.ReadLine()
+            Me.IfNullChar = objReadGlobal.ReadLine()
+            Me.IfNullNum = objReadGlobal.ReadLine()
+            Me.InValidChar = objReadGlobal.ReadLine()
+            Me.InValidNum = objReadGlobal.ReadLine()
 
             objReadGlobal.Close()
             fsDSglobal.Close()
@@ -2803,23 +2803,23 @@ NextSel:        '// next selection
                         Attrib = "UOW"
                         Value = Me.DsUOW
                     Case 17
-                        Attrib = "EXTTYPE"
-                        Value = Me.ExtType
+                        Attrib = "EXTTYPECHAR"
+                        Value = Me.ExtTypeChar
                     Case 18
-                        Attrib = "EXTALL"
-                        Value = Me.ExtAll
+                        Attrib = "EXTTYPENUM"
+                        Value = Me.ExtTypeNum
                     Case 19
-                        Attrib = "IFNULL"
-                        Value = Me.IfNull
+                        Attrib = "IFNULLCHAR"
+                        Value = Me.IfNullChar
                     Case 20
-                        Attrib = "IFNALL"
-                        Value = Me.IfnAll
+                        Attrib = "IFNULLNUM"
+                        Value = Me.IfNullNum
                     Case 21
-                        Attrib = "INVALID"
-                        Value = Me.InValid
+                        Attrib = "INVALIDCHAR"
+                        Value = Me.InValidChar
                     Case 22
-                        Attrib = "INVALL"
-                        Value = Me.InvAll
+                        Attrib = "INVALIDNUM"
+                        Value = Me.InValidNum
                     Case 23
                         Attrib = "LOOKUP"
                         Value = Me.IsLookUp.ToString
@@ -3005,18 +3005,18 @@ NextSel:        '// next selection
                         Me.TextQualifier = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                     Case "UOW"
                         Me.DsUOW = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "EXTTYPE"
-                        Me.ExtType = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "EXTALL"
-                        Me.ExtAll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "IFNULL"
-                        Me.IfNull = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "IFNALL"
-                        Me.IfnAll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "INVALID"
-                        Me.InValid = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "INVALL"
-                        Me.InvAll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "EXTTYPECHAR"
+                        Me.ExtTypeChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "EXTTYPENUM"
+                        Me.ExtTypeNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "IFNULLCHAR"
+                        Me.IfNullChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "IFNULLNUM"
+                        Me.IfNullNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "INVALIDCHAR"
+                        Me.InValidChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "INVALIDNUM"
+                        Me.InValidNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                     Case "LOOKUP"
                         Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                 End Select

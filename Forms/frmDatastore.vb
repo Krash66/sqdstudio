@@ -100,17 +100,17 @@ Public Class frmDatastore
     Friend WithEvents gbTarget As System.Windows.Forms.GroupBox
     Friend WithEvents gbSource As System.Windows.Forms.GroupBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents cbIfNull As System.Windows.Forms.ComboBox
+    Friend WithEvents cbIfNullChar As System.Windows.Forms.ComboBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
-    Friend WithEvents cbIfnAll As System.Windows.Forms.ComboBox
+    Friend WithEvents cbIfNullNum As System.Windows.Forms.ComboBox
     Friend WithEvents lblInValid As System.Windows.Forms.Label
-    Friend WithEvents cbInvalid As System.Windows.Forms.ComboBox
+    Friend WithEvents cbInvalidChar As System.Windows.Forms.ComboBox
     Friend WithEvents Label18 As System.Windows.Forms.Label
-    Friend WithEvents cbInvAll As System.Windows.Forms.ComboBox
+    Friend WithEvents cbInvalidNum As System.Windows.Forms.ComboBox
     Friend WithEvents lblExtType As System.Windows.Forms.Label
-    Friend WithEvents cbIfSpace As System.Windows.Forms.ComboBox
+    Friend WithEvents cbIfSpaceChar As System.Windows.Forms.ComboBox
     Friend WithEvents Label20 As System.Windows.Forms.Label
-    Friend WithEvents cbIfSpcAll As System.Windows.Forms.ComboBox
+    Friend WithEvents cbIfSpaceNum As System.Windows.Forms.ComboBox
     Friend WithEvents gbStruct As System.Windows.Forms.GroupBox
     Friend WithEvents gbDel As System.Windows.Forms.GroupBox
     Friend WithEvents gbField As System.Windows.Forms.GroupBox
@@ -167,17 +167,17 @@ Public Class frmDatastore
         Me.lblRestart = New System.Windows.Forms.Label
         Me.gbTarget = New System.Windows.Forms.GroupBox
         Me.gbSource = New System.Windows.Forms.GroupBox
-        Me.cbIfSpcAll = New System.Windows.Forms.ComboBox
+        Me.cbIfSpaceNum = New System.Windows.Forms.ComboBox
         Me.Label20 = New System.Windows.Forms.Label
-        Me.cbIfSpace = New System.Windows.Forms.ComboBox
+        Me.cbIfSpaceChar = New System.Windows.Forms.ComboBox
         Me.lblExtType = New System.Windows.Forms.Label
-        Me.cbInvAll = New System.Windows.Forms.ComboBox
+        Me.cbInvalidNum = New System.Windows.Forms.ComboBox
         Me.Label18 = New System.Windows.Forms.Label
-        Me.cbInvalid = New System.Windows.Forms.ComboBox
+        Me.cbInvalidChar = New System.Windows.Forms.ComboBox
         Me.lblInValid = New System.Windows.Forms.Label
-        Me.cbIfnAll = New System.Windows.Forms.ComboBox
+        Me.cbIfNullNum = New System.Windows.Forms.ComboBox
         Me.Label19 = New System.Windows.Forms.Label
-        Me.cbIfNull = New System.Windows.Forms.ComboBox
+        Me.cbIfNullChar = New System.Windows.Forms.ComboBox
         Me.Label17 = New System.Windows.Forms.Label
         Me.gbStruct = New System.Windows.Forms.GroupBox
         Me.gbDel = New System.Windows.Forms.GroupBox
@@ -321,6 +321,7 @@ Public Class frmDatastore
         Me.rbLookup.TabStop = True
         Me.rbLookup.Text = "LOOKUP DATASTORE"
         Me.rbLookup.UseVisualStyleBackColor = True
+        Me.rbLookup.Visible = False
         '
         'lblPoll
         '
@@ -701,7 +702,7 @@ Public Class frmDatastore
         Me.gbTarget.Controls.Add(Me.cmbOperationType)
         Me.gbTarget.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTarget.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbTarget.Location = New System.Drawing.Point(334, 339)
+        Me.gbTarget.Location = New System.Drawing.Point(365, 339)
         Me.gbTarget.Name = "gbTarget"
         Me.gbTarget.Size = New System.Drawing.Size(325, 44)
         Me.gbTarget.TabIndex = 141
@@ -710,17 +711,17 @@ Public Class frmDatastore
         '
         'gbSource
         '
-        Me.gbSource.Controls.Add(Me.cbIfSpcAll)
+        Me.gbSource.Controls.Add(Me.cbIfSpaceNum)
         Me.gbSource.Controls.Add(Me.Label20)
-        Me.gbSource.Controls.Add(Me.cbIfSpace)
+        Me.gbSource.Controls.Add(Me.cbIfSpaceChar)
         Me.gbSource.Controls.Add(Me.lblExtType)
-        Me.gbSource.Controls.Add(Me.cbInvAll)
+        Me.gbSource.Controls.Add(Me.cbInvalidNum)
         Me.gbSource.Controls.Add(Me.Label18)
-        Me.gbSource.Controls.Add(Me.cbInvalid)
+        Me.gbSource.Controls.Add(Me.cbInvalidChar)
         Me.gbSource.Controls.Add(Me.lblInValid)
-        Me.gbSource.Controls.Add(Me.cbIfnAll)
+        Me.gbSource.Controls.Add(Me.cbIfNullNum)
         Me.gbSource.Controls.Add(Me.Label19)
-        Me.gbSource.Controls.Add(Me.cbIfNull)
+        Me.gbSource.Controls.Add(Me.cbIfNullChar)
         Me.gbSource.Controls.Add(Me.Label17)
         Me.gbSource.Controls.Add(Me.cmbCharacterCode)
         Me.gbSource.Controls.Add(Me.Label6)
@@ -728,120 +729,120 @@ Public Class frmDatastore
         Me.gbSource.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbSource.Location = New System.Drawing.Point(3, 258)
         Me.gbSource.Name = "gbSource"
-        Me.gbSource.Size = New System.Drawing.Size(325, 125)
+        Me.gbSource.Size = New System.Drawing.Size(435, 125)
         Me.gbSource.TabIndex = 142
         Me.gbSource.TabStop = False
         Me.gbSource.Text = "Source Datastore Field Properties"
         '
-        'cbIfSpcAll
+        'cbIfSpaceNum
         '
-        Me.cbIfSpcAll.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbIfSpcAll.FormattingEnabled = True
-        Me.cbIfSpcAll.Location = New System.Drawing.Point(233, 94)
-        Me.cbIfSpcAll.Name = "cbIfSpcAll"
-        Me.cbIfSpcAll.Size = New System.Drawing.Size(85, 21)
-        Me.cbIfSpcAll.TabIndex = 125
+        Me.cbIfSpaceNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbIfSpaceNum.FormattingEnabled = True
+        Me.cbIfSpaceNum.Location = New System.Drawing.Point(322, 94)
+        Me.cbIfSpaceNum.Name = "cbIfSpaceNum"
+        Me.cbIfSpaceNum.Size = New System.Drawing.Size(107, 21)
+        Me.cbIfSpaceNum.TabIndex = 125
         '
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(205, 97)
+        Me.Label20.Location = New System.Drawing.Point(249, 97)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(22, 13)
+        Me.Label20.Size = New System.Drawing.Size(69, 13)
         Me.Label20.TabIndex = 124
-        Me.Label20.Text = "for"
+        Me.Label20.Text = "for All Num"
         '
-        'cbIfSpace
+        'cbIfSpaceChar
         '
-        Me.cbIfSpace.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbIfSpace.FormattingEnabled = True
-        Me.cbIfSpace.Location = New System.Drawing.Point(67, 94)
-        Me.cbIfSpace.MaxDropDownItems = 20
-        Me.cbIfSpace.Name = "cbIfSpace"
-        Me.cbIfSpace.Size = New System.Drawing.Size(132, 21)
-        Me.cbIfSpace.TabIndex = 123
+        Me.cbIfSpaceChar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbIfSpaceChar.FormattingEnabled = True
+        Me.cbIfSpaceChar.Location = New System.Drawing.Point(131, 94)
+        Me.cbIfSpaceChar.MaxDropDownItems = 20
+        Me.cbIfSpaceChar.Name = "cbIfSpaceChar"
+        Me.cbIfSpaceChar.Size = New System.Drawing.Size(107, 21)
+        Me.cbIfSpaceChar.TabIndex = 123
         '
         'lblExtType
         '
         Me.lblExtType.AutoSize = True
         Me.lblExtType.Location = New System.Drawing.Point(6, 97)
         Me.lblExtType.Name = "lblExtType"
-        Me.lblExtType.Size = New System.Drawing.Size(55, 13)
+        Me.lblExtType.Size = New System.Drawing.Size(122, 13)
         Me.lblExtType.TabIndex = 122
-        Me.lblExtType.Text = "If Space"
+        Me.lblExtType.Text = "If Space for All Char"
         '
-        'cbInvAll
+        'cbInvalidNum
         '
-        Me.cbInvAll.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbInvAll.FormattingEnabled = True
-        Me.cbInvAll.Location = New System.Drawing.Point(233, 67)
-        Me.cbInvAll.Name = "cbInvAll"
-        Me.cbInvAll.Size = New System.Drawing.Size(85, 21)
-        Me.cbInvAll.TabIndex = 121
+        Me.cbInvalidNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbInvalidNum.FormattingEnabled = True
+        Me.cbInvalidNum.Location = New System.Drawing.Point(322, 67)
+        Me.cbInvalidNum.Name = "cbInvalidNum"
+        Me.cbInvalidNum.Size = New System.Drawing.Size(106, 21)
+        Me.cbInvalidNum.TabIndex = 121
         '
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(205, 71)
+        Me.Label18.Location = New System.Drawing.Point(249, 70)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(22, 13)
+        Me.Label18.Size = New System.Drawing.Size(69, 13)
         Me.Label18.TabIndex = 120
-        Me.Label18.Text = "for"
+        Me.Label18.Text = "for All Num"
         '
-        'cbInvalid
+        'cbInvalidChar
         '
-        Me.cbInvalid.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbInvalid.FormattingEnabled = True
-        Me.cbInvalid.Location = New System.Drawing.Point(67, 67)
-        Me.cbInvalid.MaxDropDownItems = 20
-        Me.cbInvalid.Name = "cbInvalid"
-        Me.cbInvalid.Size = New System.Drawing.Size(132, 21)
-        Me.cbInvalid.TabIndex = 119
+        Me.cbInvalidChar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbInvalidChar.FormattingEnabled = True
+        Me.cbInvalidChar.Location = New System.Drawing.Point(131, 67)
+        Me.cbInvalidChar.MaxDropDownItems = 20
+        Me.cbInvalidChar.Name = "cbInvalidChar"
+        Me.cbInvalidChar.Size = New System.Drawing.Size(107, 21)
+        Me.cbInvalidChar.TabIndex = 119
         '
         'lblInValid
         '
         Me.lblInValid.AutoSize = True
-        Me.lblInValid.Location = New System.Drawing.Point(6, 71)
+        Me.lblInValid.Location = New System.Drawing.Point(6, 70)
         Me.lblInValid.Name = "lblInValid"
-        Me.lblInValid.Size = New System.Drawing.Size(45, 13)
+        Me.lblInValid.Size = New System.Drawing.Size(112, 13)
         Me.lblInValid.TabIndex = 118
-        Me.lblInValid.Text = "Invalid"
+        Me.lblInValid.Text = "Invalid for All Char"
         '
-        'cbIfnAll
+        'cbIfNullNum
         '
-        Me.cbIfnAll.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbIfnAll.FormattingEnabled = True
-        Me.cbIfnAll.Location = New System.Drawing.Point(233, 40)
-        Me.cbIfnAll.Name = "cbIfnAll"
-        Me.cbIfnAll.Size = New System.Drawing.Size(85, 21)
-        Me.cbIfnAll.TabIndex = 117
+        Me.cbIfNullNum.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbIfNullNum.FormattingEnabled = True
+        Me.cbIfNullNum.Location = New System.Drawing.Point(322, 40)
+        Me.cbIfNullNum.Name = "cbIfNullNum"
+        Me.cbIfNullNum.Size = New System.Drawing.Size(107, 21)
+        Me.cbIfNullNum.TabIndex = 117
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(205, 43)
+        Me.Label19.Location = New System.Drawing.Point(249, 45)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(22, 13)
+        Me.Label19.Size = New System.Drawing.Size(69, 13)
         Me.Label19.TabIndex = 116
-        Me.Label19.Text = "for"
+        Me.Label19.Text = "for All Num"
         '
-        'cbIfNull
+        'cbIfNullChar
         '
-        Me.cbIfNull.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbIfNull.FormattingEnabled = True
-        Me.cbIfNull.Location = New System.Drawing.Point(67, 40)
-        Me.cbIfNull.Name = "cbIfNull"
-        Me.cbIfNull.Size = New System.Drawing.Size(132, 21)
-        Me.cbIfNull.TabIndex = 115
+        Me.cbIfNullChar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbIfNullChar.FormattingEnabled = True
+        Me.cbIfNullChar.Location = New System.Drawing.Point(131, 40)
+        Me.cbIfNullChar.Name = "cbIfNullChar"
+        Me.cbIfNullChar.Size = New System.Drawing.Size(107, 21)
+        Me.cbIfNullChar.TabIndex = 115
         '
         'Label17
         '
         Me.Label17.AutoSize = True
         Me.Label17.Location = New System.Drawing.Point(6, 43)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(41, 13)
+        Me.Label17.Size = New System.Drawing.Size(108, 13)
         Me.Label17.TabIndex = 114
-        Me.Label17.Text = "If Null"
+        Me.Label17.Text = "If Null for All Char"
         '
         'gbStruct
         '
@@ -944,22 +945,22 @@ Public Class frmDatastore
         Me.ClientSize = New System.Drawing.Size(704, 663)
         Me.Controls.Add(Me.gbProp)
         Me.Controls.Add(Me.gbExtProps)
-        Me.Controls.Add(Me.rbLookup)
         Me.Controls.Add(Me.gbSource)
         Me.Controls.Add(Me.gbTarget)
         Me.Controls.Add(Me.gbField)
         Me.Controls.Add(Me.gbStruct)
         Me.Controls.Add(Me.gbDel)
+        Me.Controls.Add(Me.rbLookup)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimumSize = New System.Drawing.Size(712, 528)
         Me.Name = "frmDatastore"
         Me.Text = "Datastore Properties"
+        Me.Controls.SetChildIndex(Me.rbLookup, 0)
         Me.Controls.SetChildIndex(Me.gbDel, 0)
         Me.Controls.SetChildIndex(Me.gbStruct, 0)
         Me.Controls.SetChildIndex(Me.gbField, 0)
         Me.Controls.SetChildIndex(Me.gbTarget, 0)
         Me.Controls.SetChildIndex(Me.gbSource, 0)
-        Me.Controls.SetChildIndex(Me.rbLookup, 0)
         Me.Controls.SetChildIndex(Me.gbExtProps, 0)
         Me.Controls.SetChildIndex(Me.gbProp, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
@@ -1499,6 +1500,13 @@ Public Class frmDatastore
         StartLoad()
 
         objThis.IsLookUp = IsLook
+        'If objThis.IsLookUp = True Then
+        '    gbProp.Text = "Lookup Datastore Properties"
+        '    Me.Text = "Lookup Datastore Properties"
+        'Else
+        '    gbProp.Text = "Datastore Properties"
+        '    Me.Text = "Datastore Properties"
+        'End If
 
         SetDefaultName()
 
@@ -1578,7 +1586,7 @@ doAgain:
                 objThis.DsCharacterCode = ""
             End If
 
-            
+
 
             '//npatel 10/7/05
             If cmbAccessMethod.Enabled = True Then
@@ -1747,8 +1755,15 @@ doAgain:
             gbStruct.Refresh()
             cmbCharacterCode.Enabled = True
             txtException.Enabled = True
-            Label1.Text = "Source Definition"
-            Me.Text = "Source Datastore"
+            If objThis.IsLookUp = True Then
+                Label1.Text = "Lookup Datastore Definition"
+                gbProp.Text = "Lookup Datastore Properties"
+                Me.Text = "Lookup Datastore Properties"
+            Else
+                Label1.Text = "Source Definition"
+                gbProp.Text = "Source Properties"
+                Me.Text = "Source Datastore"
+            End If
         Else
             If DatastoreType = enumDatastore.DS_DELIMITED Then
                 gbDel.Visible = True
@@ -1775,6 +1790,7 @@ doAgain:
             txtException.Enabled = True
             rbLookup.Visible = False
             Label1.Text = "Target Definition"
+            gbProp.Text = "Target Properties"
             Me.Text = "Target Datastore"
         End If
 
@@ -1812,7 +1828,7 @@ doAgain:
         Else
             cmbOperationType.Enabled = (objThis.DsDirection = DS_DIRECTION_TARGET)
         End If
-        
+
         SetOperationTypeCombo()
 
         '//Only IBM Event : new added by npatel on 8/10/05
@@ -1923,7 +1939,7 @@ doAgain:
             cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
             cmbAccessMethod.SelectedIndex = 0
         End If
-        
+
         SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod)
 
     End Sub
@@ -2005,62 +2021,62 @@ doAgain:
 
     End Sub
 
-    Private Sub cbExtType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfSpace.SelectedIndexChanged
+    Private Sub cbIfSpaceChar_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfSpaceChar.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.ExtType = CType(cbIfSpace.Items(cbIfSpace.SelectedIndex), Mylist).ItemData
+        objThis.ExtTypeChar = CType(cbIfSpaceChar.Items(cbIfSpaceChar.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
 
-    Private Sub cbExtAll_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfSpcAll.SelectedIndexChanged
+    Private Sub cbIfSpaceNum_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfSpaceNum.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.ExtAll = CType(cbIfSpcAll.Items(cbIfSpcAll.SelectedIndex), Mylist).ItemData
+        objThis.ExtTypeNum = CType(cbIfSpaceNum.Items(cbIfSpaceNum.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
 
-    Private Sub cbIfNull_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfNull.SelectedIndexChanged
+    Private Sub cbIfNullChar_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfNullChar.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.IfNull = CType(cbIfNull.Items(cbIfNull.SelectedIndex), Mylist).ItemData
+        objThis.IfNullChar = CType(cbIfNullChar.Items(cbIfNullChar.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
 
-    Private Sub cbIfnAll_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfnAll.SelectedIndexChanged
+    Private Sub cbIfNullNum_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIfNullNum.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.IfnAll = CType(cbIfnAll.Items(cbIfnAll.SelectedIndex), Mylist).ItemData
+        objThis.IfNullNum = CType(cbIfNullNum.Items(cbIfNullNum.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
 
-    Private Sub cbInvalid_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbInvalid.SelectedIndexChanged
+    Private Sub cbInvalidChar_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbInvalidChar.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.InValid = CType(cbInvalid.Items(cbInvalid.SelectedIndex), Mylist).ItemData
+        objThis.InValidChar = CType(cbInvalidChar.Items(cbInvalidChar.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
 
-    Private Sub cbInvAll_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbInvAll.SelectedIndexChanged
+    Private Sub cbInvalidNum_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbInvalidNum.SelectedIndexChanged
 
         If IsEventFromCode = True Then
             Exit Sub
         End If
-        objThis.InvAll = CType(cbInvAll.Items(cbInvAll.SelectedIndex), Mylist).ItemData
+        objThis.InValidNum = CType(cbInvalidNum.Items(cbInvalidNum.SelectedIndex), Mylist).ItemData
         OnChange(Me, New EventArgs)
 
     End Sub
@@ -2151,14 +2167,14 @@ doAgain:
         'If IsNewObj = True Then cmbAccessMethod.SelectedIndex = 0
 
         '//
-        
+
 
         '//
         setColCombo()
         setRowCombo()
         setTextCombo()
 
-        
+
 
         SetCombos()
 
@@ -2572,12 +2588,12 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         Try
             'Set ExtType Combo
-            cbIfSpace.Items.Clear()
-            cbIfSpace.Items.Add(New Mylist("", ""))
-            cbIfSpace.Items.Add(New Mylist("SETNULL", "SETNULL"))
-            cbIfSpace.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
-            cbIfSpace.Items.Add(New Mylist("SETZERO", "SETZERO"))
-            cbIfSpace.Items.Add(New Mylist("SETEXP", "SETEXP"))
+            cbIfSpaceChar.Items.Clear()
+            cbIfSpaceChar.Items.Add(New Mylist("", ""))
+            cbIfSpaceChar.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbIfSpaceChar.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbIfSpaceChar.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbIfSpaceChar.Items.Add(New Mylist("SETEXP", "SETEXP"))
             'cbIfSpace.Items.Add(New Mylist("DDMMYYHHMM", "DDMMYYHHMM"))
             'cbIfSpace.Items.Add(New Mylist("DDMMYYHHMMSS", "DDMMYYHHMMSS"))
             'cbIfSpace.Items.Add(New Mylist("EURDATE", "EURDATE"))
@@ -2600,40 +2616,46 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             'cbIfSpace.Items.Add(New Mylist("YYYYMMDDHHMMSS", "YYYYMMDDHHMMSS"))
 
             'Set ExtAll Combo
-            cbIfSpcAll.Items.Clear()
-            cbIfSpcAll.Items.Add(New Mylist("", ""))
-            cbIfSpcAll.Items.Add(New Mylist("ALLNUM", "ALLNUM"))
-            cbIfSpcAll.Items.Add(New Mylist("ALLCHAR", "ALLCHAR"))
+            cbIfSpaceNum.Items.Clear()
+            cbIfSpaceNum.Items.Add(New Mylist("", ""))
+            cbIfSpaceNum.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbIfSpaceNum.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbIfSpaceNum.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbIfSpaceNum.Items.Add(New Mylist("SETEXP", "SETEXP"))
 
             'Set IfNull Combo
-            cbIfNull.Items.Clear()
-            cbIfNull.Items.Add(New Mylist("", ""))
-            cbIfNull.Items.Add(New Mylist("SETNULL", "SETNULL"))
-            cbIfNull.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
-            cbIfNull.Items.Add(New Mylist("SETZERO", "SETZERO"))
-            cbIfNull.Items.Add(New Mylist("SETEXP", "SETEXP"))
+            cbIfNullChar.Items.Clear()
+            cbIfNullChar.Items.Add(New Mylist("", ""))
+            cbIfNullChar.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbIfNullChar.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbIfNullChar.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbIfNullChar.Items.Add(New Mylist("SETEXP", "SETEXP"))
 
             'Set IfnAll Combo
-            cbIfnAll.Items.Clear()
-            cbIfnAll.Items.Add(New Mylist("", ""))
-            cbIfnAll.Items.Add(New Mylist("ALLNUM", "ALLNUM"))
-            cbIfnAll.Items.Add(New Mylist("ALLCHAR", "ALLCHAR"))
+            cbIfNullNum.Items.Clear()
+            cbIfNullNum.Items.Add(New Mylist("", ""))
+            cbIfNullNum.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbIfNullNum.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbIfNullNum.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbIfNullNum.Items.Add(New Mylist("SETEXP", "SETEXP"))
 
             'Set Invalid Combo
-            cbInvalid.Items.Clear()
-            cbInvalid.Items.Add(New Mylist("", ""))
-            cbInvalid.Items.Add(New Mylist("SETNULL", "SETNULL"))
-            cbInvalid.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
-            cbInvalid.Items.Add(New Mylist("SETZERO", "SETZERO"))
-            cbInvalid.Items.Add(New Mylist("SETEXP", "SETEXP"))
+            cbInvalidChar.Items.Clear()
+            cbInvalidChar.Items.Add(New Mylist("", ""))
+            cbInvalidChar.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbInvalidChar.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbInvalidChar.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbInvalidChar.Items.Add(New Mylist("SETEXP", "SETEXP"))
             'cbInvalid.Items.Add(New Mylist("0001-01-01", "0001-01-01"))
             'cbInvalid.Items.Add(New Mylist("00.00.00", "00.00.00"))
 
             'Set InvAll Combo
-            cbInvAll.Items.Clear()
-            cbInvAll.Items.Add(New Mylist("", ""))
-            cbInvAll.Items.Add(New Mylist("ALLNUM", "ALLNUM"))
-            cbInvAll.Items.Add(New Mylist("ALLCHAR", "ALLCHAR"))
+            cbInvalidNum.Items.Clear()
+            cbInvalidNum.Items.Add(New Mylist("", ""))
+            cbInvalidNum.Items.Add(New Mylist("SETNULL", "SETNULL"))
+            cbInvalidNum.Items.Add(New Mylist("SETSPACE", "SETSPACE"))
+            cbInvalidNum.Items.Add(New Mylist("SETZERO", "SETZERO"))
+            cbInvalidNum.Items.Add(New Mylist("SETEXP", "SETEXP"))
 
         Catch ex As Exception
             LogError(ex, "frmDatastore SetCombos")

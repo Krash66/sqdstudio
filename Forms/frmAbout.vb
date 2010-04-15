@@ -258,9 +258,9 @@ Public Class frmAbout
         Me.lblBuildDate.ForeColor = System.Drawing.SystemColors.Window
         Me.lblBuildDate.Location = New System.Drawing.Point(117, 56)
         Me.lblBuildDate.Name = "lblBuildDate"
-        Me.lblBuildDate.Size = New System.Drawing.Size(61, 13)
+        Me.lblBuildDate.Size = New System.Drawing.Size(68, 13)
         Me.lblBuildDate.TabIndex = 5
-        Me.lblBuildDate.Text = "4/1/2010"
+        Me.lblBuildDate.Text = "4/15/2010"
         '
         'Label8
         '
@@ -282,7 +282,7 @@ Public Class frmAbout
         Me.lblBuildNumber.Name = "lblBuildNumber"
         Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
         Me.lblBuildNumber.TabIndex = 3
-        Me.lblBuildNumber.Text = "3.3.0.5"
+        Me.lblBuildNumber.Text = "3.3.0.7"
         '
         'frmAbout
         '
