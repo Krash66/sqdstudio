@@ -1,0 +1,7 @@
+<Structure ID="COMPANY_DDL" Name="COMPANY_DDL" Parent="" Att="0~5">
+  <Field ID="COMPNAME" OrgName="" Parent="COMPANY_DDL" Att="0~0~1~0~CHAR~0~10~0~0~0~~~~~~~"/>
+  <Field ID="COMP_ADDRESS" OrgName="" Parent="COMPANY_DDL" Att="0~0~1~0~CHAR~10~20~0~0~0~~~~~~~"/>
+  <Field ID="COMP_CITY" OrgName="" Parent="COMPANY_DDL" Att="0~0~1~0~CHAR~30~10~0~0~0~~~~~~~"/>
+  <Field ID="comp_state" OrgName="" Parent="COMPANY_DDL" Att="0~0~1~0~CHAR~40~2~0~0~0~~~~~~~"/>
+  <Field ID="COMP_ZIP" OrgName="" Parent="COMPANY_DDL" Att="0~0~1~0~CHAR~42~5~0~0~0~~~~~~~"/>
+</Structure>

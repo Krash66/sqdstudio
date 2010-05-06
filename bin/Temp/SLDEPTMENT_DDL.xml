@@ -1,0 +1,8 @@
+<Structure ID="DEPTMENT_DDL" Name="DEPTMENT_DDL" Parent="" Att="0~6">
+  <Field ID="DEPTNO" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~0~3~0~0~0~~~~~~~"/>
+  <Field ID="DEPT_NAME" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~3~29~0~0~0~~~~~~~"/>
+  <Field ID="DEPT_MGRNO" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~32~6~0~0~0~~~~~~~"/>
+  <Field ID="DEPT_ADMRDEP" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~38~3~0~0~0~~~~~~~"/>
+  <Field ID="DEPT_LOC" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~41~16~0~0~0~~~~~~~"/>
+  <Field ID="PFK_COMPNAME" OrgName="" Parent="DEPTMENT_DDL" Att="0~0~1~0~CHAR~57~10~0~0~0~~~~~~~"/>
+</Structure>

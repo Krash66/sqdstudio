@@ -792,7 +792,7 @@ Public Class ctlEngine
             Next
 
             If objThis.Connection IsNot Nothing Then
-                SetListItemByValue(cbConn, objThis.Connection.ConnectionName)
+                SetListItemByValue(cbConn, objThis.Connection.ConnectionName, False)
             Else
                 cbConn.SelectedIndex = 0
             End If
@@ -813,7 +813,7 @@ Public Class ctlEngine
             cbDateFormat.Items.Add(New Mylist("YYYYMMDD", "YYYYMMDD"))
 
             If objThis.DateFormat.Trim <> "" Then
-                SetListItemByValue(cbDateFormat, objThis.DateFormat)
+                SetListItemByValue(cbDateFormat, objThis.DateFormat, False)
             Else
                 cbDateFormat.SelectedIndex = 0
             End If

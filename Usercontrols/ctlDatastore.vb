@@ -1477,7 +1477,7 @@ Public Class ctlDatastore
         SetPoll()
 
         '//added by npatel on 9/6/05
-        SetListItemByValue(cmbDatastoreType, objThis.DatastoreType)
+        SetListItemByValue(cmbDatastoreType, objThis.DatastoreType, False)
 
         If objThis.DsDirection = DS_DIRECTION_SOURCE Or objThis.Engine Is Nothing Then
             gbSource.Enabled = True
@@ -2042,7 +2042,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbAccessMethod.SelectedIndex = 0
         End If
 
-        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod)
+        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
 
     End Sub
 
@@ -2070,7 +2070,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         End Select
 
         If IsNewObj = True Then cmbOperationType.SelectedIndex = 0
-        SetListItemByValue(cmbOperationType, objThis.OperationType)
+        SetListItemByValue(cmbOperationType, objThis.OperationType, False)
 
     End Sub
 
@@ -2113,7 +2113,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
             End If
 
-            SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode)
+            SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode, False)
 
         Catch ex As Exception
             LogError(ex, "ctlDatastore SetCharCodeCombo")
@@ -2188,9 +2188,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
             objThis.ColumnDelimiter = CType(cmbColDelimiter.Items(cmbColDelimiter.SelectedIndex), Mylist).ItemData
             setRowCombo(cmbColDelimiter.SelectedItem, cmbTextQualifier.SelectedItem)
-            SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter)
+            SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter, False)
             setTextCombo(cmbRowDelimiter.SelectedItem, cmbColDelimiter.SelectedItem)
-            SetListItemByValue(cmbTextQualifier, objThis.TextQualifier)
+            SetListItemByValue(cmbTextQualifier, objThis.TextQualifier, False)
 
             OnChange(Me, New EventArgs)
 
@@ -2211,7 +2211,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 cmbTxt = cmbColDelimiter.Text
                 objThis.ColumnDelimiter = cmbTxt
                 cmbColDelimiter.Items.Add(New Mylist(cmbTxt, cmbTxt))
-                SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter)
+                SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter, True)
                 OnChange(Me, New EventArgs)
             End If
 
@@ -2228,9 +2228,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
             objThis.RowDelimiter = CType(cmbRowDelimiter.Items(cmbRowDelimiter.SelectedIndex), Mylist).ItemData
             setColCombo(cmbRowDelimiter.SelectedItem, cmbTextQualifier.SelectedItem)
-            SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter)
+            SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter, False)
             setTextCombo(cmbRowDelimiter.SelectedItem, cmbColDelimiter.SelectedItem)
-            SetListItemByValue(cmbTextQualifier, objThis.TextQualifier)
+            SetListItemByValue(cmbTextQualifier, objThis.TextQualifier, False)
 
             OnChange(Me, New EventArgs)
 
@@ -2251,7 +2251,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 cmbTxt = cmbRowDelimiter.Text
                 objThis.RowDelimiter = cmbTxt
                 cmbRowDelimiter.Items.Add(New Mylist(cmbTxt, cmbTxt))
-                SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter)
+                SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter, True)
                 OnChange(Me, New EventArgs)
             End If
 
@@ -2268,9 +2268,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
             objThis.TextQualifier = CType(cmbTextQualifier.Items(cmbTextQualifier.SelectedIndex), Mylist).ItemData
             setRowCombo(cmbColDelimiter.SelectedItem, cmbTextQualifier.SelectedItem)
-            SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter)
+            SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter, False)
             setColCombo(cmbRowDelimiter.SelectedItem, cmbTextQualifier.SelectedItem)
-            SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter)
+            SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter, False)
 
             OnChange(Me, New EventArgs)
 
@@ -2291,7 +2291,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 cmbTxt = cmbTextQualifier.Text
                 objThis.TextQualifier = cmbTxt
                 cmbTextQualifier.Items.Add(New Mylist(cmbTxt, cmbTxt))
-                SetListItemByValue(cmbTextQualifier, objThis.TextQualifier)
+                SetListItemByValue(cmbTextQualifier, objThis.TextQualifier, True)
                 OnChange(Me, New EventArgs)
             End If
 
@@ -2939,8 +2939,8 @@ msg:        If ErrorMsg <> "" Then
         txtPoll.Text = objThis.Poll  '// add by TK 12/22/09
         txtRestart.Text = objThis.Restart
 
-        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod)
-        SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode)
+        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+        SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode, False)
 
         If objThis.DsAccessMethod = DS_ACCESSMETHOD_IP Then
             txtPortOrMQMgr.Text = objThis.DsPort
@@ -2949,7 +2949,7 @@ msg:        If ErrorMsg <> "" Then
         End If
 
         If objThis.DsDirection = DS_DIRECTION_TARGET Then
-            SetListItemByValue(cmbOperationType, objThis.OperationType)
+            SetListItemByValue(cmbOperationType, objThis.OperationType, False)
         End If
 
         'Me.chkCmmtKey.Checked = IIf(objThis.IsCmmtKey = "1", True, False)  '// added by TK and KS 11/6/2006
@@ -2962,22 +2962,22 @@ msg:        If ErrorMsg <> "" Then
         'If SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter) = False Then
         '    cmbColDelimiter.Text = objThis.ColumnDelimiter
         'End If
-        SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter)
+        SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter, True)
         'If SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter) = False Then
         '    cmbRowDelimiter.Text = objThis.RowDelimiter
         'End If
-        SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter)
+        SetListItemByValue(cmbRowDelimiter, objThis.RowDelimiter, True)
         'If SetListItemByValue(cmbTextQualifier, objThis.TextQualifier) = False Then
         '    cmbTextQualifier.Text = objThis.TextQualifier
         'End If
-        SetListItemByValue(cmbTextQualifier, objThis.TextQualifier)
+        SetListItemByValue(cmbTextQualifier, objThis.TextQualifier, True)
 
-        SetListItemByValue(cbIfSpaceChar, objThis.ExtTypeChar)
-        SetListItemByValue(cbIfSpaceNum, objThis.ExtTypeNum)
-        SetListItemByValue(cbIfNullChar, objThis.IfNullChar)
-        SetListItemByValue(cbIfNullNum, objThis.IfNullNum)
-        SetListItemByValue(cbInvalidChar, objThis.InValidChar)
-        SetListItemByValue(cbInvalidNum, objThis.InValidNum)
+        SetListItemByValue(cbIfSpaceChar, objThis.ExtTypeChar, False)
+        SetListItemByValue(cbIfSpaceNum, objThis.ExtTypeNum, False)
+        SetListItemByValue(cbIfNullChar, objThis.IfNullChar, False)
+        SetListItemByValue(cbIfNullNum, objThis.IfNullNum, False)
+        SetListItemByValue(cbInvalidChar, objThis.InValidChar, False)
+        SetListItemByValue(cbInvalidNum, objThis.InValidNum, False)
 
     End Function
 

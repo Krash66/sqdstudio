@@ -1,0 +1,69 @@
+  <Segment ID="CCEMPLYR" Att="~CSEDBD~55">
+    <Field ID="CCEMPLYR-REC" OrgName="" Parent="CCEMPLYR" Att="16~1~1~0~GROUPITEM~0~710~0~1~0~~~~~~~">
+      <Field ID="CSEMPL-CCEMPLYR-NUMBER" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~0~7~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-BUSINESS" OrgName="" Parent="CCEMPLYR-REC" Att="3~2~1~0~GROUPITEM~7~201~0~1~0~~~~~~~">
+        <Field ID="CSEMPL-CCEMPLYR-BUSI-NAME" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSINESS" Att="0~3~1~0~CHAR~7~40~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-BUSI-ADDR" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSINESS" Att="7~3~1~0~GROUPITEM~47~151~0~1~0~~~~~~~">
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-ADDR-LN1" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~47~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-ADDR-LN2" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~77~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-ADDR-LN3" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~107~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-ADDR-LN4" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~137~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-CITY" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~167~20~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-STATE" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="0~4~1~0~CHAR~187~2~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-ZIP" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ADDR" Att="2~4~1~0~GROUPITEM~189~9~0~1~0~~~~~~~">
+            <Field ID="CSEMPL-CCEMPLYR-BUSI-ZIP-PREF" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ZIP" Att="0~5~1~0~CHAR~189~5~0~1~0~~~~~~~"/>
+            <Field ID="CSEMPL-CCEMPLYR-BUSI-ZIP-SUFF" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-ZIP" Att="0~5~1~0~CHAR~194~4~0~1~0~~~~~~~"/>
+          </Field>
+        </Field>
+        <Field ID="CSEMPL-CCEMPLYR-BUSI-PHONE" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSINESS" Att="3~3~1~0~GROUPITEM~198~10~0~1~0~~~~~~~">
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-PHN-AC" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-PHONE" Att="0~4~1~0~CHAR~198~3~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-PHN-PREF" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-PHONE" Att="0~4~1~0~CHAR~201~3~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-BUSI-PHN-SUFF" OrgName="" Parent="CSEMPL-CCEMPLYR-BUSI-PHONE" Att="0~4~1~0~CHAR~204~4~0~1~0~~~~~~~"/>
+        </Field>
+      </Field>
+      <Field ID="CSEMPL-CCEMPLYR-CORP-OWNER" OrgName="" Parent="CCEMPLYR-REC" Att="1~2~1~0~GROUPITEM~208~30~0~1~0~~~~~~~">
+        <Field ID="CSEMPL-CCEMPLYR-CORP-NAME" OrgName="" Parent="CSEMPL-CCEMPLYR-CORP-OWNER" Att="0~3~1~0~CHAR~208~30~0~1~0~~~~~~~"/>
+      </Field>
+      <Field ID="CSEMPL-CCEMPLYR-PR-CONTACT" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~238~30~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-ETF-CONTACT" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~268~30~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-CKS-FROM" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~298~40~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-CKS-FROM-SAME" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~338~1~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-COMMENT" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~339~65~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-AGNT-SAME" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~404~1~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-LEGAL-AGENT" OrgName="" Parent="CCEMPLYR-REC" Att="3~2~1~0~GROUPITEM~405~201~0~1~0~~~~~~~">
+        <Field ID="CSEMPL-CCEMPLYR-AGNT-NAME" OrgName="" Parent="CSEMPL-CCEMPLYR-LEGAL-AGENT" Att="0~3~1~0~CHAR~405~40~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-AGNT-ADDR" OrgName="" Parent="CSEMPL-CCEMPLYR-LEGAL-AGENT" Att="7~3~1~0~GROUPITEM~445~151~0~1~0~~~~~~~">
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-ADDR-LN1" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~445~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-ADDR-LN2" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~475~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-ADDR-LN3" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~505~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-ADDR-LN4" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~535~30~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-CITY" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~565~20~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-STATE" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="0~4~1~0~CHAR~585~2~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-ZIP" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ADDR" Att="2~4~1~0~GROUPITEM~587~9~0~1~0~~~~~~~">
+            <Field ID="CSEMPL-CCEMPLYR-AGNT-ZIP-PREF" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ZIP" Att="0~5~1~0~CHAR~587~5~0~1~0~~~~~~~"/>
+            <Field ID="CSEMPL-CCEMPLYR-AGNT-ZIP-SUFF" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-ZIP" Att="0~5~1~0~CHAR~592~4~0~1~0~~~~~~~"/>
+          </Field>
+        </Field>
+        <Field ID="CSEMPL-CCEMPLYR-AGNT-PHONE" OrgName="" Parent="CSEMPL-CCEMPLYR-LEGAL-AGENT" Att="3~3~1~0~GROUPITEM~596~10~0~1~0~~~~~~~">
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-PHN-AC" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-PHONE" Att="0~4~1~0~CHAR~596~3~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-PHN-PREF" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-PHONE" Att="0~4~1~0~CHAR~599~3~0~1~0~~~~~~~"/>
+          <Field ID="CSEMPL-CCEMPLYR-AGNT-PHN-SUFF" OrgName="" Parent="CSEMPL-CCEMPLYR-AGNT-PHONE" Att="0~4~1~0~CHAR~602~4~0~1~0~~~~~~~"/>
+        </Field>
+      </Field>
+      <Field ID="CSEMPL-CCEMPLYR-SEG-TERM-ID" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~606~4~0~1~0~~~~~~~"/>
+      <Field ID="CSEMPL-CCEMPLYR-SEG-YYMMDD" OrgName="" Parent="CCEMPLYR-REC" Att="4~2~1~0~GROUPITEM~610~8~0~1~0~~~~~~~">
+        <Field ID="CSEMPL-CCEMPLYR-SEG-YYMMDD-CC" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-YYMMDD" Att="0~3~1~0~CHAR~610~2~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-SEG-YYMMDD-YY" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-YYMMDD" Att="0~3~1~0~CHAR~612~2~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-SEG-YYMMDD-MM" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-YYMMDD" Att="0~3~1~0~CHAR~614~2~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-SEG-YYMMDD-DD" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-YYMMDD" Att="0~3~1~0~CHAR~616~2~0~1~0~~~~~~~"/>
+      </Field>
+      <Field ID="CSEMPL-CCEMPLYR-SEG-HHMMSS" OrgName="" Parent="CCEMPLYR-REC" Att="3~2~1~0~GROUPITEM~618~6~0~1~0~~~~~~~">
+        <Field ID="CSEMPL-CCEMPLYR-SEG-HHMMSS-HH" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-HHMMSS" Att="0~3~1~0~CHAR~618~2~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-SEG-HHMMSS-MM" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-HHMMSS" Att="0~3~1~0~CHAR~620~2~0~1~0~~~~~~~"/>
+        <Field ID="CSEMPL-CCEMPLYR-SEG-HHMMSS-SS" OrgName="" Parent="CSEMPL-CCEMPLYR-SEG-HHMMSS" Att="0~3~1~0~CHAR~622~2~0~1~0~~~~~~~"/>
+      </Field>
+      <Field ID="CSEMPL-CCEMPLYR-SDU-DESIG" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~624~1~0~1~0~~~~~~~"/>
+      <Field ID="CC2" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~0~7~0~0~1~~~~~~~"/>
+      <Field ID="EMPNAME" OrgName="" Parent="CCEMPLYR-REC" Att="0~2~1~0~CHAR~7~30~0~0~0~~~~~~~"/>
+    </Field>
+  </Segment>
