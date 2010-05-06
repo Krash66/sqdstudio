@@ -901,9 +901,9 @@ doAgain:
                     Exit Try
                 End If
                 LoadTreeViewFromXmlFile(objThis, outXMLPath, tvSegments)
-                If IO.File.Exists(outXMLPath) Then
-                    IO.File.Delete(outXMLPath)
-                End If
+                'If IO.File.Exists(outXMLPath) Then
+                '    IO.File.Delete(outXMLPath)
+                'End If
             Else
                 If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Or modDeclares.enumStructure.STRUCT_COBOL_IMS Then
                     tvSegments.Nodes.Clear()
