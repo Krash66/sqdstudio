@@ -149,7 +149,7 @@ Public Module modGeneral
 
     '//Note: Only work id list item set set using MyList class
     '//i.e combo.Items.Add(New MyList("AAAA",1))
-    Function SetListItemByValue(ByVal cmb As ComboBox, ByVal Value As Object, ByVal canEdit As Boolean) As Boolean
+    Function SetListItemByValue(ByVal cmb As ComboBox, ByVal Value As Object) As Boolean
 
         Dim i As Integer
         Dim oldIsEventFromCode As Boolean
@@ -168,9 +168,9 @@ Public Module modGeneral
                 End If
             Next
             If SetListItemByValue = False Then
-                If Value.ToString <> "" And canEdit = True Then
+                If Value.ToString <> "" Then
                     cmb.Items.Add(New Mylist(Value.ToString, Value))
-                    SetListItemByValue(cmb, Value, False)
+                    SetListItemByValue(cmb, Value)
                     SetListItemByValue = True
                     Exit Try
                 Else

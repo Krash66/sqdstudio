@@ -4978,8 +4978,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     'DS_IMSLE, DS_IMSLEBATCH, DS_XMLCDC, DS_TRBCDC,
                     '//If clicked on folder then disable del and edit options
                     mnuDelDS.Enabled = Not bFolderClick
-                    mnuAddDSHSSUNLOAD.Enabled = False
-                    mnuAddIMSLE.Enabled = False
                     'mnuEditDS.Enabled = Not bFolderClick
                     'If obj.Type = NODE_FO_TARGETDATASTORE And m_ClipObjects.Count > 0 Then
                     '    MenuItem9.Enabled = True
@@ -4995,8 +4993,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '    mnuDelDS.Text = "Delete Source"
                     'End If
                     mnuDelAllDS.Text = "Delete All Datastores"
-                    If obj.Type = NODE_TARGETDATASTORE Or obj.Type = NODE_SOURCEDATASTORE Or _
-                    obj.Type = NODE_FO_DATASTORE Then
+                    If obj.Type = NODE_TARGETDATASTORE Or obj.Type = NODE_SOURCEDATASTORE Then
                         mnuDelAllDS.Enabled = False
 
                     Else

@@ -10,7 +10,6 @@
     <DAYNAME NODETYPE="Func" NPARM="1" SYNTAX="DAYNAME(num)" DESC="returns the name of a day from a number (1 through 7). (see DAYOFWEEK for determining based on date)"/>
     <DAYOFWEEK NODETYPE="Func" NPARM="0" SYNTAX="DAYOFWEEK()" DESC="returns the day number (1 through 7) from the current date."/>
     <GMT2LOCAL NODETYPE="Func" NPARM="1" SYNTAX="GMT2LOCAL(CDCTSTMP(CDCIN))" DESC="converts GMT to Local Time."/>
-    <IS_ISO_DATE NODETYPE="Func" NPARM="0" SYNTAX="IS_ISO_DATE()" DESC="Returns true if the data is in YYYY-MM-DD format."/>
     <JULIAN NODETYPE="Func" NPARM="0" SYNTAX="JULIAN()" DESC="derive a Julian date value (YYYYDDD format) from the current date."/>
     <JULIAN2DATE NODETYPE="Func" NPARM="1" SYNTAX="JULIAN2DATE(date)" DESC="converts Julian date to a conventional date in YYYYMMDD format."/>
     <MONTH NODETYPE="Func" NPARM="1" SYNTAX="MONTH(date)" DESC="returns the number of a month from a specific date."/>
@@ -23,15 +22,12 @@
     <TIMESTAMP NODETYPE="Func" NPARM="0" SYNTAX="TIMESTAMP()" DESC="returns a timestamp value from the current date/time in YYYY-MM-DD-HH.MM.SS.mmmmmm format."/>
     <TODAY NODETYPE="Func" NPARM="0" SYNTAX="TODAY()" DESC="returns the current date in YYYYMMDD format."/>
     <WEEK NODETYPE="Func" NPARM="1" SYNTAX="WEEK(date)" DESC="returns the number of a week within the year from a specified date in YYYYMMDD format."/>
-    <WEEKDAY NODETYPE="Func" NPARM="1" SYNTAX="WEEKDAY(date)" DESC=""/>
     <YEAR NODETYPE="Func" NPARM="1" SYNTAX="YEAR()" DESC="returns the current year value in YYYY format."/>
   </Date>
   <String NODETYPE="Heading">
     <B2D NODETYPE="Func" NPARM="2" SYNTAX="B2D(binary_field,field_length)" DESC="Returns the decimal representation of the content of a binary field."/>
     <B2X NODETYPE="Func" NPARM="2" SYNTAX="B2X(binary_field,field_length)" DESC="converts a binary value to its hexadecimal equivalent in character format."/>
-    <BITCHR NODETYPE="Func" NPARM="2" SYNTAX="BITCHAR(binary_field,field_length)" DESC=""/>
     <C2X NODETYPE="Func" NPARM="1" SYNTAX="C2X(character_string)" DESC="converts a character data string into a hexadecimal format. The code page of the hexadecimal translation is determined by the platform in which the C2X function was executed (i.e. EBCDIC for z/OS)."/>
-    <CHRBIT NODETYPE="Func" NPARM="2" SYNTAX="CHRBIT(binary_field,field_length)" DESC=""/>
     <DSDIR NODETYPE="Func" NPARM="1" SYNTAX="DSDIR(datastore)" DESC="returns the name of the directory in which a file type datastore resides."/>
     <DSNAME NODETYPE="Func" NPARM="1" SYNTAX="DSNAME(datastore_alias)" DESC="returns the name of the physical datastore file."/>
     <EXCLUDE NODETYPE="Func" NPARM="3" SYNTAX="EXCLUDE(data_string,inclusion_character_string,'ANY'|'MATCH')" DESC="returns the data_string with any chracters not found in the inclusion_string removed. If 'MATCH' is specified, only parts of the data_string which match the inclusion_string exactly will be returned."/>
@@ -112,7 +108,6 @@
     <LOOKFOUND NODETYPE="Func" NPARM="1" SYNTAX="LOOKFOUND(lookup_name)" DESC="checks the result of a lookup or join table search to determine whether or not a lookup key was found or not. LOOKFOUND returns a found (1) or a not found (0) value based on the results of the search via a LOOK function."/>
     <LOOP NODETYPE="Func" NPARM="1" SYNTAX="LOOP(condition)" DESC="executes a function or group of functions a specified number of times."/>
     <MAP NODETYPE="Func" NPARM="2" SYNTAX="MAP(source_value,'target_field')" DESC="used to perform source to target data mapping within a function or nested set of functions. This function maps a source field/column, variable or function output to a target field."/>
-    <MAP_BEFORE NODETYPE="Func" NPARM="2" SYNTAX="MAP_BEFORE(source_value,'target_field')" DESC=""/>
     <NORM NODETYPE="Func" NPARM="-1" SYNTAX="NORM(proc_name,repeating_group_item,'STOPINIT'|'NOSTOP')" DESC="used to `normalize' the contents of a source datastore record into one (1) or more target datastores. This function is typically used when the target datastore(s) is a relational table and the source datastore records contain de-normalized data (i.e. repeating groups/occurs)."/>
     <NULL NODETYPE="Func" NPARM="0" SYNTAX="NULL()" DESC="returns NULL"/>
     <OS NODETYPE="Func" NPARM="1" SYNTAX="OS(command_text)" DESC="executes a command that can normally be issued from a UNIX or Windows command prompt. SQData waits for the command to complete and then continues processing."/>
@@ -122,9 +117,7 @@
     <PFK_ NODETYPE="Func" NPARM="0" SYNTAX="PFK_DBDkeyfieldname" DESC="The PFK_ function returns a parent ;apos;s full key (PFK) of the current IMS segment. This segment must be a dependent segment (i.e. not a root segment)."/>
     <READ NODETYPE="Func" NPARM="1" SYNTAX="READ('HOLD'|'RESUME')" DESC="Either HOLDs or RESUMEs the reading of records from the primary datastore"/>
     <RECNAME NODETYPE="Func" NPARM="1" SYNTAX="RECNAME(CDCIN)" DESC="The RECNAME function returns the name of the object associated with a DESCRIPTION alias. In the case of IMS, this object is the segment name, which can also be obtained using the IMSSEGNAME function. For VSAM CDC records, this is the eight (8) byte file name. For relational tables, this is the name of the source table."/>
-    <REPLICATE NODETYPE="Func" NPARM="1" SYNTAX="REPLICATE(CDCIN)" DESC=""/>
     <SEQNUM NODETYPE="Func" NPARM="2" SYNTAX="SEQNUM(start_value,increment_value)" DESC="increments a number by the value of a second numeric value. Each time that the SEQNUM function is called for the same numeric value(s), the SEQNUM function continues to increment the value from its previous state."/>
-    <SETPCBNAME NODETYPE="Func" NPARM="2" SYNTAX="SETPCBNAME()" DESC=""/>
     <TERMINATE NODETYPE="Func" NPARM="1" SYNTAX="TERMINATE(rc)" DESC="stop proccessing and exit with return code rc"/>
     <UEXIT NODETYPE="Func" NPARM="-1" SYNTAX="UEXIT(exit_name[,parm1,parm2,...])" DESC="The UEXIT function allows you to include C functions/programs in SQDATA. The C program is complied and included as a .dll and included in the sqdata program."/>
     <VALUE NODETYPE="Func" NPARM="1" SYNTAX="VALUE(work_variable)" DESC="references a function alias. Please note that the function alias being referenced by VALUE must appear before the VALUE function in the command script."/>
