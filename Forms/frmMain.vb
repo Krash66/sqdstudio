@@ -3467,22 +3467,22 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         Try
             obj.Parent = CType(cNode.Tag, INode).Parent '//Project->[Env Folder]->Env
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.EnvironmentName = GetVal(dr.Item("EnvironmentName"))
-                obj.LocalDTDDir = GetVal(dr.Item("LocalDTDDir"))
-                obj.LocalDDLDir = GetVal(dr.Item("LocalDDLDir"))
-                obj.LocalCobolDir = GetVal(dr.Item("LocalCobolDir"))
-                obj.LocalCDir = GetVal(dr.Item("LocalCDir"))
-                obj.LocalScriptDir = GetVal(dr.Item("LocalScriptDir"))
-                obj.LocalDBDDir = GetVal(dr.Item("LocalModelDir"))
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.EnvironmentName = GetVal(dr.Item("EnvironmentName"))
+            '    obj.LocalDTDDir = GetVal(dr.Item("LocalDTDDir"))
+            '    obj.LocalDDLDir = GetVal(dr.Item("LocalDDLDir"))
+            '    obj.LocalCobolDir = GetVal(dr.Item("LocalCobolDir"))
+            '    obj.LocalCDir = GetVal(dr.Item("LocalCDir"))
+            '    obj.LocalScriptDir = GetVal(dr.Item("LocalScriptDir"))
+            '    obj.LocalDBDDir = GetVal(dr.Item("LocalModelDir"))
 
-                obj.EnvironmentDescription = GetVal(dr.Item("Description"))
+            '    obj.EnvironmentDescription = GetVal(dr.Item("Description"))
 
-            Else
-                obj.EnvironmentName = GetVal(dr.Item("EnvironmentName"))
-                obj.EnvironmentDescription = GetVal(dr.Item("ENVIRONMENTDESCRIPTION"))
-            End If
+            'Else
+            obj.EnvironmentName = GetVal(dr.Item("EnvironmentName"))
+            obj.EnvironmentDescription = GetVal(dr.Item("ENVIRONMENTDESCRIPTION"))
+            'End If
 
 
             AddToCollection(obj.Project.Environments, obj, obj.GUID)
@@ -3509,15 +3509,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objCnn.Parent = CType(cNode.Tag, INode)
             cNodeCnn = AddNode(cNode.Nodes, objCnn.Type, objCnn)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & objCnn.Project.tblConnections & " where EnvironmentName=" & obj.GetQuotedText & " AND ProjectName=" & obj.Project.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,CONNECTIONNAME,CONNECTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objCnn.Project.tblConnections & _
-                            " where ProjectName=" & obj.Project.GetQuotedText & _
-                            " AND EnvironmentName =" & obj.GetQuotedText
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & objCnn.Project.tblConnections & " where EnvironmentName=" & obj.GetQuotedText & " AND ProjectName=" & obj.Project.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,CONNECTIONNAME,CONNECTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objCnn.Project.tblConnections & _
+                        " where ProjectName=" & obj.Project.GetQuotedText & _
+                        " AND EnvironmentName =" & obj.GetQuotedText
 
-                Log(sql)
-            End If
+            Log(sql)
+            'End If
 
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
@@ -3544,18 +3544,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objStruct.Parent = CType(cNode.Tag, INode)
             cNodeStruct = AddNode(cNode.Nodes, objStruct.Type, objStruct)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblStructures & _
-                " where EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " order by structuretype, structureName"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONTYPE,DESCRIPTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblDescriptions & _
-                " where ProjectName=" & obj.Project.GetQuotedText & _
-                " AND EnvironmentName = " & obj.GetQuotedText & _
-                " order by DESCRIPTIONTYPE, DescriptionName"
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblStructures & _
+            '    " where EnvironmentName=" & obj.GetQuotedText & _
+            '    " AND ProjectName=" & obj.Project.GetQuotedText & _
+            '    " order by structuretype, structureName"
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONTYPE,DESCRIPTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblDescriptions & _
+            " where ProjectName=" & obj.Project.GetQuotedText & _
+            " AND EnvironmentName = " & obj.GetQuotedText & _
+            " order by DESCRIPTIONTYPE, DescriptionName"
+            Log(sql)
+            'End If
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             dt = New System.Data.DataTable("temp2")
@@ -3577,45 +3577,45 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         '//Now All datastores put into folders by type
         '///////////////////////////////////////////////
-        Try
-            Dim cNode1 As TreeNode
-            Dim obj1 As INode
+        'Try
+        '    Dim cNode1 As TreeNode
+        '    Dim obj1 As INode
 
-            obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
-            obj1.Parent = CType(cNode.Tag, INode)
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
+        '    obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
+        '    obj1.Parent = CType(cNode.Tag, INode)
+        '    cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
 
-            If obj1.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblDatastores & _
-                " where EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                " AND ENGINENAME=" & Quote(DBNULL) & _
-                " order by DATASTORETYPE"
-            Else
-                sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
-                " where projectname=" & Quote(obj.Project.ProjectName) & _
-                " and environmentname=" & Quote(obj.EnvironmentName) & _
-                " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                " AND ENGINENAME=" & Quote(DBNULL) & _
-                " order by dstype"
-            End If
+        '    If obj1.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+        '        sql = "Select * from " & obj.Project.tblDatastores & _
+        '        " where EnvironmentName=" & obj.GetQuotedText & _
+        '        " AND ProjectName=" & obj.Project.GetQuotedText & _
+        '        " AND SYSTEMNAME=" & Quote(DBNULL) & _
+        '        " AND ENGINENAME=" & Quote(DBNULL) & _
+        '        " order by DATASTORETYPE"
+        '    Else
+        '        sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
+        '        " where projectname=" & Quote(obj.Project.ProjectName) & _
+        '        " and environmentname=" & Quote(obj.EnvironmentName) & _
+        '        " AND SYSTEMNAME=" & Quote(DBNULL) & _
+        '        " AND ENGINENAME=" & Quote(DBNULL) & _
+        '        " order by dstype"
+        '    End If
 
-            Log(sql)
+        '    Log(sql)
 
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-            dt = New DataTable("temp")
-            da.Fill(dt)
-            da.Dispose()
+        '    da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
+        '    dt = New DataTable("temp")
+        '    da.Fill(dt)
+        '    da.Dispose()
 
-            For i = 0 To dt.Rows.Count - 1
-                ''//Process this (cNode1 is root node under which we add other structures)
-                FillDSbyType(cNode1, dt.Rows(i), cnn, obj1.Project.ProjectMetaVersion)
-            Next
+        '    For i = 0 To dt.Rows.Count - 1
+        '        ''//Process this (cNode1 is root node under which we add other structures)
+        '        FillDSbyType(cNode1, dt.Rows(i), cnn, obj1.Project.ProjectMetaVersion)
+        '    Next
 
-        Catch ex As Exception
-            LogError(ex, "frmMain FillEnv_DS")
-        End Try
+        'Catch ex As Exception
+        '    LogError(ex, "frmMain FillEnv_DS")
+        'End Try
 
         '///////////////////////////////////////////////
         '//Now add variables
@@ -3628,21 +3628,21 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objVar.Parent = CType(cNode.Tag, INode)
             cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from variables where EngineName=" & obj.GetQuotedText & _
-                " AND ENGINENAME=" & Quote(DBNULL) & _
-                " AND SystemName=" & Quote(DBNULL) & _
-                " AND EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,VARIABLENAME,VARIABLEDESCRIPTION from variables " & _
-                            "where EnvironmentName=" & obj.GetQuotedText & _
-                            " AND ProjectName=" & obj.Project.GetQuotedText & _
-                            " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                            " AND ENGINENAME=" & Quote(DBNULL) & _
-                            " ORDER BY VARIABLENAME"
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from variables where EngineName=" & obj.GetQuotedText & _
+            '    " AND ENGINENAME=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & obj.GetQuotedText & _
+            '    " AND ProjectName=" & obj.Project.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,VARIABLENAME,VARIABLEDESCRIPTION from variables " & _
+                        "where EnvironmentName=" & obj.GetQuotedText & _
+                        " AND ProjectName=" & obj.Project.GetQuotedText & _
+                        " AND SYSTEMNAME=" & Quote(DBNULL) & _
+                        " AND ENGINENAME=" & Quote(DBNULL) & _
+                        " ORDER BY VARIABLENAME"
+            Log(sql)
+            'End If
 
             dt = New DataTable("temp")
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
@@ -3660,79 +3660,79 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         '//Now add procs
         '///////////////////////////////////////////////
-        Try
-            'Dim cNodeMain As TreeNode
-            'Dim cNodeLookup As TreeNode
-            'Dim cNodeJoin As TreeNode
-            Dim cNodeProc As TreeNode
-            'Dim objMain As INode
-            'Dim objLook As INode
-            'Dim objJoin As INode
-            Dim objProc As INode
-            'Dim ttype As enumTaskType
+        'Try
+        '    'Dim cNodeMain As TreeNode
+        '    'Dim cNodeLookup As TreeNode
+        '    'Dim cNodeJoin As TreeNode
+        '    Dim cNodeProc As TreeNode
+        '    'Dim objMain As INode
+        '    'Dim objLook As INode
+        '    'Dim objJoin As INode
+        '    Dim objProc As INode
+        '    'Dim ttype As enumTaskType
 
-            '//Add Join folder
-            'objJoin = New clsFolderNode("Join", NODE_FO_JOIN)
-            'objJoin.Parent = CType(cNode.Tag, INode)
-            'cNodeJoin = AddNode(cNode.Nodes, objJoin.Type, objJoin, False)
+        '    '//Add Join folder
+        '    'objJoin = New clsFolderNode("Join", NODE_FO_JOIN)
+        '    'objJoin.Parent = CType(cNode.Tag, INode)
+        '    'cNodeJoin = AddNode(cNode.Nodes, objJoin.Type, objJoin, False)
 
-            '//Add Proc folder
-            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
-            objProc.Parent = CType(cNode.Tag, INode)
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
+        '    '//Add Proc folder
+        '    objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
+        '    objProc.Parent = CType(cNode.Tag, INode)
+        '    cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
 
-            '//Add Lookup folder
-            'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
-            'objLook.Parent = CType(cNode.Tag, INode)
-            'cNodeLookup = AddNode(cNode.Nodes, objLook.Type, objLook, False)
+        '    '//Add Lookup folder
+        '    'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
+        '    'objLook.Parent = CType(cNode.Tag, INode)
+        '    'cNodeLookup = AddNode(cNode.Nodes, objLook.Type, objLook, False)
 
-            '//Add Main folder
-            'objMain = New clsFolderNode("Main", NODE_FO_MAIN)
-            'objMain.Parent = CType(cNode.Tag, INode)
-            'cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
-            dt = New DataTable("temp")
+        '    '//Add Main folder
+        '    'objMain = New clsFolderNode("Main", NODE_FO_MAIN)
+        '    'objMain.Parent = CType(cNode.Tag, INode)
+        '    'cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
+        '    dt = New DataTable("temp")
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblTasks & _
-                " where EnvironmentName = " & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND systemName=" & Quote(DBNULL) & _
-                " AND enginename=" & Quote(DBNULL) & _
-                " Order by taskname"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,TASKNAME,TASKTYPE,TASKSEQNO,TASKDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblTasks & _
-                " where EnvironmentName = " & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND systemName=" & Quote(DBNULL) & _
-                " AND enginename=" & Quote(DBNULL) & _
-                " Order by taskname"
-            End If
+        '    If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+        '        sql = "Select * from " & obj.Project.tblTasks & _
+        '        " where EnvironmentName = " & obj.GetQuotedText & _
+        '        " AND ProjectName=" & obj.Project.GetQuotedText & _
+        '        " AND systemName=" & Quote(DBNULL) & _
+        '        " AND enginename=" & Quote(DBNULL) & _
+        '        " Order by taskname"
+        '    Else
+        '        sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,TASKNAME,TASKTYPE,TASKSEQNO,TASKDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblTasks & _
+        '        " where EnvironmentName = " & obj.GetQuotedText & _
+        '        " AND ProjectName=" & obj.Project.GetQuotedText & _
+        '        " AND systemName=" & Quote(DBNULL) & _
+        '        " AND enginename=" & Quote(DBNULL) & _
+        '        " Order by taskname"
+        '    End If
 
-            Log(sql)
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
+        '    Log(sql)
+        '    da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
 
-            da.Fill(dt)
-            da.Dispose()
+        '    da.Fill(dt)
+        '    da.Dispose()
 
-            For i = 0 To dt.Rows.Count - 1
-                ''//Process this (cNode is root node under which we add other nodes)
-                'ttype = GetVal(dt.Rows(i).Item("TaskType"))
-                'Select Case ttype
-                '    'Case enumTaskType.TASK_MAIN
-                '    '    FillTasks(cNodeMain, dt.Rows(i), cnn)
-                '    Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP, enumTaskType.TASK_PROC, _
-                '    enumTaskType.TASK_IncProc, enumTaskType.TASK_MAIN
-                FillTasks(cNodeProc, dt.Rows(i), cnn)
-                'Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP
-                '    FillTasks(cNodeJoin, dt.Rows(i), cnn)
-                'Case 
-                '    FillTasks(cNodeLookup, dt.Rows(i), cnn)
-                'End Select
-            Next
+        '    For i = 0 To dt.Rows.Count - 1
+        '        ''//Process this (cNode is root node under which we add other nodes)
+        '        'ttype = GetVal(dt.Rows(i).Item("TaskType"))
+        '        'Select Case ttype
+        '        '    'Case enumTaskType.TASK_MAIN
+        '        '    '    FillTasks(cNodeMain, dt.Rows(i), cnn)
+        '        '    Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP, enumTaskType.TASK_PROC, _
+        '        '    enumTaskType.TASK_IncProc, enumTaskType.TASK_MAIN
+        '        FillTasks(cNodeProc, dt.Rows(i), cnn)
+        '        'Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP
+        '        '    FillTasks(cNodeJoin, dt.Rows(i), cnn)
+        '        'Case 
+        '        '    FillTasks(cNodeLookup, dt.Rows(i), cnn)
+        '        'End Select
+        '    Next
 
-        Catch ex As Exception
-            LogError(ex, "FillEnv-FillProc")
-        End Try
+        'Catch ex As Exception
+        '    LogError(ex, "FillEnv-FillProc")
+        'End Try
 
 
         '///////////////////////////////////////////////
@@ -3748,15 +3748,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             dt = New DataTable("temp")
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblSystems & _
-                " where EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,SYSTEMDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblSystems & " where ProjectName=" & obj.Project.GetQuotedText & _
-                            " AND EnvironmentName=" & obj.GetQuotedText
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblSystems & _
+            '    " where EnvironmentName=" & obj.GetQuotedText & _
+            '    " AND ProjectName=" & obj.Project.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,SYSTEMDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblSystems & " where ProjectName=" & obj.Project.GetQuotedText & _
+                        " AND EnvironmentName=" & obj.GetQuotedText
+            Log(sql)
+            'End If
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
 
@@ -3788,28 +3788,28 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         Try
             obj.Parent = CType(cNode.Tag, INode).Parent
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.StructureName = GetVal(dr.Item("StructureName"))
-                obj.StructureType = GetVal(dr.Item("StructureType"))
-                obj.fPath1 = GetVal(dr.Item("fPath1"))
-                obj.fPath2 = GetVal(dr.Item("fPath2"))
-                obj.IMSDBName = GetVal(dr.Item("IMSDBName"))
-                obj.SegmentName = GetVal(dr.Item("SegmentName"))
-                obj.StructureDescription = GetVal(dr.Item("Description"))
-                obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->StructFolder->Struct
-                Dim ConnName As String = GetVal(dr.Item("ConnectionName"))
-                If ConnName <> "" Then
-                    For Each conn As clsConnection In obj.Environment.Connections
-                        If conn.Text = ConnName Then
-                            obj.Connection = conn
-                        End If
-                    Next
-                End If
-            Else
-                obj.StructureName = GetVal(dr.Item("DescriptionName"))
-                obj.StructureDescription = GetStr(GetVal(dr.Item("DescriptionDescription")))
-                obj.StructureType = GetVal(dr.Item("DescriptionTYPE"))
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.StructureName = GetVal(dr.Item("StructureName"))
+            '    obj.StructureType = GetVal(dr.Item("StructureType"))
+            '    obj.fPath1 = GetVal(dr.Item("fPath1"))
+            '    obj.fPath2 = GetVal(dr.Item("fPath2"))
+            '    obj.IMSDBName = GetVal(dr.Item("IMSDBName"))
+            '    obj.SegmentName = GetVal(dr.Item("SegmentName"))
+            '    obj.StructureDescription = GetVal(dr.Item("Description"))
+            '    obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->StructFolder->Struct
+            '    Dim ConnName As String = GetVal(dr.Item("ConnectionName"))
+            '    If ConnName <> "" Then
+            '        For Each conn As clsConnection In obj.Environment.Connections
+            '            If conn.Text = ConnName Then
+            '                obj.Connection = conn
+            '            End If
+            '        Next
+            '    End If
+            'Else
+            obj.StructureName = GetVal(dr.Item("DescriptionName"))
+            obj.StructureDescription = GetStr(GetVal(dr.Item("DescriptionDescription")))
+            obj.StructureType = GetVal(dr.Item("DescriptionTYPE"))
+            'End If
 
 
             AddToCollection(obj.Environment.Structures, obj, obj.GUID)
@@ -3827,17 +3827,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Now add fieldselections
         '///////////////////////////////////////////////
         Try
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblStructSel & " where StructureName=" & obj.GetQuotedText & _
-                " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & _
-                obj.Environment.Project.GetQuotedText & " order by selectionname"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,SELECTIONNAME,ISSYSTEMSEL,SELECTDESCRIPTION from " & obj.Project.tblDescriptionSelect & _
-                " where ProjectName=" & obj.Project.GetQuotedText & _
-                " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
-                " AND DescriptionName = " & obj.GetQuotedText & _
-                " order by selectionname"
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblStructSel & " where StructureName=" & obj.GetQuotedText & _
+            '    " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & _
+            '    obj.Environment.Project.GetQuotedText & " order by selectionname"
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,SELECTIONNAME,ISSYSTEMSEL,SELECTDESCRIPTION from " & obj.Project.tblDescriptionSelect & _
+            " where ProjectName=" & obj.Project.GetQuotedText & _
+            " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
+            " AND DescriptionName = " & obj.GetQuotedText & _
+            " order by selectionname"
+            'End If
 
             Log(sql)
 
@@ -3869,15 +3869,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         Try
             obj.ObjStructure = CType(cNode.Tag, INode)
-            If obj.ObjStructure.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.IsSystemSelection = GetVal(dr.Item("ISSYSTEMSELECT"))
-                obj.SelectionName = GetVal(dr.Item("SelectionName"))
-                obj.SelectionDescription = GetVal(dr.Item("Description"))
-            Else
-                obj.IsSystemSelection = GetVal(dr.Item("ISSYSTEMSEL"))
-                obj.SelectionName = GetVal(dr.Item("SelectionName"))
-                obj.SelectionDescription = GetVal(dr.Item("SELECTDescription"))
-            End If
+            'If obj.ObjStructure.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.IsSystemSelection = GetVal(dr.Item("ISSYSTEMSELECT"))
+            '    obj.SelectionName = GetVal(dr.Item("SelectionName"))
+            '    obj.SelectionDescription = GetVal(dr.Item("Description"))
+            'Else
+            obj.IsSystemSelection = GetVal(dr.Item("ISSYSTEMSEL"))
+            obj.SelectionName = GetVal(dr.Item("SelectionName"))
+            obj.SelectionDescription = GetVal(dr.Item("SELECTDescription"))
+            'End If
 
             AddToCollection(obj.ObjStructure.StructureSelections, obj, obj.GUID)
 
@@ -3914,23 +3914,23 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Try
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.SystemName = GetVal(dr.Item("SystemName"))
-                obj.Port = GetVal(dr.Item("Port"))
-                obj.Host = GetVal(dr.Item("Host"))
-                obj.QueueManager = GetVal(dr.Item("QMgr"))
-                obj.OSType = GetVal(dr.Item("OSType"))
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.SystemName = GetVal(dr.Item("SystemName"))
+            '    obj.Port = GetVal(dr.Item("Port"))
+            '    obj.Host = GetVal(dr.Item("Host"))
+            '    obj.QueueManager = GetVal(dr.Item("QMgr"))
+            '    obj.OSType = GetVal(dr.Item("OSType"))
 
-                obj.CopybookLib = GetVal(dr.Item("CopybookLib"))
-                obj.IncludeLib = GetVal(dr.Item("IncludeLib"))
-                obj.DTDLib = GetVal(dr.Item("DTDLib"))
-                obj.DDLLib = GetVal(dr.Item("DDLLib"))
+            '    obj.CopybookLib = GetVal(dr.Item("CopybookLib"))
+            '    obj.IncludeLib = GetVal(dr.Item("IncludeLib"))
+            '    obj.DTDLib = GetVal(dr.Item("DTDLib"))
+            '    obj.DDLLib = GetVal(dr.Item("DDLLib"))
 
-                obj.SystemDescription = GetVal(dr.Item("Description"))
-            Else
-                obj.SystemName = GetVal(dr.Item("SystemName"))
-                obj.SystemDescription = GetVal(dr.Item("SystemDescription"))
-            End If
+            '    obj.SystemDescription = GetVal(dr.Item("Description"))
+            'Else
+            obj.SystemName = GetVal(dr.Item("SystemName"))
+            obj.SystemDescription = GetVal(dr.Item("SystemDescription"))
+            'End If
 
             AddToCollection(obj.Environment.Systems, obj, obj.GUID)
 
@@ -3956,15 +3956,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             dt = New DataTable("temp")
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & objSys.Project.tblEngines & " where SystemName=" & obj.GetQuotedText & " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & obj.Environment.Project.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,ENGINEDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objSys.Project.tblEngines & _
-                            " where ProjectName=" & obj.Project.GetQuotedText & _
-                            " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
-                            " AND SystemName=" & obj.GetQuotedText
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & objSys.Project.tblEngines & " where SystemName=" & obj.GetQuotedText & " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & obj.Environment.Project.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,ENGINEDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objSys.Project.tblEngines & _
+                        " where ProjectName=" & obj.Project.GetQuotedText & _
+                        " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
+                        " AND SystemName=" & obj.GetQuotedText
+            Log(sql)
+            'End If
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             da.Fill(dt)
@@ -3998,27 +3998,27 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.EngineName = GetVal(dr.Item("EngineName"))
             obj.ObjSystem = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.ReportEvery = GetVal(dr.Item("ReportEvery"))
-                obj.CommitEvery = GetVal(dr.Item("CommitEvery"))
-                obj.ReportFile = GetVal(dr.Item("ReportFile"))
-                obj.CopybookLib = GetVal(dr.Item("CopybookLib"))
-                obj.IncludeLib = GetVal(dr.Item("IncludeLib"))
-                obj.DTDLib = GetVal(dr.Item("DTDLib"))
-                obj.DDLLib = GetVal(dr.Item("DDLLib"))
-                obj.EngineDescription = GetVal(dr.Item("Description"))
-                Dim ConnName As String = GetVal(dr.Item("ConnectionName"))
-                If ConnName <> "" Then
-                    For Each conn As clsConnection In obj.ObjSystem.Environment.Connections
-                        If conn.Text = ConnName Then
-                            obj.Connection = conn
-                        End If
-                    Next
-                End If
-                obj.LoadEngProps()
-            Else
-                obj.EngineDescription = GetVal(dr.Item("EngineDescription"))
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.ReportEvery = GetVal(dr.Item("ReportEvery"))
+            '    obj.CommitEvery = GetVal(dr.Item("CommitEvery"))
+            '    obj.ReportFile = GetVal(dr.Item("ReportFile"))
+            '    obj.CopybookLib = GetVal(dr.Item("CopybookLib"))
+            '    obj.IncludeLib = GetVal(dr.Item("IncludeLib"))
+            '    obj.DTDLib = GetVal(dr.Item("DTDLib"))
+            '    obj.DDLLib = GetVal(dr.Item("DDLLib"))
+            '    obj.EngineDescription = GetVal(dr.Item("Description"))
+            '    Dim ConnName As String = GetVal(dr.Item("ConnectionName"))
+            '    If ConnName <> "" Then
+            '        For Each conn As clsConnection In obj.ObjSystem.Environment.Connections
+            '            If conn.Text = ConnName Then
+            '                obj.Connection = conn
+            '            End If
+            '        Next
+            '    End If
+            '    obj.LoadEngProps()
+            'Else
+            obj.EngineDescription = GetVal(dr.Item("EngineDescription"))
+            'End If
 
             AddToCollection(obj.ObjSystem.Engines, obj, obj.GUID)
 
@@ -4043,20 +4043,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
 
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='S' AND EngineName=" & _
-                obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & _
-                obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
-            Else
-                sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
-                " where projectname=" & Quote(obj.Project.ProjectName) & _
-                " and environmentname=" & Quote(obj.ObjSystem.Environment.EnvironmentName) & _
-                " and systemname=" & Quote(obj.ObjSystem.SystemName) & _
-                " and enginename=" & Quote(obj.EngineName) & _
-                " and DSDIRECTION='S'" & _
-                " order by datastorename"
-                Dir = "S"
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='S' AND EngineName=" & _
+            '    obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & _
+            '    obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
+            'Else
+            sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
+            " where projectname=" & Quote(obj.Project.ProjectName) & _
+            " and environmentname=" & Quote(obj.ObjSystem.Environment.EnvironmentName) & _
+            " and systemname=" & Quote(obj.ObjSystem.SystemName) & _
+            " and enginename=" & Quote(obj.EngineName) & _
+            " and DSDIRECTION='S'" & _
+            " order by datastorename"
+            Dir = "S"
+            'End If
 
             Log(sql)
 
@@ -4065,7 +4065,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             da.Fill(dt)
             da.Dispose()
 
-
+            '/// Add Count to Folder Title
+            cNode1.Text = "(" & dt.Rows.Count.ToString & ")" & " Sources"
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
@@ -4088,26 +4089,29 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj2.Parent = CType(cNode.Tag, INode)
             cNode2 = AddNode(cNode.Nodes, obj2.Type, obj2, False)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='T' AND EngineName=" & _
-                obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & _
-                obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
-            Else
-                sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
-                " where projectname=" & Quote(obj.Project.ProjectName) & _
-                " and environmentname=" & Quote(obj.ObjSystem.Environment.EnvironmentName) & _
-                " and systemname=" & Quote(obj.ObjSystem.SystemName) & _
-                " and enginename=" & Quote(obj.EngineName) & _
-                " and DSDIRECTION='T'" & _
-                " order by datastorename"
-                Dir = "T"
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='T' AND EngineName=" & _
+            '    obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & _
+            '    obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
+            'Else
+            sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
+            " where projectname=" & Quote(obj.Project.ProjectName) & _
+            " and environmentname=" & Quote(obj.ObjSystem.Environment.EnvironmentName) & _
+            " and systemname=" & Quote(obj.ObjSystem.SystemName) & _
+            " and enginename=" & Quote(obj.EngineName) & _
+            " and DSDIRECTION='T'" & _
+            " order by datastorename"
+            Dir = "T"
+            'End If
             Log(sql)
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             dt = New DataTable("temp")
             da.Fill(dt)
             da.Dispose()
+
+            '/// Add Count to Folder Title
+            cNode2.Text = "(" & dt.Rows.Count.ToString & ")" & " Targets"
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
@@ -4129,12 +4133,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objVar.Parent = CType(cNode.Tag, INode)
             cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,VARIABLENAME,VARIABLEDESCRIPTION from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,VARIABLENAME,VARIABLEDESCRIPTION from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.Project.GetQuotedText
+            Log(sql)
+            'End If
 
             dt = New DataTable("temp")
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
@@ -4184,34 +4188,36 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
             dt = New DataTable("temp")
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If obj.ObjSystem IsNot Nothing Then
-                    sql = "Select * from " & obj.Project.tblTasks & _
-                    " where EngineName=" & obj.GetQuotedText & _
-                    " AND SystemName=" & obj.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & _
-                    " AND ProjectName=" & obj.Project.GetQuotedText & _
-                    " Order by SeqNo"
-                Else
-                    sql = "Select * from " & obj.Project.tblTasks & _
-                    " where EnvironmentName = " & obj.ObjSystem.Environment.GetQuotedText & _
-                    " AND ProjectName=" & obj.Project.GetQuotedText & _
-                    " Order by SeqNo"
-                End If
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,TASKNAME,TASKTYPE,TASKSEQNO,TASKDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblTasks & _
-                " where EngineName=" & obj.GetQuotedText & _
-                " AND SystemName=" & obj.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " Order by TASKSEQNO"
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    If obj.ObjSystem IsNot Nothing Then
+            '        sql = "Select * from " & obj.Project.tblTasks & _
+            '        " where EngineName=" & obj.GetQuotedText & _
+            '        " AND SystemName=" & obj.ObjSystem.GetQuotedText & _
+            '        " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & _
+            '        " AND ProjectName=" & obj.Project.GetQuotedText & _
+            '        " Order by SeqNo"
+            '    Else
+            '        sql = "Select * from " & obj.Project.tblTasks & _
+            '        " where EnvironmentName = " & obj.ObjSystem.Environment.GetQuotedText & _
+            '        " AND ProjectName=" & obj.Project.GetQuotedText & _
+            '        " Order by SeqNo"
+            '    End If
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,TASKNAME,TASKTYPE,TASKSEQNO,TASKDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblTasks & _
+            " where EngineName=" & obj.GetQuotedText & _
+            " AND SystemName=" & obj.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & _
+            " AND ProjectName=" & obj.Project.GetQuotedText & _
+            " Order by TASKSEQNO"
+            'End If
 
             Log(sql)
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
 
             da.Fill(dt)
             da.Dispose()
+
+            Dim ProcCount As Integer = 0
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode is root node under which we add other nodes)
@@ -4221,12 +4227,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         FillTasks(cNodeMain, dt.Rows(i), cnn)
                     Case enumTaskType.TASK_GEN, enumTaskType.TASK_LOOKUP, enumTaskType.TASK_PROC, enumTaskType.TASK_IncProc
                         FillTasks(cNodeProc, dt.Rows(i), cnn)
+                        ProcCount += 1
                         'Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP
                         '    FillTasks(cNodeJoin, dt.Rows(i), cnn)
                         'Case 
                         '    FillTasks(cNodeLookup, dt.Rows(i), cnn)
                 End Select
             Next
+
+            '/// Add Count to Folder Title
+            cNodeProc.Text = "(" & ProcCount.ToString & ")" & " Procedures"
+
             cNode.Expand()
 
             For Each ds As clsDatastore In obj.Sources
@@ -4334,13 +4345,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.VariableName = GetVal(dr.Item("VariableName"))
 
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.VarInitVal = GetVal(dr.Item("VarInitVal"))
-                obj.VarSize = GetVal(dr.Item("VarSize"))
-                obj.VariableDescription = GetVal(dr.Item("Description"))
-            Else
-                obj.VariableDescription = GetVal(dr.Item("VariableDescription"))
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.VarInitVal = GetVal(dr.Item("VarInitVal"))
+            '    obj.VarSize = GetVal(dr.Item("VarSize"))
+            '    obj.VariableDescription = GetVal(dr.Item("Description"))
+            'Else
+            obj.VariableDescription = GetVal(dr.Item("VariableDescription"))
+            'End If
 
             If EnvLoad = True Then
                 AddToCollection(obj.Environment.Variables, obj, obj.GUID)
@@ -4368,18 +4379,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            If CType(cNode.Tag, INode).Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.ConnectionName = GetVal(dr.Item("ConnectionName"))
-                obj.ConnectionType = GetVal(dr.Item("ConnectionType"))
-                obj.ConnectionDescription = GetVal(dr.Item("Description"))
-                obj.Database = GetVal(dr.Item("DBName"))
-                obj.UserId = GetVal(dr.Item("UserId"))
-                obj.Password = GetVal(dr.Item("Password"))
-                obj.DateFormat = GetVal(dr.Item("Dateformat"))
-            Else
-                obj.ConnectionName = GetVal(dr.Item("ConnectionName"))
-                obj.ConnectionDescription = GetVal(dr.Item("ConnectionDescription"))
-            End If
+            'If CType(cNode.Tag, INode).Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.ConnectionName = GetVal(dr.Item("ConnectionName"))
+            '    obj.ConnectionType = GetVal(dr.Item("ConnectionType"))
+            '    obj.ConnectionDescription = GetVal(dr.Item("Description"))
+            '    obj.Database = GetVal(dr.Item("DBName"))
+            '    obj.UserId = GetVal(dr.Item("UserId"))
+            '    obj.Password = GetVal(dr.Item("Password"))
+            '    obj.DateFormat = GetVal(dr.Item("Dateformat"))
+            'Else
+            obj.ConnectionName = GetVal(dr.Item("ConnectionName"))
+            obj.ConnectionDescription = GetVal(dr.Item("ConnectionDescription"))
+            'End If
 
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
             AddToCollection(obj.Environment.Connections, obj, obj.GUID)
@@ -4490,76 +4501,76 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
-    Function FillDSbyType(ByVal cNode As TreeNode, ByVal dr As System.Data.DataRow, ByRef cnn As System.Data.Odbc.OdbcConnection, Optional ByVal Ver As enumMetaVersion = enumMetaVersion.V2) As Boolean
+    'Function FillDSbyType(ByVal cNode As TreeNode, ByVal dr As System.Data.DataRow, ByRef cnn As System.Data.Odbc.OdbcConnection, Optional ByVal Ver As enumMetaVersion = enumMetaVersion.V2) As Boolean
 
-        Try
-            Dim obj As New clsDatastore
+    '    Try
+    '        Dim obj As New clsDatastore
 
-            obj.Parent = CType(cNode.Tag, INode).Parent
-            obj.DatastoreName = GetVal(dr.Item("DatastoreName"))
+    '        obj.Parent = CType(cNode.Tag, INode).Parent
+    '        obj.DatastoreName = GetVal(dr.Item("DatastoreName"))
 
-            If Ver = enumMetaVersion.V2 Then
-                obj.DatastoreType = GetVal(dr.Item("DatastoreType"))
-                obj.DatastoreDescription = GetVal(dr.Item("Description"))
-                obj.DsPhysicalSource = GetVal(dr.Item("DsPhysicalSource"))
-                obj.DsDirection = GetVal(dr.Item("DsDirection"))
-                obj.DsAccessMethod = GetVal(dr.Item("DsAccessMethod"))
-                obj.DsCharacterCode = GetVal(dr.Item("DsCharacterCode"))
-                'obj.IsOrdered = GetVal(dr.Item("IsOrdered"))
-                obj.IsIMSPathData = GetVal(dr.Item("IsIMSPathData"))
-                obj.IsSkipChangeCheck = GetVal(dr.Item("ISSKIPCHGCHECK"))
-                'obj.IsBeforeImage = GetVal(dr.Item("IsBeforeImage")) '//new by npatel on 8/10/05
-                obj.ExceptionDatastore = GetVal(dr.Item("ExceptDatastore"))
+    '        If Ver = enumMetaVersion.V2 Then
+    '            obj.DatastoreType = GetVal(dr.Item("DatastoreType"))
+    '            obj.DatastoreDescription = GetVal(dr.Item("Description"))
+    '            obj.DsPhysicalSource = GetVal(dr.Item("DsPhysicalSource"))
+    '            obj.DsDirection = GetVal(dr.Item("DsDirection"))
+    '            obj.DsAccessMethod = GetVal(dr.Item("DsAccessMethod"))
+    '            obj.DsCharacterCode = GetVal(dr.Item("DsCharacterCode"))
+    '            'obj.IsOrdered = GetVal(dr.Item("IsOrdered"))
+    '            obj.IsIMSPathData = GetVal(dr.Item("IsIMSPathData"))
+    '            obj.IsSkipChangeCheck = GetVal(dr.Item("ISSKIPCHGCHECK"))
+    '            'obj.IsBeforeImage = GetVal(dr.Item("IsBeforeImage")) '//new by npatel on 8/10/05
+    '            obj.ExceptionDatastore = GetVal(dr.Item("ExceptDatastore"))
 
-                obj.TextQualifier = GetVal(dr.Item("TextQualifier"))
-                obj.RowDelimiter = GetVal(dr.Item("RowDelimiter"))
-                obj.ColumnDelimiter = GetVal(dr.Item("ColumnDelimiter"))
-                obj.DatastoreDescription = GetVal(dr.Item("Description"))
-                obj.OperationType = GetVal(dr.Item("OperationType"))
-                obj.DsQueMgr = GetVal(dr.Item("QueMgr"))
-                obj.DsPort = GetVal(dr.Item("Port"))
-                obj.DsUOW = GetVal(dr.Item("UOW"))
-                obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
-                'obj.IsCmmtKey = GetVal(dr.Item("OnCmmtKey")) '// added by TK 11/9/2006
-                '/// Load Globals From File
-                If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    obj.LoadGlobals()
-                End If
+    '            obj.TextQualifier = GetVal(dr.Item("TextQualifier"))
+    '            obj.RowDelimiter = GetVal(dr.Item("RowDelimiter"))
+    '            obj.ColumnDelimiter = GetVal(dr.Item("ColumnDelimiter"))
+    '            obj.DatastoreDescription = GetVal(dr.Item("Description"))
+    '            obj.OperationType = GetVal(dr.Item("OperationType"))
+    '            obj.DsQueMgr = GetVal(dr.Item("QueMgr"))
+    '            obj.DsPort = GetVal(dr.Item("Port"))
+    '            obj.DsUOW = GetVal(dr.Item("UOW"))
+    '            obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
+    '            'obj.IsCmmtKey = GetVal(dr.Item("OnCmmtKey")) '// added by TK 11/9/2006
+    '            '/// Load Globals From File
+    '            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+    '                obj.LoadGlobals()
+    '            End If
 
-                '//If AnyTree Object is renamed, then reload all datastore items to 
-                '// Make sure renaming is propagated to all nodes
-                obj.LoadItems()
-            Else
-                obj.DatastoreDescription = GetStr(GetVal(dr.Item("DATASTOREDESCRIPTION")))
-                obj.DatastoreType = GetVal(dr.Item("DSTYPE"))
+    '            '//If AnyTree Object is renamed, then reload all datastore items to 
+    '            '// Make sure renaming is propagated to all nodes
+    '            obj.LoadItems()
+    '        Else
+    '            obj.DatastoreDescription = GetStr(GetVal(dr.Item("DATASTOREDESCRIPTION")))
+    '            obj.DatastoreType = GetVal(dr.Item("DSTYPE"))
 
-                obj.LoadItems(, True)
+    '            obj.LoadItems(, True)
 
-                obj.LoadAttr()
-            End If
+    '            obj.LoadAttr()
+    '        End If
 
 
-            AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
+    '        AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
 
-            ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
+    '        ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddDSNode(obj, cNode)
-            obj.SeqNo = cNode.Index '//store position
+    '        cNode = AddDSNode(obj, cNode)
+    '        obj.SeqNo = cNode.Index '//store position
 
-            cNode.Text = obj.DsPhysicalSource
+    '        cNode.Text = obj.DsPhysicalSource
 
-            '// now add Datastore selections to tree
-            AddDSstructuresToTree(cNode, obj)
-            cNode.Collapse()
+    '        '// now add Datastore selections to tree
+    '        AddDSstructuresToTree(cNode, obj)
+    '        cNode.Collapse()
 
-            Return True
+    '        Return True
 
-        Catch ex As Exception
-            LogError(ex, "frmMain FillDSbyType")
-            Return False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "frmMain FillDSbyType")
+    '        Return False
+    '    End Try
 
-    End Function
+    'End Function
 
     '//This will add Datastore node under proper Category Folder
     '//cNode : is "Datastores" folder node
@@ -4570,152 +4581,152 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     '//         |
     '//         [+]-DS1
     '//         [+]-DS2
-    Function AddDSNode(ByVal obj As clsDatastore, ByVal cNode As TreeNode) As TreeNode
-        '//Now look for Datastore type and insert it in proper folder
-        Dim nd As TreeNode = Nothing
-        Dim IsFound As Boolean
+    'Function AddDSNode(ByVal obj As clsDatastore, ByVal cNode As TreeNode) As TreeNode
+    '    '//Now look for Datastore type and insert it in proper folder
+    '    Dim nd As TreeNode = Nothing
+    '    Dim IsFound As Boolean
 
-        Try
-            For Each nd In cNode.Nodes
-                If nd.Text = GetDSFolderText(obj.DatastoreType) Then
-                    IsFound = True
-                    Exit For
-                End If
-            Next
+    '    Try
+    '        For Each nd In cNode.Nodes
+    '            If nd.Text = GetDSFolderText(obj.DatastoreType) Then
+    '                IsFound = True
+    '                Exit For
+    '            End If
+    '        Next
 
-            '//if folder for structure category is not found then add new folder 
-            '//and then add structure node under it
-            If IsFound = True Then
-                '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False)
-                obj.SeqNo = cNode.Index '//store position
-            Else
-                Dim objFol As INode
-                Dim objFolType As String = GetFolType(obj.DatastoreType)
+    '        '//if folder for structure category is not found then add new folder 
+    '        '//and then add structure node under it
+    '        If IsFound = True Then
+    '            '//Add struct node under struct category
+    '            cNode = AddNode(nd.Nodes, obj.Type, obj, False)
+    '            obj.SeqNo = cNode.Index '//store position
+    '        Else
+    '            Dim objFol As INode
+    '            Dim objFolType As String = GetFolType(obj.DatastoreType)
 
-                objFol = New clsFolderNode(GetDSFolderText(obj.DatastoreType), objFolType)
+    '            objFol = New clsFolderNode(GetDSFolderText(obj.DatastoreType), objFolType)
 
-                objFol.Parent = CType(cNode.Parent.Tag, INode)
-                '//Add Struct Type Folder (i.e. [XML] [COBOLIMS])
-                nd = AddNode(cNode.Nodes, objFol.Type, objFol, False)
-                '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False, obj.DatastoreName)
-                obj.SeqNo = cNode.Index '//store position
-            End If
-            Return cNode
+    '            objFol.Parent = CType(cNode.Parent.Tag, INode)
+    '            '//Add Struct Type Folder (i.e. [XML] [COBOLIMS])
+    '            nd = AddNode(cNode.Nodes, objFol.Type, objFol, False)
+    '            '//Add struct node under struct category
+    '            cNode = AddNode(nd.Nodes, obj.Type, obj, False, obj.DatastoreName)
+    '            obj.SeqNo = cNode.Index '//store position
+    '        End If
+    '        Return cNode
 
-        Catch ex As Exception
-            LogError(ex, "frmMain AddDSNode")
-            Return Nothing
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "frmMain AddDSNode")
+    '        Return Nothing
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function GetDSFolderText(ByVal DSType As enumDatastore) As String
+    'Function GetDSFolderText(ByVal DSType As enumDatastore) As String
 
-        Select Case DSType
-            Case modDeclares.enumDatastore.DS_BINARY
-                Return "BINARY"
-            Case modDeclares.enumDatastore.DS_DB2CDC
-                Return "DB2CDC"
-            Case modDeclares.enumDatastore.DS_DB2LOAD
-                Return "DB2LOAD"
-            Case modDeclares.enumDatastore.DS_DELIMITED
-                Return "DELIMITED"
-            Case modDeclares.enumDatastore.DS_GENERICCDC
-                Return "GENERICCDC"
-            Case modDeclares.enumDatastore.DS_HSSUNLOAD
-                Return "HSSUNLOAD"
-            Case modDeclares.enumDatastore.DS_IBMEVENT
-                Return "IBMEVENT"
-                'Case modDeclares.enumDatastore.DS_IMSCDC
-                '    Return "IMSCDC"
-            Case modDeclares.enumDatastore.DS_IMSDB
-                Return "IMSDB"
-                'Case modDeclares.enumDatastore.DS_IMSLE
-                '    Return "IMSLE"
-                'Case modDeclares.enumDatastore.DS_IMSLEBATCH
-                '    Return "IMSLEBATCH"
-            Case modDeclares.enumDatastore.DS_INCLUDE
-                Return "INCLUDE"
-            Case modDeclares.enumDatastore.DS_ORACLECDC
-                Return "ORACLECDC"
-            Case modDeclares.enumDatastore.DS_RELATIONAL
-                Return "RELATIONAL"
-            Case modDeclares.enumDatastore.DS_SUBVAR
-                Return "SUBVAR"
-            Case modDeclares.enumDatastore.DS_TEXT
-                Return "TEXT"
-                'Case modDeclares.enumDatastore.DS_TRBCDC
-                '    Return "TRBCDC"
-            Case modDeclares.enumDatastore.DS_UNKNOWN
-                Return "UNKNOWN"
-            Case modDeclares.enumDatastore.DS_VSAM
-                Return "VSAM"
-            Case modDeclares.enumDatastore.DS_VSAMCDC
-                Return "VSAMCDC"
-            Case modDeclares.enumDatastore.DS_XML
-                Return "XML"
-                'Case modDeclares.enumDatastore.DS_XMLCDC
-                '    Return "XMLCDC"
-            Case Else
-                Return "Unknown"
-        End Select
+    '    Select Case DSType
+    '        Case modDeclares.enumDatastore.DS_BINARY
+    '            Return "BINARY"
+    '        Case modDeclares.enumDatastore.DS_DB2CDC
+    '            Return "DB2CDC"
+    '        Case modDeclares.enumDatastore.DS_DB2LOAD
+    '            Return "DB2LOAD"
+    '        Case modDeclares.enumDatastore.DS_DELIMITED
+    '            Return "DELIMITED"
+    '        Case modDeclares.enumDatastore.DS_GENERICCDC
+    '            Return "GENERICCDC"
+    '        Case modDeclares.enumDatastore.DS_HSSUNLOAD
+    '            Return "HSSUNLOAD"
+    '        Case modDeclares.enumDatastore.DS_IBMEVENT
+    '            Return "IBMEVENT"
+    '            'Case modDeclares.enumDatastore.DS_IMSCDC
+    '            '    Return "IMSCDC"
+    '        Case modDeclares.enumDatastore.DS_IMSDB
+    '            Return "IMSDB"
+    '            'Case modDeclares.enumDatastore.DS_IMSLE
+    '            '    Return "IMSLE"
+    '            'Case modDeclares.enumDatastore.DS_IMSLEBATCH
+    '            '    Return "IMSLEBATCH"
+    '        Case modDeclares.enumDatastore.DS_INCLUDE
+    '            Return "INCLUDE"
+    '        Case modDeclares.enumDatastore.DS_ORACLECDC
+    '            Return "ORACLECDC"
+    '        Case modDeclares.enumDatastore.DS_RELATIONAL
+    '            Return "RELATIONAL"
+    '        Case modDeclares.enumDatastore.DS_SUBVAR
+    '            Return "SUBVAR"
+    '        Case modDeclares.enumDatastore.DS_TEXT
+    '            Return "TEXT"
+    '            'Case modDeclares.enumDatastore.DS_TRBCDC
+    '            '    Return "TRBCDC"
+    '        Case modDeclares.enumDatastore.DS_UNKNOWN
+    '            Return "UNKNOWN"
+    '        Case modDeclares.enumDatastore.DS_VSAM
+    '            Return "VSAM"
+    '        Case modDeclares.enumDatastore.DS_VSAMCDC
+    '            Return "VSAMCDC"
+    '        Case modDeclares.enumDatastore.DS_XML
+    '            Return "XML"
+    '            'Case modDeclares.enumDatastore.DS_XMLCDC
+    '            '    Return "XMLCDC"
+    '        Case Else
+    '            Return "Unknown"
+    '    End Select
 
-    End Function
+    'End Function
 
-    Function GetFolType(ByVal DStype As enumDatastore) As String
+    'Function GetFolType(ByVal DStype As enumDatastore) As String
 
-        Select Case DStype
-            Case enumDatastore.DS_BINARY
-                Return DS_BINARY
-            Case enumDatastore.DS_DB2CDC
-                Return DS_DB2CDC
-            Case enumDatastore.DS_DB2LOAD
-                Return DS_DB2LOAD
-            Case enumDatastore.DS_DELIMITED
-                Return DS_DELIMITED
-            Case enumDatastore.DS_GENERICCDC
-                Return DS_GENERICCDC
-            Case enumDatastore.DS_HSSUNLOAD
-                Return DS_HSSUNLOAD
-            Case enumDatastore.DS_IBMEVENT
-                Return DS_IBMEVENT
-            Case enumDatastore.DS_IMSCDCLE
-                Return DS_IMSCDCLE
-            Case enumDatastore.DS_IMSDB
-                Return DS_IMSDB
-                'Case enumDatastore.DS_IMSLE
-                '    Return DS_IMSLE
-                'Case enumDatastore.DS_IMSLEBATCH
-                '    Return DS_IMSLEBATCH
-            Case enumDatastore.DS_INCLUDE
-                Return DS_INCLUDE
-            Case enumDatastore.DS_ORACLECDC
-                Return DS_ORACLECDC
-            Case enumDatastore.DS_RELATIONAL
-                Return DS_RELATIONAL
-            Case enumDatastore.DS_SUBVAR
-                Return DS_SUBVAR
-            Case enumDatastore.DS_TEXT
-                Return DS_TEXT
-                'Case enumDatastore.DS_TRBCDC
-                '    Return DS_TRBCDC
-            Case enumDatastore.DS_UNKNOWN
-                Return DS_UNKNOWN
-            Case enumDatastore.DS_VSAM
-                Return DS_VSAM
-            Case enumDatastore.DS_VSAMCDC
-                Return DS_VSAMCDC
-            Case enumDatastore.DS_XML
-                Return DS_XML
-                'Case enumDatastore.DS_XMLCDC
-                '    Return DS_XMLCDC
-            Case Else
-                Return NODE_FO_DATASTORE
-        End Select
+    '    Select Case DStype
+    '        Case enumDatastore.DS_BINARY
+    '            Return DS_BINARY
+    '        Case enumDatastore.DS_DB2CDC
+    '            Return DS_DB2CDC
+    '        Case enumDatastore.DS_DB2LOAD
+    '            Return DS_DB2LOAD
+    '        Case enumDatastore.DS_DELIMITED
+    '            Return DS_DELIMITED
+    '        Case enumDatastore.DS_GENERICCDC
+    '            Return DS_GENERICCDC
+    '        Case enumDatastore.DS_HSSUNLOAD
+    '            Return DS_HSSUNLOAD
+    '        Case enumDatastore.DS_IBMEVENT
+    '            Return DS_IBMEVENT
+    '        Case enumDatastore.DS_IMSCDCLE
+    '            Return DS_IMSCDCLE
+    '        Case enumDatastore.DS_IMSDB
+    '            Return DS_IMSDB
+    '            'Case enumDatastore.DS_IMSLE
+    '            '    Return DS_IMSLE
+    '            'Case enumDatastore.DS_IMSLEBATCH
+    '            '    Return DS_IMSLEBATCH
+    '        Case enumDatastore.DS_INCLUDE
+    '            Return DS_INCLUDE
+    '        Case enumDatastore.DS_ORACLECDC
+    '            Return DS_ORACLECDC
+    '        Case enumDatastore.DS_RELATIONAL
+    '            Return DS_RELATIONAL
+    '        Case enumDatastore.DS_SUBVAR
+    '            Return DS_SUBVAR
+    '        Case enumDatastore.DS_TEXT
+    '            Return DS_TEXT
+    '            'Case enumDatastore.DS_TRBCDC
+    '            '    Return DS_TRBCDC
+    '        Case enumDatastore.DS_UNKNOWN
+    '            Return DS_UNKNOWN
+    '        Case enumDatastore.DS_VSAM
+    '            Return DS_VSAM
+    '        Case enumDatastore.DS_VSAMCDC
+    '            Return DS_VSAMCDC
+    '        Case enumDatastore.DS_XML
+    '            Return DS_XML
+    '            'Case enumDatastore.DS_XMLCDC
+    '            '    Return DS_XMLCDC
+    '        Case Else
+    '            Return NODE_FO_DATASTORE
+    '    End Select
 
-    End Function
+    'End Function
 
     Function AddDSstructuresToTree(ByVal pNode As TreeNode, ByVal obj As clsDatastore, Optional ByVal MapAs As Boolean = False) As Boolean
 
@@ -8484,5 +8495,4 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
 #End Region
 
-    
 End Class

@@ -1902,9 +1902,15 @@ mapTgt:                     '/// Now Map Target
                                 End If
                             End If
                         Else
-                            '/// map function with target
-                            If wMapFunWTgt(rc, Map) = False Then   ', First
-                                GoTo ErrorGoTo
+                            If Proc.TaskType = enumTaskType.TASK_GEN Then
+                                If wMapFun(rc, Map) = False Then   ', First
+                                    GoTo ErrorGoTo
+                                End If
+                            Else
+                                '/// map function with target
+                                If wMapFunWTgt(rc, Map) = False Then   ', First
+                                    GoTo ErrorGoTo
+                                End If
                             End If
                         End If
 
