@@ -1843,7 +1843,8 @@ ErrorGoTo2: Next
 
                     Case enumMappingType.MAPPING_TYPE_FIELD
                         If Map.SourceDataStore = SourceName Then
-                            If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+                            If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Or Map.TargetType = enumMappingType.MAPPING_TYPE_VAR _
+                            Or Map.TargetType = enumMappingType.MAPPING_TYPE_WORKVAR Then
                                 If wMap(rc, Map) = False Then   ', First
                                     GoTo ErrorGoTo
                                 End If
@@ -3661,24 +3662,38 @@ ErrorGoTo:
                 RC.ObjInode = map
                 ErrorComment(RC, True)
             Else
-                Select Case SourceLevel
-                    Case enumMappingLevel.ShowAll
-                        SrcStr = map.SourceDataStore & "." & map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
-                    Case enumMappingLevel.ShowDesc
-                        SrcStr = map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
-                    Case enumMappingLevel.ShowFld
-                        SrcStr = CType(map.MappingSource, clsField).FieldName
-                End Select
+                If map.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
+                    Select Case SourceLevel
+                        Case enumMappingLevel.ShowAll
+                            SrcStr = map.SourceDataStore & "." & map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
+                        Case enumMappingLevel.ShowDesc
+                            SrcStr = map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
+                        Case enumMappingLevel.ShowFld
+                            SrcStr = CType(map.MappingSource, clsField).FieldName
+                    End Select
+                Else
+                    If map.SourceType = enumMappingType.MAPPING_TYPE_VAR Or map.SourceType = enumMappingType.MAPPING_TYPE_WORKVAR Then
+                        SrcStr = CType(map.MappingSource, clsVariable).VariableName
+                    End If
+                End If
+                
             End If
 
-            Select Case TargetLevel
-                Case enumMappingLevel.ShowAll
-                    TgtStr = map.TargetDataStore & "." & map.TargetParent & "." & CType(map.MappingTarget, clsField).FieldName
-                Case enumMappingLevel.ShowDesc
-                    TgtStr = map.TargetParent & "." & CType(map.MappingTarget, clsField).FieldName
-                Case enumMappingLevel.ShowFld
-                    TgtStr = CType(map.MappingTarget, clsField).FieldName
-            End Select
+            If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+                Select Case TargetLevel
+                    Case enumMappingLevel.ShowAll
+                        TgtStr = map.TargetDataStore & "." & map.TargetParent & "." & CType(map.MappingTarget, clsField).FieldName
+                    Case enumMappingLevel.ShowDesc
+                        TgtStr = map.TargetParent & "." & CType(map.MappingTarget, clsField).FieldName
+                    Case enumMappingLevel.ShowFld
+                        TgtStr = CType(map.MappingTarget, clsField).FieldName
+                End Select
+            Else
+                If map.TargetType = enumMappingType.MAPPING_TYPE_VAR Or map.TargetType = enumMappingType.MAPPING_TYPE_WORKVAR Then
+                    TgtStr = CType(map.MappingTarget, clsVariable).VariableName
+                End If
+            End If
+            
 
             SrcLen = SrcStr.Length
             TgtLen = TgtStr.Length

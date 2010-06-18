@@ -1192,7 +1192,7 @@ Module modObjects
 
 #Region "ObjectLoad"
 
-    Function FillProject(ByVal obj As clsProject, Optional ByVal Renamed As Boolean = False, Optional ByVal Updated As Boolean = False) As Boolean
+    Function LoadProject(ByVal obj As clsProject, Optional ByVal Renamed As Boolean = False, Optional ByVal Updated As Boolean = False) As Boolean
         '// Modified 2/07 by Tom Karasch
 
         Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -1267,7 +1267,7 @@ Module modObjects
 
             For i = 0 To dt.Rows.Count - 1
                 '//Process this env
-                FillEnv(cNode, dt.Rows(i), cnn)
+                LoadEnv(cNode, dt.Rows(i), cnn)
             Next
 
 
@@ -1283,7 +1283,7 @@ Module modObjects
 
     End Function
 
-    Function FillEnv(ByVal cNode As TreeNode, ByVal dr As System.Data.DataRow, ByRef cnn As System.Data.Odbc.OdbcConnection) As Boolean
+    Function LoadEnv(ByVal cNode As TreeNode, ByVal dr As System.Data.DataRow, ByRef cnn As System.Data.Odbc.OdbcConnection) As Boolean
         '// Modified 1/07 by Tom Karasch
 
         Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -1406,49 +1406,7 @@ Module modObjects
             LogError(ex, "fillEnv-fillStr")
         End Try
 
-        '///////////////////////////////////////////////
-        '//Now All datastores put into folders by type
-        '///////////////////////////////////////////////
-        Try
-            Dim cNode1 As TreeNode
-            Dim obj1 As INode
-
-            obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
-            obj1.Parent = CType(cNode.Tag, INode)
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
-
-            If obj1.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblDatastores & _
-                " where EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                " AND ENGINENAME=" & Quote(DBNULL) & _
-                " order by DATASTORETYPE"
-            Else
-                sql = "SELECT PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DSDIRECTION,DSTYPE,DATASTOREDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID FROM " & obj.Project.tblDatastores & _
-                " where projectname=" & Quote(obj.Project.ProjectName) & _
-                " and environmentname=" & Quote(obj.EnvironmentName) & _
-                " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                " AND ENGINENAME=" & Quote(DBNULL) & _
-                " order by dstype"
-            End If
-
-            Log(sql)
-
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-            dt = New DataTable("temp")
-            da.Fill(dt)
-            da.Dispose()
-
-            For i = 0 To dt.Rows.Count - 1
-                ''//Process this (cNode1 is root node under which we add other structures)
-                FillDSbyType(cNode1, dt.Rows(i), cnn, obj1.Project.ProjectMetaVersion)
-            Next
-
-        Catch ex As Exception
-            LogError(ex, "frmMain FillEnv_DS")
-        End Try
-
+       
         '///////////////////////////////////////////////
         '//Now add variables
         '///////////////////////////////////////////////
@@ -1486,85 +1444,9 @@ Module modObjects
                 FillVar(cNodeVar, dt.Rows(i), cnn, True)
             Next
         Catch ex As Exception
-            LogError(ex, "frmMain FillEngine>VariableLoad")
+            LogError(ex, "modObjects LoadEngine>VariableLoad")
         End Try
 
-        '///////////////////////////////////////////////
-        '//Now add procs
-        '///////////////////////////////////////////////
-        Try
-            'Dim cNodeMain As TreeNode
-            'Dim cNodeLookup As TreeNode
-            'Dim cNodeJoin As TreeNode
-            Dim cNodeProc As TreeNode
-            'Dim objMain As INode
-            'Dim objLook As INode
-            'Dim objJoin As INode
-            Dim objProc As INode
-            'Dim ttype As enumTaskType
-
-            '//Add Join folder
-            'objJoin = New clsFolderNode("Join", NODE_FO_JOIN)
-            'objJoin.Parent = CType(cNode.Tag, INode)
-            'cNodeJoin = AddNode(cNode.Nodes, objJoin.Type, objJoin, False)
-
-            '//Add Proc folder
-            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
-            objProc.Parent = CType(cNode.Tag, INode)
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
-
-            '//Add Lookup folder
-            'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
-            'objLook.Parent = CType(cNode.Tag, INode)
-            'cNodeLookup = AddNode(cNode.Nodes, objLook.Type, objLook, False)
-
-            '//Add Main folder
-            'objMain = New clsFolderNode("Main", NODE_FO_MAIN)
-            'objMain.Parent = CType(cNode.Tag, INode)
-            'cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
-            dt = New DataTable("temp")
-
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblTasks & _
-                " where EnvironmentName = " & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND systemName=" & Quote(DBNULL) & _
-                " AND enginename=" & Quote(DBNULL) & _
-                " Order by taskname"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,TASKNAME,TASKTYPE,TASKSEQNO,TASKDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblTasks & _
-                " where EnvironmentName = " & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " AND systemName=" & Quote(DBNULL) & _
-                " AND enginename=" & Quote(DBNULL) & _
-                " Order by taskname"
-            End If
-
-            Log(sql)
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-
-            da.Fill(dt)
-            da.Dispose()
-
-            For i = 0 To dt.Rows.Count - 1
-                ''//Process this (cNode is root node under which we add other nodes)
-                'ttype = GetVal(dt.Rows(i).Item("TaskType"))
-                'Select Case ttype
-                '    'Case enumTaskType.TASK_MAIN
-                '    '    FillTasks(cNodeMain, dt.Rows(i), cnn)
-                '    Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP, enumTaskType.TASK_PROC, _
-                '    enumTaskType.TASK_IncProc, enumTaskType.TASK_MAIN
-                FillTasks(cNodeProc, dt.Rows(i), cnn)
-                'Case enumTaskType.TASK_JOIN, enumTaskType.TASK_LOOKUP
-                '    FillTasks(cNodeJoin, dt.Rows(i), cnn)
-                'Case 
-                '    FillTasks(cNodeLookup, dt.Rows(i), cnn)
-                'End Select
-            Next
-
-        Catch ex As Exception
-            LogError(ex, "FillEnv-FillProc")
-        End Try
 
 
         '///////////////////////////////////////////////
