@@ -26,6 +26,7 @@ Public Class clsDSSelection
     Private m_IsMapped As Boolean = False
     Private m_ObjEngine As clsEngine
     Private m_Environment As clsEnvironment
+    Private m_IsLoaded As Boolean
 
     Public DSSelectionFields As New ArrayList '//Array of Fields selected with in structure
     Public OldDSSelectionFields As New ArrayList '//Array of Old fields
@@ -96,7 +97,7 @@ Public Class clsDSSelection
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(False, False, cmd)
+            Me.LoadMe(cmd)
 
             obj.Engine = Me.Engine
             obj.Environment = Me.Environment
@@ -265,17 +266,16 @@ Public Class clsDSSelection
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
-        'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
-        Dim cmd As System.Data.Odbc.OdbcCommand
-        Dim dr As System.Data.DataRow
-        Dim da As System.Data.Odbc.OdbcDataAdapter
-        Dim dt As System.Data.DataTable
-        Dim sql As String = ""
-        Dim i As Integer
-
         Try
-            If INcmd IsNot Nothing Then
-                cmd = INcmd
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim dr As System.Data.DataRow
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As System.Data.DataTable
+            Dim sql As String = ""
+            Dim i As Integer
+
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
             Else
                 cmd = New Odbc.OdbcCommand
                 cmd.Connection = cnn
@@ -288,101 +288,31 @@ Public Class clsDSSelection
                 If Me.DSSelectionFields.Count > 0 Then Exit Function
             End If
 
-            'cnn.Open()
-            'cmd = cmd.Connection.CreateCommand
-
-            Me.ObjDatastore.LoadItems()
-            Me.ObjStructure.LoadItems()
+            Me.ObjDatastore.LoadMe()
+            Me.ObjStructure.LoadMe()
             Me.DSSelectionFields.Clear()
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine IsNot Nothing Then
-                    sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.StructureName,dssf.FIELDNAME from " & Me.Project.tblDSselFields & " dssf " & _
-                    "inner join " & Me.Project.tblDSselections & " dss " & _
-                    "on dssf.projectname=dss.projectname " & _
-                    "AND dssf.environmentname=dss.environmentname " & _
-                    "AND dssf.SystemName=dss.SystemName " & _
-                    "AND dssf.EngineName=dss.EngineName " & _
-                    "AND dssf.DatastoreName=dss.DatastoreName " & _
-                    "AND dssf.StructureName=dss.StructureName " & _
-                    "AND dssf.SelectionName=dss.SelectionName " & _
-                    "AND dssf.DSDirection=dss.DSDirection " & _
-                    "AND dssf.Parent=dss.Parent " & _
-                    "where  dssf.ProjectName=" & Me.Project.GetQuotedText & _
-                    " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND dssf.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND dssf.EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND dssf.DatastoreName = " & Me.ObjDatastore.GetQuotedText & _
-                    " AND dssf.DSDirection=" & Quote(Me.ObjDatastore.DsDirection) & _
-                    " AND dssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND dssf.StructureName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND dssf.Parent=" & Me.Parent.GetQuotedText & _
-                    " ORDER BY dssf.SEQNO"
-                Else
-                    sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.StructureName,dssf.FIELDNAME from " & Me.Project.tblDSselFields & " dssf " & _
-                    "inner join " & Me.Project.tblDSselections & " dss " & _
-                    "on dssf.projectname=dss.projectname " & _
-                    "AND dssf.environmentname=dss.environmentname " & _
-                    "AND dssf.DatastoreName=dss.DatastoreName " & _
-                    "AND dssf.SelectionName=dss.SelectionName " & _
-                    "AND dssf.StructureName=dss.StructureName " & _
-                    "AND dssf.DSDirection=dss.DSDirection " & _
-                    "AND dssf.Parent=dss.Parent " & _
-                    "where dssf.ProjectName=" & Me.Project.GetQuotedText & _
-                    " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND dssf.DatastoreName=" & Me.ObjDatastore.GetQuotedText & _
-                    " AND dssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND dssf.StructureName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND dssf.DSDirection=" & Quote(Me.ObjDatastore.DsDirection) & _
-                    " AND dssf.Parent=" & Me.Parent.GetQuotedText & _
-                    " ORDER BY dssf.SEQNO"
-                End If
-            Else
-                If Me.Engine IsNot Nothing Then
-                    sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.DESCRIPTIONNAME,dssf.FIELDNAME from " & Me.Project.tblDSselFields & " dssf " & _
-                    "inner join " & Me.Project.tblDSselections & " dss " & _
-                    "on dssf.projectname=dss.projectname " & _
-                    "AND dssf.environmentname=dss.environmentname " & _
-                    "AND dssf.SystemName=dss.SystemName " & _
-                    "AND dssf.EngineName=dss.EngineName " & _
-                    "AND dssf.DatastoreName=dss.DatastoreName " & _
-                    "AND dssf.SelectionName=dss.SelectionName " & _
-                    "AND dssf.DescriptionName=dss.DescriptionName " & _
-                    "AND dssf.ParentName=dss.Parent " & _
-                    "where dssf.ProjectName=" & Me.Project.GetQuotedText & _
-                    " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND dssf.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND dssf.EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND dssf.DatastoreName=" & Me.ObjDatastore.GetQuotedText & _
-                    " AND dssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND dssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND dssf.ParentName=" & Me.Parent.GetQuotedText & _
-                    " ORDER BY dssf.SEQNO"
-                Else
-                    sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.DESCRIPTIONNAME,dssf.FIELDNAME,dss.parent from " & Me.Project.tblDSselFields & " dssf " & _
-                    "inner join " & Me.Project.tblDSselections & " dss " & _
-                    " ON dssf.projectname=dss.projectname " & _
-                    " AND dssf.environmentname=dss.environmentname " & _
-                    " AND dssf.SystemName=dss.SystemName" & _
-                    " AND dssf.EngineName=dss.EngineName" & _
-                    " AND dssf.DatastoreName=dss.DatastoreName " & _
-                    " AND dssf.SelectionName=dss.SelectionName " & _
-                    " AND dssf.DescriptionName=dss.DescriptionName " & _
-                    " AND dssf.Parentname=dss.parent " & _
-                    " where dssf.ProjectName=" & Me.Project.GetQuotedText & _
-                    " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND dssf.SystemName=" & Quote(DBNULL) & _
-                    " AND dssf.EngineName=" & Quote(DBNULL) & _
-                    " AND dssf.DatastoreName=" & Me.ObjDatastore.GetQuotedText & _
-                    " AND dssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND dssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND dssf.ParentName=" & Me.Parent.GetQuotedText & _
-                    " ORDER BY dssf.SEQNO"
-                End If
-            End If
+            
+            sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.DESCRIPTIONNAME,dssf.FIELDNAME,dss.parent from " & Me.Project.tblDSselFields & " dssf " & _
+            "inner join " & Me.Project.tblDSselections & " dss " & _
+            " ON dssf.projectname=dss.projectname " & _
+            " AND dssf.environmentname=dss.environmentname " & _
+            " AND dssf.SystemName=dss.SystemName" & _
+            " AND dssf.EngineName=dss.EngineName" & _
+            " AND dssf.DatastoreName=dss.DatastoreName " & _
+            " AND dssf.SelectionName=dss.SelectionName " & _
+            " AND dssf.DescriptionName=dss.DescriptionName " & _
+            " AND dssf.Parentname=dss.parent " & _
+            " where dssf.ProjectName=" & Me.Project.GetQuotedText & _
+            " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND dssf.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND dssf.EngineName=" & Me.Engine.GetQuotedText & _
+            " AND dssf.DatastoreName=" & Me.ObjDatastore.GetQuotedText & _
+            " AND dssf.SelectionName=" & Me.GetQuotedText & _
+            " AND dssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND dssf.ParentName=" & Me.Parent.GetQuotedText & _
+            " ORDER BY dssf.SEQNO"
 
-
-            ', dssf.fieldname
             cmd.CommandText = sql
             Log(sql)
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
@@ -393,11 +323,8 @@ Public Class clsDSSelection
             For i = 0 To dt.Rows.Count - 1
                 dr = dt.Rows(i)
                 Dim fld As New clsField
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    fld = SearchDSFieldByName(Me, dr("FieldName"), dr("StructureName"), dr("environmentname"), dr("projectname"))
-                Else
-                    fld = SearchDSFieldByName(Me, dr("FieldName"), dr("DescriptionName"), dr("environmentname"), dr("projectname"))
-                End If
+
+                fld = SearchDSFieldByName(Me, dr("FieldName"), dr("DescriptionName"), dr("environmentname"), dr("projectname"))
 
                 If fld Is Nothing Then
                     Log("Field [" & dr("fieldname") & "] is missing in the parent structure - " & Me.ObjStructure.Text)
@@ -412,10 +339,83 @@ Public Class clsDSSelection
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsDSSelection LoadItems", sql)
+            LogError(ex, "clsDSSelection LoadItems")
             Return False
-        Finally
-            'cnn.Close()
+        End Try
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+        
+        Try
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim dr As System.Data.DataRow
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As System.Data.DataTable
+            Dim sql As String = ""
+            Dim i As Integer
+
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
+            End If
+            '//check if already loaded ?
+            If Me.DSSelectionFields.Count > 0 Then Exit Function
+
+            Me.ObjDatastore.LoadMe()
+            Me.ObjStructure.LoadMe()
+            Me.DSSelectionFields.Clear()
+
+            sql = "Select dssf.PROJECTNAME,dssf.ENVIRONMENTNAME,dssf.DESCRIPTIONNAME,dssf.FIELDNAME from " & _
+            Me.Project.tblDSselFields & " dssf " & _
+                "inner join " & Me.Project.tblDSselections & " dss " & _
+                "on dssf.projectname=dss.projectname " & _
+                "AND dssf.environmentname=dss.environmentname " & _
+                "AND dssf.SystemName=dss.SystemName " & _
+                "AND dssf.EngineName=dss.EngineName " & _
+                "AND dssf.DatastoreName=dss.DatastoreName " & _
+                "AND dssf.SelectionName=dss.SelectionName " & _
+                "AND dssf.DescriptionName=dss.DescriptionName " & _
+                "AND dssf.ParentName=dss.Parent " & _
+                "where dssf.ProjectName=" & Me.Project.GetQuotedText & _
+                " AND dssf.EnvironmentName=" & Me.Environment.GetQuotedText & _
+                " AND dssf.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                " AND dssf.EngineName=" & Me.Engine.GetQuotedText & _
+                " AND dssf.DatastoreName=" & Me.ObjDatastore.GetQuotedText & _
+                " AND dssf.SelectionName=" & Me.GetQuotedText & _
+                " AND dssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+                " AND dssf.ParentName=" & Me.Parent.GetQuotedText & _
+                " ORDER BY dssf.SEQNO"
+
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            dt = New System.Data.DataTable("temp2")
+            da.Fill(dt)
+            da.Dispose()
+
+            For i = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+                Dim fld As New clsField
+                fld = SearchDSFieldByName(Me, dr("FieldName"), dr("DescriptionName"), dr("environmentname"), dr("projectname"))
+
+                If fld Is Nothing Then
+                    Log("Field [" & dr("fieldname") & "] is missing in the parent structure - " & Me.ObjStructure.Text)
+                Else
+                    fld.Parent = Me
+                    If Me.DSSelectionFields.Contains(fld) = False Then
+                        DSSelectionFields.Add(fld)
+                    End If
+                End If
+            Next
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsDSSelection LoadMe")
+            Return False
         End Try
 
     End Function
@@ -426,6 +426,15 @@ Public Class clsDSSelection
         End Get
         Set(ByVal Value As Boolean)
             m_IsRenamed = Value
+        End Set
+    End Property
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
         End Set
     End Property
 
@@ -573,248 +582,6 @@ Public Class clsDSSelection
         End Try
 
     End Function
-
-    'Function InsertFldATTR(ByVal Fld As clsField, Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
-
-    '    Dim cmd As Odbc.OdbcCommand
-    '    Dim sql As String = ""
-    '    Dim Attrib As String = ""
-    '    Dim Value As String = ""
-
-    '    Try
-    '        If INcmd IsNot Nothing Then
-    '            cmd = INcmd
-    '        Else
-    '            cmd = New Odbc.OdbcCommand
-    '            cmd.Connection = cnn
-    '        End If
-
-    '        For i As Integer = 0 To 20
-
-    '            Select Case i
-    '                Case 0
-    '                    Attrib = "CANNULL"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL).ToString
-    '                Case 1
-    '                    Attrib = "DATATYPE"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-    '                Case 2
-    '                    Attrib = "ISKEY"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY).ToString
-    '                Case 3
-    '                    Attrib = "NCHILDREN"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN).ToString
-    '                Case 4
-    '                    Attrib = "NLENGTH"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString
-    '                Case 5
-    '                    Attrib = "NLEVEL"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL).ToString
-    '                Case 6
-    '                    Attrib = "NOCCNO"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS).ToString
-    '                Case 7
-    '                    Attrib = "NOFFSET"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET).ToString
-    '                Case 8
-    '                    Attrib = "NSCALE"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE).ToString
-    '                Case 9
-    '                    Attrib = "NTIMES"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES).ToString
-    '                Case 10
-    '                    Attrib = "FKEY"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY).ToString
-    '                Case 11
-    '                    Attrib = "INITVAL"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL).ToString
-    '                Case 12
-    '                    Attrib = "RETYPE"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE).ToString
-    '                Case 13
-    '                    Attrib = "EXTTYPE"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE).ToString
-    '                Case 14
-    '                    Attrib = "INVALID"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID).ToString
-    '                Case 15
-    '                    Attrib = "DATEFORMAT"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT).ToString
-    '                Case 16
-    '                    Attrib = "LABEL"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL).ToString
-    '                Case 17
-    '                    Attrib = "IDENTVAL"
-    '                    Value = Fld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL).ToString
-    '                Case 18
-    '                    Attrib = "ORGNAME"
-    '                    Value = Fld.OrgName
-    '                Case 19
-    '                    Attrib = "PARENTNAME"
-    '                    Value = Fld.ParentName
-    '                Case 20
-    '                    Attrib = "SEQNO"
-    '                    Value = Fld.SeqNo.ToString
-    '            End Select
-
-    '            sql = "INSERT INTO " & Me.Project.tblDSselFieldsATTR & _
-    '            "(PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DESCRIPTIONNAME,SELECTIONNAME,DATASTORENAME,FIELDNAME,DSSELFIELDATTRB,DSSELFIELDATTRBVALUE) " & _
-    '            "Values(" & _
-    '            Quote(Me.Project.ProjectName) & "," & _
-    '            Quote(Me.ObjDatastore.Engine.ObjSystem.Environment.EnvironmentName) & "," & _
-    '            Quote(Me.ObjDatastore.Engine.ObjSystem.SystemName) & "," & _
-    '            Quote(Me.ObjDatastore.Engine.EngineName) & "," & _
-    '            Quote(Me.ObjStructure.StructureName) & "," & _
-    '            Quote(Me.SelectionName) & "," & _
-    '            Quote(Me.ObjDatastore.DatastoreName) & "," & _
-    '            Quote(Fld.FieldName) & "," & _
-    '            Quote(Attrib) & "," & _
-    '            Quote(Value) & ")"
-
-
-    '            cmd.CommandText = sql
-    '            Log(sql)
-    '            cmd.ExecuteNonQuery()
-    '        Next
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex, "clsDSSelection InsertATTR")
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    'Function DeleteFldATTR(ByVal Fld As clsField, Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
-
-    '    Dim cmd As Odbc.OdbcCommand
-    '    Dim sql As String = ""
-    '    Dim Attrib As String = ""
-    '    Dim Value As String = ""
-
-    '    Try
-    '        If INcmd IsNot Nothing Then
-    '            cmd = INcmd
-    '        Else
-    '            cmd = New Odbc.OdbcCommand
-    '            cmd.Connection = cnn
-    '        End If
-
-    '        sql = "DELETE FROM " & Me.Project.tblDSselFieldsATTR & _
-    '        " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-    '        " AND ENVIRONMENTNAME=" & Quote(Me.ObjDatastore.Engine.ObjSystem.Environment.EnvironmentName) & _
-    '        " AND SYSTEMNAME=" & Quote(Me.ObjDatastore.Engine.ObjSystem.SystemName) & _
-    '        " AND ENGINENAME=" & Quote(Me.ObjDatastore.Engine.EngineName) & _
-    '        " AND DESCRIPTIONNAME=" & Quote(Me.ObjStructure.StructureName) & _
-    '        " AND SELECTIONNAME=" & Quote(Me.SelectionName) & _
-    '        " AND DATASTORENAME=" & Quote(Me.ObjDatastore.DatastoreName) & _
-    '        " AND FIELDNAME=" & Quote(Fld.FieldName)
-
-    '        cmd.CommandText = sql
-    '        Log(sql)
-    '        cmd.ExecuteNonQuery()
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex, "clsDSSelection DeleteATTR")
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    'Function LoadFieldAttr(ByRef Fld As clsField) As Boolean
-
-    '    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-    '        Return True
-    '        Exit Function
-    '    End If
-
-    '    Dim cmd As New System.Data.Odbc.OdbcCommand
-    '    Dim da As System.Data.Odbc.OdbcDataAdapter
-    '    Dim dt As New DataTable("temp")
-    '    Dim dr As DataRow
-    '    Dim sql As String = ""
-    '    'Dim strAttrs As String
-    '    Dim Attrib As String = ""
-    '    Dim Value As String = ""
-
-    '    Try
-    '        sql = "SELECT * FROM " & Me.Project.tblDSselFieldsATTR & _
-    '        " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-    '        " AND ENVIRONMENTNAME=" & Quote(Me.ObjDatastore.Engine.ObjSystem.Environment.EnvironmentName) & _
-    '        " AND SYSTEMNAME=" & Quote(Me.ObjDatastore.Engine.ObjSystem.SystemName) & _
-    '        " AND ENGINENAME=" & Quote(Me.ObjDatastore.Engine.EngineName) & _
-    '        " AND DESCRIPTIONNAME=" & Quote(Me.ObjStructure.StructureName) & _
-    '        " AND SELECTIONNAME=" & Quote(Me.SelectionName) & _
-    '        " AND DATASTORENAME=" & Quote(Me.ObjDatastore.DatastoreName) & _
-    '        " AND FIELDNAME=" & Quote(Fld.FieldName)
-
-    '        cmd.CommandText = sql
-    '        Log(sql)
-    '        da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-    '        da.Fill(dt)
-    '        da.Dispose()
-
-    '        For i As Integer = 0 To dt.Rows.Count - 1
-    '            dr = dt.Rows(i)
-
-    '            Attrib = GetVal(dr("DSSELFIELDATTRB"))
-    '            Select Case Attrib
-    '                Case "CANNULL"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_CANNULL, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "DATATYPE"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATATYPE, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "ISKEY"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_ISKEY, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NCHILDREN"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_NCHILDREN, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NLENGTH"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NLEVEL"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LEVEL, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NOCCNO"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OCCURS, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NOFFSET"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OFFSET, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NSCALE"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_SCALE, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "NTIMES"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_TIMES, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "FKEY"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_FKEY, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "INITVAL"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INITVAL, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "RETYPE"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_RETYPE, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "EXTTYPE"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_EXTTYPE, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "INVALID"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INVALID, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "DATEFORMAT"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "LABEL"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LABEL, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "IDENTVAL"
-    '                    Fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_IDENTVAL, GetVal(dr("DSSELFIELDATTRBVALUE")))
-    '                Case "ORGNAME"
-    '                    Fld.OrgName = GetVal(dr("DSSELFIELDATTRBVALUE"))
-    '                Case "PARENTNAME"
-    '                    Fld.ParentName = GetVal(dr("DSSELFIELDATTRBVALUE"))
-    '                Case "SEQNO"
-    '                    Fld.SeqNo = GetVal(dr("DSSELFIELDATTRBVALUE"))
-    '            End Select
-    '        Next
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex, "clsDSSelection LoadFieldAttr")
-    '        Return False
-    '    End Try
-
-    'End Function
 
 #End Region
 

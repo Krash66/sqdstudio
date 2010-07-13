@@ -1072,13 +1072,13 @@ Public Class frmDatastore
                     End If
                 End If
 
-                For Each TestDS As clsDatastore In EnvObj.Datastores
-                    If TestDS.DatastoreName = NewName Or TestDS.DatastoreName = NewSrcName Or _
-                    TestDS.DatastoreName = NewTgtName Then
-                        GoodName = False
-                        Exit For
-                    End If
-                Next
+                'For Each TestDS As clsDatastore In EnvObj.Datastores
+                '    If TestDS.DatastoreName = NewName Or TestDS.DatastoreName = NewSrcName Or _
+                '    TestDS.DatastoreName = NewTgtName Then
+                '        GoodName = False
+                '        Exit For
+                '    End If
+                'Next
 
                 Count += 1
             End While
@@ -1679,7 +1679,7 @@ doAgain:
                         tempsel = objThis.CloneSSeltoDSSel(pNode.Tag)
                         For i = 0 To objThis.OldObjSelections.Count - 1
                             tempObj = objThis.OldObjSelections(i)
-                            tempObj.LoadItems()
+                            tempObj.LoadMe()
                             '// if the DSSelection exists already in old DSselections, 
                             '//then add it to current DS selections
                             If tempObj.SelectionName = tempsel.SelectionName Then
@@ -1699,7 +1699,7 @@ doAgain:
                                 tempsel = objThis.CloneSSeltoDSSel(cNode.Tag)
                                 For i = 0 To objThis.OldObjSelections.Count - 1
                                     tempObj = objThis.OldObjSelections(i)
-                                    tempObj.LoadItems()
+                                    tempObj.LoadMe()
                                     If tempObj.SelectionName = tempsel.SelectionName Then
                                         objThis.ObjSelections.Add(tempObj)
                                         flag = True
@@ -2221,16 +2221,14 @@ doAgain:
                 dsSel = objThis.ObjSelections(i)
                 If objSel Is dsSel.ObjSelection Then
                     isfound = True
-                    dsSel.LoadItems()
-                    'fldNode = AddNode(tvFields.Nodes, CType(dsSel.DSSelectionFields(0), clsField).Type, CType(dsSel.DSSelectionFields(0), clsField), True, CType(dsSel.DSSelectionFields(0), clsField).Text)
-                    'LoadTreeviewFromFldArrlist(tvFields.Nodes, dsSel.DSSelectionFields)
+                    dsSel.LoadMe()
                     AddFieldsToTreeView(dsSel, , tvFields)
                     Exit For
                 End If
             Next
 
             If isfound = False Then
-                objSel.LoadItems()
+                objSel.LoadMe()
                 AddFieldsToTreeView(objSel, , tvFields, True)
             End If
             HiLiteFieldDescNodes(tvFields.Nodes(0), True, tvFields)

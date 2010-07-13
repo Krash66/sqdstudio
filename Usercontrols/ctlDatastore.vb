@@ -2711,11 +2711,11 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             '    Exit Try
             'End If
 
-            If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If SaveGlobalValues() = False Then
-                    Exit Function
-                End If
-            End If
+            'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    If SaveGlobalValues() = False Then
+            '        Exit Function
+            '    End If
+            'End If
 
             If IsNewObj = True Then
                 If objThis.AddNew = False Then Exit Function
@@ -2797,44 +2797,44 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     End Function
 
-    Function SaveGlobalValues() As Boolean
+    '    Function SaveGlobalValues() As Boolean
 
-        Dim ErrorMsg As String = ""
-        Try
-            If objThis.ExtTypeChar <> "" And objThis.ExtTypeNum = "" Then
-                ErrorMsg = "You have set a Global ExtType without specifying a field type to apply this ExtType to." & Chr(13) & _
-                "Please set a field type in the drop-down box next to the Global ExtType"
-                GoTo msg
-            End If
-            If objThis.IfNullChar <> "" And objThis.IfNullNum = "" Then
-                ErrorMsg = "You have set a Global IfNull without specifying a field type to apply this IfNull to." & Chr(13) & _
-                "Please set a field type in the drop-down box next to the Global IfNull"
-                GoTo Msg
-            End If
-            If objThis.InValidChar <> "" And objThis.InValidNum = "" Then
-                ErrorMsg = "You have set a Global InValid without specifying a field type to apply this InValid to." & Chr(13) & _
-                "Please set a field type in the drop-down box next to the Global InValid"
-                GoTo Msg
-            End If
-            If objThis.SaveGlobals() = False Then
-                ErrorMsg = "An Error occured while saving Datastore-wide Field Properties to a file."
-                GoTo Msg
-            End If
+    '        Dim ErrorMsg As String = ""
+    '        Try
+    '            If objThis.ExtTypeChar <> "" And objThis.ExtTypeNum = "" Then
+    '                ErrorMsg = "You have set a Global ExtType without specifying a field type to apply this ExtType to." & Chr(13) & _
+    '                "Please set a field type in the drop-down box next to the Global ExtType"
+    '                GoTo msg
+    '            End If
+    '            If objThis.IfNullChar <> "" And objThis.IfNullNum = "" Then
+    '                ErrorMsg = "You have set a Global IfNull without specifying a field type to apply this IfNull to." & Chr(13) & _
+    '                "Please set a field type in the drop-down box next to the Global IfNull"
+    '                GoTo Msg
+    '            End If
+    '            If objThis.InValidChar <> "" And objThis.InValidNum = "" Then
+    '                ErrorMsg = "You have set a Global InValid without specifying a field type to apply this InValid to." & Chr(13) & _
+    '                "Please set a field type in the drop-down box next to the Global InValid"
+    '                GoTo Msg
+    '            End If
+    '            'If objThis.SaveGlobals() = False Then
+    '            '    ErrorMsg = "An Error occured while saving Datastore-wide Field Properties to a file."
+    '            '    GoTo Msg
+    '            'End If
 
-msg:        If ErrorMsg <> "" Then
-                MsgBox(ErrorMsg, MsgBoxStyle.OkOnly, MsgTitle)
-                Return False
-                Exit Function
-            End If
+    'msg:        If ErrorMsg <> "" Then
+    '                MsgBox(ErrorMsg, MsgBoxStyle.OkOnly, MsgTitle)
+    '                Return False
+    '                Exit Function
+    '            End If
 
-            Return True
+    '            Return True
 
-        Catch ex As Exception
-            LogError(ex, "ctlDatastore SaveGlobalValues")
-            Return False
-        End Try
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlDatastore SaveGlobalValues")
+    '            Return False
+    '        End Try
 
-    End Function
+    '    End Function
 
     Public Function EditObj(ByRef obj As clsDatastore, ByVal cNode As TreeNode, Optional ByVal nd As TreeNode = Nothing) As clsDatastore
 
@@ -2842,14 +2842,14 @@ msg:        If ErrorMsg <> "" Then
         IsNewObj = False
         StartLoad()
         objThis = obj '//Load the form Datastore object
-        objThis.LoadAttr()
+        objThis.LoadMe()
         objThis.LoadItems(True)
         InitControls()
         ShowHideControls(objThis.DatastoreType)
 
-        If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-            objThis.LoadGlobals()
-        End If
+        'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+        '    objThis.LoadGlobals()
+        'End If
 
         'rbLU.Checked = objThis.IsLookUp
         If objThis.IsLookUp = True Then
@@ -3419,7 +3419,7 @@ msg:        If ErrorMsg <> "" Then
             Next
 
             If isfound = False Then
-                objSel.LoadItems()
+                objSel.LoadMe()
                 AddFieldsToTreeView(objSel, , tvFields, True)
             End If
             HiLiteFieldDescNodes(tvFields.Nodes(0), True, tvFields)

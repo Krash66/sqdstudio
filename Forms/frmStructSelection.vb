@@ -501,7 +501,7 @@ doAgain:
             AddFieldsToTreeView(objThis.ObjStructure, , tvFields)
 
             '//Now load selected fields and check if object is already created and user is editing it
-            If IsNewObj = False Then objThis.LoadItems()
+            If IsNewObj = False Then objThis.LoadMe()
             CheckSelectedFields()
 
             Return True

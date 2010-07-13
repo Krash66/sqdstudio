@@ -704,7 +704,7 @@ Public Class ctlStructureSelection
 
             '//Now load selected fields and check if object is already created 
             '//and user is editing it
-            If IsNewObj = False Then objThis.LoadItems()
+            If IsNewObj = False Then objThis.LoadMe()
             CheckSelectedFields()
             HiLiteFieldDescNodes(tvFields.Nodes(0), True, tvFields)
             HiLiteFieldFKeyNodes(tvFields.Nodes(0), True, tvFields)
@@ -916,7 +916,7 @@ Public Class ctlStructureSelection
             IsNewObj = False
             StartLoad()
             objThis = obj '//Load the form struct object
-            objThis.LoadItems()
+            objThis.LoadMe()
 
             UpdateFields()
             EndLoad()

@@ -2650,7 +2650,7 @@ Public Class ctlTask
                 '//Add all selection of this DS
                 For i = 0 To objDs.ObjSelections.Count - 1
                     objDsSel = objDs.ObjSelections(i)
-                    objDsSel.LoadItems()
+                    objDsSel.LoadMe()
                     '// First add a node in the tree for this DSSelection
                     ndSel = AddNode(ndDs.Nodes, objDsSel.Type, objDsSel, True)
                     '//Add all fields of this DSSelection

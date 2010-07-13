@@ -528,7 +528,7 @@ Module modRename
                 RenameStructureSelection = False
             Finally
                 'cnn.Close()
-                StrSel.LoadItems()
+                StrSel.LoadMe()
             End Try
         End If
 

@@ -13,6 +13,7 @@ Public Class clsSystem
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
+    Private m_IsLoaded As Boolean
 
     Public CopybookLib As String = ""
     Public IncludeLib As String = ""
@@ -86,7 +87,7 @@ Public Class clsSystem
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
             obj.SystemName = Me.SystemName
             obj.SystemDescription = Me.SystemDescription
@@ -106,7 +107,7 @@ Public Class clsSystem
                 Dim NewEng As clsEngine
                 '//clone all engines under system
                 For Each eng As clsEngine In Me.Engines
-                    eng.LoadItems(True, False, cmd)
+                    eng.LoadMe(cmd)
 
                     NewEng = eng.Clone(obj, True, cmd)
                     NewEng.ObjSystem = obj
@@ -174,29 +175,29 @@ Public Class clsSystem
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Update " & Me.Project.tblSystems & " set SystemName='" & FixStr(Me.SystemName) & "'" & _
-                                " , Host='" & FixStr(Me.Host) & "'" & _
-                                " , Port='" & FixStr(Me.Port) & "'" & _
-                                " , QMgr='" & FixStr(Me.QueueManager) & "'" & _
-                                " , CopybookLib='" & FixStr(Me.CopybookLib) & "'" & _
-                                " , IncludeLib='" & FixStr(Me.IncludeLib) & "'" & _
-                                " , DTDLib='" & FixStr(Me.DTDLib) & "'" & _
-                                " , DDLLib='" & FixStr(Me.DDLLib) & "'" & _
-                                " , Description='" & FixStr(Me.SystemDescription) & "'" & _
-                                " , OSType='" & FixStr(Me.OSType) & "' " & _
-                                " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = '" & _
-                                Me.Environment.Text & "'" & " And ProjectName = '" & Me.Environment.Project.Text & "'"
-            Else
-                sql = "Update " & Me.Project.tblSystems & " set SystemName='" & FixStr(Me.SystemName) & "'" & _
-                                " , SystemDescription='" & FixStr(Me.SystemDescription) & "'" & _
-                                " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = '" & _
-                                Me.Environment.Text & "'" & " And ProjectName = '" & Me.Environment.Project.Text & "'"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblSystems & " set SystemName='" & FixStr(Me.SystemName) & "'" & _
+            '                    " , Host='" & FixStr(Me.Host) & "'" & _
+            '                    " , Port='" & FixStr(Me.Port) & "'" & _
+            '                    " , QMgr='" & FixStr(Me.QueueManager) & "'" & _
+            '                    " , CopybookLib='" & FixStr(Me.CopybookLib) & "'" & _
+            '                    " , IncludeLib='" & FixStr(Me.IncludeLib) & "'" & _
+            '                    " , DTDLib='" & FixStr(Me.DTDLib) & "'" & _
+            '                    " , DDLLib='" & FixStr(Me.DDLLib) & "'" & _
+            '                    " , Description='" & FixStr(Me.SystemDescription) & "'" & _
+            '                    " , OSType='" & FixStr(Me.OSType) & "' " & _
+            '                    " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = '" & _
+            '                    Me.Environment.Text & "'" & " And ProjectName = '" & Me.Environment.Project.Text & "'"
+            'Else
+            sql = "Update " & Me.Project.tblSystems & " set SystemName='" & FixStr(Me.SystemName) & "'" & _
+                            " , SystemDescription='" & FixStr(Me.SystemDescription) & "'" & _
+                            " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = '" & _
+                            Me.Environment.Text & "'" & " And ProjectName = '" & Me.Environment.Project.Text & "'"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
-            
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -227,44 +228,44 @@ Public Class clsSystem
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
-                           ",EnvironmentName" & _
-                           ",SystemName" & _
-                           ",Host" & _
-                           ",Port" & _
-                           ",QMgr" & _
-                           ",CopybookLib" & _
-                           ",IncludeLib" & _
-                           ",DTDLib" & _
-                           ",DDLLib" & _
-                           ",Description" & _
-                           ",OSType) " & _
-                     " Values(" & Me.Environment.Parent.GetQuotedText & _
-                           "," & Me.Environment.GetQuotedText & _
-                           "," & Me.GetQuotedText & _
-                           ",'" & FixStr(Me.Host) & _
-                           "','" & FixStr(Me.Port) & _
-                           "','" & FixStr(Me.QueueManager) & _
-                           "','" & FixStr(Me.CopybookLib) & _
-                           "','" & FixStr(Me.IncludeLib) & _
-                           "','" & FixStr(Me.DTDLib) & _
-                           "','" & FixStr(Me.DDLLib) & _
-                           "','" & FixStr(SystemDescription) & _
-                           "','" & FixStr(Me.OSType) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
-                           ",EnvironmentName" & _
-                           ",SystemName" & _
-                           ",SystemDescription) " & _
-                     " Values(" & Me.Project.GetQuotedText & _
-                           "," & Me.Environment.GetQuotedText & _
-                           "," & Me.GetQuotedText & _
-                           ",'" & FixStr(SystemDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
+            '               ",EnvironmentName" & _
+            '               ",SystemName" & _
+            '               ",Host" & _
+            '               ",Port" & _
+            '               ",QMgr" & _
+            '               ",CopybookLib" & _
+            '               ",IncludeLib" & _
+            '               ",DTDLib" & _
+            '               ",DDLLib" & _
+            '               ",Description" & _
+            '               ",OSType) " & _
+            '         " Values(" & Me.Environment.Parent.GetQuotedText & _
+            '               "," & Me.Environment.GetQuotedText & _
+            '               "," & Me.GetQuotedText & _
+            '               ",'" & FixStr(Me.Host) & _
+            '               "','" & FixStr(Me.Port) & _
+            '               "','" & FixStr(Me.QueueManager) & _
+            '               "','" & FixStr(Me.CopybookLib) & _
+            '               "','" & FixStr(Me.IncludeLib) & _
+            '               "','" & FixStr(Me.DTDLib) & _
+            '               "','" & FixStr(Me.DDLLib) & _
+            '               "','" & FixStr(SystemDescription) & _
+            '               "','" & FixStr(Me.OSType) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
+                       ",EnvironmentName" & _
+                       ",SystemName" & _
+                       ",SystemDescription) " & _
+                 " Values(" & Me.Project.GetQuotedText & _
+                       "," & Me.Environment.GetQuotedText & _
+                       "," & Me.GetQuotedText & _
+                       ",'" & FixStr(SystemDescription) & "')"
 
-                Me.InsertATTR(cmd)
-            End If
-           
+            Me.InsertATTR(cmd)
+            'end If
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -302,38 +303,38 @@ Public Class clsSystem
 
         Try
             Me.Text = Me.Text.Trim
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
-                           ",EnvironmentName" & _
-                           ",SystemName" & _
-                           ",Host" & _
-                           ",Port" & _
-                           ",QMgr" & _
-                           ",CopybookLib" & _
-                           ",IncludeLib" & _
-                           ",DTDLib" & _
-                           ",DDLLib" & _
-                           ",Description" & _
-                           ",OSType) " & _
-                     " Values(" & Me.Environment.Parent.GetQuotedText & _
-                           "," & Me.Environment.GetQuotedText & _
-                           "," & Me.GetQuotedText & _
-                           ",'" & FixStr(Me.Host) & _
-                           "','" & FixStr(Me.Port) & _
-                           "','" & FixStr(Me.QueueManager) & _
-                           "','" & FixStr(Me.CopybookLib) & _
-                           "','" & FixStr(Me.IncludeLib) & _
-                           "','" & FixStr(Me.DTDLib) & _
-                           "','" & FixStr(Me.DDLLib) & _
-                           "','" & FixStr(SystemDescription) & _
-                           "','" & FixStr(Me.OSType) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName,EnvironmentName,SystemName,SystemDescription) " & _
-                     " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & _
-                     ",'" & FixStr(SystemDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
+            '               ",EnvironmentName" & _
+            '               ",SystemName" & _
+            '               ",Host" & _
+            '               ",Port" & _
+            '               ",QMgr" & _
+            '               ",CopybookLib" & _
+            '               ",IncludeLib" & _
+            '               ",DTDLib" & _
+            '               ",DDLLib" & _
+            '               ",Description" & _
+            '               ",OSType) " & _
+            '         " Values(" & Me.Environment.Parent.GetQuotedText & _
+            '               "," & Me.Environment.GetQuotedText & _
+            '               "," & Me.GetQuotedText & _
+            '               ",'" & FixStr(Me.Host) & _
+            '               "','" & FixStr(Me.Port) & _
+            '               "','" & FixStr(Me.QueueManager) & _
+            '               "','" & FixStr(Me.CopybookLib) & _
+            '               "','" & FixStr(Me.IncludeLib) & _
+            '               "','" & FixStr(Me.DTDLib) & _
+            '               "','" & FixStr(Me.DDLLib) & _
+            '               "','" & FixStr(SystemDescription) & _
+            '               "','" & FixStr(Me.OSType) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName,EnvironmentName,SystemName,SystemDescription) " & _
+                 " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & _
+                 ",'" & FixStr(SystemDescription) & "')"
 
-                Me.InsertATTR(cmd)
-            End If
+            Me.InsertATTR(cmd)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -401,70 +402,85 @@ Public Class clsSystem
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Dim cmd As System.Data.Odbc.OdbcCommand
-                Dim da As System.Data.Odbc.OdbcDataAdapter
-                Dim dt As New DataTable("temp")
-                Dim dr As DataRow
-                Dim sql As String = ""
-                'Dim strAttrs As String
-                Dim Attrib As String = ""
-                Dim Value As String = ""
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            'Dim strAttrs As String
+            Dim Attrib As String = ""
+            Dim Value As String = ""
 
-                If Incmd IsNot Nothing Then
-                    cmd = Incmd
-                Else
-                    cmd = New Odbc.OdbcCommand
-                    cmd.Connection = cnn
-                End If
-
-
-                sql = "SELECT SYSTEMATTRB,SYSTEMATTRBVALUE FROM " & Me.Project.tblSystemsATTR & _
-                " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
-                "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
-                "' AND SystemNAME='" & FixStr(Me.SystemName) & "'"
-
-                cmd.CommandText = sql
-                Log(sql)
-                da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
-                da.Fill(dt)
-                da.Dispose()
-
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    dr = dt.Rows(i)
-
-                    Attrib = GetStr(GetVal(dr("SYSTEMATTRB")))
-                    Select Case Attrib
-                        Case "COPYBOOKLIB"
-                            Me.CopybookLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "DDLLIB"
-                            Me.DDLLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "DTDLIB"
-                            Me.DTDLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "HOST"
-                            Me.Host = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "INCLUDELIB"
-                            Me.IncludeLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "OSTYPE"
-                            Me.OSType = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "PORT"
-                            Me.Port = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                        Case "QMGR"
-                            Me.QueueManager = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
-                    End Select
-                Next
-
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
+
+
+            sql = "SELECT SYSTEMATTRB,SYSTEMATTRBVALUE FROM " & Me.Project.tblSystemsATTR & _
+            " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
+            "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
+            "' AND SystemNAME='" & FixStr(Me.SystemName) & "'"
+
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            da.Fill(dt)
+            da.Dispose()
+
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetStr(GetVal(dr("SYSTEMATTRB")))
+                Select Case Attrib
+                    Case "COPYBOOKLIB"
+                        Me.CopybookLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "DDLLIB"
+                        Me.DDLLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "DTDLIB"
+                        Me.DTDLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "HOST"
+                        Me.Host = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "INCLUDELIB"
+                        Me.IncludeLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "OSTYPE"
+                        Me.OSType = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "PORT"
+                        Me.Port = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                    Case "QMGR"
+                        Me.QueueManager = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
+                End Select
+            Next
+
+            'End If
 
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsSystem LoadItems")
+            LogError(ex, "clsSystem LoadMe")
             Return False
         End Try
 
     End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
     Public Property IsRenamed() As Boolean Implements INode.IsRenamed
         Get

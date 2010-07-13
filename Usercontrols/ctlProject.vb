@@ -409,7 +409,7 @@ Public Class ctlProject
         IsNewObj = False
 
         objThis = obj
-        objThis.LoadItems()
+        objThis.LoadMe()
 
         StartLoad()
 

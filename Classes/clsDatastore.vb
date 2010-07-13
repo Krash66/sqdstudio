@@ -14,6 +14,7 @@ Public Class clsDatastore
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
+    Private m_IsLoaded As Boolean
 
     '/// Datastore Properties
     Private m_DatastoreName As String = ""
@@ -112,7 +113,7 @@ Public Class clsDatastore
         Get
             If m_ObjParent Is Nothing Then
                 If m_ObjEngine Is Nothing Then
-                    Return Me.Environment
+                    Return Nothing
                 Else
                     Return Me.Engine
                 End If
@@ -123,11 +124,13 @@ Public Class clsDatastore
         Set(ByVal Value As INode)
             If Value.Type = NODE_ENGINE Then
                 m_ObjEngine = Value
+                m_Environment = CType(Value, clsEngine).ObjSystem.Environment
             End If
-            If Value.Type = NODE_ENVIRONMENT Then
-                m_Environment = Value
-            End If
-            If Value.Type = NODE_PROC Then
+            'If Value.Type = NODE_ENVIRONMENT Then
+            '    m_Environment = Value
+            'End If
+            If Value.Type = NODE_PROC Or Value.Type = NODE_MAIN Or Value.Type = NODE_GEN Or Value.Type = NODE_LOOKUP Then
+                m_ObjEngine = CType(Value, clsTask).Engine
                 m_Environment = CType(Value, clsTask).Environment
             End If
             m_ObjParent = Value
@@ -178,11 +181,13 @@ Public Class clsDatastore
             obj.IsModified = Me.IsModified
             obj.Parent = NewParent 'Me.Parent
 
+            'obj.Engine = NewParent
+
             'Me.LoadItems()
 
             '/// completely redone to clone all child selections properly
             For Each DSSelObj As clsDSSelection In Me.ObjSelections
-                DSSelObj.LoadItems(False, False, cmd)
+                DSSelObj.LoadMe(cmd)
                 Dim dsselClone As clsDSSelection
                 dsselClone = New clsDSSelection
                 dsselClone = DSSelObj.Clone(obj, True, cmd)
@@ -350,18 +355,18 @@ Public Class clsDatastore
             tran.Commit()
 
 
-            If Me.Engine IsNot Nothing Then
-                If Me.DsDirection = DS_DIRECTION_TARGET Then
-                    '//Add  datastore in engine's targets collection
-                    AddToCollection(Me.Engine.Targets, Me, Me.GUID)
-                ElseIf Me.DsDirection = DS_DIRECTION_SOURCE Then
-                    '//Add  datastore in engine's source collection
-                    AddToCollection(Me.Engine.Sources, Me, Me.GUID)
-                End If
-            Else
-                '//Add  datastore in environment's datastore collection
-                AddToCollection(Me.Environment.Datastores, Me, Me.GUID)
+            'If Me.Engine IsNot Nothing Then
+            If Me.DsDirection = DS_DIRECTION_TARGET Then
+                '//Add  datastore in engine's targets collection
+                AddToCollection(Me.Engine.Targets, Me, Me.GUID)
+            ElseIf Me.DsDirection = DS_DIRECTION_SOURCE Then
+                '//Add  datastore in engine's source collection
+                AddToCollection(Me.Engine.Sources, Me, Me.GUID)
             End If
+            'Else
+            ''//Add  datastore in environment's datastore collection
+            'AddToCollection(Me.Environment.Datastores, Me, Me.GUID)
+            'End If
 
             AddNew = True
             Me.IsModified = False
@@ -404,9 +409,9 @@ Public Class clsDatastore
             ElseIf Me.DsDirection = DS_DIRECTION_SOURCE Then
                 '//Add  datastore in engine's source collection
                 AddToCollection(Me.Engine.Sources, Me, Me.GUID)
-            Else
-                '//Add  datastore in environment's datastore collection
-                AddToCollection(Me.Environment.Datastores, Me, Me.GUID)
+                'Else
+                '    '//Add  datastore in environment's datastore collection
+                '    AddToCollection(Me.Environment.Datastores, Me, Me.GUID)
             End If
 
             AddNew = True
@@ -425,109 +430,109 @@ Public Class clsDatastore
         Dim sql As String = ""
 
         Try
-            If Me.Engine IsNot Nothing Then
-                '/// delete from Datastore Selection Fields Table
-                sql = "Delete From " & Me.Project.tblDSselFields & _
-                " where DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            'If Me.Engine IsNot Nothing Then
+            '/// delete from Datastore Selection Fields Table
+            sql = "Delete From " & Me.Project.tblDSselFields & _
+            " where DatastoreName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            Log(sql)
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
 
-                '/// delete from Datastore Selections Table
-                sql = "Delete From " & Me.Project.tblDSselections & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '/// delete from Datastore Selections Table
+            sql = "Delete From " & Me.Project.tblDSselections & _
+            " where  DatastoreName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            Log(sql)
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
 
-                '/// Delete from Task Datastores Table
-                sql = "Delete From " & Me.Project.tblTaskDS & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '/// Delete from Task Datastores Table
+            sql = "Delete From " & Me.Project.tblTaskDS & _
+            " where  DatastoreName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            Log(sql)
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
 
-                '/// Delete From Datastores Table
-                sql = "Delete From " & Me.Project.tblDatastores & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '/// Delete From Datastores Table
+            sql = "Delete From " & Me.Project.tblDatastores & _
+            " where  DatastoreName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            Log(sql)
+            cmd.CommandText = sql
+            cmd.ExecuteNonQuery()
 
-            Else '/// datastore is under ENV
-                '/// delete from Datastore Selection Fields Table
-                sql = "Delete From " & Me.Project.tblDSselFields & _
-                " where DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Quote(DBNULL) & _
-                " AND SystemName=" & Quote(DBNULL) & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else '/// datastore is under ENV
+            '    '/// delete from Datastore Selection Fields Table
+            '    sql = "Delete From " & Me.Project.tblDSselFields & _
+            '    " where DatastoreName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            '    Log(sql)
+            '    cmd.CommandText = sql
+            '    cmd.ExecuteNonQuery()
 
-                '/// delete from Datastore Selections Table
-                sql = "Delete From " & Me.Project.tblDSselections & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Quote(DBNULL) & _
-                " AND SystemName=" & Quote(DBNULL) & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '    '/// delete from Datastore Selections Table
+            '    sql = "Delete From " & Me.Project.tblDSselections & _
+            '    " where  DatastoreName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            '    Log(sql)
+            '    cmd.CommandText = sql
+            '    cmd.ExecuteNonQuery()
 
-                '/// Delete from Task Datastores Table
-                sql = "Delete From " & Me.Project.tblTaskDS & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Quote(DBNULL) & _
-                " AND SystemName=" & Quote(DBNULL) & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '    '/// Delete from Task Datastores Table
+            '    sql = "Delete From " & Me.Project.tblTaskDS & _
+            '    " where  DatastoreName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
+            '    Log(sql)
+            '    cmd.CommandText = sql
+            '    cmd.ExecuteNonQuery()
 
-                '/// Delete From Datastores Table
-                sql = "Delete From " & Me.Project.tblDatastores & _
-                " where  DatastoreName=" & Me.GetQuotedText & _
-                " AND EngineName=" & Quote(DBNULL) & _
-                " AND SystemName=" & Quote(DBNULL) & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            '    '/// Delete From Datastores Table
+            '    sql = "Delete From " & Me.Project.tblDatastores & _
+            '    " where  DatastoreName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Log(sql)
-                cmd.CommandText = sql
-                cmd.ExecuteNonQuery()
-            End If
+            '    Log(sql)
+            '    cmd.CommandText = sql
+            '    cmd.ExecuteNonQuery()
+            'End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                '/// Delete from DatastoreATTR Table
-                Me.DeleteATTR(cmd)
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '/// Delete from DatastoreATTR Table
+            Me.DeleteATTR(cmd)
+            'End If
 
             '/// the Datastores are removed from the Database, 
             '/// now we remove the child objects from the engines
@@ -557,17 +562,17 @@ Public Class clsDatastore
             '/// Last ... remove from the engine object
             If RemoveFromParentCollection = True Then
                 '//Remove from parent collection
-                If Me.Engine Is Nothing Then
-                    RemoveFromCollection(Me.Environment.Datastores, Me.GUID)
-                Else
-                    'RemoveFromCollection(Me.Environment.Datastores, Me.GUID)
-                    If Me.DsDirection = DS_DIRECTION_SOURCE Then
-                        RemoveFromCollection(Me.Engine.Sources, Me.GUID)
-                    ElseIf Me.DsDirection = DS_DIRECTION_TARGET Then
-                        RemoveFromCollection(Me.Engine.Targets, Me.GUID)
-                    End If
+                'If Me.Engine Is Nothing Then
+                '    RemoveFromCollection(Me.Environment.Datastores, Me.GUID)
+                'Else
+                'RemoveFromCollection(Me.Environment.Datastores, Me.GUID)
+                If Me.DsDirection = DS_DIRECTION_SOURCE Then
+                    RemoveFromCollection(Me.Engine.Sources, Me.GUID)
+                ElseIf Me.DsDirection = DS_DIRECTION_TARGET Then
+                    RemoveFromCollection(Me.Engine.Targets, Me.GUID)
                 End If
             End If
+            'End If
 
             Delete = True
 
@@ -613,54 +618,15 @@ Public Class clsDatastore
                 End If
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine IsNot Nothing Then
-                    sql = "Select ds.* ,ss.description,ss.ISSYSTEMSELECT from " & Me.Project.tblDSselections & _
-                    " ds inner join " & Me.Project.tblStructSel & _
-                    " ss on ss.selectionname=ds.selectionname and ss.structurename=ds.structurename and ss.environmentname=ds.environmentname and ss.projectname=ds.projectname " & _
-                    " where ds.DatastoreName= " & Me.GetQuotedText & _
-                    " And ds.EngineName= " & Me.Engine.GetQuotedText & _
-                    " And ds.SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                    " And ds.EnvironmentName= " & Me.Environment.GetQuotedText & _
-                    " And ds.ProjectName= " & Me.Project.GetQuotedText & _
-                    " order by ds.selectionname"
-                Else
-                    sql = "Select ds.* ,ss.description,ss.ISSYSTEMSELECT from " & Me.Project.tblDSselections & _
-                    " ds inner join " & Me.Project.tblStructSel & _
-                    " ss on ss.selectionname=ds.selectionname and ss.structurename=ds.structurename and ss.environmentname=ds.environmentname and ss.projectname=ds.projectname " & _
-                    " where ds.DatastoreName= " & Me.GetQuotedText & _
-                    " And ds.EngineName= " & Quote(DBNULL) & _
-                    " And ds.SystemName= " & Quote(DBNULL) & _
-                    " And ds.EnvironmentName= " & Me.Environment.GetQuotedText & _
-                    " And ds.ProjectName= " & Me.Project.GetQuotedText & _
-                    " order by ds.selectionname"
-                End If
-
-            Else
-                If Me.Engine IsNot Nothing Then
-                    sql = "Select ds.PROJECTNAME,ds.ENVIRONMENTNAME,ds.SELECTIONNAME,ds.DESCRIPTIONNAME ,ss.selectdescription,ss.ISSYSTEMSEL from " & Me.Project.tblDSselections & _
-                                    " ds inner join " & Me.Project.tblDescriptionSelect & _
-                                    " ss on ss.selectionname=ds.selectionname and ss.descriptionname=ds.descriptionname and ss.environmentname=ds.environmentname and ss.projectname=ds.projectname " & _
-                                    " where ds.DatastoreName= " & Me.GetQuotedText & _
-                                    " And ds.EngineName= " & Me.Engine.GetQuotedText & _
-                                    " And ds.SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                                    " And ds.EnvironmentName= " & Me.Environment.GetQuotedText & _
-                                    " And ds.ProjectName= " & Me.Project.GetQuotedText & _
-                                    " order by ds.selectionname"
-                Else
-                    sql = "Select ds.PROJECTNAME,ds.ENVIRONMENTNAME,ds.SELECTIONNAME,ds.DESCRIPTIONNAME ,ss.selectdescription,ss.ISSYSTEMSEL from " & Me.Project.tblDSselections & _
-                                    " ds inner join " & Me.Project.tblDescriptionSelect & _
-                                    " ss on ss.selectionname=ds.selectionname and ss.descriptionname=ds.descriptionname and ss.environmentname=ds.environmentname and ss.projectname=ds.projectname " & _
-                                    " where ds.DatastoreName= " & Me.GetQuotedText & _
-                                    " And ds.EngineName= " & Quote(DBNULL) & _
-                                    " And ds.SystemName= " & Quote(DBNULL) & _
-                                    " And ds.EnvironmentName= " & Me.Environment.GetQuotedText & _
-                                    " And ds.ProjectName= " & Me.Project.GetQuotedText & _
-                                    " order by ds.selectionname"
-                End If
-
-            End If
-
+            sql = "Select ds.PROJECTNAME,ds.ENVIRONMENTNAME,ds.SELECTIONNAME,ds.DESCRIPTIONNAME ,ss.selectdescription,ss.ISSYSTEMSEL from " & Me.Project.tblDSselections & _
+                                " ds inner join " & Me.Project.tblDescriptionSelect & _
+                                " ss on ss.selectionname=ds.selectionname and ss.descriptionname=ds.descriptionname and ss.environmentname=ds.environmentname and ss.projectname=ds.projectname " & _
+                                " where ds.DatastoreName= " & Me.GetQuotedText & _
+                                " And ds.EngineName= " & Me.Engine.GetQuotedText & _
+                                " And ds.SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
+                                " And ds.EnvironmentName= " & Me.Environment.GetQuotedText & _
+                                " And ds.ProjectName= " & Me.Project.GetQuotedText & _
+                                " order by ds.selectionname"
 
             cmd.CommandText = sql
             Log(sql)
@@ -677,38 +643,122 @@ Public Class clsDatastore
                 Dim objSel As New clsDSSelection
                 Dim ObjStrSel As clsStructureSelection
 
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    ObjStrSel = SearchStructSelByName(Me.Environment, dr("SelectionName"), dr("StructureName"), dr("EnvironmentName"), dr("ProjectName"))
-                Else
-                    ObjStrSel = SearchStructSelByName(Me.Environment, dr("SelectionName"), dr("DescriptionName"), dr("EnvironmentName"), dr("ProjectName"))
-                End If
+                ObjStrSel = SearchStructSelByName(Me.Environment, dr("SelectionName"), dr("DescriptionName"), dr("EnvironmentName"), dr("ProjectName"))
 
                 If ObjStrSel Is Nothing Then
                     clsLogging.LogEvent("Datastore selection [" & dr("SelectionName") & "] not found under this environment")
                 Else
                     objSel = CloneSSeltoDSSel(ObjStrSel, , , cmd, TreeLode)
-                    'If TreeLode = False Then
-                    objSel.LoadItems(objSel.IsRenamed, TreeLode, cmd)
+                    objSel.LoadMe(cmd)
                     LoadDSSelectionFields(objSel, cmd, TreeLode)
-                    'End If
                     Me.ObjSelections.Add(objSel)
                 End If
             Next
 
-
             '/// Now set DSSelection Parents based on FKey
-            'If TreeLode = True Then
-            '    Return True
-            'Else
             Return SetDSselParents()
-            'End If
-
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "clsDatastore LoadItems")
             Return False
-        Finally
-            'cnn.Close()
+        End Try
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
+        Try
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            Dim Attrib As String = ""
+            Dim Value As String = ""
+            Dim tran As Odbc.OdbcTransaction = Nothing
+
+            If Incmd Is Nothing Then
+                Incmd = New Odbc.OdbcCommand
+                Incmd.Connection = cnn
+            End If
+
+            sql = "SELECT DATASTOREATTRB,DATASTOREATTRBVALUE FROM " & Me.Project.tblDatastoresATTR & _
+                        " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+                        " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
+                        " AND SYSTEMNAME=" & Quote(Me.Engine.ObjSystem.SystemName) & _
+                        " AND ENGINENAME=" & Quote(Me.Engine.EngineName) & _
+                        " AND DATASTORENAME=" & Quote(Me.DatastoreName)
+
+            Incmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
+            da.Fill(dt)
+            da.Dispose()
+
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetVal(dr("DATASTOREATTRB"))
+                Select Case Attrib
+                    Case "COLUMNDELIMITER"
+                        Me.ColumnDelimiter = GetVal(dr("DATASTOREATTRBVALUE"))
+                    Case "DATASTORETYPE"
+                        Me.DatastoreType = GetVal(dr("DATASTOREATTRBVALUE"))
+                    Case "DSACCESSMETHOD"
+                        Me.DsAccessMethod = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "DSCHARACTERCODE"
+                        Me.DsCharacterCode = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "DSDIRECTION"
+                        Me.DsDirection = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "DSPHYSICALSOURCE"
+                        Me.DsPhysicalSource = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "EXCEPTDATASTORE"
+                        Me.ExceptionDatastore = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "RESTART"
+                        Me.Restart = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "ISIMSPATHDATA"
+                        Me.IsIMSPathData = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "POLL"
+                        Me.Poll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "ISSKIPCHGCHECK"
+                        Me.IsSkipChangeCheck = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                        'Case "ONCMMTKEY"
+                        '    Me.IsCmmtKey = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "OPERATIONTYPE"
+                        Me.OperationType = GetStr(GetStr(GetVal(dr("DATASTOREATTRBVALUE"))))
+                    Case "PORT"
+                        Me.DsPort = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "QUEMGR"
+                        Me.DsQueMgr = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "ROWDELIMITER"
+                        Me.RowDelimiter = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                        'Case "SELECTEVERY"
+                        '    Me.Poll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "TEXTQUALIFIER"
+                        Me.TextQualifier = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "UOW"
+                        Me.DsUOW = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "EXTTYPECHAR"
+                        Me.ExtTypeChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "EXTTYPENUM"
+                        Me.ExtTypeNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "IFNULLCHAR"
+                        Me.IfNullChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "IFNULLNUM"
+                        Me.IfNullNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "INVALIDCHAR"
+                        Me.InValidChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "INVALIDNUM"
+                        Me.InValidNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "LOOKUP"
+                        Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                End Select
+            Next
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsDatastore LoadMe")
+            Return False
         End Try
 
     End Function
@@ -719,6 +769,15 @@ Public Class clsDatastore
         End Get
         Set(ByVal Value As Boolean)
             m_IsRenamed = Value
+        End Set
+    End Property
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
         End Set
     End Property
 
@@ -738,19 +797,19 @@ Public Class clsDatastore
 
             cmd = cnn.CreateCommand
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Select DATASTORENAME from " & Me.Project.tblDatastores & _
-                " where PROJECTNAME=" & Me.Project.GetQuotedText & _
-                " AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
-                " AND SYSTEMNAME=" & Me.Engine.ObjSystem.GetQuotedText & _
-                " AND ENGINENAME=" & Me.Engine.GetQuotedText
-            Else
-                sql = "Select DATASTORENAME from " & Me.Project.tblDatastores & _
-                " where PROJECTNAME=" & Me.Project.GetQuotedText & _
-                " AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
-                " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                " AND ENGINENAME=" & Quote(DBNULL)
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Select DATASTORENAME from " & Me.Project.tblDatastores & _
+            " where PROJECTNAME=" & Me.Project.GetQuotedText & _
+            " AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
+            " AND SYSTEMNAME=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND ENGINENAME=" & Me.Engine.GetQuotedText
+            'Else
+            'sql = "Select DATASTORENAME from " & Me.Project.tblDatastores & _
+            '" where PROJECTNAME=" & Me.Project.GetQuotedText & _
+            '" AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
+            '" AND SYSTEMNAME=" & Quote(DBNULL) & _
+            '" AND ENGINENAME=" & Quote(DBNULL)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -1099,128 +1158,128 @@ Public Class clsDatastore
                             isKey = "No"
                         End If
 
-                        If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                            If Me.Engine IsNot Nothing Then
-                                strSql = "Update " & Me.Project.tblDSselFields & " Set " & _
-                                "IsKey=" & Quote(isKey) & _
-                                ",DateFormat=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & _
-                                ",Label=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & _
-                                ",InitVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & _
-                                ",Retype=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE))) & _
-                                ",Invalid=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID))) & _
-                                ",ExtType=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE))) & _
-                                ",IdentVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL))) & _
-                                ",ForeignKey=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY))) & _
-                                ",Parent=" & Quote(objSel.Parent.Text) & _
-                                ",SEQNO=" & objFld.SeqNo & _
-                                " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                " AND ProjectName=" & Me.Project.GetQuotedText & _
-                                " AND StructureName=" & objSel.ObjStructure.GetQuotedText & _
-                                " AND SelectionName=" & objSel.GetQuotedText & _
-                                " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
-                            Else
-                                strSql = "Update " & Me.Project.tblDSselFields & " Set " & _
-                                "IsKey=" & Quote(isKey) & _
-                                ",DateFormat=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & _
-                                ",Label=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & _
-                                ",InitVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & _
-                                ",Retype=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE))) & _
-                                ",Invalid=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID))) & _
-                                ",ExtType=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE))) & _
-                                ",IdentVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL))) & _
-                                ",ForeignKey=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY))) & _
-                                ",Parent=" & Quote(objSel.Parent.Text) & _
-                                ",SEQNO=" & objFld.SeqNo & _
-                                " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                " AND ProjectName=" & Me.Project.GetQuotedText & _
-                                " AND StructureName=" & objSel.ObjStructure.GetQuotedText & _
-                                " AND SelectionName=" & objSel.GetQuotedText & _
-                                " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
-                            End If
+                        'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                        '    If Me.Engine IsNot Nothing Then
+                        '        strSql = "Update " & Me.Project.tblDSselFields & " Set " & _
+                        '        "IsKey=" & Quote(isKey) & _
+                        '        ",DateFormat=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & _
+                        '        ",Label=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & _
+                        '        ",InitVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & _
+                        '        ",Retype=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE))) & _
+                        '        ",Invalid=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID))) & _
+                        '        ",ExtType=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE))) & _
+                        '        ",IdentVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL))) & _
+                        '        ",ForeignKey=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY))) & _
+                        '        ",Parent=" & Quote(objSel.Parent.Text) & _
+                        '        ",SEQNO=" & objFld.SeqNo & _
+                        '        " WHERE  DatastoreName=" & Me.GetQuotedText & _
+                        '        " AND EngineName=" & Me.Engine.GetQuotedText & _
+                        '        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                        '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        '        " AND ProjectName=" & Me.Project.GetQuotedText & _
+                        '        " AND StructureName=" & objSel.ObjStructure.GetQuotedText & _
+                        '        " AND SelectionName=" & objSel.GetQuotedText & _
+                        '        " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
+                        '    Else
+                        '        strSql = "Update " & Me.Project.tblDSselFields & " Set " & _
+                        '        "IsKey=" & Quote(isKey) & _
+                        '        ",DateFormat=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & _
+                        '        ",Label=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & _
+                        '        ",InitVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & _
+                        '        ",Retype=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE))) & _
+                        '        ",Invalid=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID))) & _
+                        '        ",ExtType=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE))) & _
+                        '        ",IdentVal=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL))) & _
+                        '        ",ForeignKey=" & Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY))) & _
+                        '        ",Parent=" & Quote(objSel.Parent.Text) & _
+                        '        ",SEQNO=" & objFld.SeqNo & _
+                        '        " WHERE  DatastoreName=" & Me.GetQuotedText & _
+                        '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        '        " AND ProjectName=" & Me.Project.GetQuotedText & _
+                        '        " AND StructureName=" & objSel.ObjStructure.GetQuotedText & _
+                        '        " AND SelectionName=" & objSel.GetQuotedText & _
+                        '        " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
+                        '    End If
 
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
+                        '    cmd.CommandText = strSql
+                        '    Log(strSql)
+                        '    cmd.ExecuteNonQuery()
 
-                        Else '/// V3 Metadata
-                            If Me.Engine IsNot Nothing Then
-                                strSql = "Update " & Me.Project.tblDSselFields & " set " & _
-                                "ParentName= " & Quote(objSel.Parent.Text) & _
-                                ", SEQNO= " & objFld.SeqNo & _
-                                ", DescFieldDescription= " & Quote(objFld.FieldDesc) & _
-                                ", NChildren= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & _
-                                ", NLevel= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & _
-                                ", Ntimes= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & _
-                                ", NOccNo= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & _
-                                ", Datatype= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & _
-                                ", NOffSet= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & _
-                                ", NLength= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & _
-                                ", NScale= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & _
-                                ", CanNull= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & _
-                                ", ISKEY= " & Quote(isKey) & _
-                                ", OrgName= " & Quote(objFld.OrgName) & _
-                                ", DateFormat= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & _
-                                ", Label= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & _
-                                ", InitVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & _
-                                ", ReType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & _
-                                ", InValid= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & _
-                                ", ExtType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & _
-                                ", IdentVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & _
-                                ", ForeignKey= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
-                                " WHERE ProjectName=" & Me.Project.GetQuotedText & _
-                                " AND EnvironmentName=" & Me.Engine.ObjSystem.Environment.GetQuotedText & _
-                                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                " AND DatastoreName = " & Me.GetQuotedText & _
-                                " AND DescriptionName=" & objSel.ObjStructure.GetQuotedText & _
-                                " AND SelectionName=" & objSel.GetQuotedText & _
-                                " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
+                        'Else '/// V3 Metadata
+                        'If Me.Engine IsNot Nothing Then
+                        strSql = "Update " & Me.Project.tblDSselFields & " set " & _
+                        "ParentName= " & Quote(objSel.Parent.Text) & _
+                        ", SEQNO= " & objFld.SeqNo & _
+                        ", DescFieldDescription= " & Quote(objFld.FieldDesc) & _
+                        ", NChildren= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & _
+                        ", NLevel= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & _
+                        ", Ntimes= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & _
+                        ", NOccNo= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & _
+                        ", Datatype= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & _
+                        ", NOffSet= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & _
+                        ", NLength= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & _
+                        ", NScale= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & _
+                        ", CanNull= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & _
+                        ", ISKEY= " & Quote(isKey) & _
+                        ", OrgName= " & Quote(objFld.OrgName) & _
+                        ", DateFormat= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & _
+                        ", Label= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & _
+                        ", InitVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & _
+                        ", ReType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & _
+                        ", InValid= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & _
+                        ", ExtType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & _
+                        ", IdentVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & _
+                        ", ForeignKey= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                        " WHERE ProjectName=" & Me.Project.GetQuotedText & _
+                        " AND EnvironmentName=" & Me.Engine.ObjSystem.Environment.GetQuotedText & _
+                        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                        " AND EngineName=" & Me.Engine.GetQuotedText & _
+                        " AND DatastoreName = " & Me.GetQuotedText & _
+                        " AND DescriptionName=" & objSel.ObjStructure.GetQuotedText & _
+                        " AND SelectionName=" & objSel.GetQuotedText & _
+                        " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
 
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
+                        cmd.CommandText = strSql
+                        Log(strSql)
+                        cmd.ExecuteNonQuery()
 
-                            Else
-                                strSql = "Update " & Me.Project.tblDSselFields & " set " & _
-                                "ParentName= " & Quote(objSel.Parent.Text) & _
-                                ", SEQNO= " & objFld.SeqNo & _
-                                ", DescFieldDescription= " & Quote(objFld.FieldDesc) & _
-                                ", NChildren= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & _
-                                ", NLevel= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & _
-                                ", Ntimes= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & _
-                                ", NOccNo= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & _
-                                ", Datatype= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & _
-                                ", NOffSet= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & _
-                                ", NLength= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & _
-                                ", NScale= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & _
-                                ", CanNull= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & _
-                                ", ISKEY= " & Quote(isKey) & _
-                                ", OrgName= " & Quote(objFld.OrgName) & _
-                                ", DateFormat= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & _
-                                ", Label= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & _
-                                ", InitVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & _
-                                ", ReType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & _
-                                ", InValid= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & _
-                                ", ExtType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & _
-                                ", IdentVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & _
-                                ", ForeignKey= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
-                                " WHERE ProjectName=" & Me.Project.GetQuotedText & _
-                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                " AND DatastoreName = " & Me.GetQuotedText & _
-                                " AND DescriptionName=" & objSel.ObjStructure.GetQuotedText & _
-                                " AND SelectionName=" & objSel.GetQuotedText & _
-                                " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
+                        'Else
+                        '    strSql = "Update " & Me.Project.tblDSselFields & " set " & _
+                        '    "ParentName= " & Quote(objSel.Parent.Text) & _
+                        '    ", SEQNO= " & objFld.SeqNo & _
+                        '    ", DescFieldDescription= " & Quote(objFld.FieldDesc) & _
+                        '    ", NChildren= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & _
+                        '    ", NLevel= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & _
+                        '    ", Ntimes= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & _
+                        '    ", NOccNo= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & _
+                        '    ", Datatype= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & _
+                        '    ", NOffSet= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & _
+                        '    ", NLength= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & _
+                        '    ", NScale= " & objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & _
+                        '    ", CanNull= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & _
+                        '    ", ISKEY= " & Quote(isKey) & _
+                        '    ", OrgName= " & Quote(objFld.OrgName) & _
+                        '    ", DateFormat= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & _
+                        '    ", Label= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & _
+                        '    ", InitVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & _
+                        '    ", ReType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & _
+                        '    ", InValid= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & _
+                        '    ", ExtType= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & _
+                        '    ", IdentVal= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & _
+                        '    ", ForeignKey= " & Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                        '    " WHERE ProjectName=" & Me.Project.GetQuotedText & _
+                        '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        '    " AND DatastoreName = " & Me.GetQuotedText & _
+                        '    " AND DescriptionName=" & objSel.ObjStructure.GetQuotedText & _
+                        '    " AND SelectionName=" & objSel.GetQuotedText & _
+                        '    " AND FieldName=" & objFld.GetQuotedText '// modified to add FKey 11/8/2006 by TK
 
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
+                        '    cmd.CommandText = strSql
+                        '    Log(strSql)
+                        '    cmd.ExecuteNonQuery()
 
-                            End If
-                        End If
+                        'End If
+                        'End If
 
                         '//After we save reset the IsModified flag for field
                         objFld.IsModified = False
@@ -1249,173 +1308,173 @@ Public Class clsDatastore
         '// modified by TK 11/9/2006
         '// changed by TK and KS 11/3/06
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine IsNot Nothing Then
-                    strSql = "INSERT INTO " & Me.Project.tblDatastores & _
-                    "(ProjectName" & _
-                    ",EnvironmentName" & _
-                    ",SystemName" & _
-                    ",EngineName" & _
-                    ",DatastoreName" & _
-                    ",DatastoreType" & _
-                    ",DsPhysicalSource" & _
-                    ",DsDirection" & _
-                    ",DsAccessMethod" & _
-                    ",DsCharacterCode" & _
-                    ",IsOrdered" & _
-                    ",IsIMSPathData" & _
-                    ",ISSKIPCHGCHECK" & _
-                    ",IsBeforeImage" & _
-                    ",EXCEPTDATASTORE" & _
-                    ",TextQualifier" & _
-                    ",ColumnDelimiter" & _
-                    ",RowDelimiter" & _
-                    ",Description" & _
-                    ",Operationtype" & _
-                    ",Port" & _
-                    ",QueMgr" & _
-                    ",UOW" & _
-                    ",SelectEvery" & _
-                    ",OnCmmtKey" & _
-                    ") " & _
-                    " Values(" & _
-                    Me.Project.GetQuotedText & _
-                    "," & Me.Environment.GetQuotedText & _
-                    "," & Me.Engine.ObjSystem.GetQuotedText & _
-                    "," & Me.Engine.GetQuotedText & _
-                    "," & Me.GetQuotedText & _
-                    "," & FixStr(Me.DatastoreType) & _
-                    ",'" & FixStr(Me.DsPhysicalSource) & "'" & _
-                    ",'" & FixStr(Me.DsDirection) & "'" & _
-                    ",'" & FixStr(Me.DsAccessMethod) & "'" & _
-                    ",'" & FixStr(Me.DsCharacterCode) & "'" & _
-                    ",'" & FixStr(Me.IsIMSPathData) & "'" & _
-                    ",'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
-                    ",'" & FixStr("0") & "'" & _
-                    ",'" & FixStr(Me.ExceptionDatastore) & "'" & _
-                    ",'" & FixStr(Me.TextQualifier) & "'" & _
-                    ",'" & FixStr(Me.ColumnDelimiter) & "'" & _
-                    ",'" & FixStr(Me.RowDelimiter) & "'" & _
-                    ",'" & FixStr(Me.DatastoreDescription) & "'" & _
-                    ",'" & FixStr(Me.OperationType) & "'" & _
-                    ",'" & FixStr(Me.DsPort) & "'" & _
-                    ",'" & FixStr(Me.DsQueMgr) & "'" & _
-                    ",'" & FixStr(Me.DsUOW) & "'" & _
-                    ",'" & FixStr(Me.Poll) & "'" & _
-                    ",'" & FixStr("0") & "'" & _
-                    ")"
-                Else
-                    strSql = "INSERT INTO " & Me.Project.tblDatastores & _
-                    "(ProjectName" & _
-                    ",EnvironmentName" & _
-                    ",SystemName" & _
-                    ",EngineName" & _
-                    ",DatastoreName" & _
-                    ",DatastoreType" & _
-                    ",DsPhysicalSource" & _
-                    ",DsDirection" & _
-                    ",DsAccessMethod" & _
-                    ",DsCharacterCode" & _
-                    ",IsOrdered" & _
-                    ",IsIMSPathData" & _
-                    ",ISSKIPCHGCHECK" & _
-                    ",IsBeforeImage" & _
-                    ",EXCEPTDATASTORE" & _
-                    ",TextQualifier" & _
-                    ",ColumnDelimiter" & _
-                    ",RowDelimiter" & _
-                    ",Description" & _
-                    ",Operationtype" & _
-                    ",Port" & _
-                    ",QueMgr" & _
-                    ",UOW" & _
-                    ",SelectEvery" & _
-                    ",OnCmmtKey" & _
-                    ") " & _
-                    " Values(" & _
-                    Me.Project.GetQuotedText & _
-                    "," & Me.Environment.GetQuotedText & _
-                    "," & Quote(DBNULL) & _
-                    "," & Quote(DBNULL) & _
-                    "," & Me.GetQuotedText & _
-                    "," & FixStr(Me.DatastoreType) & _
-                    ",'" & FixStr(Me.DsPhysicalSource) & "'" & _
-                    ",'" & FixStr(Me.DsDirection) & "'" & _
-                    ",'" & FixStr(Me.DsAccessMethod) & "'" & _
-                    ",'" & FixStr(Me.DsCharacterCode) & "'" & _
-                    ",'" & FixStr("0") & "'" & _
-                    ",'" & FixStr(Me.IsIMSPathData) & "'" & _
-                    ",'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
-                    ",'" & FixStr("0") & "'" & _
-                    ",'" & FixStr(Me.ExceptionDatastore) & "'" & _
-                    ",'" & FixStr(Me.TextQualifier) & "'" & _
-                    ",'" & FixStr(Me.ColumnDelimiter) & "'" & _
-                    ",'" & FixStr(Me.RowDelimiter) & "'" & _
-                    ",'" & FixStr(Me.DatastoreDescription) & "'" & _
-                    ",'" & FixStr(Me.OperationType) & "'" & _
-                    ",'" & FixStr(Me.DsPort) & "'" & _
-                    ",'" & FixStr(Me.DsQueMgr) & "'" & _
-                    ",'" & FixStr(Me.DsUOW) & "'" & _
-                    ",'" & FixStr(Me.Poll) & "'" & _
-                    ",'" & FixStr("0") & "'" & _
-                    ")"
-                End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    If Me.Engine IsNot Nothing Then
+            '        strSql = "INSERT INTO " & Me.Project.tblDatastores & _
+            '        "(ProjectName" & _
+            '        ",EnvironmentName" & _
+            '        ",SystemName" & _
+            '        ",EngineName" & _
+            '        ",DatastoreName" & _
+            '        ",DatastoreType" & _
+            '        ",DsPhysicalSource" & _
+            '        ",DsDirection" & _
+            '        ",DsAccessMethod" & _
+            '        ",DsCharacterCode" & _
+            '        ",IsOrdered" & _
+            '        ",IsIMSPathData" & _
+            '        ",ISSKIPCHGCHECK" & _
+            '        ",IsBeforeImage" & _
+            '        ",EXCEPTDATASTORE" & _
+            '        ",TextQualifier" & _
+            '        ",ColumnDelimiter" & _
+            '        ",RowDelimiter" & _
+            '        ",Description" & _
+            '        ",Operationtype" & _
+            '        ",Port" & _
+            '        ",QueMgr" & _
+            '        ",UOW" & _
+            '        ",SelectEvery" & _
+            '        ",OnCmmtKey" & _
+            '        ") " & _
+            '        " Values(" & _
+            '        Me.Project.GetQuotedText & _
+            '        "," & Me.Environment.GetQuotedText & _
+            '        "," & Me.Engine.ObjSystem.GetQuotedText & _
+            '        "," & Me.Engine.GetQuotedText & _
+            '        "," & Me.GetQuotedText & _
+            '        "," & FixStr(Me.DatastoreType) & _
+            '        ",'" & FixStr(Me.DsPhysicalSource) & "'" & _
+            '        ",'" & FixStr(Me.DsDirection) & "'" & _
+            '        ",'" & FixStr(Me.DsAccessMethod) & "'" & _
+            '        ",'" & FixStr(Me.DsCharacterCode) & "'" & _
+            '        ",'" & FixStr(Me.IsIMSPathData) & "'" & _
+            '        ",'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
+            '        ",'" & FixStr("0") & "'" & _
+            '        ",'" & FixStr(Me.ExceptionDatastore) & "'" & _
+            '        ",'" & FixStr(Me.TextQualifier) & "'" & _
+            '        ",'" & FixStr(Me.ColumnDelimiter) & "'" & _
+            '        ",'" & FixStr(Me.RowDelimiter) & "'" & _
+            '        ",'" & FixStr(Me.DatastoreDescription) & "'" & _
+            '        ",'" & FixStr(Me.OperationType) & "'" & _
+            '        ",'" & FixStr(Me.DsPort) & "'" & _
+            '        ",'" & FixStr(Me.DsQueMgr) & "'" & _
+            '        ",'" & FixStr(Me.DsUOW) & "'" & _
+            '        ",'" & FixStr(Me.Poll) & "'" & _
+            '        ",'" & FixStr("0") & "'" & _
+            '        ")"
+            '    Else
+            '        strSql = "INSERT INTO " & Me.Project.tblDatastores & _
+            '        "(ProjectName" & _
+            '        ",EnvironmentName" & _
+            '        ",SystemName" & _
+            '        ",EngineName" & _
+            '        ",DatastoreName" & _
+            '        ",DatastoreType" & _
+            '        ",DsPhysicalSource" & _
+            '        ",DsDirection" & _
+            '        ",DsAccessMethod" & _
+            '        ",DsCharacterCode" & _
+            '        ",IsOrdered" & _
+            '        ",IsIMSPathData" & _
+            '        ",ISSKIPCHGCHECK" & _
+            '        ",IsBeforeImage" & _
+            '        ",EXCEPTDATASTORE" & _
+            '        ",TextQualifier" & _
+            '        ",ColumnDelimiter" & _
+            '        ",RowDelimiter" & _
+            '        ",Description" & _
+            '        ",Operationtype" & _
+            '        ",Port" & _
+            '        ",QueMgr" & _
+            '        ",UOW" & _
+            '        ",SelectEvery" & _
+            '        ",OnCmmtKey" & _
+            '        ") " & _
+            '        " Values(" & _
+            '        Me.Project.GetQuotedText & _
+            '        "," & Me.Environment.GetQuotedText & _
+            '        "," & Quote(DBNULL) & _
+            '        "," & Quote(DBNULL) & _
+            '        "," & Me.GetQuotedText & _
+            '        "," & FixStr(Me.DatastoreType) & _
+            '        ",'" & FixStr(Me.DsPhysicalSource) & "'" & _
+            '        ",'" & FixStr(Me.DsDirection) & "'" & _
+            '        ",'" & FixStr(Me.DsAccessMethod) & "'" & _
+            '        ",'" & FixStr(Me.DsCharacterCode) & "'" & _
+            '        ",'" & FixStr("0") & "'" & _
+            '        ",'" & FixStr(Me.IsIMSPathData) & "'" & _
+            '        ",'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
+            '        ",'" & FixStr("0") & "'" & _
+            '        ",'" & FixStr(Me.ExceptionDatastore) & "'" & _
+            '        ",'" & FixStr(Me.TextQualifier) & "'" & _
+            '        ",'" & FixStr(Me.ColumnDelimiter) & "'" & _
+            '        ",'" & FixStr(Me.RowDelimiter) & "'" & _
+            '        ",'" & FixStr(Me.DatastoreDescription) & "'" & _
+            '        ",'" & FixStr(Me.OperationType) & "'" & _
+            '        ",'" & FixStr(Me.DsPort) & "'" & _
+            '        ",'" & FixStr(Me.DsQueMgr) & "'" & _
+            '        ",'" & FixStr(Me.DsUOW) & "'" & _
+            '        ",'" & FixStr(Me.Poll) & "'" & _
+            '        ",'" & FixStr("0") & "'" & _
+            '        ")"
+            '    End If
 
-            Else '/// V3 meta
-                If Me.Engine IsNot Nothing Then
-                    strSql = "INSERT INTO " & Me.Project.tblDatastores & "(" & _
-                                    "ProjectName" & _
-                                    ",EnvironmentName" & _
-                                    ",SystemName" & _
-                                    ",EngineName" & _
-                                    ",DatastoreName" & _
-                                    ",DSDIRECTION" & _
-                                    ",DSTYPE" & _
-                                    ",DATASTOREDESCRIPTION" & _
-                                    ") " & _
-                                    " Values(" & _
-                                    Me.Project.GetQuotedText & _
-                                    "," & Me.Environment.GetQuotedText & _
-                                    "," & Me.Engine.ObjSystem.GetQuotedText & _
-                                    "," & Me.Engine.GetQuotedText & _
-                                    "," & Me.GetQuotedText & _
-                                    "," & Quote(Me.DsDirection) & _
-                                    "," & Me.DatastoreType & _
-                                    "," & Quote(Me.DatastoreDescription) & _
-                                    ")"
-                Else
-                    strSql = "INSERT INTO " & Me.Project.tblDatastores & "(" & _
-                                    "ProjectName" & _
-                                    ",EnvironmentName" & _
-                                    ",SystemName" & _
-                                    ",EngineName" & _
-                                    ",DatastoreName" & _
-                                    ",DSDIRECTION" & _
-                                    ",DSTYPE" & _
-                                    ",DATASTOREDESCRIPTION" & _
-                                    ") " & _
-                                    " Values(" & _
-                                    Me.Project.GetQuotedText & _
-                                    "," & Me.Environment.GetQuotedText & _
-                                    "," & Quote(DBNULL) & _
-                                    "," & Quote(DBNULL) & _
-                                    "," & Me.GetQuotedText & _
-                                    "," & Quote(Me.DsDirection) & _
-                                    "," & Me.DatastoreType & _
-                                    "," & Quote(Me.DatastoreDescription) & _
-                                    ")"
-                End If
+            'Else '/// V3 meta
+            'If Me.Engine IsNot Nothing Then
+            strSql = "INSERT INTO " & Me.Project.tblDatastores & "(" & _
+                            "ProjectName" & _
+                            ",EnvironmentName" & _
+                            ",SystemName" & _
+                            ",EngineName" & _
+                            ",DatastoreName" & _
+                            ",DSDIRECTION" & _
+                            ",DSTYPE" & _
+                            ",DATASTOREDESCRIPTION" & _
+                            ") " & _
+                            " Values(" & _
+                            Me.Project.GetQuotedText & _
+                            "," & Me.Environment.GetQuotedText & _
+                            "," & Me.Engine.ObjSystem.GetQuotedText & _
+                            "," & Me.Engine.GetQuotedText & _
+                            "," & Me.GetQuotedText & _
+                            "," & Quote(Me.DsDirection) & _
+                            "," & Me.DatastoreType & _
+                            "," & Quote(Me.DatastoreDescription) & _
+                            ")"
+            'Else
+            'strSql = "INSERT INTO " & Me.Project.tblDatastores & "(" & _
+            '                "ProjectName" & _
+            '                ",EnvironmentName" & _
+            '                ",SystemName" & _
+            '                ",EngineName" & _
+            '                ",DatastoreName" & _
+            '                ",DSDIRECTION" & _
+            '                ",DSTYPE" & _
+            '                ",DATASTOREDESCRIPTION" & _
+            '                ") " & _
+            '                " Values(" & _
+            '                Me.Project.GetQuotedText & _
+            '                "," & Me.Environment.GetQuotedText & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Me.GetQuotedText & _
+            '                "," & Quote(Me.DsDirection) & _
+            '                "," & Me.DatastoreType & _
+            '                "," & Quote(Me.DatastoreDescription) & _
+            '                ")"
+            'End If
 
-            End If
+            'End If
 
             cmd.CommandText = strSql
             Log(strSql)
             cmd.ExecuteNonQuery()
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
 
             Return True
 
@@ -1471,179 +1530,43 @@ Public Class clsDatastore
                 If IsAdded = True Then
                     '//Add datastore selection and its fields related to datastore
 
-                    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        '//delete any previous record to prevent any possible duplicate entries
-                        If Me.Engine IsNot Nothing Then
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
+                    
+                    '//delete any previous record to prevent any possible duplicate entries
+                    strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
+                    " WHERE  DatastoreName= " & Me.GetQuotedText & _
+                    " And EngineName= " & Me.Engine.GetQuotedText & _
+                    " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
+                    " And EnvironmentName= " & Me.Environment.GetQuotedText & _
+                    " And ProjectName= " & Me.Project.GetQuotedText & _
+                    " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
+                    " And SelectionName= " & selNew.GetQuotedText
 
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
+                    cmd.CommandText = strSql
+                    Log(strSql)
+                    cmd.ExecuteNonQuery()
 
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
+                    strSql = "DELETE FROM " & Me.Project.tblDSselections & _
+                    " WHERE  DatastoreName= " & Me.GetQuotedText & _
+                    " And EngineName= " & Me.Engine.GetQuotedText & _
+                    " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
+                    " And EnvironmentName= " & Me.Environment.GetQuotedText & _
+                    " And ProjectName= " & Me.Project.GetQuotedText & _
+                    " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
+                    " And SelectionName= " & selNew.GetQuotedText
 
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
+                    cmd.CommandText = strSql
+                    Log(strSql)
+                    cmd.ExecuteNonQuery()
 
-                            '//Add entry to DSSELECTIONS
+                    '//Add entry to DSSELECTIONS
 
-                            strSql = "INSERT INTO " & Me.Project.tblDSselections & _
-                            "(DatastoreName,DsDirection,EngineName,SystemName,EnvironmentName,ProjectName,StructureName,SelectionName,Parent) Values(" & _
-                            Me.GetQuotedText & ",'" & _
-                            Me.DsDirection & "'," & _
-                            Me.Engine.GetQuotedText & "," & _
-                            Me.Engine.ObjSystem.GetQuotedText & "," & _
-                            Me.Environment.GetQuotedText & "," & _
-                            Me.Project.GetQuotedText & "," & _
-                            selNew.ObjStructure.GetQuotedText & "," & _
-                            selNew.GetQuotedText & "," & _
-                            selNew.Parent.GetQuotedText & ")"
+                    strSql = "INSERT INTO " & Me.Project.tblDSselections & "(DatastoreName,EngineName,SystemName,EnvironmentName,ProjectName,DescriptionName,SelectionName,Parent) Values(" & Me.GetQuotedText & "," & Me.Engine.GetQuotedText & "," & Me.Engine.ObjSystem.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.Project.GetQuotedText & "," & selNew.ObjStructure.GetQuotedText & "," & selNew.GetQuotedText & "," & selNew.Parent.GetQuotedText & ")"
 
-                            Log(strSql)
-                            cmd.CommandText = strSql
-                            cmd.ExecuteNonQuery()
+                    Log(strSql)
+                    cmd.CommandText = strSql
+                    cmd.ExecuteNonQuery()
 
-                        Else
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//Add entry to DSSELECTIONS
-
-                            strSql = "INSERT INTO " & Me.Project.tblDSselections & _
-                            "(DatastoreName,DsDirection,EngineName,SystemName,EnvironmentName,ProjectName,StructureName,SelectionName,Parent) Values(" & _
-                            Me.GetQuotedText & ",'" & _
-                            Me.DsDirection & "'," & _
-                            Me.Environment.GetQuotedText & "," & _
-                            Me.Project.GetQuotedText & "," & _
-                            selNew.ObjStructure.GetQuotedText & "," & _
-                            selNew.GetQuotedText & "," & _
-                            selNew.Parent.GetQuotedText & ")"
-
-                            Log(strSql)
-                            cmd.CommandText = strSql
-                            cmd.ExecuteNonQuery()
-
-                        End If
-
-                    Else  'Version 3 ##########################
-                        If Me.Engine IsNot Nothing Then
-                            '//delete any previous record to prevent any possible duplicate entries
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//Add entry to DSSELECTIONS
-
-                            strSql = "INSERT INTO " & Me.Project.tblDSselections & "(DatastoreName,EngineName,SystemName,EnvironmentName,ProjectName,DescriptionName,SelectionName,Parent) Values(" & Me.GetQuotedText & "," & Me.Engine.GetQuotedText & "," & Me.Engine.ObjSystem.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.Project.GetQuotedText & "," & selNew.ObjStructure.GetQuotedText & "," & selNew.GetQuotedText & "," & selNew.Parent.GetQuotedText & ")"
-
-                            Log(strSql)
-                            cmd.CommandText = strSql
-                            cmd.ExecuteNonQuery()
-
-                        Else
-                            '//delete any previous record to prevent any possible duplicate entries
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                           " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                           " And EngineName= " & Quote(DBNULL) & _
-                           " And SystemName= " & Quote(DBNULL) & _
-                           " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                           " And ProjectName= " & Me.Project.GetQuotedText & _
-                           " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
-                           " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " WHERE  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Quote(DBNULL) & _
-                            " And SystemName= " & Quote(DBNULL) & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selNew.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selNew.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//Add entry to DSSELECTIONS
-
-                            strSql = "INSERT INTO " & Me.Project.tblDSselections & _
-                            "(DatastoreName,EngineName,SystemName,EnvironmentName,ProjectName,DescriptionName,SelectionName,Parent) Values(" & _
-                            Me.GetQuotedText & "," & _
-                            Quote(DBNULL) & "," & _
-                            Quote(DBNULL) & "," & _
-                            Me.Environment.GetQuotedText & "," & _
-                            Me.Project.GetQuotedText & "," & _
-                            selNew.ObjStructure.GetQuotedText & "," & _
-                            selNew.GetQuotedText & "," & _
-                            selNew.Parent.GetQuotedText & ")"
-
-                            Log(strSql)
-                            cmd.CommandText = strSql
-                            cmd.ExecuteNonQuery()
-                        End If
-
-                    End If
-
+                
 
                     '//Now add fields of current selection in the loop
                     'selNew.LoadItems()
@@ -1653,245 +1576,76 @@ Public Class clsDatastore
                     cnt = selNew.DSSelectionFields.Count
                     For j = 0 To cnt - 1
                         objFld = selNew.DSSelectionFields(j)
-                        If Me.Engine IsNot Nothing Then
-                            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                                strSql = "INSERT INTO " & Me.Project.tblDSselFields & " (" & _
-                                                    "ProjectName," & _
-                                                    "EnvironmentName," & _
-                                                    "SystemName," & _
-                                                    "EngineName," & _
-                                                    "DatastoreName," & _
-                                                    "DsDirection," & _
-                                                    "StructureName," & _
-                                                    "SelectionName, " & _
-                                                    "FieldName, " & _
-                                                    "IsKey, " & _
-                                                    "DateFormat, " & _
-                                                    "Label, " & _
-                                                    "Initval, " & _
-                                                    "Retype, " & _
-                                                    "Invalid, " & _
-                                                    "ExtType, " & _
-                                                    "Identval, " & _
-                                                    "ForeignKey, " & _
-                                                    "Parent," & _
-                                                    "SEQNO)" & _
-                                                "Values( " & _
-                                                    Me.Project.GetQuotedText & "," & _
-                                                    Me.Engine.ObjSystem.Environment.GetQuotedText & "," & _
-                                                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                                    Me.Engine.GetQuotedText & "," & _
-                                                    Me.GetQuotedText & "," & _
-                                                    "'" & Me.DsDirection & "'," & _
-                                                    selNew.ObjStructure.GetQuotedText & "," & _
-                                                    selNew.GetQuotedText & "," & _
-                                                    objFld.GetQuotedText & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_ISKEY)) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
-                                                   Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY)) & "," & _
-                                                   selNew.Parent.GetQuotedText & "," & _
-                                                   objFld.SeqNo & ");"  '//TK 11/8/06 and 4/5/07
 
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
+                        strSql = "INSERT INTO " & Me.Project.tblDSselFields & " (" & _
+                        "ProjectName," & _
+                        "EnvironmentName," & _
+                        "SystemName," & _
+                        "EngineName," & _
+                        "DatastoreName," & _
+                        "DescriptionName, " & _
+                        "SelectionName, " & _
+                        "FieldName, " & _
+                        "ParentName, " & _
+                        "SEQNO, " & _
+                        "DescFieldDescription, " & _
+                        "NChildren, " & _
+                        "NLevel, " & _
+                        "Ntimes, " & _
+                        "NOccNo, " & _
+                        "Datatype, " & _
+                        "NOffSet, " & _
+                        "NLength, " & _
+                        "NScale, " & _
+                        "CanNull, " & _
+                        "ISKEY, " & _
+                        "OrgName, " & _
+                        "DateFormat, " & _
+                        "Label, " & _
+                        "InitVal, " & _
+                        "ReType, " & _
+                        "InValid, " & _
+                        "ExtType, " & _
+                        "IdentVal, " & _
+                        "ForeignKey) " & _
+                        "Values( " & _
+                        Me.Project.GetQuotedText & "," & _
+                        Me.Engine.ObjSystem.Environment.GetQuotedText & "," & _
+                        Me.Engine.ObjSystem.GetQuotedText & "," & _
+                        Me.Engine.GetQuotedText & "," & _
+                        Me.GetQuotedText & "," & _
+                        selNew.ObjStructure.GetQuotedText & "," & _
+                        selNew.GetQuotedText & "," & _
+                        objFld.GetQuotedText & "," & _
+                        Quote(objFld.ParentName) & "," & _
+                        objFld.SeqNo & "," & _
+                        Quote(objFld.FieldDesc) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
+                        objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
+                        Quote(objFld.OrgName) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
+                        Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                        ");" '//TK 11/8/06 and 4/5/07 and 2/15/09
 
-                            Else
-                                strSql = "INSERT INTO " & Me.Project.tblDSselFields & " (" & _
-                                "ProjectName," & _
-                                "EnvironmentName," & _
-                                "SystemName," & _
-                                "EngineName," & _
-                                "DatastoreName," & _
-                                "DescriptionName, " & _
-                                "SelectionName, " & _
-                                "FieldName, " & _
-                                "ParentName, " & _
-                                "SEQNO, " & _
-                                "DescFieldDescription, " & _
-                                "NChildren, " & _
-                                "NLevel, " & _
-                                "Ntimes, " & _
-                                "NOccNo, " & _
-                                "Datatype, " & _
-                                "NOffSet, " & _
-                                "NLength, " & _
-                                "NScale, " & _
-                                "CanNull, " & _
-                                "ISKEY, " & _
-                                "OrgName, " & _
-                                "DateFormat, " & _
-                                "Label, " & _
-                                "InitVal, " & _
-                                "ReType, " & _
-                                "InValid, " & _
-                                "ExtType, " & _
-                                "IdentVal, " & _
-                                "ForeignKey) " & _
-                                "Values( " & _
-                                Me.Project.GetQuotedText & "," & _
-                                Me.Engine.ObjSystem.Environment.GetQuotedText & "," & _
-                                Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                Me.Engine.GetQuotedText & "," & _
-                                Me.GetQuotedText & "," & _
-                                selNew.ObjStructure.GetQuotedText & "," & _
-                                selNew.GetQuotedText & "," & _
-                                objFld.GetQuotedText & "," & _
-                                Quote(objFld.ParentName) & "," & _
-                                objFld.SeqNo & "," & _
-                                Quote(objFld.FieldDesc) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
-                                Quote(objFld.OrgName) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
-                                ");" '//TK 11/8/06 and 4/5/07 and 2/15/09
+                        cmd.CommandText = strSql
+                        Log(strSql)
+                        cmd.ExecuteNonQuery()
 
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
 
-                            End If
-                        Else
-                            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                                strSql = "INSERT INTO " & Me.Project.tblDSselFields & " (" & _
-                                                    "ProjectName," & _
-                                                    "EnvironmentName," & _
-                                                    "SystemName," & _
-                                                    "EngineName," & _
-                                                    "DatastoreName," & _
-                                                    "DsDirection," & _
-                                                    "StructureName," & _
-                                                    "SelectionName, " & _
-                                                    "FieldName, " & _
-                                                    "IsKey, " & _
-                                                    "DateFormat, " & _
-                                                    "Label, " & _
-                                                    "Initval, " & _
-                                                    "Retype, " & _
-                                                    "Invalid, " & _
-                                                    "ExtType, " & _
-                                                    "Identval, " & _
-                                                    "ForeignKey, " & _
-                                                    "Parent," & _
-                                                    "SEQNO)" & _
-                                                "Values( " & _
-                                                    Me.Project.GetQuotedText & "," & _
-                                                    Me.Environment.GetQuotedText & "," & _
-                                                    Quote(DBNULL) & "," & _
-                                                    Quote(DBNULL) & "," & _
-                                                    Me.GetQuotedText & "," & _
-                                                    "'" & Me.DsDirection & "'," & _
-                                                    selNew.ObjStructure.GetQuotedText & "," & _
-                                                    selNew.GetQuotedText & "," & _
-                                                    objFld.GetQuotedText & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_ISKEY)) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT))) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL))) & "," & _
-                                                    Quote(FixStr(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL))) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
-                                                    Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
-                                                   Quote(objFld.GetFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY)) & "," & _
-                                                   selNew.Parent.GetQuotedText & "," & _
-                                                   objFld.SeqNo & ");"  '//TK 11/8/06 and 4/5/07
-
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
-
-                            Else
-                                strSql = "INSERT INTO " & Me.Project.tblDSselFields & " (" & _
-                                "ProjectName," & _
-                                "EnvironmentName," & _
-                                "SystemName," & _
-                                "EngineName," & _
-                                "DatastoreName," & _
-                                "DescriptionName, " & _
-                                "SelectionName, " & _
-                                "FieldName, " & _
-                                "ParentName, " & _
-                                "SEQNO, " & _
-                                "DescFieldDescription, " & _
-                                "NChildren, " & _
-                                "NLevel, " & _
-                                "Ntimes, " & _
-                                "NOccNo, " & _
-                                "Datatype, " & _
-                                "NOffSet, " & _
-                                "NLength, " & _
-                                "NScale, " & _
-                                "CanNull, " & _
-                                "ISKEY, " & _
-                                "OrgName, " & _
-                                "DateFormat, " & _
-                                "Label, " & _
-                                "InitVal, " & _
-                                "ReType, " & _
-                                "InValid, " & _
-                                "ExtType, " & _
-                                "IdentVal, " & _
-                                "ForeignKey) " & _
-                                "Values( " & _
-                                Me.Project.GetQuotedText & "," & _
-                                Me.Environment.GetQuotedText & "," & _
-                                Quote(DBNULL) & "," & _
-                                Quote(DBNULL) & "," & _
-                                Me.GetQuotedText & "," & _
-                                selNew.ObjStructure.GetQuotedText & "," & _
-                                selNew.GetQuotedText & "," & _
-                                objFld.GetQuotedText & "," & _
-                                Quote(selNew.Parent.Text) & "," & _
-                                objFld.SeqNo & "," & _
-                                Quote(objFld.FieldDesc) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
-                                objFld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
-                                Quote(objFld.OrgName) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
-                                Quote(objFld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
-                                ");" '//TK 11/8/06 and 4/5/07 and 2/15/09
-
-                                cmd.CommandText = strSql
-                                Log(strSql)
-                                cmd.ExecuteNonQuery()
-
-                            End If
-                        End If
 
                     Next '//end field loop
                 End If
@@ -1912,100 +1666,100 @@ Public Class clsDatastore
         Dim strSql As String = ""
 
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine IsNot Nothing Then
-                    '//changed : IsbeforeImage added by npatel on 8/10/05
-                    strSql = "Update " & Me.Project.tblDatastores & " Set " & _
-                    "DatastoreName=" & "'" & FixStr(Me.DatastoreName) & "'" & _
-                    ",DatastoreType=" & FixStr(Me.DatastoreType) & _
-                    ",DsPhysicalSource=" & "'" & FixStr(Me.DsPhysicalSource) & "'" & _
-                    ",DsDirection=" & "'" & FixStr(Me.DsDirection) & "'" & _
-                    ",DsAccessMethod=" & "'" & FixStr(Me.DsAccessMethod) & "'" & _
-                    ",DsCharacterCode=" & "'" & FixStr(Me.DsCharacterCode) & "'" & _
-                    ",IsOrdered=" & "'" & FixStr("0") & "'" & _
-                    ",IsIMSPathData=" & "'" & FixStr(Me.IsIMSPathData) & "'" & _
-                    ",ISSKIPCHGCHECK=" & "'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
-                    ",IsBeforeImage=" & "'" & FixStr("0") & "'" & _
-                    ",EXCEPTDATASTORE=" & "'" & FixStr(Me.ExceptionDatastore) & "'" & _
-                    ",TextQualifier=" & "'" & FixStr(Me.TextQualifier) & "'" & _
-                    ",ColumnDelimiter=" & "'" & FixStr(Me.ColumnDelimiter) & "'" & _
-                    ",RowDelimiter=" & "'" & FixStr(Me.RowDelimiter) & "'" & _
-                    ",Description=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
-                    ",Operationtype=" & "'" & FixStr(Me.OperationType) & "'" & _
-                    ",Port=" & "'" & FixStr(Me.DsPort) & "'" & _
-                    ",QueMgr=" & "'" & FixStr(Me.DsQueMgr) & "'" & _
-                    ",UOW=" & "'" & FixStr(Me.DsUOW) & "'" & _
-                    ",SelectEvery=" & "'" & FixStr(Me.Poll) & "'" & _
-                    ",OnCmmtKey=" & "'" & FixStr("0") & "'" & _
-                    " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    If Me.Engine IsNot Nothing Then
+            '        '//changed : IsbeforeImage added by npatel on 8/10/05
+            '        strSql = "Update " & Me.Project.tblDatastores & " Set " & _
+            '        "DatastoreName=" & "'" & FixStr(Me.DatastoreName) & "'" & _
+            '        ",DatastoreType=" & FixStr(Me.DatastoreType) & _
+            '        ",DsPhysicalSource=" & "'" & FixStr(Me.DsPhysicalSource) & "'" & _
+            '        ",DsDirection=" & "'" & FixStr(Me.DsDirection) & "'" & _
+            '        ",DsAccessMethod=" & "'" & FixStr(Me.DsAccessMethod) & "'" & _
+            '        ",DsCharacterCode=" & "'" & FixStr(Me.DsCharacterCode) & "'" & _
+            '        ",IsOrdered=" & "'" & FixStr("0") & "'" & _
+            '        ",IsIMSPathData=" & "'" & FixStr(Me.IsIMSPathData) & "'" & _
+            '        ",ISSKIPCHGCHECK=" & "'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
+            '        ",IsBeforeImage=" & "'" & FixStr("0") & "'" & _
+            '        ",EXCEPTDATASTORE=" & "'" & FixStr(Me.ExceptionDatastore) & "'" & _
+            '        ",TextQualifier=" & "'" & FixStr(Me.TextQualifier) & "'" & _
+            '        ",ColumnDelimiter=" & "'" & FixStr(Me.ColumnDelimiter) & "'" & _
+            '        ",RowDelimiter=" & "'" & FixStr(Me.RowDelimiter) & "'" & _
+            '        ",Description=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
+            '        ",Operationtype=" & "'" & FixStr(Me.OperationType) & "'" & _
+            '        ",Port=" & "'" & FixStr(Me.DsPort) & "'" & _
+            '        ",QueMgr=" & "'" & FixStr(Me.DsQueMgr) & "'" & _
+            '        ",UOW=" & "'" & FixStr(Me.DsUOW) & "'" & _
+            '        ",SelectEvery=" & "'" & FixStr(Me.Poll) & "'" & _
+            '        ",OnCmmtKey=" & "'" & FixStr("0") & "'" & _
+            '        " WHERE  DatastoreName=" & Me.GetQuotedText & _
+            '        " AND EngineName=" & Me.Engine.GetQuotedText & _
+            '        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '        " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Else
-                    '//changed : IsbeforeImage added by npatel on 8/10/05
-                    strSql = "Update " & Me.Project.tblDatastores & " Set " & _
-                     "DatastoreName=" & "'" & FixStr(Me.DatastoreName) & "'" & _
-                     ",DatastoreType=" & FixStr(Me.DatastoreType) & _
-                     ",DsPhysicalSource=" & "'" & FixStr(Me.DsPhysicalSource) & "'" & _
-                     ",DsDirection=" & "'" & FixStr(Me.DsDirection) & "'" & _
-                     ",DsAccessMethod=" & "'" & FixStr(Me.DsAccessMethod) & "'" & _
-                     ",DsCharacterCode=" & "'" & FixStr(Me.DsCharacterCode) & "'" & _
-                     ",IsOrdered=" & "'" & FixStr("0") & "'" & _
-                     ",IsIMSPathData=" & "'" & FixStr(Me.IsIMSPathData) & "'" & _
-                     ",ISSKIPCHGCHECK=" & "'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
-                     ",IsBeforeImage=" & "'" & FixStr("0") & "'" & _
-                     ",EXCEPTDATASTORE=" & "'" & FixStr(Me.ExceptionDatastore) & "'" & _
-                     ",TextQualifier=" & "'" & FixStr(Me.TextQualifier) & "'" & _
-                     ",ColumnDelimiter=" & "'" & FixStr(Me.ColumnDelimiter) & "'" & _
-                     ",RowDelimiter=" & "'" & FixStr(Me.RowDelimiter) & "'" & _
-                     ",Description=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
-                     ",Operationtype=" & "'" & FixStr(Me.OperationType) & "'" & _
-                     ",Port=" & "'" & FixStr(Me.DsPort) & "'" & _
-                     ",QueMgr=" & "'" & FixStr(Me.DsQueMgr) & "'" & _
-                     ",UOW=" & "'" & FixStr(Me.DsUOW) & "'" & _
-                     ",SelectEvery=" & "'" & FixStr(Me.Poll) & "'" & _
-                     ",OnCmmtKey=" & "'" & FixStr("0") & "'" & _
-                     " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                     " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                     " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
+            '    Else
+            '        '//changed : IsbeforeImage added by npatel on 8/10/05
+            '        strSql = "Update " & Me.Project.tblDatastores & " Set " & _
+            '         "DatastoreName=" & "'" & FixStr(Me.DatastoreName) & "'" & _
+            '         ",DatastoreType=" & FixStr(Me.DatastoreType) & _
+            '         ",DsPhysicalSource=" & "'" & FixStr(Me.DsPhysicalSource) & "'" & _
+            '         ",DsDirection=" & "'" & FixStr(Me.DsDirection) & "'" & _
+            '         ",DsAccessMethod=" & "'" & FixStr(Me.DsAccessMethod) & "'" & _
+            '         ",DsCharacterCode=" & "'" & FixStr(Me.DsCharacterCode) & "'" & _
+            '         ",IsOrdered=" & "'" & FixStr("0") & "'" & _
+            '         ",IsIMSPathData=" & "'" & FixStr(Me.IsIMSPathData) & "'" & _
+            '         ",ISSKIPCHGCHECK=" & "'" & FixStr(Me.IsSkipChangeCheck) & "'" & _
+            '         ",IsBeforeImage=" & "'" & FixStr("0") & "'" & _
+            '         ",EXCEPTDATASTORE=" & "'" & FixStr(Me.ExceptionDatastore) & "'" & _
+            '         ",TextQualifier=" & "'" & FixStr(Me.TextQualifier) & "'" & _
+            '         ",ColumnDelimiter=" & "'" & FixStr(Me.ColumnDelimiter) & "'" & _
+            '         ",RowDelimiter=" & "'" & FixStr(Me.RowDelimiter) & "'" & _
+            '         ",Description=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
+            '         ",Operationtype=" & "'" & FixStr(Me.OperationType) & "'" & _
+            '         ",Port=" & "'" & FixStr(Me.DsPort) & "'" & _
+            '         ",QueMgr=" & "'" & FixStr(Me.DsQueMgr) & "'" & _
+            '         ",UOW=" & "'" & FixStr(Me.DsUOW) & "'" & _
+            '         ",SelectEvery=" & "'" & FixStr(Me.Poll) & "'" & _
+            '         ",OnCmmtKey=" & "'" & FixStr("0") & "'" & _
+            '         " WHERE  DatastoreName=" & Me.GetQuotedText & _
+            '         " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '         " AND ProjectName=" & Me.Project.GetQuotedText
+            '    End If
 
-                cmd.CommandText = strSql
-                Log(strSql)
-                cmd.ExecuteNonQuery()
+            '    cmd.CommandText = strSql
+            '    Log(strSql)
+            '    cmd.ExecuteNonQuery()
 
-            Else
-                If Me.Engine IsNot Nothing Then
-                    strSql = "Update " & Me.Project.tblDatastores & " Set " & _
-                                    "DatastoreName=" & Quote(Me.DatastoreName) & _
-                                    ",DSDIRECTION=" & Quote(Me.DsDirection) & _
-                                    ",DSTYPE=" & Me.DatastoreType & _
-                                    ",DatastoreDescription=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
-                                    " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    strSql = "Update " & Me.Project.tblDatastores & " Set " & _
-                                    "DatastoreName=" & Quote(Me.DatastoreName) & _
-                                    ",DSDIRECTION=" & Quote(Me.DsDirection) & _
-                                    ",DSTYPE=" & Me.DatastoreType & _
-                                    ",DatastoreDescription=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
-                                    " WHERE  DatastoreName=" & Me.GetQuotedText & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
+            'Else
+            '    If Me.Engine IsNot Nothing Then
+            strSql = "Update " & Me.Project.tblDatastores & " Set " & _
+                            "DatastoreName=" & Quote(Me.DatastoreName) & _
+                            ",DSDIRECTION=" & Quote(Me.DsDirection) & _
+                            ",DSTYPE=" & Me.DatastoreType & _
+                            ",DatastoreDescription=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
+                            " WHERE  DatastoreName=" & Me.GetQuotedText & _
+                            " AND EngineName=" & Me.Engine.GetQuotedText & _
+                            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                            " AND ProjectName=" & Me.Project.GetQuotedText
+            '    Else
+            'strSql = "Update " & Me.Project.tblDatastores & " Set " & _
+            '                "DatastoreName=" & Quote(Me.DatastoreName) & _
+            '                ",DSDIRECTION=" & Quote(Me.DsDirection) & _
+            '                ",DSTYPE=" & Me.DatastoreType & _
+            '                ",DatastoreDescription=" & "'" & FixStr(Me.DatastoreDescription) & "'" & _
+            '                " WHERE  DatastoreName=" & Me.GetQuotedText & _
+            '                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '                " AND ProjectName=" & Me.Project.GetQuotedText
+            '    End If
 
-                cmd.CommandText = strSql
-                Log(strSql)
-                cmd.ExecuteNonQuery()
+            cmd.CommandText = strSql
+            Log(strSql)
+            cmd.ExecuteNonQuery()
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
 
             Return True
 
@@ -2044,129 +1798,36 @@ Public Class clsDatastore
 
                 If IsDeleted = True Then
                     '//Delete datastore selection and its fields related to datastore
-                    If Me.Engine IsNot Nothing Then
-                        If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                            '//First always children => delete entry from DSSELFIELDS
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " Where  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText                  '
+                    
+                    '//First always children => delete entry from DSSELFIELDS
+                    strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
+                    " Where  DatastoreName= " & Me.GetQuotedText & _
+                    " And EngineName= " & Me.Engine.GetQuotedText & _
+                    " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
+                    " And EnvironmentName= " & Me.Environment.GetQuotedText & _
+                    " And ProjectName= " & Me.Project.GetQuotedText & _
+                    " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
+                    " And SelectionName= " & selOld.GetQuotedText                  '
 
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
+                    cmd.CommandText = strSql
+                    Log(strSql)
+                    cmd.ExecuteNonQuery()
 
-                            '//delete entry from DSSELECTIONS
+                    '//delete entry from DSSELECTIONS
 
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " Where DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText
+                    strSql = "DELETE FROM " & Me.Project.tblDSselections & _
+                    " Where DatastoreName= " & Me.GetQuotedText & _
+                    " And EngineName= " & Me.Engine.GetQuotedText & _
+                    " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
+                    " And EnvironmentName= " & Me.Environment.GetQuotedText & _
+                    " And ProjectName= " & Me.Project.GetQuotedText & _
+                    " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
+                    " And SelectionName= " & selOld.GetQuotedText
 
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                        Else  '********** V3 ####################
-                            '//First always children => delete entry from DSSELFIELDS
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " Where  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText                  '
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//delete entry from DSSELECTIONS
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " Where DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Me.Engine.GetQuotedText & _
-                            " And SystemName= " & Me.Engine.ObjSystem.GetQuotedText & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-                        End If
-                    Else
-                        If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                            '//First always children => delete entry from DSSELFIELDS
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " Where  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Quote(DBNULL) & _
-                            " And SystemName= " & Quote(DBNULL) & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText                  '
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//delete entry from DSSELECTIONS
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " Where DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Quote(DBNULL) & _
-                            " And SystemName= " & Quote(DBNULL) & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And StructureName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                        Else  '********** V3 ####################
-                            '//First always children => delete entry from DSSELFIELDS
-                            strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
-                            " Where  DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Quote(DBNULL) & _
-                            " And SystemName= " & Quote(DBNULL) & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText                  '
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-
-                            '//delete entry from DSSELECTIONS
-
-                            strSql = "DELETE FROM " & Me.Project.tblDSselections & _
-                            " Where DatastoreName= " & Me.GetQuotedText & _
-                            " And EngineName= " & Quote(DBNULL) & _
-                            " And SystemName= " & Quote(DBNULL) & _
-                            " And EnvironmentName= " & Me.Environment.GetQuotedText & _
-                            " And ProjectName= " & Me.Project.GetQuotedText & _
-                            " And DescriptionName= " & selOld.ObjStructure.GetQuotedText & _
-                            " And SelectionName= " & selOld.GetQuotedText
-
-                            cmd.CommandText = strSql
-                            Log(strSql)
-                            cmd.ExecuteNonQuery()
-                        End If
-                    End If
+                    cmd.CommandText = strSql
+                    Log(strSql)
+                    cmd.ExecuteNonQuery()
+                    
 
                     selOld.ObjSelection.ObjDSselections.Remove(selOld.Key)
 
@@ -2210,7 +1871,7 @@ Public Class clsDatastore
         Dim i As Integer
 
         Try
-            If Treelode = True Then Exit Function
+            'If Treelode = True Then Exit Function
 
             If Incmd IsNot Nothing Then
                 cmd = Incmd
@@ -2222,55 +1883,15 @@ Public Class clsDatastore
             'cmd = cnn.CreateCommand
 
             '//we need to load extended attributes
-            If Me.Engine IsNot Nothing Then
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Select * from " & Me.Project.tblDSselFields & _
-                    " where selectionname=" & objDSsel.GetQuotedText & _
-                    " AND StructureName=" & objDSsel.ObjStructure.GetQuotedText & _
-                    " AND DatastoreName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText & _
-                    " ORDER BY SEQNO"
-
-                Else
-                    sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,FIELDNAME,PARENTNAME,SEQNO,DESCFIELDDESCRIPTION,NCHILDREN,NLEVEL,NTIMES,NOCCNO,DATATYPE,NOFFSET,NLENGTH,NSCALE,CANNULL,ISKEY,ORGNAME,DATEFORMAT,LABEL,INITVAL,RETYPE,INVALID,EXTTYPE,IDENTVAL,FOREIGNKEY from " & Me.Project.tblDSselFields & _
-                    " where selectionname=" & objDSsel.GetQuotedText & _
-                    " AND DescriptionName=" & objDSsel.ObjStructure.GetQuotedText & _
-                    " AND DatastoreName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText & _
-                    " ORDER BY SEQNO"
-
-                End If
-            Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Select * from " & Me.Project.tblDSselFields & _
-                    " where selectionname=" & objDSsel.GetQuotedText & _
-                    " AND StructureName=" & objDSsel.ObjStructure.GetQuotedText & _
-                    " AND DatastoreName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText & _
-                    " ORDER BY SEQNO"
-
-                Else
-                    sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,FIELDNAME,PARENTNAME,SEQNO,DESCFIELDDESCRIPTION,NCHILDREN,NLEVEL,NTIMES,NOCCNO,DATATYPE,NOFFSET,NLENGTH,NSCALE,CANNULL,ISKEY,ORGNAME,DATEFORMAT,LABEL,INITVAL,RETYPE,INVALID,EXTTYPE,IDENTVAL,FOREIGNKEY from " & Me.Project.tblDSselFields & _
-                    " where selectionname=" & objDSsel.GetQuotedText & _
-                    " AND DescriptionName=" & objDSsel.ObjStructure.GetQuotedText & _
-                    " AND DatastoreName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText & _
-                    " ORDER BY SEQNO"
-
-                End If
-            End If
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,FIELDNAME,PARENTNAME,SEQNO,DESCFIELDDESCRIPTION,NCHILDREN,NLEVEL,NTIMES,NOCCNO,DATATYPE,NOFFSET,NLENGTH,NSCALE,CANNULL,ISKEY,ORGNAME,DATEFORMAT,LABEL,INITVAL,RETYPE,INVALID,EXTTYPE,IDENTVAL,FOREIGNKEY from " & Me.Project.tblDSselFields & _
+            " where selectionname=" & objDSsel.GetQuotedText & _
+            " AND DescriptionName=" & objDSsel.ObjStructure.GetQuotedText & _
+            " AND DatastoreName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText & _
+            " ORDER BY SEQNO"
 
 
             cmd.CommandText = sql
@@ -2284,11 +1905,11 @@ Public Class clsDatastore
                 dr = dt.Rows(i)
                 Dim fld As clsField
 
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    fld = SearchDSFieldByName(objDSsel, GetVal(dr("FieldName")), GetVal(dr("StructureName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")))
-                Else
-                    fld = SearchDSFieldByName(objDSsel, GetVal(dr("FieldName")), GetVal(dr("DescriptionName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")))
-                End If
+                'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                '    fld = SearchDSFieldByName(objDSsel, GetVal(dr("FieldName")), GetVal(dr("StructureName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")))
+                'Else
+                fld = SearchDSFieldByName(objDSsel, GetVal(dr("FieldName")), GetVal(dr("DescriptionName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")))
+                'End If
 
                 If fld Is Nothing Then
                     Log("Field [" & dr("FieldName") & "] not found under this selection [" & objDSsel.SelectionName & "]")
@@ -2321,41 +1942,29 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
     Sub SetFieldExtendedAttributes(ByVal dr As System.Data.DataRow, ByRef fld As clsField)
 
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_ISKEY, GetVal(dr("IsKey")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_DATEFORMAT, GetVal(dr("DateFormat")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_LABEL, GetVal(dr("Label")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_INITVAL, GetVal(dr("InitVal")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_RETYPE, GetVal(dr("Retype")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_INVALID, GetVal(dr("Invalid")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_EXTTYPE, GetVal(dr("ExtType")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_IDENTVAL, GetVal(dr("IdentVal")))
-                fld.SetSingleFieldAttr(modDeclares.enumFieldAttributes.ATTR_FKEY, GetVal(dr("ForeignKey")))
-                '// added by TK 11/8/2006
-            Else
-                fld.SeqNo = GetVal(dr("seqno"))
-                fld.FieldDesc = GetStr(GetVal(dr("descfielddescription")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_NCHILDREN, GetVal(dr("NCHILDREN")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LEVEL, GetVal(dr("NLEVEL")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_TIMES, GetVal(dr("NTIMES")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OCCURS, GetVal(dr("NOCCNO")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATATYPE, dr("DATATYPE"))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OFFSET, GetVal(dr("NOFFSET")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("NLENGTH")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_SCALE, GetVal(dr("NSCALE")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_CANNULL, GetStr(GetVal(dr("CANNULL"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_ISKEY, GetStr(GetVal(dr("ISKEY"))))
-                fld.OrgName = GetStr(GetVal(dr("ORGNAME")))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT, GetStr(GetVal(dr("DATEFORMAT"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LABEL, GetStr(GetVal(dr("LABEL"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INITVAL, GetStr(GetVal(dr("INITVAL"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_RETYPE, GetStr(GetVal(dr("RETYPE"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INVALID, GetStr(GetVal(dr("INVALID"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_EXTTYPE, GetStr(GetVal(dr("EXTTYPE"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_IDENTVAL, GetStr(GetVal(dr("IDENTVAL"))))
-                fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_FKEY, GetStr(GetVal(dr("FOREIGNKEY"))))
+            
+            fld.SeqNo = GetVal(dr("seqno"))
+            fld.FieldDesc = GetStr(GetVal(dr("descfielddescription")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_NCHILDREN, GetVal(dr("NCHILDREN")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LEVEL, GetVal(dr("NLEVEL")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_TIMES, GetVal(dr("NTIMES")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OCCURS, GetVal(dr("NOCCNO")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATATYPE, dr("DATATYPE"))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_OFFSET, GetVal(dr("NOFFSET")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("NLENGTH")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_SCALE, GetVal(dr("NSCALE")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_CANNULL, GetStr(GetVal(dr("CANNULL"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_ISKEY, GetStr(GetVal(dr("ISKEY"))))
+            fld.OrgName = GetStr(GetVal(dr("ORGNAME")))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT, GetStr(GetVal(dr("DATEFORMAT"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LABEL, GetStr(GetVal(dr("LABEL"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INITVAL, GetStr(GetVal(dr("INITVAL"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_RETYPE, GetStr(GetVal(dr("RETYPE"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_INVALID, GetStr(GetVal(dr("INVALID"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_EXTTYPE, GetStr(GetVal(dr("EXTTYPE"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_IDENTVAL, GetStr(GetVal(dr("IDENTVAL"))))
+            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_FKEY, GetStr(GetVal(dr("FOREIGNKEY"))))
 
-            End If
 
 
         Catch ex As Exception
@@ -2406,7 +2015,7 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
 
             'Now add Fields to DSSelection based on whether or not Structure file is changed
             If IsStrFileChg = False And TreeLode = False Then
-                ss.LoadItems(True, TreeLode, cmd)
+                ss.LoadMe(cmd)
                 If ss.ObjSelectionFields.Count <> 0 Then
                     For Each fld As clsField In ss.ObjSelectionFields
                         Dim newfld As clsField     'create a new fld object
@@ -2669,70 +2278,70 @@ NextSel:        '// next selection
     End Function
 
     '//Write Global Datastore Properties to File
-    Function SaveGlobals() As Boolean
+    'Function SaveGlobals() As Boolean
 
-        Try
-            If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." & _
-            Me.DatastoreName & ".txt") = True Then
-                System.IO.File.Delete(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." & _
-                Me.DatastoreName & ".txt")
-            End If
-            fsDSglobal = System.IO.File.Create(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
-            & Me.DatastoreName & ".txt")
-            objWriteGlobal = New System.IO.StreamWriter(fsDSglobal)
+    '    Try
+    '        If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." & _
+    '        Me.DatastoreName & ".txt") = True Then
+    '            System.IO.File.Delete(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." & _
+    '            Me.DatastoreName & ".txt")
+    '        End If
+    '        fsDSglobal = System.IO.File.Create(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
+    '        & Me.DatastoreName & ".txt")
+    '        objWriteGlobal = New System.IO.StreamWriter(fsDSglobal)
 
-            'Write Globals to File
-            objWriteGlobal.WriteLine(Me.ExtTypeChar)
-            objWriteGlobal.WriteLine(Me.ExtTypeNum)
-            objWriteGlobal.WriteLine(Me.IfNullChar)
-            objWriteGlobal.WriteLine(Me.IfNullNum)
-            objWriteGlobal.WriteLine(Me.InValidChar)
-            objWriteGlobal.WriteLine(Me.InValidNum)
+    '        'Write Globals to File
+    '        objWriteGlobal.WriteLine(Me.ExtTypeChar)
+    '        objWriteGlobal.WriteLine(Me.ExtTypeNum)
+    '        objWriteGlobal.WriteLine(Me.IfNullChar)
+    '        objWriteGlobal.WriteLine(Me.IfNullNum)
+    '        objWriteGlobal.WriteLine(Me.InValidChar)
+    '        objWriteGlobal.WriteLine(Me.InValidNum)
 
-            objWriteGlobal.Close()
-            fsDSglobal.Close()
+    '        objWriteGlobal.Close()
+    '        fsDSglobal.Close()
 
-            Return True
+    '        Return True
 
-        Catch ex As Exception
-            LogError(ex, "clsDatastore SaveGlobals")
-            Return False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "clsDatastore SaveGlobals")
+    '        Return False
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function LoadGlobals() As Boolean
+    'Function LoadGlobals() As Boolean
 
-        Try
-            If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
-            & Me.DatastoreName & ".txt") = False Then
-                LoadGlobals = True
-                Exit Function
-            End If
-            fsDSglobal = System.IO.File.Open(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
-            & Me.DatastoreName & ".txt", IO.FileMode.Open)
+    '    Try
+    '        If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
+    '        & Me.DatastoreName & ".txt") = False Then
+    '            LoadGlobals = True
+    '            Exit Function
+    '        End If
+    '        fsDSglobal = System.IO.File.Open(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.Engine.EngineName & "." _
+    '        & Me.DatastoreName & ".txt", IO.FileMode.Open)
 
-            objReadGlobal = New System.IO.StreamReader(fsDSglobal)
+    '        objReadGlobal = New System.IO.StreamReader(fsDSglobal)
 
-            'Write Globals to File
-            Me.ExtTypeChar = objReadGlobal.ReadLine()
-            Me.ExtTypeNum = objReadGlobal.ReadLine()
-            Me.IfNullChar = objReadGlobal.ReadLine()
-            Me.IfNullNum = objReadGlobal.ReadLine()
-            Me.InValidChar = objReadGlobal.ReadLine()
-            Me.InValidNum = objReadGlobal.ReadLine()
+    '        'Write Globals to File
+    '        Me.ExtTypeChar = objReadGlobal.ReadLine()
+    '        Me.ExtTypeNum = objReadGlobal.ReadLine()
+    '        Me.IfNullChar = objReadGlobal.ReadLine()
+    '        Me.IfNullNum = objReadGlobal.ReadLine()
+    '        Me.InValidChar = objReadGlobal.ReadLine()
+    '        Me.InValidNum = objReadGlobal.ReadLine()
 
-            objReadGlobal.Close()
-            fsDSglobal.Close()
+    '        objReadGlobal.Close()
+    '        fsDSglobal.Close()
 
-            Return True
+    '        Return True
 
-        Catch ex As Exception
-            LogError(ex, "clsDatastore LoadGlobals")
-            Return False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "clsDatastore LoadGlobals")
+    '        Return False
+    '    End Try
 
-    End Function
+    'End Function
 
     Function InsertATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
 
@@ -2831,27 +2440,27 @@ NextSel:        '// next selection
                         '    Value = Me.Poll
                 End Select
 
-                If Me.Engine IsNot Nothing Then
-                    sql = "INSERT INTO " & Me.Project.tblDatastoresATTR & _
-                                    "(PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DATASTOREATTRB,DATASTOREATTRBVALUE) " & _
-                                    "Values('" & FixStr(Me.Project.ProjectName) & "','" & _
-                                    FixStr(Me.Environment.EnvironmentName) & "','" & _
-                                    FixStr(Me.Engine.ObjSystem.SystemName) & "','" & _
-                                    FixStr(Me.Engine.EngineName) & "','" & _
-                                    FixStr(Me.DatastoreName) & "','" & _
-                                    FixStr(Attrib) & "','" & _
-                                    FixStr(Value) & "')"
-                Else
-                    sql = "INSERT INTO " & Me.Project.tblDatastoresATTR & _
-                                    "(PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DATASTOREATTRB,DATASTOREATTRBVALUE) " & _
-                                    "Values('" & FixStr(Me.Project.ProjectName) & "','" & _
-                                    FixStr(Me.Environment.EnvironmentName) & "','" & _
-                                    DBNULL & "','" & _
-                                    DBNULL & "','" & _
-                                    FixStr(Me.DatastoreName) & "','" & _
-                                    FixStr(Attrib) & "','" & _
-                                    FixStr(Value) & "')"
-                End If
+                'If Me.Engine IsNot Nothing Then
+                sql = "INSERT INTO " & Me.Project.tblDatastoresATTR & _
+                                "(PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DATASTOREATTRB,DATASTOREATTRBVALUE) " & _
+                                "Values('" & FixStr(Me.Project.ProjectName) & "','" & _
+                                FixStr(Me.Environment.EnvironmentName) & "','" & _
+                                FixStr(Me.Engine.ObjSystem.SystemName) & "','" & _
+                                FixStr(Me.Engine.EngineName) & "','" & _
+                                FixStr(Me.DatastoreName) & "','" & _
+                                FixStr(Attrib) & "','" & _
+                                FixStr(Value) & "')"
+                'Else
+                'sql = "INSERT INTO " & Me.Project.tblDatastoresATTR & _
+                '                "(PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,DATASTORENAME,DATASTOREATTRB,DATASTOREATTRBVALUE) " & _
+                '                "Values('" & FixStr(Me.Project.ProjectName) & "','" & _
+                '                FixStr(Me.Environment.EnvironmentName) & "','" & _
+                '                DBNULL & "','" & _
+                '                DBNULL & "','" & _
+                '                FixStr(Me.DatastoreName) & "','" & _
+                '                FixStr(Attrib) & "','" & _
+                '                FixStr(Value) & "')"
+                'End If
 
                 cmd.CommandText = sql
                 Log(sql)
@@ -2882,21 +2491,21 @@ NextSel:        '// next selection
                 cmd.Connection = cnn
             End If
 
-            If Me.Engine IsNot Nothing Then
-                sql = "DELETE FROM " & Me.Project.tblDatastoresATTR & _
-                           " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-                           " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
-                           " AND SYSTEMNAME=" & Quote(Me.Engine.ObjSystem.SystemName) & _
-                           " AND ENGINENAME=" & Quote(Me.Engine.EngineName) & _
-                           " AND DATASTORENAME=" & Quote(Me.DatastoreName)
-            Else
-                sql = "DELETE FROM " & Me.Project.tblDatastoresATTR & _
-                          " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-                          " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
-                          " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                          " AND ENGINENAME=" & Quote(DBNULL) & _
-                          " AND DATASTORENAME=" & Quote(Me.DatastoreName)
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "DELETE FROM " & Me.Project.tblDatastoresATTR & _
+                       " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+                       " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
+                       " AND SYSTEMNAME=" & Quote(Me.Engine.ObjSystem.SystemName) & _
+                       " AND ENGINENAME=" & Quote(Me.Engine.EngineName) & _
+                       " AND DATASTORENAME=" & Quote(Me.DatastoreName)
+            'Else
+            'sql = "DELETE FROM " & Me.Project.tblDatastoresATTR & _
+            '          " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+            '          " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
+            '          " AND SYSTEMNAME=" & Quote(DBNULL) & _
+            '          " AND ENGINENAME=" & Quote(DBNULL) & _
+            '          " AND DATASTORENAME=" & Quote(Me.DatastoreName)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -2906,126 +2515,6 @@ NextSel:        '// next selection
 
         Catch ex As Exception
             LogError(ex, "clsDatastore DeleteATTR")
-            Return False
-        End Try
-
-    End Function
-
-    Function LoadAttr(Optional ByRef cmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
-
-        If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-            Return True
-            Exit Function
-        End If
-
-        '
-        Dim da As System.Data.Odbc.OdbcDataAdapter
-        Dim dt As New DataTable("temp")
-        Dim dr As DataRow
-        Dim sql As String = ""
-        'Dim strAttrs As String
-        Dim Attrib As String = ""
-        Dim Value As String = ""
-        Dim tran As Odbc.OdbcTransaction = Nothing
-
-
-        Try
-            If cmd Is Nothing Then
-                'Dim cmd As System.Data.Odbc.OdbcCommand
-                cmd = New Odbc.OdbcCommand
-                cmd.Connection = cnn
-            End If
-
-            'tran = cnn.BeginTransaction()
-            'cmd.Transaction = tran
-
-            If Me.Engine IsNot Nothing Then
-                sql = "SELECT DATASTOREATTRB,DATASTOREATTRBVALUE FROM " & Me.Project.tblDatastoresATTR & _
-                            " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-                            " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
-                            " AND SYSTEMNAME=" & Quote(Me.Engine.ObjSystem.SystemName) & _
-                            " AND ENGINENAME=" & Quote(Me.Engine.EngineName) & _
-                            " AND DATASTORENAME=" & Quote(Me.DatastoreName)
-            Else
-                sql = "SELECT DATASTOREATTRB,DATASTOREATTRBVALUE FROM " & Me.Project.tblDatastoresATTR & _
-                            " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-                            " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
-                            " AND SYSTEMNAME=" & Quote(DBNULL) & _
-                            " AND ENGINENAME=" & Quote(DBNULL) & _
-                            " AND DATASTORENAME=" & Quote(Me.DatastoreName)
-            End If
-
-
-            cmd.CommandText = sql
-            Log(sql)
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-            da.Fill(dt)
-            da.Dispose()
-            'tran.Commit()
-            For i As Integer = 0 To dt.Rows.Count - 1
-                dr = dt.Rows(i)
-
-                Attrib = GetVal(dr("DATASTOREATTRB"))
-                Select Case Attrib
-                    Case "COLUMNDELIMITER"
-                        Me.ColumnDelimiter = GetVal(dr("DATASTOREATTRBVALUE"))
-                    Case "DATASTORETYPE"
-                        Me.DatastoreType = GetVal(dr("DATASTOREATTRBVALUE"))
-                    Case "DSACCESSMETHOD"
-                        Me.DsAccessMethod = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "DSCHARACTERCODE"
-                        Me.DsCharacterCode = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "DSDIRECTION"
-                        Me.DsDirection = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "DSPHYSICALSOURCE"
-                        Me.DsPhysicalSource = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "EXCEPTDATASTORE"
-                        Me.ExceptionDatastore = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "RESTART"
-                        Me.Restart = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "ISIMSPATHDATA"
-                        Me.IsIMSPathData = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "POLL"
-                        Me.Poll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "ISSKIPCHGCHECK"
-                        Me.IsSkipChangeCheck = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                        'Case "ONCMMTKEY"
-                        '    Me.IsCmmtKey = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "OPERATIONTYPE"
-                        Me.OperationType = GetStr(GetStr(GetVal(dr("DATASTOREATTRBVALUE"))))
-                    Case "PORT"
-                        Me.DsPort = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "QUEMGR"
-                        Me.DsQueMgr = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "ROWDELIMITER"
-                        Me.RowDelimiter = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                        'Case "SELECTEVERY"
-                        '    Me.Poll = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "TEXTQUALIFIER"
-                        Me.TextQualifier = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "UOW"
-                        Me.DsUOW = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "EXTTYPECHAR"
-                        Me.ExtTypeChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "EXTTYPENUM"
-                        Me.ExtTypeNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "IFNULLCHAR"
-                        Me.IfNullChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "IFNULLNUM"
-                        Me.IfNullNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "INVALIDCHAR"
-                        Me.InValidChar = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "INVALIDNUM"
-                        Me.InValidNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                    Case "LOOKUP"
-                        Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
-                End Select
-            Next
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsDatastore LoadAttr")
             Return False
         End Try
 

@@ -17,6 +17,7 @@ Public Class clsMapping
     Private m_MappingDesc As String = ""
     Private m_IsRenamed As Boolean = False
     Private m_OutMsg As enumOutMsg = enumOutMsg.NoOutMsg
+    Private m_IsLoaded As Boolean = True
 
     Public HasMissingDependency As Boolean = False
     Public Commment As String = ""
@@ -271,6 +272,21 @@ Public Class clsMapping
         Return True
 
     End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
+        Return True
+
+    End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
     Public Property IsRenamed() As Boolean Implements INode.IsRenamed
         Get

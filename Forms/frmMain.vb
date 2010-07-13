@@ -6,7 +6,7 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
-    Friend WithEvents mnuAddGen As System.Windows.Forms.MenuItem
+
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -300,6 +300,7 @@ Public Class frmMain
     Friend WithEvents mnuGenRepStr As System.Windows.Forms.MenuItem
     Friend WithEvents mnuLU As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem23 As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuAddGen As System.Windows.Forms.MenuItem
 
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
@@ -2552,7 +2553,7 @@ Public Class frmMain
                         obj = frm.NewObj() '//Show the form for new environment entry
                     End If
 
-                    If Not (obj Is Nothing) Then
+                    If obj IsNot Nothing Then
                         '// add a node to the parent (project, not the environments folder)
                         cNode = AddNode(cNode.Nodes, NODE_ENVIRONMENT, obj)
                         obj.SeqNo = cNode.Index '//store position
@@ -2575,9 +2576,9 @@ Public Class frmMain
                         AddNode(cNode.Nodes, obj.Type, obj)
 
                         '//Datastores folder
-                        obj = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
-                        obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        'obj = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
+                        'obj.Parent = CType(cNode.Tag, INode)
+                        'AddNode(cNode.Nodes, obj.Type, obj)
 
                         '//targets folder
                         'obj = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
@@ -2590,9 +2591,9 @@ Public Class frmMain
                         AddNode(cNode.Nodes, obj.Type, obj)
 
                         '//tasks folder
-                        obj = New clsFolderNode("Procedures", NODE_FO_PROC)
-                        obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        'obj = New clsFolderNode("Procedures", NODE_FO_PROC)
+                        'obj.Parent = CType(cNode.Tag, INode)
+                        'AddNode(cNode.Nodes, obj.Type, obj)
 
                         '//sys folder
                         obj = New clsFolderNode("Systems", NODE_FO_SYSTEM)
@@ -2892,14 +2893,14 @@ Public Class frmMain
                         cNode = cNode.Parent.Parent '[Structure]->[type folder]->Struct
                         '// make the current tree node one step up if it's a 
                         '//structure "type" folder
-                    ElseIf cNode.Text <> "Descriptions" Then
+                    ElseIf cNode.Text.Contains("Descriptions") = False Then
                         cNode = cNode.Parent '[Structure]->[type folder]
                     End If
                     '/// get the environment to pass into New Structure Form
                     Dim ObjEnv As clsEnvironment = CType(cNode.Parent.Tag, clsEnvironment)
 
-                    If fromFile = True Or (StructType <> enumStructure.STRUCT_REL_DML And StructType <> enumStructure.STRUCT_REL_DML_FILE) Then
-
+                    If fromFile = True Or (StructType <> enumStructure.STRUCT_REL_DML And _
+                                           StructType <> enumStructure.STRUCT_REL_DML_FILE) Then
                         If IsClipboardAction = False Then
                             frm = New frmStructure
                             '// make the new structure a child of the environment
@@ -3212,9 +3213,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         AddNode(cNode.Nodes, obj.Type, obj)
 
                         '//tasks folder
-                        'obj = New clsFolderNode("Main", NODE_FO_MAIN)
-                        'obj.Parent = CType(cNode.Tag, INode)
-                        'AddNode(cNode.Nodes, obj.Type, obj)
+                        obj = New clsFolderNode("Main", NODE_FO_MAIN)
+                        obj.Parent = CType(cNode.Tag, INode)
+                        AddNode(cNode.Nodes, obj.Type, obj)
 
                     End If
 
@@ -3275,15 +3276,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 NodeType = NODE_SOURCEDATASTORE
                 Direction = DS_DIRECTION_SOURCE
 
-            ElseIf CType(cNode.Tag, INode).Type = NODE_FO_TARGETDATASTORE Or _
-               CType(cNode.Tag, INode).Type = NODE_TARGETDATASTORE Then
+            Else
+                'CType(cNode.Tag, INode).Type = NODE_FO_TARGETDATASTORE Or _
+                '   CType(cNode.Tag, INode).Type = NODE_TARGETDATASTORE Then
 
                 Direction = DS_DIRECTION_TARGET
                 NodeType = NODE_TARGETDATASTORE
 
-            Else
-                Direction = ""
-                NodeType = GetFolType(DatastoreType)
+                'Else
+                '    Direction = ""
+                '    NodeType = GetFolType(DatastoreType)
             End If
 
             Select Case ActionType
@@ -3321,11 +3323,11 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     If Not (obj Is Nothing) Then
                         '//If the new datastore is valid, add it as a child 
                         '//of the engine and index it properly for it's position in the tree
-                        If obj.Engine IsNot Nothing Then
-                            cNode = AddNode(cNode.Nodes, NodeType, obj)
-                        Else
-                            cNode = AddDSNode(obj, cNode)
-                        End If
+                        'If obj.Engine IsNot Nothing Then
+                        cNode = AddNode(cNode.Nodes, NodeType, obj)
+                        'Else
+                        '    cNode = AddDSNode(obj, cNode)
+                        'End If
 
                         obj.ObjTreeNode = cNode
                         obj.SeqNo = cNode.Index '//store position
@@ -3376,7 +3378,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            obj.LoadItems()
+            obj.LoadMe()
 
             '// Optional Passed Vars added By Tom Karasch for change(i.e. delete, etc...) and rename
             '/// to reload project according to what occured in the object tree.
@@ -3412,12 +3414,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             tvExplorer.SelectedNode = cNode
 
             '//Now add and process each environment 
-            If obj.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,ENVIRONMENTDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
-                Log(sql)
-            End If
+            'If obj.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,ENVIRONMENTDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
+            Log(sql)
+            'End If
 
             'Log(obj.Project.MetaConnectionString)    //// commented so Password is not in the log
             'Log("cnn.connectionstring >> " & cnn.ConnectionString)
@@ -3562,6 +3564,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             da.Fill(dt)
             da.Dispose()
+
+            cNodeStruct.Text = "(" & dt.Rows.Count.ToString & ")" & " Descriptions"
 
             For i = 0 To dt.Rows.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
@@ -4055,6 +4059,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             " and enginename=" & Quote(obj.EngineName) & _
             " and DSDIRECTION='S'" & _
             " order by datastorename"
+
             Dir = "S"
             'End If
 
@@ -4101,6 +4106,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             " and enginename=" & Quote(obj.EngineName) & _
             " and DSDIRECTION='T'" & _
             " order by datastorename"
+
             Dir = "T"
             'End If
             Log(sql)
@@ -4144,6 +4150,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             da.Fill(dt)
             da.Dispose()
+
+            cNodeVar.Text = "(" & dt.Rows.Count.ToString & ")" & " Variables"
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
@@ -4294,24 +4302,24 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '        AddToCollection(obj.Environment.Joins, obj, obj.GUID)
                 '    End If
                 Case modDeclares.enumTaskType.TASK_MAIN
-                    If obj.Engine IsNot Nothing Then
-                        AddToCollection(obj.Engine.Mains, obj, obj.GUID)
-                    Else
-                        AddToCollection(obj.Environment.Procedures, obj, obj.GUID)
-                    End If
+                    'If obj.Engine IsNot Nothing Then
+                    AddToCollection(obj.Engine.Mains, obj, obj.GUID)
+                    'Else
+                    'AddToCollection(obj.Environment.Procedures, obj, obj.GUID)
+                    'End If
                 Case modDeclares.enumTaskType.TASK_PROC, enumTaskType.TASK_IncProc, _
                 modDeclares.enumTaskType.TASK_GEN, modDeclares.enumTaskType.TASK_LOOKUP
-                    If obj.Engine IsNot Nothing Then
-                        AddToCollection(obj.Engine.Procs, obj, obj.GUID)
-                    Else
-                        AddToCollection(obj.Environment.Procedures, obj, obj.GUID)
-                    End If
+                    'If obj.Engine IsNot Nothing Then
+                    AddToCollection(obj.Engine.Procs, obj, obj.GUID)
+                    'Else
+                    'AddToCollection(obj.Environment.Procedures, obj, obj.GUID)
+                    'End If
             End Select
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.LoadDatastores()
-                obj.LoadMappings()
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.LoadDatastores()
+            '    obj.LoadMappings()
+            'End If
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
@@ -4416,68 +4424,68 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->Folder(source/target)->ds
             obj.DatastoreName = GetVal(dr.Item("DatastoreName"))
 
-            If DSD = "" Then
-                obj.DatastoreType = GetVal(dr.Item("DatastoreType"))
-                obj.DatastoreDescription = GetVal(dr.Item("Description"))
-                obj.DsPhysicalSource = GetVal(dr.Item("DsPhysicalSource"))
-                obj.DsDirection = GetVal(dr.Item("DsDirection"))
-                obj.DsAccessMethod = GetVal(dr.Item("DsAccessMethod"))
-                obj.DsCharacterCode = GetVal(dr.Item("DsCharacterCode"))
-                'obj.IsOrdered = GetVal(dr.Item("IsOrdered"))
-                obj.IsIMSPathData = GetVal(dr.Item("IsIMSPathData"))
-                obj.IsSkipChangeCheck = GetVal(dr.Item("ISSKIPCHGCHECK"))
-                'obj.IsBeforeImage = GetVal(dr.Item("IsBeforeImage")) '//new by npatel on 8/10/05
-                obj.ExceptionDatastore = GetVal(dr.Item("ExceptDatastore"))
+            'If DSD = "" Then
+            '    obj.DatastoreType = GetVal(dr.Item("DatastoreType"))
+            '    obj.DatastoreDescription = GetVal(dr.Item("Description"))
+            '    obj.DsPhysicalSource = GetVal(dr.Item("DsPhysicalSource"))
+            '    obj.DsDirection = GetVal(dr.Item("DsDirection"))
+            '    obj.DsAccessMethod = GetVal(dr.Item("DsAccessMethod"))
+            '    obj.DsCharacterCode = GetVal(dr.Item("DsCharacterCode"))
+            '    'obj.IsOrdered = GetVal(dr.Item("IsOrdered"))
+            '    obj.IsIMSPathData = GetVal(dr.Item("IsIMSPathData"))
+            '    obj.IsSkipChangeCheck = GetVal(dr.Item("ISSKIPCHGCHECK"))
+            '    'obj.IsBeforeImage = GetVal(dr.Item("IsBeforeImage")) '//new by npatel on 8/10/05
+            '    obj.ExceptionDatastore = GetVal(dr.Item("ExceptDatastore"))
 
-                obj.TextQualifier = GetVal(dr.Item("TextQualifier"))
-                obj.RowDelimiter = GetVal(dr.Item("RowDelimiter"))
-                obj.ColumnDelimiter = GetVal(dr.Item("ColumnDelimiter"))
-                obj.DatastoreDescription = GetVal(dr.Item("Description"))
-                obj.OperationType = GetVal(dr.Item("OperationType"))
-                obj.DsQueMgr = GetVal(dr.Item("QueMgr"))
-                obj.DsPort = GetVal(dr.Item("Port"))
-                obj.DsUOW = GetVal(dr.Item("UOW"))
-                obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
-                'obj.IsCmmtKey = GetVal(dr.Item("OnCmmtKey")) '// added by TK 11/9/2006
-                '/// Load Globals From File
-                If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    obj.LoadGlobals()
-                End If
+            '    obj.TextQualifier = GetVal(dr.Item("TextQualifier"))
+            '    obj.RowDelimiter = GetVal(dr.Item("RowDelimiter"))
+            '    obj.ColumnDelimiter = GetVal(dr.Item("ColumnDelimiter"))
+            '    obj.DatastoreDescription = GetVal(dr.Item("Description"))
+            '    obj.OperationType = GetVal(dr.Item("OperationType"))
+            '    obj.DsQueMgr = GetVal(dr.Item("QueMgr"))
+            '    obj.DsPort = GetVal(dr.Item("Port"))
+            '    obj.DsUOW = GetVal(dr.Item("UOW"))
+            '    obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
+            '    'obj.IsCmmtKey = GetVal(dr.Item("OnCmmtKey")) '// added by TK 11/9/2006
+            '    '/// Load Globals From File
+            '    'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '    obj.LoadGlobals()
+            '    'End If
 
-                '//If AnyTree Object is renamed, then reload all datastore items to 
-                '// Make sure renaming is propagated to all nodes
-                obj.LoadItems()
-            Else
-                obj.DatastoreDescription = GetVal(dr.Item("DATASTOREDESCRIPTION"))
+            '    '//If AnyTree Object is renamed, then reload all datastore items to 
+            '    '// Make sure renaming is propagated to all nodes
+            '    obj.LoadItems()
+            'Else
+            obj.DatastoreDescription = GetVal(dr.Item("DATASTOREDESCRIPTION"))
 
-                If obj.DatastoreDescription Is Nothing Then
-                    obj.DatastoreDescription = ""
-                End If
-                If DSD = "S" Then
-                    obj.DsDirection = DS_DIRECTION_SOURCE
-                Else
-                    obj.DsDirection = DS_DIRECTION_TARGET
-                End If
-
-                obj.LoadItems(, True)
-
-                obj.LoadAttr()
-
+            If obj.DatastoreDescription Is Nothing Then
+                obj.DatastoreDescription = ""
             End If
+            If DSD = "S" Then
+                obj.DsDirection = DS_DIRECTION_SOURCE
+            Else
+                obj.DsDirection = DS_DIRECTION_TARGET
+            End If
+
+            obj.LoadItems(, True)
+
+            obj.LoadMe()
+
+            'End If
 
             Select Case obj.DsDirection
                 Case DS_DIRECTION_SOURCE
-                    If obj.Engine Is Nothing Then
-                        AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
-                    Else
-                        AddToCollection(obj.Engine.Sources, obj, obj.GUID)
-                    End If
+                    'If obj.Engine Is Nothing Then
+                    '    AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
+                    'Else
+                    AddToCollection(obj.Engine.Sources, obj, obj.GUID)
+                    'End If
                 Case DS_DIRECTION_TARGET
-                    If obj.Engine Is Nothing Then
-                        AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
-                    Else
-                        AddToCollection(obj.Engine.Targets, obj, obj.GUID)
-                    End If
+                    'If obj.Engine Is Nothing Then
+                    '    AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
+                    'Else
+                    AddToCollection(obj.Engine.Targets, obj, obj.GUID)
+                    'End If
             End Select
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
@@ -4485,10 +4493,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode = AddNode(cNode.Nodes, obj.Type, obj, False, obj.Text)
             obj.SeqNo = cNode.Index '//store position
 
-            cNode.Text = obj.DsPhysicalSource
-
             '// now add Datastore selections to tree
             AddDSstructuresToTree(cNode, obj)
+
+            If obj.DsDirection = DS_DIRECTION_SOURCE Then
+                cNode.Text = "(" & obj.ObjSelections.Count.ToString & ")" & obj.DsPhysicalSource
+            Else
+                cNode.Text = obj.DsPhysicalSource
+            End If
+
 
             cNode.Collapse()
 
@@ -4737,13 +4750,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             pNode.Nodes.Clear()
             obj.LoadItems(, True)
 
-
             For i = 0 To obj.ObjSelections.Count - 1
                 Dim DSselobj As clsDSSelection = obj.ObjSelections(i)
 
-                'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                DSselobj.LoadItems(, True)
-                'End If
+                DSselobj.LoadItems()
 
                 If Not DSselobj.IsChildDSSelection = True Or MapAs = True Then
                     cnode = AddNode(pNode.Nodes, DSselobj.Type, DSselobj, True)
@@ -4806,7 +4816,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         Try
             For Each nd In cNode.Nodes
-                If nd.Text = GetStructureFolderText(obj.StructureType) Then
+                If nd.Text.Contains(GetStructureFolderText(obj.StructureType)) = True Then
                     IsFound = True
                     Exit For
                 End If
@@ -4828,6 +4838,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 cNode = AddNode(nd.Nodes, obj.Type, obj, False)
                 obj.SeqNo = cNode.Index '//store position
             End If
+
+            nd.Text = "(" & nd.Nodes.Count.ToString & ")" & GetStructureFolderText(obj.StructureType)
+
             Return cNode
 
         Catch ex As Exception
@@ -5622,13 +5635,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         'Me.Cursor = Cursors.WaitCursor
         '/// Get Engine Object
         obj = CType(tvExplorer.SelectedNode.Tag, clsEngine)
-        obj.LoadItems()
+        obj.LoadMe()
         'sysobj = obj.ObjSystem
         'sysobj.LoadItems()
 
         '/// Get Environment Object
         envObj = obj.ObjSystem.Environment
-        envObj.LoadItems()
+        envObj.LoadMe()
 
         '/// Get Script Directory
         If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
@@ -5671,7 +5684,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         '/// Get Environment Object
         envObj = obj.Engine.ObjSystem.Environment
-        envObj.LoadItems()
+        envObj.LoadMe()
 
         '/// Get Script Directory
         If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
@@ -5710,7 +5723,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         obj = tvExplorer.SelectedNode.Tag
         '/// Get Environment Object
         envObj = obj.Engine.ObjSystem.Environment
-        envObj.LoadItems()
+        envObj.LoadMe()
         '/// Get Script Directory
         If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
             strSaveDir = envObj.LocalScriptDir
@@ -6182,14 +6195,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                             Dim childNode As TreeNode
                             For Each parentNode In cNode.Nodes
                                 For Each childNode In parentNode.Nodes
-                                    CType(childNode.Tag, clsDatastore).LoadAttr()
+                                    CType(childNode.Tag, clsDatastore).LoadMe()
                                     m_ClipObjects.Add(childNode.Tag)
                                 Next
                             Next
                         Else
                             Dim childNode As TreeNode
                             For Each childNode In cNode.Nodes
-                                CType(childNode.Tag, clsDatastore).LoadAttr()
+                                CType(childNode.Tag, clsDatastore).LoadMe()
                                 m_ClipObjects.Add(childNode.Tag)
                             Next
                         End If
@@ -6563,7 +6576,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '//Match names
                     If str.Text = obj.Text Then
                         str.LoadItems()
-                        obj.LoadItems()
+                        obj.LoadMe()
                         '//Match field counts
                         If str.ObjFields.Count = obj.ObjSelectionFields.Count Then
                             If ChangeReference = True Then
@@ -6577,8 +6590,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     For Each sel In str.StructureSelections
                         '//Match names
                         If sel.Text = obj.Text Then
-                            sel.LoadItems()
-                            obj.LoadItems()
+                            sel.LoadMe()
+                            obj.LoadMe()
                             '//Match field counts
                             If sel.ObjSelectionFields.Count = obj.ObjSelectionFields.Count Then
                                 If ChangeReference = True Then
@@ -6618,7 +6631,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '//Match names
                     If str.Text = obj.Text Then
                         str.LoadItems()
-                        obj.LoadItems()
+                        obj.LoadMe()
                         '//Match field counts
                         If str.ObjFields.Count = obj.DSSelectionFields.Count Then
                             Return False
@@ -6629,8 +6642,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     For Each sel In str.StructureSelections
                         '//Match names
                         If sel.Text = obj.Text Then
-                            sel.LoadItems()
-                            obj.LoadItems()
+                            sel.LoadMe()
+                            obj.LoadMe()
                             '//Match field counts
                             If sel.ObjSelectionFields.Count = obj.DSSelectionFields.Count Then
                                 Return False
@@ -7030,7 +7043,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            obj.LoadItems()
+            obj.LoadMe()
 
             obj.Parent = CType(cNode.Tag, INode).Parent '//Project->[Env Folder]->Env
             'obj.Project = CType(cNode.Tag, INode).Project
@@ -7085,23 +7098,23 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//////////////////////////////////////////////
         '//Now add Datastores
         '//////////////////////////////////////////////
-        Try
-            Dim cNode1 As TreeNode
-            Dim obj1 As INode
+        'Try
+        '    Dim cNode1 As TreeNode
+        '    Dim obj1 As INode
 
-            obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
-            obj1.Parent = CType(cNode.Tag, INode)
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1)
+        '    obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
+        '    obj1.Parent = CType(cNode.Tag, INode)
+        '    cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1)
 
-            For i = 0 To obj.Datastores.Count - 1
-                ''//Process this (cNode1 is root node under which we add other structures)
-                FillDSbyTypeFromClipboard(cNode1, obj.Datastores(i + 1))
-            Next
+        '    For i = 0 To obj.Datastores.Count - 1
+        '        ''//Process this (cNode1 is root node under which we add other structures)
+        '        FillDSbyTypeFromClipboard(cNode1, obj.Datastores(i + 1))
+        '    Next
 
 
-        Catch ex As Exception
-            LogError(ex)
-        End Try
+        'Catch ex As Exception
+        '    LogError(ex)
+        'End Try
 
         '///////////////////////////////////////////////
         '//Now add Variables
@@ -7126,23 +7139,23 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         '//Now add Procedures
         '///////////////////////////////////////////////
-        Try
-            Dim cNodeProc As TreeNode
-            Dim objProc As INode
+        'Try
+        '    Dim cNodeProc As TreeNode
+        '    Dim objProc As INode
 
-            '//Add Proc folder
-            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
-            objProc.Parent = CType(cNode.Tag, INode)
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
+        '    '//Add Proc folder
+        '    objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
+        '    objProc.Parent = CType(cNode.Tag, INode)
+        '    cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
 
-            For i = 0 To obj.Procedures.Count - 1
-                ''//Process this (cNode is root node under which we add other nodes)
-                FillTasksFromClipboard(cNodeProc, obj.Procedures(i + 1))
-            Next
+        '    For i = 0 To obj.Procedures.Count - 1
+        '        ''//Process this (cNode is root node under which we add other nodes)
+        '        FillTasksFromClipboard(cNodeProc, obj.Procedures(i + 1))
+        '    Next
 
-        Catch ex As Exception
+        'Catch ex As Exception
 
-        End Try
+        'End Try
 
         '///////////////////////////////////////////////
         '//Now add systems
@@ -7223,36 +7236,36 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
-    Function FillDSbyTypeFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsDatastore) As Boolean
+    'Function FillDSbyTypeFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsDatastore) As Boolean
 
-        Try
-            obj.Parent = CType(cNode.Parent.Tag, INode)
+    '    Try
+    '        obj.Parent = CType(cNode.Parent.Tag, INode)
 
-            'obj.LoadItems(, True)
+    '        'obj.LoadItems(, True)
 
-            'obj.LoadAttr()
+    '        'obj.LoadAttr()
 
-            'AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
+    '        'AddToCollection(obj.Environment.Datastores, obj, obj.GUID)
 
-            'ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
+    '        'ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddDSNode(obj, cNode)
-            obj.SeqNo = cNode.Index '//store position
+    '        cNode = AddDSNode(obj, cNode)
+    '        obj.SeqNo = cNode.Index '//store position
 
-            cNode.Text = obj.DsPhysicalSource
+    '        cNode.Text = obj.DsPhysicalSource
 
-            '// now add Datastore selections to tree
-            AddDSstructuresToTree(cNode, obj)
-            cNode.Collapse()
+    '        '// now add Datastore selections to tree
+    '        AddDSstructuresToTree(cNode, obj)
+    '        cNode.Collapse()
 
-            Return True
+    '        Return True
 
-        Catch ex As Exception
-            LogError(ex, "frmMain FillDSbyTypeFromClipboard")
-            Return False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "frmMain FillDSbyTypeFromClipboard")
+    '        Return False
+    '    End Try
 
-    End Function
+    'End Function
 
     Function FillSysFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsSystem) As Boolean
 
@@ -7327,6 +7340,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj1.Parent = obj
             cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1)
 
+            cNode1.Text = "(" & obj.Sources.Count.ToString & ")" & " Sources"
+
             For i = 0 To obj.Sources.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
                 FillDataStoreFromClipboard(cNode1, obj.Sources(i + 1))
@@ -7346,6 +7361,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj2 = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
             obj2.Parent = obj
             cNode2 = AddNode(cNode.Nodes, obj2.Type, obj2)
+
+            cNode2.Text = "(" & obj.Targets.Count.ToString & ")" & " Targets"
 
             For i = 0 To obj.Targets.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
@@ -7367,6 +7384,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objVar.Parent = obj
             cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar)
 
+            cNodeVar.Text = "(" & obj.Variables.Count.ToString & ")" & " Variables"
+
             For i = 0 To obj.Variables.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
                 FillVarFromClipboard(cNodeVar, obj.Variables(i + 1))
@@ -7381,7 +7400,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         Try
             Dim cNodeProc As TreeNode
+            Dim cNodeMain As TreeNode
             Dim objProc As INode
+            Dim objMain As INode
 
             ''//Add Join folder
             'objJoin = New clsFolderNode("Join", NODE_FO_JOIN)
@@ -7396,13 +7417,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'Next
 
             '//Add Proc folder
-            objProc = New clsFolderNode("Proc", NODE_FO_PROC)
+            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
             objProc.Parent = obj
             cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc)
+
+            cNodeProc.Text = "(" & obj.Procs.Count.ToString & ")" & " Procedures"
 
             For i = 0 To obj.Procs.Count - 1
                 FillTasksFromClipboard(cNodeProc, obj.Procs(i + 1))
             Next
+
             'For i = 0 To obj.Joins.Count - 1
             '    FillTasksFromClipboard(cNodeJoin, obj.Joins(i + 1))
             'Next
@@ -7410,13 +7434,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '    FillTasksFromClipboard(cNodeJoin, obj.Lookups(i + 1))
             'Next
             '//Add Main folder
-            'objMain = New clsFolderNode("Main", NODE_FO_MAIN)
-            'objMain.Parent = obj
-            'cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain)
+            objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
+            objMain.Parent = obj
+            cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain)
 
-            'For i = 0 To obj.Mains.Count - 1
-            '    FillTasksFromClipboard(cNodeMain, obj.Mains(i + 1))
-            'Next
+            For i = 0 To obj.Mains.Count - 1
+                FillTasksFromClipboard(cNodeMain, obj.Mains(i + 1))
+            Next
 
             ''//Add Lookup folder
             'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
@@ -7453,14 +7477,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            If CType(cNode.Parent.Tag, INode).Type = NODE_ENGINE Then
-                obj.Parent = CType(cNode.Parent.Tag, clsEngine) 'Engine->Folder(source/target)->ds
-            Else
-                'If CType(cNode.Parent.Tag, INode).Type = NODE_ENVIRONMENT Then
-                '    obj.Parent = CType(cNode.Parent.Tag, clsEnvironment)
-                'End If
-                FillDSbyTypeFromClipboard(cNode, obj)
-            End If
+            'If CType(cNode.Parent.Tag, INode).Type = NODE_ENGINE Then
+            obj.Parent = CType(cNode.Parent.Tag, clsEngine) 'Engine->Folder(source/target)->ds
+            'Else
+            ''If CType(cNode.Parent.Tag, INode).Type = NODE_ENVIRONMENT Then
+            ''    obj.Parent = CType(cNode.Parent.Tag, clsEnvironment)
+            ''End If
+            'FillDSbyTypeFromClipboard(cNode, obj)
+            'End If
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             '    obj.LoadAttr()
@@ -7471,14 +7495,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode = AddNode(cNode.Nodes, obj.Type, obj)   ' add node to the tree
             obj.SeqNo = cNode.Index '//store position
 
-            cNode.Text = obj.DsPhysicalSource
+
 
             If cmd Is Nothing Then ' save datastore so that meta is updated correctly
                 obj.Save()
+                cNode.Text = obj.DsPhysicalSource
+                AddDSstructuresToTree(cNode, obj)  'add it's DSselections under it
             Else
                 obj.MapAsSave(cmd)
+                cNode.Text = obj.Text
+                AddDSstructuresToTree(cNode, obj, True)  'add it's DSselections under it
             End If
-            AddDSstructuresToTree(cNode, obj, True)  'add it's DSselections under it
+
 
             Return True
 
@@ -7495,9 +7523,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            obj.LoadItems()
-            obj.LoadDatastores()
-            obj.LoadMappings(True)
+            obj.LoadMe()
+            'obj.LoadDatastores()
+            'obj.LoadMappings(True)
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->TaskFolder->Any Task
             cNode = AddNode(cNode.Nodes, obj.Type, obj)
@@ -7806,7 +7834,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     envobj = CType(obj, clsStructureSelection).ObjStructure.Environment
                 End If
 
-                envobj.LoadItems()
+                envobj.LoadMe()
 
                 Select Case OutType
                     Case "DTD"
@@ -8256,6 +8284,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     selNew.ObjDatastore = destObj
 
                     destObj.Text = "O_" & selNew.Text
+                    destObj.DsPhysicalSource = "PHYS." & destObj.Text
                     destObj.DatastoreType = dsType
                     destObj.OperationType = DS_OPERATION_INSERT
                     destObj.DsDirection = modDeclares.DS_DIRECTION_TARGET
@@ -8282,6 +8311,8 @@ ReName1:            If destObj.Engine.FindDupNames(destObj) = True Then
                         Dim task As New clsTask
 
                         FillDataStoreFromClipboard(cNode, destObj, cmd)
+
+
                         task.SeqNo = i  '// added 11/13/2006 by TK and KS
                         task.TaskName = "P_" & selNew.Text
                         task.TaskType = modDeclares.enumTaskType.TASK_PROC
@@ -8360,7 +8391,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
                 taskMain.AddNew(cmd)
 
-                pNode = cNode.Parent.Nodes(3)
+                pNode = cNode.Parent.Nodes(4)
                 pNode = AddNode(pNode.Nodes, taskMain.Type, taskMain)
                 taskMain.ObjTreeNode = pNode
                 taskMain.SeqNo = pNode.Index

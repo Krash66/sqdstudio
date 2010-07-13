@@ -746,7 +746,7 @@ DoMsg:      If MBtext <> "" Then
             cbConn.Items.Clear()
 
             For Each conn As clsConnection In ObjEnv.Connections
-                conn.LoadItems(True)
+                conn.LoadMe()
                 If conn.ConnectionType = "ODBC" Then
                     cbConn.Items.Add(New Mylist(conn.ConnectionName, conn))
                 End If

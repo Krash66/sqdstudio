@@ -52,13 +52,16 @@ Public Interface INode
     '// Added By TKarasch to check MetaData before adding new Inode Objects
     Function ValidateNewObject(Optional ByVal NewName As String = "", Optional ByVal InReg As Boolean = False) As Boolean
 
-    '/// Added By TKarasch to load Object itself, with or without 
-
-
     '/// Added by TKarasch to load all children of Inode Objects from MetaData
     Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean
 
     '/// Added By TKarasch as global flag to determine if Object was renamed
     Property IsRenamed() As Boolean
+
+    '/// Added to load all object properties from MetaData
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean
+
+    '/// Quick check for load status. Set True if IsLoaded is true
+    Property IsLoaded() As Boolean
 
 End Interface

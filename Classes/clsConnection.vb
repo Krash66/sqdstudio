@@ -15,6 +15,8 @@ Public Class clsConnection
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
     Private m_Environment As clsEnvironment
+    Private m_IsLoaded As Boolean
+
 
 #Region "INode Implementation"
 
@@ -88,7 +90,7 @@ Public Class clsConnection
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
             'obj.ObjTreeNode = Me.ObjTreeNode
             'obj.ConnectionId = Me.ConnectionId
@@ -167,22 +169,22 @@ Public Class clsConnection
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Update " & Me.Project.tblConnections & " set ConnectionName=" & Me.GetQuotedText & " , UserId='" & FixStr(Me.UserId) & "' , DBName='" & FixStr(Me.Database) & "' , Password='" & FixStr(Me.Password) & "', ConnectionType='" & FixStr(Me.ConnectionType) & "' , DateFormat='" & FixStr(Me.DateFormat) & "', Description='" & FixStr(Me.ConnectionDescription) & "' where ConnectionName=" & Me.GetQuotedText & " AND EnvironmentName=" & Me.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblConnections & " set ConnectionName=" & Me.GetQuotedText & " , UserId='" & FixStr(Me.UserId) & "' , DBName='" & FixStr(Me.Database) & "' , Password='" & FixStr(Me.Password) & "', ConnectionType='" & FixStr(Me.ConnectionType) & "' , DateFormat='" & FixStr(Me.DateFormat) & "', Description='" & FixStr(Me.ConnectionDescription) & "' where ConnectionName=" & Me.GetQuotedText & " AND EnvironmentName=" & Me.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
 
-            Else
-                sql = "Update " & Me.Project.tblConnections & _
-                " set ConnectionName=" & Me.GetQuotedText & _
-                ", ConnectionDescription='" & FixStr(Me.ConnectionDescription) & _
-                "' where ConnectionName=" & Me.GetQuotedText & _
-                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            sql = "Update " & Me.Project.tblConnections & _
+            " set ConnectionName=" & Me.GetQuotedText & _
+            ", ConnectionDescription='" & FixStr(Me.ConnectionDescription) & _
+            "' where ConnectionName=" & Me.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
 
-            End If
-           
+            'End If
+
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
@@ -245,22 +247,22 @@ Public Class clsConnection
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "INSERT INTO " & Me.Project.tblConnections & _
-                            "(ProjectName,EnvironmentName,ConnectionName,ConnectionType,UserId,DBName,Password,Description,DateFormat) " & _
-                            " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
-                            FixStr(ConnectionType) & "','" & FixStr(Me.UserId) & "','" & FixStr(Me.Database) & "','" & FixStr(Me.Password) & _
-                            "','" & FixStr(ConnectionDescription) & "','" & FixStr(Me.DateFormat) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblConnections & _
-                            "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
-                            " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
-                            FixStr(ConnectionDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "INSERT INTO " & Me.Project.tblConnections & _
+            '                "(ProjectName,EnvironmentName,ConnectionName,ConnectionType,UserId,DBName,Password,Description,DateFormat) " & _
+            '                " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
+            '                FixStr(ConnectionType) & "','" & FixStr(Me.UserId) & "','" & FixStr(Me.Database) & "','" & FixStr(Me.Password) & _
+            '                "','" & FixStr(ConnectionDescription) & "','" & FixStr(Me.DateFormat) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblConnections & _
+                        "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
+                        " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
+                        FixStr(ConnectionDescription) & "')"
 
-                Me.InsertATTR(cmd)
+            Me.InsertATTR(cmd)
 
-            End If
-            
+            'End If
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -288,20 +290,20 @@ Public Class clsConnection
         Try
             Me.Text = Me.Text.Trim
             '//When we add new record we need to find Unique Database Record ID.
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "INSERT INTO " & Me.Project.tblConnections & _
-                            "(ProjectName,EnvironmentName,ConnectionName,ConnectionType,UserId,DBName,Password,Description,DateFormat) " & _
-                            " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
-                            FixStr(ConnectionType) & "','" & FixStr(Me.UserId) & "','" & FixStr(Me.Database) & "','" & FixStr(Me.Password) & _
-                            "','" & FixStr(ConnectionDescription) & "','" & FixStr(Me.DateFormat) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblConnections & _
-                            "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
-                            " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
-                            FixStr(ConnectionDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "INSERT INTO " & Me.Project.tblConnections & _
+            '                "(ProjectName,EnvironmentName,ConnectionName,ConnectionType,UserId,DBName,Password,Description,DateFormat) " & _
+            '                " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
+            '                FixStr(ConnectionType) & "','" & FixStr(Me.UserId) & "','" & FixStr(Me.Database) & "','" & FixStr(Me.Password) & _
+            '                "','" & FixStr(ConnectionDescription) & "','" & FixStr(Me.DateFormat) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblConnections & _
+                        "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
+                        " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
+                        FixStr(ConnectionDescription) & "')"
 
-                Me.InsertATTR(cmd)
-            End If
+            Me.InsertATTR(cmd)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -322,63 +324,73 @@ Public Class clsConnection
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
-        '/// If V3 Meta then get all attributes
-        If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
+        Try
             Dim cmd As New System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
             Dim sql As String = ""
-            'Dim strAttrs As String
             Dim Attrib As String = ""
             Dim Value As String = ""
 
-            Try
-                If Incmd IsNot Nothing Then
-                    cmd = Incmd
-                Else
-                    cmd = New Odbc.OdbcCommand
-                    cmd.Connection = cnn
-                End If
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
+            End If
 
-                sql = "SELECT CONNECTIONATTRB,CONNECTIONATTRBVALUE FROM " & Me.Project.tblConnectionsATTR & _
-                " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & "' AND ENVIRONMENTNAME='" & _
-                FixStr(Me.Environment.EnvironmentName) & "' AND CONNECTIONNAME='" & FixStr(Me.ConnectionName) & "'"
+            sql = "SELECT CONNECTIONATTRB,CONNECTIONATTRBVALUE FROM " & Me.Project.tblConnectionsATTR & _
+            " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & "' AND ENVIRONMENTNAME='" & _
+            FixStr(Me.Environment.EnvironmentName) & "' AND CONNECTIONNAME='" & FixStr(Me.ConnectionName) & "'"
 
-                cmd.CommandText = sql
-                Log(sql)
-                da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
-                da.Fill(dt)
-                da.Dispose()
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            da.Fill(dt)
+            da.Dispose()
 
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    dr = dt.Rows(i)
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
 
-                    Attrib = GetStr(GetVal(dr("CONNECTIONATTRB")))
-                    Select Case Attrib
-                        Case "CONNECTIONTYPE"
-                            Me.ConnectionType = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
-                        Case "DATEFORMAT"
-                            Me.DateFormat = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
-                        Case "DBNAME"
-                            Me.Database = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
-                        Case "PASSWORD"
-                            Me.Password = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
-                        Case "USERID"
-                            Me.UserId = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
-                    End Select
-                Next
+                Attrib = GetStr(GetVal(dr("CONNECTIONATTRB")))
+                Select Case Attrib
+                    Case "CONNECTIONTYPE"
+                        Me.ConnectionType = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
+                    Case "DATEFORMAT"
+                        Me.DateFormat = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
+                    Case "DBNAME"
+                        Me.Database = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
+                    Case "PASSWORD"
+                        Me.Password = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
+                    Case "USERID"
+                        Me.UserId = GetStr(GetVal(dr("CONNECTIONATTRBVALUE")))
+                End Select
+            Next
 
-                Return True
+            Return True
 
-            Catch ex As Exception
-                LogError(ex, "clsStructure LoadFieldAttr")
-                Return False
-            End Try
-        End If
-        Return True
+        Catch ex As Exception
+            LogError(ex, "clsConnection LoadMe")
+            Return False
+        End Try
 
     End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
     Public Property IsRenamed() As Boolean Implements INode.IsRenamed
         Get
@@ -437,7 +449,7 @@ Public Class clsConnection
 #End Region
 
 #Region "Properties"
-    
+
     Public Property ConnectionName() As String
         Get
             Return m_ConnectionName
@@ -603,7 +615,7 @@ Public Class clsConnection
 
     End Function
 
-   
+
 #End Region
 
     Sub New()

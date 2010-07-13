@@ -11,6 +11,7 @@ Public Class clsStructureSelection
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
+    Private m_IsLoaded As Boolean
 
     Public ObjDSselections As New Collection '// collection of dsselections using this selection design
     Public ObjSelectionFields As New ArrayList '//Array of Fields selected with in structure
@@ -95,7 +96,7 @@ Public Class clsStructureSelection
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
             obj.SelectionName = Me.SelectionName
             obj.SelectionDescription = Me.SelectionDescription
@@ -189,21 +190,21 @@ Public Class clsStructureSelection
 
             '//Here We will save selection info and selection fields
             '//Note: Use transaction
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Update " & Me.Project.tblStructSel & " set SelectionName='" & FixStr(Me.SelectionName) & "', Description='" & _
-                FixStr(Me.SelectionDescription) & "' where SelectionName=" & Me.GetQuotedText & _
-                " AND StructureName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Update " & Me.Project.tblDescriptionSelect & " set SelectionName='" & FixStr(Me.SelectionName) & _
-                "' , SelectDescription='" & FixStr(Me.SelectionDescription) & _
-                "' where SelectionName=" & Me.GetQuotedText & _
-                " AND DESCRIPTIONName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
-            
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblStructSel & " set SelectionName='" & FixStr(Me.SelectionName) & "', Description='" & _
+            '    FixStr(Me.SelectionDescription) & "' where SelectionName=" & Me.GetQuotedText & _
+            '    " AND StructureName=" & Me.ObjStructure.GetQuotedText & _
+            '    " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            sql = "Update " & Me.Project.tblDescriptionSelect & " set SelectionName='" & FixStr(Me.SelectionName) & _
+            "' , SelectDescription='" & FixStr(Me.SelectionDescription) & _
+            "' where SelectionName=" & Me.GetQuotedText & _
+            " AND DESCRIPTIONName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -213,17 +214,17 @@ Public Class clsStructureSelection
             '//First delete old field selection and then add new selection when we save fields
             '//Now Loop through all fields and build sql insert script and submit to DB
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "DELETE FROM " & Me.Project.tblStrSelFields & " Where SelectionName=" & Me.GetQuotedText & _
-                " AND StructureName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " Where SelectionName=" & Me.GetQuotedText & _
-                " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "DELETE FROM " & Me.Project.tblStrSelFields & " Where SelectionName=" & Me.GetQuotedText & _
+            '    " AND StructureName=" & Me.ObjStructure.GetQuotedText & _
+            '    " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            sql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " Where SelectionName=" & Me.GetQuotedText & _
+            " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
 
             cmd.CommandText = sql
@@ -234,24 +235,24 @@ Public Class clsStructureSelection
                 '//Now Loop through all fields and build sql insert script and submit to DB
                 For i = 0 To ObjSelectionFields.Count - 1
 
-                    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "INSERT INTO " & Me.Project.tblStrSelFields & _
-                        " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    Else
-                        sql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
-                        " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    End If
-                    
+                    'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "INSERT INTO " & Me.Project.tblStrSelFields & _
+                    '    " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    '    Me.GetQuotedText & "," & _
+                    '    Me.ObjStructure.GetQuotedText & "," & _
+                    '    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    '    Me.Project.GetQuotedText & "," & _
+                    '    ObjSelectionFields(i).GetQuotedText & ");"
+                    'Else
+                    sql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
+                    " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    Me.GetQuotedText & "," & _
+                    Me.ObjStructure.GetQuotedText & "," & _
+                    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    Me.Project.GetQuotedText & "," & _
+                    ObjSelectionFields(i).GetQuotedText & ");"
+                    'End If
+
 
                     cmd.CommandText = sql
                     Log(sql)
@@ -296,18 +297,18 @@ Public Class clsStructureSelection
             '//Insert in to structures table
             '/////////////////////////////////////////////////////////////////////////
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                strsql = "INSERT INTO " & Me.Project.tblStructSel & "(ProjectName,EnvironmentName,StructureName,SelectionName,Description,ISSYSTEMSELECT) " & " Values(" & Me.Project.GetQuotedText & "," & Me.ObjStructure.Environment.GetQuotedText & "," & Me.ObjStructure.GetQuotedText & "," & Me.GetQuotedText & ",'" & FixStr(SelectionDescription) & "'" & ",'" & FixStr(IsSystemSelection) & "')"
-            Else
-                strsql = "INSERT INTO " & Me.Project.tblDescriptionSelect & _
-                "(ProjectName,EnvironmentName,DescriptionName,SelectionName,SelectDescription,ISSYSTEMSEL) Values(" & _
-                Me.Project.GetQuotedText & "," & _
-                Me.ObjStructure.Environment.GetQuotedText & "," & _
-                Me.ObjStructure.GetQuotedText & "," & _
-                Me.GetQuotedText & ",'" & _
-                FixStr(Me.SelectionDescription) & "','" & _
-                FixStr(Me.IsSystemSelection) & "')"
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strsql = "INSERT INTO " & Me.Project.tblStructSel & "(ProjectName,EnvironmentName,StructureName,SelectionName,Description,ISSYSTEMSELECT) " & " Values(" & Me.Project.GetQuotedText & "," & Me.ObjStructure.Environment.GetQuotedText & "," & Me.ObjStructure.GetQuotedText & "," & Me.GetQuotedText & ",'" & FixStr(SelectionDescription) & "'" & ",'" & FixStr(IsSystemSelection) & "')"
+            'Else
+            strsql = "INSERT INTO " & Me.Project.tblDescriptionSelect & _
+            "(ProjectName,EnvironmentName,DescriptionName,SelectionName,SelectDescription,ISSYSTEMSEL) Values(" & _
+            Me.Project.GetQuotedText & "," & _
+            Me.ObjStructure.Environment.GetQuotedText & "," & _
+            Me.ObjStructure.GetQuotedText & "," & _
+            Me.GetQuotedText & ",'" & _
+            FixStr(Me.SelectionDescription) & "','" & _
+            FixStr(Me.IsSystemSelection) & "')"
+            'End If
 
 
             cmd.CommandText = strsql
@@ -316,14 +317,14 @@ Public Class clsStructureSelection
 
             '///Moved this part after Inser in StructureSelections on 8/15/05 by npatel 
             '//delete any previous record to prevent any possible duplicate entries
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                strsql = "DELETE FROM " & Me.Project.tblStrSelFields & " WHERE  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                strsql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " WHERE SelectionName=" & Me.GetQuotedText & _
-                " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strsql = "DELETE FROM " & Me.Project.tblStrSelFields & " WHERE  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            strsql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " WHERE SelectionName=" & Me.GetQuotedText & _
+            " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
             cmd.CommandText = strsql
             Log(strsql)
@@ -346,23 +347,23 @@ Public Class clsStructureSelection
                 '//Now Loop through all fields and build sql insert script and submit to DB
                 For i = 0 To ObjSelectionFields.Count - 1
 
-                    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        strsql = "INSERT INTO " & Me.Project.tblStrSelFields & _
-                        " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    Else
-                        strsql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
-                        " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    End If
+                    'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    strsql = "INSERT INTO " & Me.Project.tblStrSelFields & _
+                    '    " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    '    Me.GetQuotedText & "," & _
+                    '    Me.ObjStructure.GetQuotedText & "," & _
+                    '    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    '    Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
+                    '    ObjSelectionFields(i).GetQuotedText & ");"
+                    'Else
+                    strsql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
+                    " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    Me.GetQuotedText & "," & _
+                    Me.ObjStructure.GetQuotedText & "," & _
+                    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
+                    ObjSelectionFields(i).GetQuotedText & ");"
+                    'End If
 
                     cmd.CommandText = strsql
                     Log(strsql)
@@ -398,18 +399,18 @@ Public Class clsStructureSelection
             '//////////////////////////////////////////////////////////////////////////
             '//Insert in to structures table
             '//////////////////////////////////////////////////////////////////////////
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                strsql = "INSERT INTO " & Me.Project.tblStructSel & "(ProjectName,EnvironmentName,StructureName,SelectionName,Description,ISSYSTEMSELECT) " & " Values(" & Me.Project.GetQuotedText & "," & Me.ObjStructure.Environment.GetQuotedText & "," & Me.ObjStructure.GetQuotedText & "," & Me.GetQuotedText & ",'" & FixStr(SelectionDescription) & "'" & ",'" & FixStr(IsSystemSelection) & "')"
-            Else
-                strsql = "INSERT INTO " & Me.Project.tblDescriptionSelect & _
-                "(ProjectName,EnvironmentName,DescriptionName,SelectionName,SelectDescription,ISSYSTEMSEL) Values(" & _
-                Me.Project.GetQuotedText & "," & _
-                Me.ObjStructure.Environment.GetQuotedText & "," & _
-                Me.ObjStructure.GetQuotedText & "," & _
-                Me.GetQuotedText & ",'" & _
-                FixStr(SelectionDescription) & "','" & _
-                FixStr(IsSystemSelection) & "')"
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strsql = "INSERT INTO " & Me.Project.tblStructSel & "(ProjectName,EnvironmentName,StructureName,SelectionName,Description,ISSYSTEMSELECT) " & " Values(" & Me.Project.GetQuotedText & "," & Me.ObjStructure.Environment.GetQuotedText & "," & Me.ObjStructure.GetQuotedText & "," & Me.GetQuotedText & ",'" & FixStr(SelectionDescription) & "'" & ",'" & FixStr(IsSystemSelection) & "')"
+            'Else
+            strsql = "INSERT INTO " & Me.Project.tblDescriptionSelect & _
+            "(ProjectName,EnvironmentName,DescriptionName,SelectionName,SelectDescription,ISSYSTEMSEL) Values(" & _
+            Me.Project.GetQuotedText & "," & _
+            Me.ObjStructure.Environment.GetQuotedText & "," & _
+            Me.ObjStructure.GetQuotedText & "," & _
+            Me.GetQuotedText & ",'" & _
+            FixStr(SelectionDescription) & "','" & _
+            FixStr(IsSystemSelection) & "')"
+            'End If
 
             cmd.CommandText = strsql
             Log(strsql)
@@ -417,14 +418,14 @@ Public Class clsStructureSelection
 
             '///Moved this part after Inser in StructureSelections on 8/15/05 by npatel 
             '//delete any previous record to prevent any possible duplicate entries
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                strsql = "DELETE FROM " & Me.Project.tblStrSelFields & " WHERE  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                strsql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " WHERE SelectionName=" & Me.GetQuotedText & _
-                " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strsql = "DELETE FROM " & Me.Project.tblStrSelFields & " WHERE  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            strsql = "DELETE FROM " & Me.Project.tblDescriptionSelFields & " WHERE SelectionName=" & Me.GetQuotedText & _
+            " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
             cmd.CommandText = strsql
             Log(strsql)
@@ -447,23 +448,23 @@ Public Class clsStructureSelection
                 '//Now Loop through all fields and build sql insert script 
                 '//and submit to DB
                 For i = 0 To ObjSelectionFields.Count - 1
-                    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        strsql = "INSERT INTO " & Me.Project.tblStrSelFields & _
-                        " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    Else
-                        strsql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
-                        " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
-                        Me.GetQuotedText & "," & _
-                        Me.ObjStructure.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.GetQuotedText & "," & _
-                        Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
-                        ObjSelectionFields(i).GetQuotedText & ");"
-                    End If
+                    'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    strsql = "INSERT INTO " & Me.Project.tblStrSelFields & _
+                    '    " (SelectionName,StructureName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    '    Me.GetQuotedText & "," & _
+                    '    Me.ObjStructure.GetQuotedText & "," & _
+                    '    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    '    Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
+                    '    ObjSelectionFields(i).GetQuotedText & ");"
+                    'Else
+                    strsql = "INSERT INTO " & Me.Project.tblDescriptionSelFields & _
+                    " (SelectionName,DescriptionName,EnvironmentName,ProjectName,FieldName) Values( " & _
+                    Me.GetQuotedText & "," & _
+                    Me.ObjStructure.GetQuotedText & "," & _
+                    Me.ObjStructure.Environment.GetQuotedText & "," & _
+                    Me.ObjStructure.Environment.Project.GetQuotedText & "," & _
+                    ObjSelectionFields(i).GetQuotedText & ");"
+                    'End If
 
                     cmd.CommandText = strsql
                     Log(strsql)
@@ -491,30 +492,30 @@ Public Class clsStructureSelection
         Try
             '//delete from STRSELFIELDS
             '//first delete child records
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Delete From " & Me.Project.tblStrSelFields & " where  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText
-            Else
-                sql = "Delete From " & Me.Project.tblDescriptionSelFields & _
-                " where SelectionName=" & Me.GetQuotedText & _
-                " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText
-            End If
-           
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Delete From " & Me.Project.tblStrSelFields & " where  SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText
+            'Else
+            sql = "Delete From " & Me.Project.tblDescriptionSelFields & _
+            " where SelectionName=" & Me.GetQuotedText & _
+            " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText
+            'End If
+
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
             '//delete from StructureSelections
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Delete From " & Me.Project.tblStructSel & " where SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Delete From " & Me.Project.tblDescriptionSelect & _
-                " where SelectionName=" & Me.GetQuotedText & _
-                " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Delete From " & Me.Project.tblStructSel & " where SelectionName=" & Me.GetQuotedText & " AND StructureName=" & Me.ObjStructure.GetQuotedText & " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            sql = "Delete From " & Me.Project.tblDescriptionSelect & _
+            " where SelectionName=" & Me.GetQuotedText & _
+            " AND DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
 
             cmd.CommandText = sql
@@ -548,22 +549,22 @@ Public Class clsStructureSelection
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
-        'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
-        Dim cmd As System.Data.Odbc.OdbcCommand
-        Dim dr As System.Data.DataRow
-        Dim da As System.Data.Odbc.OdbcDataAdapter
-        Dim dt As System.Data.DataTable
-        Dim sql As String = ""
-        Dim i As Integer
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
-            '//check if already loaded ?
-            If Reload = False Then
-                If Me.ObjSelectionFields.Count > 0 Then Exit Function
-            End If
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim dr As System.Data.DataRow
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As System.Data.DataTable
+            Dim sql As String = ""
+            Dim i As Integer
 
-            'cnn.Open()
-            'cmd = cnn.CreateCommand
+            '//check if already loaded ?
+            If Me.ObjSelectionFields.Count > 0 Then Exit Function
 
             If Incmd IsNot Nothing Then
                 cmd = Incmd
@@ -572,39 +573,23 @@ Public Class clsStructureSelection
                 cmd.Connection = cnn
             End If
 
-            Me.ObjStructure.LoadItems(Reload, False, cmd)
+            Me.ObjStructure.LoadItems(, , cmd)
             ObjSelectionFields.Clear()
 
             If Me.IsSystemSelection = "1" Then
                 ObjSelectionFields = Me.ObjStructure.ObjFields.Clone
             Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Select sf.PROJECTNAME,sf.ENVIRONMENTNAME,sf.STRUCTURENAME,sf.FIELDNAME from " & Me.Project.tblStrSelFields & " ssf " & _
-                    "inner join " & Me.Project.tblStructFields & " sf " & _
-                    "on ssf.fieldname=sf.fieldname " & _
-                    "AND  ssf.structurename=sf.structurename " & _
-                    "AND  ssf.environmentname=sf.environmentname " & _
-                    "AND  ssf.projectname=sf.projectname " & _
-                    "where  ssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND ssf.StructureName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND ssf.EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                    " AND ssf.ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText & _
-                    " ORDER BY sf.SEQNO"
-                Else
-                    sql = "Select sf.PROJECTNAME,sf.ENVIRONMENTNAME,sf.DESCRIPTIONNAME,sf.FIELDNAME from " & Me.Project.tblDescriptionSelFields & " ssf inner join " & _
-                    Me.Project.tblDescriptionFields & " sf " & _
-                    "on ssf.fieldname=sf.fieldname " & _
-                    "AND  ssf.descriptionname=sf.descriptionname " & _
-                    "AND ssf.environmentname=sf.environmentname " & _
-                    "AND  ssf.projectname=sf.projectname " & _
-                    "where  ssf.SelectionName=" & Me.GetQuotedText & _
-                    " AND ssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
-                    " AND ssf.EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
-                    " AND ssf.ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText & _
-                    " ORDER BY sf.SEQNO"
-
-                End If
-
+                sql = "Select sf.PROJECTNAME,sf.ENVIRONMENTNAME,sf.DESCRIPTIONNAME,sf.FIELDNAME from " & Me.Project.tblDescriptionSelFields & " ssf inner join " & _
+                Me.Project.tblDescriptionFields & " sf " & _
+                "on ssf.fieldname=sf.fieldname " & _
+                "AND  ssf.descriptionname=sf.descriptionname " & _
+                "AND ssf.environmentname=sf.environmentname " & _
+                "AND  ssf.projectname=sf.projectname " & _
+                "where  ssf.SelectionName=" & Me.GetQuotedText & _
+                " AND ssf.DescriptionName=" & Me.ObjStructure.GetQuotedText & _
+                " AND ssf.EnvironmentName=" & Me.ObjStructure.Environment.GetQuotedText & _
+                " AND ssf.ProjectName=" & Me.ObjStructure.Environment.Project.GetQuotedText & _
+                " ORDER BY sf.SEQNO"
 
                 cmd.CommandText = sql
                 Log(sql)
@@ -635,12 +620,19 @@ Public Class clsStructureSelection
             End If
 
         Catch ex As Exception
-            LogError(ex, sql)
-        Finally
-            'cnn.Close()
+            LogError(ex, "clsSS LoadMe")
         End Try
 
     End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
     Public Function ValidateNewObject(Optional ByVal NewName As String = "", Optional ByVal InReg As Boolean = False) As Boolean Implements INode.ValidateNewObject
 
@@ -660,11 +652,11 @@ Public Class clsStructureSelection
 
             'cnn.Open()
             cmd = cnn.CreateCommand
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select SELECTIONNAME,STRUCTURENAME from " & Me.Project.tblStructSel & " where PROJECTNAME='" & Me.Project.ProjectName & "' AND ENVIRONMENTNAME='" & Me.ObjStructure.Environment.EnvironmentName & "'"
-            Else
-                sql = "Select SELECTIONNAME,DESCRIPTIONNAME from " & Me.Project.tblDescriptionSelect & " where PROJECTNAME='" & Me.Project.ProjectName & "' AND ENVIRONMENTNAME='" & Me.ObjStructure.Environment.EnvironmentName & "'"
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select SELECTIONNAME,STRUCTURENAME from " & Me.Project.tblStructSel & " where PROJECTNAME='" & Me.Project.ProjectName & "' AND ENVIRONMENTNAME='" & Me.ObjStructure.Environment.EnvironmentName & "'"
+            'Else
+            sql = "Select SELECTIONNAME,DESCRIPTIONNAME from " & Me.Project.tblDescriptionSelect & " where PROJECTNAME='" & Me.Project.ProjectName & "' AND ENVIRONMENTNAME='" & Me.ObjStructure.Environment.EnvironmentName & "'"
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -677,11 +669,11 @@ Public Class clsStructureSelection
                     MsgBox("The new name you have chosen already exists as a Subset of a Structure" & (Chr(13)) & "in this Environment, Please enter a different Name", MsgBoxStyle.Information, MsgTitle)
                     Exit While
                 End If
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    readStrName = dr("STRUCTURENAME")
-                Else
-                    readStrName = dr("DESCRIPTIONNAME")
-                End If
+                'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                '    readStrName = dr("STRUCTURENAME")
+                'Else
+                readStrName = dr("DESCRIPTIONNAME")
+                'End If
 
                 If testName.Equals(readStrName, StringComparison.CurrentCultureIgnoreCase) = True Then
                     NameValid = False

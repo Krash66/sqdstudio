@@ -17,6 +17,7 @@ Public Class clsEngine
     Private m_Connection As clsConnection
     Private m_DateFormat As String = ""
     Private m_Main As String = ""
+    Private m_IsLoaded As Boolean
 
     Public Sources As New Collection
     Public Targets As New Collection
@@ -100,7 +101,7 @@ Public Class clsEngine
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
             obj.EngineName = Me.EngineName
             obj.EngineDescription = Me.EngineDescription
@@ -144,6 +145,8 @@ Public Class clsEngine
                 Dim NewMan As clsTask
                 '//clone all main procs under Engine
                 For Each man As clsTask In Me.Mains
+                    man.LoadMe(cmd)
+
                     NewMan = man.Clone(obj, True, cmd)
                     NewMan.Engine = obj
                     AddToCollection(obj.Mains, NewMan, NewMan.GUID)
@@ -157,21 +160,21 @@ Public Class clsEngine
                     AddToCollection(obj.Procs, NewPrc, NewPrc.GUID)
                 Next
 
-                Dim NewJon As clsTask
-                '//clone all joins under Engine
-                For Each jon As clsTask In Me.Gens
-                    NewJon = jon.Clone(obj, True, cmd)
-                    NewJon.Engine = obj
-                    AddToCollection(obj.Gens, NewJon, NewJon.GUID)
-                Next
+                'Dim NewJon As clsTask
+                ''//clone all joins under Engine
+                'For Each jon As clsTask In Me.Gens
+                '    NewJon = jon.Clone(obj, True, cmd)
+                '    NewJon.Engine = obj
+                '    AddToCollection(obj.Gens, NewJon, NewJon.GUID)
+                'Next
 
-                Dim NewLoc As clsTask
-                '//clone all lookups under Engine
-                For Each loc As clsTask In Me.Lookups
-                    NewLoc = loc.Clone(obj, True, cmd)
-                    NewLoc.Engine = obj
-                    AddToCollection(obj.Lookups, NewLoc, NewLoc.GUID)
-                Next
+                'Dim NewLoc As clsTask
+                ''//clone all lookups under Engine
+                'For Each loc As clsTask In Me.Lookups
+                '    NewLoc = loc.Clone(obj, True, cmd)
+                '    NewLoc.Engine = obj
+                '    AddToCollection(obj.Lookups, NewLoc, NewLoc.GUID)
+                'Next
             End If
 
             Return obj
@@ -240,29 +243,29 @@ Public Class clsEngine
                 ConnStr = Me.Connection.ConnectionName
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Update " & Me.Project.tblEngines & " " & _
-                "set EngineName='" & FixStr(Me.EngineName) & "' , " & _
-                "ReportEvery=" & Me.ReportEvery & " , " & _
-                "CommitEvery=" & Me.CommitEvery & " , " & _
-                "ReportFile='" & FixStr(Me.ReportFile) & "' , " & _
-                "CopybookLib='" & FixStr(Me.CopybookLib) & "' , " & _
-                "IncludeLib='" & FixStr(Me.IncludeLib) & "' , " & _
-                "DTDLib='" & FixStr(Me.DTDLib) & "' , " & _
-                "DDLLib='" & FixStr(Me.DDLLib) & "' , " & _
-                "Description='" & FixStr(Me.EngineDescription) & "' , " & _
-                "CONNECTIONNAME='" & ConnStr & "' " & _
-                "where EngineName=" & Me.GetQuotedText & " AND SystemName=" & Me.ObjSystem.GetQuotedText & " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
-            Else
-                sql = "Update " & Me.Project.tblEngines & " set EngineName='" & FixStr(Me.EngineName) & "'," & _
-                "EngineDescription='" & FixStr(Me.EngineDescription) & "' " & _
-                "where EngineName=" & Me.GetQuotedText & " AND SystemName=" & Me.ObjSystem.GetQuotedText & _
-                " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & _
-                " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblEngines & " " & _
+            '    "set EngineName='" & FixStr(Me.EngineName) & "' , " & _
+            '    "ReportEvery=" & Me.ReportEvery & " , " & _
+            '    "CommitEvery=" & Me.CommitEvery & " , " & _
+            '    "ReportFile='" & FixStr(Me.ReportFile) & "' , " & _
+            '    "CopybookLib='" & FixStr(Me.CopybookLib) & "' , " & _
+            '    "IncludeLib='" & FixStr(Me.IncludeLib) & "' , " & _
+            '    "DTDLib='" & FixStr(Me.DTDLib) & "' , " & _
+            '    "DDLLib='" & FixStr(Me.DDLLib) & "' , " & _
+            '    "Description='" & FixStr(Me.EngineDescription) & "' , " & _
+            '    "CONNECTIONNAME='" & ConnStr & "' " & _
+            '    "where EngineName=" & Me.GetQuotedText & " AND SystemName=" & Me.ObjSystem.GetQuotedText & " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
+            'Else
+            sql = "Update " & Me.Project.tblEngines & " set EngineName='" & FixStr(Me.EngineName) & "'," & _
+            "EngineDescription='" & FixStr(Me.EngineDescription) & "' " & _
+            "where EngineName=" & Me.GetQuotedText & " AND SystemName=" & Me.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
 
 
             cmd.CommandText = sql
@@ -376,22 +379,22 @@ Public Class clsEngine
                 ConnText = Me.Connection.Text
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,ReportEvery,CommitEvery,ReportFile,Description,CopybookLib,IncludeLib,DTDLib,DDLLib,ConnectionName) " & _
-                      " Values(" & Me.ObjSystem.Environment.Project.GetQuotedText & "," & Me.ObjSystem.Environment.GetQuotedText & "," & Me.ObjSystem.GetQuotedText & "," & Me.GetQuotedText & "," & Me.ReportEvery & "," & Me.CommitEvery & ",'" & FixStr(Me.ReportFile) & "','" & FixStr(EngineDescription) & "','" & FixStr(CopybookLib) & "','" & FixStr(IncludeLib) & "','" & FixStr(DTDLib) & "','" & FixStr(DDLLib) & "','" & ConnText & "')"
-            Else
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,EngineDescription) " & _
-                " Values(" & Me.Project.GetQuotedText & "," & _
-                Me.ObjSystem.Environment.GetQuotedText & "," & _
-                Me.ObjSystem.GetQuotedText & "," & _
-                Me.GetQuotedText & ",'" & _
-                FixStr(Me.EngineDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,ReportEvery,CommitEvery,ReportFile,Description,CopybookLib,IncludeLib,DTDLib,DDLLib,ConnectionName) " & _
+            '          " Values(" & Me.ObjSystem.Environment.Project.GetQuotedText & "," & Me.ObjSystem.Environment.GetQuotedText & "," & Me.ObjSystem.GetQuotedText & "," & Me.GetQuotedText & "," & Me.ReportEvery & "," & Me.CommitEvery & ",'" & FixStr(Me.ReportFile) & "','" & FixStr(EngineDescription) & "','" & FixStr(CopybookLib) & "','" & FixStr(IncludeLib) & "','" & FixStr(DTDLib) & "','" & FixStr(DDLLib) & "','" & ConnText & "')"
+            'Else
+            '//When we add new record we need to find Unique Database Record ID.
+            sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,EngineDescription) " & _
+            " Values(" & Me.Project.GetQuotedText & "," & _
+            Me.ObjSystem.Environment.GetQuotedText & "," & _
+            Me.ObjSystem.GetQuotedText & "," & _
+            Me.GetQuotedText & ",'" & _
+            FixStr(Me.EngineDescription) & "')"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
 
 
             cmd.CommandText = sql
@@ -449,26 +452,26 @@ Public Class clsEngine
         Try
             Me.Text = Me.Text.Trim
             '//When we add new record we need to find Unique Database Record ID.
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEngines & _
-                "(ProjectName,EnvironmentName,SystemName,EngineName,ReportEvery,CommitEvery,ReportFile,Description,CopybookLib,IncludeLib,DTDLib,DDLLib,ConnectionName) " & _
-                      " Values(" & Me.Project.GetQuotedText & "," & Me.ObjSystem.Environment.GetQuotedText & "," & _
-                      Me.ObjSystem.GetQuotedText & "," & Me.GetQuotedText & "," & Me.ReportEvery & "," & Me.CommitEvery & ",'" & _
-                      FixStr(Me.ReportFile) & "','" & FixStr(EngineDescription) & "','" & FixStr(CopybookLib) & "','" & _
-                      FixStr(IncludeLib) & "','" & FixStr(DTDLib) & "','" & FixStr(DDLLib) & "','" & Me.Connection.Text & "')"
-            Else
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,EngineDescription) " & _
-                " Values(" & Me.Project.GetQuotedText & "," & _
-                Me.ObjSystem.Environment.GetQuotedText & "," & _
-                Me.ObjSystem.GetQuotedText & "," & _
-                Me.GetQuotedText & ",'" & _
-                FixStr(Me.EngineDescription) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblEngines & _
+            '    "(ProjectName,EnvironmentName,SystemName,EngineName,ReportEvery,CommitEvery,ReportFile,Description,CopybookLib,IncludeLib,DTDLib,DDLLib,ConnectionName) " & _
+            '          " Values(" & Me.Project.GetQuotedText & "," & Me.ObjSystem.Environment.GetQuotedText & "," & _
+            '          Me.ObjSystem.GetQuotedText & "," & Me.GetQuotedText & "," & Me.ReportEvery & "," & Me.CommitEvery & ",'" & _
+            '          FixStr(Me.ReportFile) & "','" & FixStr(EngineDescription) & "','" & FixStr(CopybookLib) & "','" & _
+            '          FixStr(IncludeLib) & "','" & FixStr(DTDLib) & "','" & FixStr(DDLLib) & "','" & Me.Connection.Text & "')"
+            'Else
+            '//When we add new record we need to find Unique Database Record ID.
+            sql = "INSERT INTO " & Me.Project.tblEngines & "(ProjectName,EnvironmentName,SystemName,EngineName,EngineDescription) " & _
+            " Values(" & Me.Project.GetQuotedText & "," & _
+            Me.ObjSystem.Environment.GetQuotedText & "," & _
+            Me.ObjSystem.GetQuotedText & "," & _
+            Me.GetQuotedText & ",'" & _
+            FixStr(Me.EngineDescription) & "')"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -516,73 +519,78 @@ Public Class clsEngine
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Dim cmd As System.Data.Odbc.OdbcCommand
-                Dim da As System.Data.Odbc.OdbcDataAdapter
-                Dim dt As New DataTable("temp")
-                Dim dr As DataRow
-                Dim sql As String = ""
-                'Dim strAttrs As String
-                Dim Attrib As String = ""
-                Dim Value As String = ""
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            'Dim strAttrs As String
+            Dim Attrib As String = ""
+            Dim Value As String = ""
 
-                If INcmd IsNot Nothing Then
-                    cmd = INcmd
-                Else
-                    cmd = New Odbc.OdbcCommand
-                    cmd.Connection = cnn
-                End If
-
-                sql = "SELECT ENGINEATTRB,ENGINEATTRBVALUE FROM " & Me.Project.tblEnginesATTR & _
-                " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
-                "' AND ENVIRONMENTNAME='" & FixStr(Me.ObjSystem.Environment.EnvironmentName) & _
-                "' AND SYSTEMNAME='" & FixStr(Me.ObjSystem.SystemName) & _
-                "' AND ENGINENAME='" & FixStr(Me.EngineName) & "'"
-
-                cmd.CommandText = sql
-                Log(sql)
-                da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
-                da.Fill(dt)
-                da.Dispose()
-
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    dr = dt.Rows(i)
-
-                    Attrib = GetVal(dr("ENGINEATTRB"))
-                    Select Case Attrib
-                        Case "COMMITEVERY"
-                            Me.CommitEvery = GetVal(dr("ENGINEATTRBVALUE"))
-                        Case "CONNECTIONNAME"
-                            Me.Connection = SearchForConn(Me, GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "COPYBOOKLIB"
-                            Me.CopybookLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "DATEFORMAT"
-                            Me.DateFormat = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "DDLLIB"
-                            Me.DDLLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "DTDLIB"
-                            Me.DTDLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "FORCECOMMIT"
-                            Me.ForceCommit = GetVal(dr("ENGINEATTRBVALUE"))
-                        Case "INCLUDELIB"
-                            Me.IncludeLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "REPORTEVERY"
-                            Me.ReportEvery = GetVal(dr("ENGINEATTRBVALUE"))
-                        Case "REPORTFILE"
-                            Me.ReportFile = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                        Case "MAIN"
-                            Me.Main = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
-                    End Select
-                Next
-
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
+
+            sql = "SELECT ENGINEATTRB,ENGINEATTRBVALUE FROM " & Me.Project.tblEnginesATTR & _
+            " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
+            "' AND ENVIRONMENTNAME='" & FixStr(Me.ObjSystem.Environment.EnvironmentName) & _
+            "' AND SYSTEMNAME='" & FixStr(Me.ObjSystem.SystemName) & _
+            "' AND ENGINENAME='" & FixStr(Me.EngineName) & "'"
+
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            da.Fill(dt)
+            da.Dispose()
+
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetVal(dr("ENGINEATTRB"))
+                Select Case Attrib
+                    Case "COMMITEVERY"
+                        Me.CommitEvery = GetVal(dr("ENGINEATTRBVALUE"))
+                    Case "CONNECTIONNAME"
+                        Me.Connection = SearchForConn(Me, GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "COPYBOOKLIB"
+                        Me.CopybookLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "DATEFORMAT"
+                        Me.DateFormat = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "DDLLIB"
+                        Me.DDLLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "DTDLIB"
+                        Me.DTDLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "FORCECOMMIT"
+                        Me.ForceCommit = GetVal(dr("ENGINEATTRBVALUE"))
+                    Case "INCLUDELIB"
+                        Me.IncludeLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "REPORTEVERY"
+                        Me.ReportEvery = GetVal(dr("ENGINEATTRBVALUE"))
+                    Case "REPORTFILE"
+                        Me.ReportFile = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "MAIN"
+                        Me.Main = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                End Select
+            Next
+
+            'End If
 
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsEngine LoadItems")
+            LogError(ex, "clsEngine LoadMe")
             Return False
         End Try
 
@@ -594,6 +602,15 @@ Public Class clsEngine
         End Get
         Set(ByVal Value As Boolean)
             m_IsRenamed = Value
+        End Set
+    End Property
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
         End Set
     End Property
 
@@ -788,79 +805,6 @@ Public Class clsEngine
             Return Nothing
         End Try
        
-    End Function
-
-    '//Write Engine Non-Metadata Properties to File
-    Function SaveEngProps() As Boolean
-
-        Try
-            If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.EngineName & ".txt") = True Then
-                System.IO.File.Delete(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.EngineName & ".txt")
-            End If
-            fsEng = System.IO.File.Create(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.EngineName & ".txt")
-            objWriteEng = New System.IO.StreamWriter(fsEng)
-
-            'Write Globals to File
-            If Me.ForceCommit = True Then
-                objWriteEng.WriteLine("1")
-            Else
-                objWriteEng.WriteLine("0")
-            End If
-
-            If Me.DateFormat.Trim = "" Then
-                objWriteEng.WriteLine(" ")
-            Else
-                objWriteEng.WriteLine(Me.DateFormat.Trim)
-            End If
-
-            objWriteEng.Close()
-            fsEng.Close()
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsEngine SaveEngProps")
-            Return False
-            objWriteEng.Close()
-            fsEng.Close()
-        End Try
-
-    End Function
-
-    Function LoadEngProps() As Boolean
-
-        Try
-            If System.IO.File.Exists(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.EngineName & ".txt") = False Then
-                LoadEngProps = True
-                Exit Function
-            End If
-            fsEng = System.IO.File.Open(GetAppTemp() & "\" & Me.Project.ProjectName & "." & Me.EngineName & ".txt", IO.FileMode.Open)
-
-            objReadEng = New System.IO.StreamReader(fsEng)
-
-            Dim tempint As Integer = objReadEng.ReadLine()
-            Dim TempDate As String = objReadEng.ReadLine()
-
-            If tempint = "1" Then
-                Me.ForceCommit = True
-            Else
-                Me.ForceCommit = False
-            End If
-
-            Me.DateFormat = TempDate
-
-            objReadEng.Close()
-            fsEng.Close()
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsEngine LoadEngProps")
-            Return False
-            objReadEng.Close()
-            fsEng.Close()
-        End Try
-
     End Function
 
     Function InsertATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean

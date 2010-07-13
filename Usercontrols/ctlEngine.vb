@@ -633,9 +633,9 @@ Public Class ctlEngine
                 objThis.Save()
             End If
 
-            If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                objThis.SaveEngProps()
-            End If
+            'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    objThis.SaveEngProps()
+            'End If
 
             Save = True
             cmdSave.Enabled = False
@@ -726,11 +726,7 @@ Public Class ctlEngine
         StartLoad()
 
         objThis = obj '//Load the form env object
-        objThis.LoadItems()
-
-        If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-            objThis.LoadEngProps()
-        End If
+        objThis.LoadMe()
 
         UpdateFields()
 

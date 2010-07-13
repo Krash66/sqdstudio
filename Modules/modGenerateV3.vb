@@ -79,10 +79,10 @@ Public Module modGenerateV3
         Try
             ScriptPath = EngObj.ObjSystem.Environment.LocalScriptDir
             ObjThis = EngObj
-            EngObj.LoadItems()
-            EngObj.ObjSystem.LoadItems()
+            EngObj.LoadMe()
+            EngObj.ObjSystem.LoadMe()
             If EngObj.Connection IsNot Nothing Then
-                EngObj.Connection.LoadItems()
+                EngObj.Connection.LoadMe()
             End If
 
 
@@ -986,7 +986,7 @@ ErrorGoTo:
             For i = 1 To ObjThis.Sources.Count
                 'wComment(rc, "---------------------------------------------------------------------")
                 ds = CType(ObjThis.Sources(i), clsDatastore)
-                ds.LoadAttr()
+                ds.LoadMe()
                 ds.LoadItems(True)
 
                 If ds.IsLookUp = False Then
@@ -1004,7 +1004,7 @@ ErrorGoTo:
             For i = 1 To ObjThis.Targets.Count
                 'wComment(rc, "---------------------------------------------------------------------")
                 ds = CType(ObjThis.Targets(i), clsDatastore)
-                ds.LoadAttr()
+                ds.LoadMe()
                 ds.LoadItems(True)
 
                 If prtDS(rc, ds) = False Then
@@ -1374,7 +1374,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
             For Each ds As clsDatastore In ObjThis.Sources
                 For Each dsSel As clsDSSelection In ds.ObjSelections
-                    dsSel.LoadItems()
+                    dsSel.LoadMe()
 
                     For Each Fld As clsField In dsSel.DSSelectionFields
                         'dsSel.LoadFieldAttr(Fld)
@@ -1393,7 +1393,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
             For Each ds As clsDatastore In ObjThis.Targets
                 For Each dsSel As clsDSSelection In ds.ObjSelections
-                    dsSel.LoadItems()
+                    dsSel.LoadMe()
 
                     For Each Fld As clsField In dsSel.DSSelectionFields
                         'dsSel.LoadFieldAttr(Fld)
@@ -1438,7 +1438,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Try
             If ObjThis.Variables.Count > 0 Then
                 For Each var As clsVariable In ObjThis.Variables
-                    var.LoadItems()
+                    var.LoadMe()
 
                     If var.VariableDescription.Trim <> "" Then
                         wComment(rc, var.VariableDescription)
@@ -1476,7 +1476,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Try
             If ObjThis.Gens.Count > 0 Then
                 For Each Join As clsTask In ObjThis.Gens
-                    Join.LoadItems()
+                    Join.LoadMe()
 
                     If prtJs(rc, Join) = False Then
                         GoTo ErrorGoTo
@@ -1581,7 +1581,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Try
             If ObjThis.Lookups.Count > 0 Then
                 For Each LU As clsTask In ObjThis.Lookups
-                    LU.LoadItems()
+                    LU.LoadMe()
 
                     If prtLUs(rc, LU) = False Then
                         GoTo ErrorGoTo
@@ -1687,9 +1687,9 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
         Try
             For Each proc As clsTask In ObjThis.Procs
-                proc.LoadItems(True)
-                proc.LoadDatastores()
-                proc.LoadMappings(True)
+                proc.LoadMe()
+                'proc.LoadDatastores()
+                'proc.LoadMappings(True)
 
                 If PrtProcs(rc, proc, debug) = False Then
                     GoTo ErrorGoTo1
@@ -1697,9 +1697,9 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 ErrorGoTo1: Next
 
             For Each Rproc As clsTask In ObjThis.Mains
-                Rproc.LoadItems(True)
-                Rproc.LoadDatastores()
-                Rproc.LoadMappings(True)
+                Rproc.LoadMe()
+                'Rproc.LoadDatastores()
+                'Rproc.LoadMappings(True)
 
                 ' IsMapped is True if it is the Main Procedure
                 If Rproc.TaskType = enumTaskType.TASK_GEN Then
@@ -1980,9 +1980,9 @@ ErrorGoTo:
             '                End If
             '            End If
             For Each main As clsTask In ObjThis.Mains
-                main.LoadItems()
-                main.LoadDatastores()
-                main.LoadMappings(True)
+                main.LoadMe()
+                'main.LoadDatastores()
+                'main.LoadMappings(True)
                 If main.TaskType <> enumTaskType.TASK_MAIN Then
                     GoTo GoToNext
                 End If

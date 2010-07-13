@@ -594,9 +594,9 @@ doAgain:
                 objThis.Save()
             End If
 
-            If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                objThis.SaveEngProps()
-            End If
+            'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    objThis.SaveEngProps()
+            'End If
 
             DialogResult = Windows.Forms.DialogResult.OK
 

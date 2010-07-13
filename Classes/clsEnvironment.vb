@@ -18,12 +18,13 @@ Public Class clsEnvironment
     Private m_IsRenamed As Boolean = False
     Private m_DefaultStrDir As String = ""
     Private m_OldDMLobj As clsDMLinfo = Nothing
+    Private m_IsLoaded As Boolean
 
     Public Connections As New Collection
     Public Structures As New Collection
     Public Systems As New Collection
     'Added 3/09 by TK
-    Public Datastores As New Collection
+    'Public Datastores As New Collection
     Public Variables As New Collection
     'Public Joins As New Collection
     Public Procedures As New Collection
@@ -93,7 +94,7 @@ Public Class clsEnvironment
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
             obj.EnvironmentName = Me.EnvironmentName
             obj.LocalDTDDir = Me.LocalDTDDir
@@ -112,9 +113,9 @@ Public Class clsEnvironment
             If Cascade = True Then
                 Dim NewConn As clsConnection
                 Dim NewStr As clsStructure
-                Dim NewDS As clsDatastore
+                'Dim NewDS As clsDatastore
                 Dim NewVar As clsVariable
-                Dim NewProc As clsTask
+                'Dim NewProc As clsTask
                 Dim NewSys As clsSystem
 
                 '//clone all connections under environment
@@ -135,13 +136,13 @@ Public Class clsEnvironment
                     obj.Structures.Add(NewStr, NewStr.GUID)
                 Next
                 '// Clone all Datastores under env
-                For Each ds As clsDatastore In Me.Datastores
-                    'ds.LoadItems()
+                'For Each ds As clsDatastore In Me.Datastores
+                '    'ds.LoadItems()
 
-                    NewDS = ds.Clone(obj, True, cmd)
-                    NewDS.Environment = obj
-                    AddToCollection(obj.Datastores, NewDS, NewDS.GUID)
-                Next
+                '    NewDS = ds.Clone(obj, True, cmd)
+                '    NewDS.Environment = obj
+                '    AddToCollection(obj.Datastores, NewDS, NewDS.GUID)
+                'Next
                 '// Clone all Variables under env
                 For Each var As clsVariable In Me.Variables
                     'var.LoadItems(True)
@@ -151,15 +152,15 @@ Public Class clsEnvironment
                     AddToCollection(obj.Variables, NewVar, NewVar.GUID)
                 Next
                 '// Clone all Procedures under env
-                For Each proc As clsTask In Me.Procedures
-                    'proc.LoadDatastores(cmd)
+                'For Each proc As clsTask In Me.Procedures
+                '    'proc.LoadDatastores(cmd)
 
-                    'proc.LoadMappings(True, cmd)
+                '    'proc.LoadMappings(True, cmd)
 
-                    NewProc = proc.Clone(obj, True, cmd)
-                    NewProc.Environment = obj
-                    AddToCollection(obj.Procedures, NewProc, NewProc.GUID)
-                Next
+                '    NewProc = proc.Clone(obj, True, cmd)
+                '    NewProc.Environment = obj
+                '    AddToCollection(obj.Procedures, NewProc, NewProc.GUID)
+                'Next
                 '//clone all systems under environment
                 For Each sys As clsSystem In Me.Systems
                     'sys.LoadItems()
@@ -224,31 +225,16 @@ Public Class clsEnvironment
 
         Try
             Me.Text = Me.Text.Trim
-            'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
-            'cnn.Open()
+            
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Update " & Me.Project.tblEnvironments & " set EnvironmentName='" & FixStr(Me.EnvironmentName) & _
-                                 "' , Description='" & FixStr(Me.EnvironmentDescription) & _
-                                 "' , LocalDTDDir='" & FixStr(Me.LocalDTDDir) & _
-                                 "' , LocalDDLDir='" & FixStr(Me.LocalDDLDir) & _
-                                 "' , LocalCobolDir='" & FixStr(Me.LocalCobolDir) & _
-                                 "' , LocalCDir='" & FixStr(Me.LocalCDir) & _
-                                 "' , LocalScriptDir='" & FixStr(Me.LocalScriptDir) & _
-                                 "' , LocalModelDir='" & FixStr(Me.LocalDBDDir) & _
-                                 "' where EnvironmentName=" & Me.GetQuotedText & _
-                                 " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Update " & Me.Project.tblEnvironments & " set Environmentname='" & FixStr(Me.EnvironmentName) & _
-                "',ENVIRONMENTDESCRIPTION='" & FixStr(Me.EnvironmentDescription) & "' where Environmentname='" & _
-                Me.EnvironmentName & "' and Projectname='" & Me.Project.ProjectName & "'"
+            sql = "Update " & Me.Project.tblEnvironments & " set Environmentname='" & FixStr(Me.EnvironmentName) & _
+            "',ENVIRONMENTDESCRIPTION='" & FixStr(Me.EnvironmentDescription) & "' where Environmentname='" & _
+            Me.EnvironmentName & "' and Projectname='" & Me.Project.ProjectName & "'"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
 
-            End If
-           
 
             cmd.CommandText = sql
             Log(sql)
@@ -260,8 +246,6 @@ Public Class clsEnvironment
         Catch ex As Exception
             LogError(ex, "clsEnv Save", sql)
             Return False
-        Finally
-            'cnn.Close()
         End Try
 
     End Function
@@ -321,11 +305,11 @@ Public Class clsEnvironment
                         MsgBox("Description " & child.StructureName & " did not copy correctly")
                     End If
                 Next
-                For Each child As clsDatastore In Me.Datastores
-                    If child.AddNew(True) = False Then
-                        MsgBox("Datastore " & child.DatastoreName & " did not copy correctly")
-                    End If
-                Next
+                'For Each child As clsDatastore In Me.Datastores
+                '    If child.AddNew(True) = False Then
+                '        MsgBox("Datastore " & child.DatastoreName & " did not copy correctly")
+                '    End If
+                'Next
                 For Each child As clsVariable In Me.Variables
                     If child.AddNew(True) = False Then
                         MsgBox("Variable " & child.VariableName & " did not copy correctly")
@@ -411,9 +395,9 @@ Public Class clsEnvironment
                 For Each child In Structures
                     child.AddNew(cmd, True)
                 Next
-                For Each child In Me.Datastores
-                    child.AddNew(cmd, True)
-                Next
+                'For Each child In Me.Datastores
+                '    child.AddNew(cmd, True)
+                'Next
                 For Each child In Me.Variables
                     child.AddNew(cmd, True)
                 Next
@@ -459,10 +443,10 @@ Public Class clsEnvironment
                     o.Delete(cmd, cnn, Cascade, False)
                 Next
                 RemoveFromCollection(Me.Structures, "") '/// clear collection
-                For Each o In Me.Datastores
-                    o.Delete(cmd, cnn, Cascade, False)
-                Next
-                RemoveFromCollection(Me.Datastores, "")
+                'For Each o In Me.Datastores
+                '    o.Delete(cmd, cnn, Cascade, False)
+                'Next
+                'RemoveFromCollection(Me.Datastores, "")
                 For Each o In Me.Variables
                     o.Delete(cmd, cnn, Cascade, False)
                 Next
@@ -473,9 +457,9 @@ Public Class clsEnvironment
                 RemoveFromCollection(Me.Procedures, "")
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Me.DeleteATTR(cmd)
-            End If
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            Me.DeleteATTR(cmd)
+            'End If
 
             sql = "Delete From " & Me.Project.tblEnvironments & " where EnvironmentName='" & FixStr(Me.EnvironmentName) & _
             "' AND ProjectName='" & Me.Project.ProjectName & "'"
@@ -500,8 +484,20 @@ Public Class clsEnvironment
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
         Try
-            Dim cmd As New Odbc.OdbcCommand
+            Dim cmd As New System.Data.Odbc.OdbcCommand
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            Dim Attrib As String = ""
+            Dim Value As String = ""
 
             If Incmd IsNot Nothing Then
                 cmd = Incmd
@@ -510,17 +506,44 @@ Public Class clsEnvironment
                 cmd.Connection = cnn
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                LoadATTR(Incmd)
-            End If
+            sql = "SELECT ENVIRONMENTATTRB,ENVIRONMENTATTRBVALUE FROM " & Me.Project.tblEnvironmentsATTR & _
+            " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+            " AND ENVIRONMENTNAME=" & Quote(Me.EnvironmentName)
 
-            '// Load all Children
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            da.Fill(dt)
+            da.Dispose()
 
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetStr(GetVal(dr("ENVIRONMENTATTRB")))
+                Select Case Attrib
+                    Case "DEFAULTSTRDIR"
+                        Me.DefaultStrDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALCDIR"
+                        Me.LocalCDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALCOBOLDIR"
+                        Me.LocalCobolDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALDDLDIR"
+                        Me.LocalDDLDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALDMLDIR"
+                        Me.LocalDMLDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALDTDDIR"
+                        Me.LocalDTDDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALDBDDIR"
+                        Me.LocalDBDDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "LOCALSCRIPTDIR"
+                        Me.LocalScriptDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                End Select
+            Next
 
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsEnvironment LoadItems")
+            LogError(ex, "clsEnvironment LoadMe")
             Return False
         End Try
 
@@ -532,6 +555,15 @@ Public Class clsEnvironment
         End Get
         Set(ByVal Value As Boolean)
             m_IsRenamed = Value
+        End Set
+    End Property
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
         End Set
     End Property
 
@@ -808,68 +840,6 @@ Public Class clsEnvironment
         End Try
 
     End Function
-
-    Function LoadATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
-        Dim cmd As New System.Data.Odbc.OdbcCommand
-        Dim da As System.Data.Odbc.OdbcDataAdapter
-        Dim dt As New DataTable("temp")
-        Dim dr As DataRow
-        Dim sql As String = ""
-        'Dim strAttrs As String
-        Dim Attrib As String = ""
-        Dim Value As String = ""
-
-        Try
-
-            If INcmd IsNot Nothing Then
-                cmd = INcmd
-            Else
-                cmd = New Odbc.OdbcCommand
-                cmd.Connection = cnn
-            End If
-
-            sql = "SELECT ENVIRONMENTATTRB,ENVIRONMENTATTRBVALUE FROM " & Me.Project.tblEnvironmentsATTR & _
-            " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
-            " AND ENVIRONMENTNAME=" & Quote(Me.EnvironmentName)
-
-            cmd.CommandText = sql
-            Log(sql)
-            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
-            da.Fill(dt)
-            da.Dispose()
-
-            For i As Integer = 0 To dt.Rows.Count - 1
-                dr = dt.Rows(i)
-
-                Attrib = GetStr(GetVal(dr("ENVIRONMENTATTRB")))
-                Select Case Attrib
-                    Case "DEFAULTSTRDIR"
-                        Me.DefaultStrDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALCDIR"
-                        Me.LocalCDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALCOBOLDIR"
-                        Me.LocalCobolDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALDDLDIR"
-                        Me.LocalDDLDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALDMLDIR"
-                        Me.LocalDMLDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALDTDDIR"
-                        Me.LocalDTDDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALDBDDIR"
-                        Me.LocalDBDDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                    Case "LOCALSCRIPTDIR"
-                        Me.LocalScriptDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
-                End Select
-            Next
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsEnvironment LoadAttr")
-            Return False
-        End Try
-    End Function
-
 
 #End Region
 

@@ -13,6 +13,7 @@ Public Class clsTask
     Private m_ObjParent As INode
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
+    Private m_IsLoaded As Boolean
 
     '//8/15/05 : we dont allow datastore update (add/delete task datastore) from usercontrol so when save 
     '//from usercontrol set this flag so we skip datastore operation
@@ -130,11 +131,11 @@ Public Class clsTask
             Me.LoadMappings(True, cmd)
 
             For Each ds As clsDatastore In Me.ObjSources
-                If Me.Engine IsNot Nothing Then
-                    retDS = SearchDatastore(Me.Engine, ds)
-                Else
-                    retDS = SearchDatastore(Me.Environment, ds)
-                End If
+                'If Me.Engine IsNot Nothing Then
+                retDS = SearchDatastore(Me.Engine, ds)
+                'Else
+                'retDS = SearchDatastore(Me.Environment, ds)
+                'End If
 
                 If retDS Is Nothing Then
                     Throw (New Exception("Source datastore " & ds.Text & " is not found in the target environment"))
@@ -146,11 +147,11 @@ Public Class clsTask
             Next
 
             For Each ds As clsDatastore In Me.ObjTargets
-                If Me.Engine IsNot Nothing Then
-                    retDS = SearchDatastore(Me.Engine, ds)
-                Else
-                    retDS = SearchDatastore(Me.Environment, ds)
-                End If
+                'If Me.Engine IsNot Nothing Then
+                retDS = SearchDatastore(Me.Engine, ds)
+                'Else
+                'retDS = SearchDatastore(Me.Environment, ds)
+                'End If
 
                 If retDS Is Nothing Then
                     Throw (New Exception("Target datastore " & ds.Text & " is not found in the target environment"))
@@ -294,69 +295,69 @@ Public Class clsTask
 
         Try
             '//first delete child records
-            If Me.Engine IsNot Nothing Then
-                sql = "Delete From " & Me.Project.tblTaskDS & _
-                            " where TaskType=" & Me.TaskType & _
-                            " AND TaskName=" & Me.GetQuotedText & _
-                            " AND EngineName=" & Me.Engine.GetQuotedText & _
-                            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Delete From " & Me.Project.tblTaskDS & _
-                            " where TaskType=" & Me.TaskType & _
-                            " AND TaskName=" & Me.GetQuotedText & _
-                            " AND EngineName=" & Quote(DBNULL) & _
-                            " AND SystemName=" & Quote(DBNULL) & _
-                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Delete From " & Me.Project.tblTaskDS & _
+                        " where TaskType=" & Me.TaskType & _
+                        " AND TaskName=" & Me.GetQuotedText & _
+                        " AND EngineName=" & Me.Engine.GetQuotedText & _
+                        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            'sql = "Delete From " & Me.Project.tblTaskDS & _
+            '            " where TaskType=" & Me.TaskType & _
+            '            " AND TaskName=" & Me.GetQuotedText & _
+            '            " AND EngineName=" & Quote(DBNULL) & _
+            '            " AND SystemName=" & Quote(DBNULL) & _
+            '            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Delete From " & Me.Project.tblTaskMap & _
-                            " where  TaskType=" & Me.TaskType & _
-                            " AND TaskName=" & Me.GetQuotedText & _
-                            " AND EngineName=" & Me.Engine.GetQuotedText & _
-                            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Delete From " & Me.Project.tblTaskMap & _
-                            " where  TaskType=" & Me.TaskType & _
-                            " AND TaskName=" & Me.GetQuotedText & _
-                            " AND EngineName=" & Quote(DBNULL) & _
-                            " AND SystemName=" & Quote(DBNULL) & _
-                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Delete From " & Me.Project.tblTaskMap & _
+                        " where  TaskType=" & Me.TaskType & _
+                        " AND TaskName=" & Me.GetQuotedText & _
+                        " AND EngineName=" & Me.Engine.GetQuotedText & _
+                        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            'sql = "Delete From " & Me.Project.tblTaskMap & _
+            '            " where  TaskType=" & Me.TaskType & _
+            '            " AND TaskName=" & Me.GetQuotedText & _
+            '            " AND EngineName=" & Quote(DBNULL) & _
+            '            " AND SystemName=" & Quote(DBNULL) & _
+            '            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Delete From " & Me.Project.tblTasks & _
-                           " where  TaskType=" & Me.TaskType & _
-                           " AND TaskName=" & Me.GetQuotedText & _
-                           " AND EngineName=" & Me.Engine.GetQuotedText & _
-                           " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                           " AND ProjectName=" & Me.Project.GetQuotedText
-            Else
-                sql = "Delete From " & Me.Project.tblTasks & _
-                           " where  TaskType=" & Me.TaskType & _
-                           " AND TaskName=" & Me.GetQuotedText & _
-                           " AND EngineName=" & Quote(DBNULL) & _
-                           " AND SystemName=" & Quote(DBNULL) & _
-                           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                           " AND ProjectName=" & Me.Project.GetQuotedText
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Delete From " & Me.Project.tblTasks & _
+                       " where  TaskType=" & Me.TaskType & _
+                       " AND TaskName=" & Me.GetQuotedText & _
+                       " AND EngineName=" & Me.Engine.GetQuotedText & _
+                       " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                       " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                       " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            'sql = "Delete From " & Me.Project.tblTasks & _
+            '           " where  TaskType=" & Me.TaskType & _
+            '           " AND TaskName=" & Me.GetQuotedText & _
+            '           " AND EngineName=" & Quote(DBNULL) & _
+            '           " AND SystemName=" & Quote(DBNULL) & _
+            '           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '           " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
 
 
             cmd.CommandText = sql
@@ -559,6 +560,39 @@ Public Class clsTask
 
     End Function
 
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
+        Try
+            Dim cmd As New System.Data.Odbc.OdbcCommand
+
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
+            End If
+
+            LoadDatastores(cmd)
+            LoadMappings(True, cmd)
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsTask LoadMe")
+            Return False
+        End Try
+
+    End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
+
     Public Function ValidateNewObject(Optional ByVal NewName As String = "", Optional ByVal InReg As Boolean = False) As Boolean Implements INode.ValidateNewObject
 
         'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
@@ -577,17 +611,17 @@ Public Class clsTask
             'cnn.Open()
             cmd = cnn.CreateCommand
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Select TASKNAME from " & Me.Project.tblTasks & _
-                               " where PROJECTNAME=" & Me.Project.GetQuotedText & _
-                               " AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
-                               " AND SYSTEMNAME=" & Me.Engine.ObjSystem.GetQuotedText & _
-                               " AND ENGINENAME=" & Me.Engine.GetQuotedText
-            Else
-                sql = "Select TASKNAME from " & Me.Project.tblTasks & _
-                            " where PROJECTNAME= '" & Me.Project.ProjectName & _
-                            "' AND ENVIRONMENTNAME='" & Me.Environment.EnvironmentName & "'"
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Select TASKNAME from " & Me.Project.tblTasks & _
+                           " where PROJECTNAME=" & Me.Project.GetQuotedText & _
+                           " AND ENVIRONMENTNAME=" & Me.Environment.GetQuotedText & _
+                           " AND SYSTEMNAME=" & Me.Engine.ObjSystem.GetQuotedText & _
+                           " AND ENGINENAME=" & Me.Engine.GetQuotedText
+            'Else
+            'sql = "Select TASKNAME from " & Me.Project.tblTasks & _
+            '            " where PROJECTNAME= '" & Me.Project.ProjectName & _
+            '            "' AND ENVIRONMENTNAME='" & Me.Environment.EnvironmentName & "'"
+            'End If
 
 
             cmd.CommandText = sql
@@ -709,47 +743,47 @@ Public Class clsTask
 
             cmd.Connection = cnn
 
-            If Me.Engine IsNot Nothing Then
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set SeqNo=" & Me.SeqNo & _
-                    " where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TASKSEQNO=" & Me.SeqNo & _
-                    " where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set SeqNo=" & Me.SeqNo & _
-                    " where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TASKSEQNO=" & Me.SeqNo & _
-                    " where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            End If
+            'If Me.Engine IsNot Nothing Then
+            '    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '        sql = "Update " & Me.Project.tblTasks & _
+            '        " set SeqNo=" & Me.SeqNo & _
+            '        " where TaskType=" & Me.TaskType & _
+            '        " AND TaskName=" & Me.GetQuotedText & _
+            '        " AND EngineName=" & Me.Engine.GetQuotedText & _
+            '        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '        " AND ProjectName=" & Me.Project.GetQuotedText
+            '    Else
+            sql = "Update " & Me.Project.tblTasks & _
+            " set TASKSEQNO=" & Me.SeqNo & _
+            " where TaskType=" & Me.TaskType & _
+            " AND TaskName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            '    End If
+            'Else
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set SeqNo=" & Me.SeqNo & _
+            '    " where TaskType=" & Me.TaskType & _
+            '    " AND TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set TASKSEQNO=" & Me.SeqNo & _
+            '    " where TaskType=" & Me.TaskType & _
+            '    " AND TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
+            'End If
 
             Log(sql)
             cmd.CommandText = sql
@@ -786,43 +820,43 @@ Public Class clsTask
 
             cmd.Connection = cnn
 
-            If Me.Engine IsNot Nothing Then
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TaskType=" & Me.TaskType & _
-                    " where TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TaskType=" & Me.TaskType & _
-                    " where TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TaskType=" & Me.TaskType & _
-                    " where TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TaskType=" & Me.TaskType & _
-                    " where TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            End If
+            'If Me.Engine IsNot Nothing Then
+            '    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '        sql = "Update " & Me.Project.tblTasks & _
+            '        " set TaskType=" & Me.TaskType & _
+            '        " where TaskName=" & Me.GetQuotedText & _
+            '        " AND EngineName=" & Me.Engine.GetQuotedText & _
+            '        " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '        " AND ProjectName=" & Me.Project.GetQuotedText
+            '    Else
+            sql = "Update " & Me.Project.tblTasks & _
+            " set TaskType=" & Me.TaskType & _
+            " where TaskName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            '    End If
+            'Else
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set TaskType=" & Me.TaskType & _
+            '    " where TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set TaskType=" & Me.TaskType & _
+            '    " where TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
+            'End If
 
             Log(sql)
             cmd.CommandText = sql
@@ -861,34 +895,34 @@ Public Class clsTask
                 cmd.Connection = cnn
             End If
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Select ds.DSTYPE,tds.PROJECTNAME,tds.ENVIRONMENTNAME,tds.SYSTEMNAME,tds.ENGINENAME,tds.TASKNAME,tds.TASKTYPE,tds.DATASTORENAME,tds.DSDIRECTION from " & Me.Project.tblTaskDS & " tds" & _
-                            " inner join " & Me.Project.tblDatastores & " ds on tds.ProjectName=ds.ProjectName" & _
-                            " AND tds.EnvironmentName=ds.EnvironmentName" & _
-                            " AND tds.SystemName=ds.SystemName" & _
-                            " AND tds.EngineName=ds.EngineName" & _
-                            " AND tds.DataStoreName=ds.DataStoreName" & _
-                            " where tds.ProjectName=" & Me.Project.GetQuotedText & _
-                            " AND tds.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND tds.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                            " AND tds.EngineName=" & Me.Engine.GetQuotedText & _
-                            " AND tds.TaskName=" & Me.GetQuotedText & _
-                            " AND tds.TaskType=" & Me.TaskType
-                'ds.*,tds.DSDIRECTION
-            Else
-                sql = "Select ds.DSTYPE,tds.PROJECTNAME,tds.ENVIRONMENTNAME,tds.SYSTEMNAME,tds.ENGINENAME,tds.TASKNAME,tds.TASKTYPE,tds.DATASTORENAME,tds.DSDIRECTION from " & Me.Project.tblTaskDS & " tds" & _
-                            " inner join " & Me.Project.tblDatastores & " ds on tds.ProjectName=ds.ProjectName" & _
-                            " AND tds.EnvironmentName=ds.EnvironmentName" & _
-                            " AND tds.SystemName=ds.SystemName" & _
-                            " AND tds.EngineName=ds.EngineName" & _
-                            " AND tds.DataStoreName=ds.DataStoreName" & _
-                            " where tds.ProjectName=" & Me.Project.GetQuotedText & _
-                            " AND tds.EnvironmentName=" & Me.Environment.GetQuotedText & _
-                            " AND tds.SystemName=" & Quote(DBNULL) & _
-                            " AND tds.EngineName=" & Quote(DBNULL) & _
-                            " AND tds.TaskName=" & Me.GetQuotedText & _
-                            " AND tds.TaskType=" & Me.TaskType
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Select ds.DSTYPE,tds.PROJECTNAME,tds.ENVIRONMENTNAME,tds.SYSTEMNAME,tds.ENGINENAME,tds.TASKNAME,tds.TASKTYPE,tds.DATASTORENAME,tds.DSDIRECTION from " & Me.Project.tblTaskDS & " tds" & _
+                        " inner join " & Me.Project.tblDatastores & " ds on tds.ProjectName=ds.ProjectName" & _
+                        " AND tds.EnvironmentName=ds.EnvironmentName" & _
+                        " AND tds.SystemName=ds.SystemName" & _
+                        " AND tds.EngineName=ds.EngineName" & _
+                        " AND tds.DataStoreName=ds.DataStoreName" & _
+                        " where tds.ProjectName=" & Me.Project.GetQuotedText & _
+                        " AND tds.EnvironmentName=" & Me.Environment.GetQuotedText & _
+                        " AND tds.SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                        " AND tds.EngineName=" & Me.Engine.GetQuotedText & _
+                        " AND tds.TaskName=" & Me.GetQuotedText & _
+                        " AND tds.TaskType=" & Me.TaskType
+            'ds.*,tds.DSDIRECTION
+            'Else
+            'sql = "Select ds.DSTYPE,tds.PROJECTNAME,tds.ENVIRONMENTNAME,tds.SYSTEMNAME,tds.ENGINENAME,tds.TASKNAME,tds.TASKTYPE,tds.DATASTORENAME,tds.DSDIRECTION from " & Me.Project.tblTaskDS & " tds" & _
+            '            " inner join " & Me.Project.tblDatastores & " ds on tds.ProjectName=ds.ProjectName" & _
+            '            " AND tds.EnvironmentName=ds.EnvironmentName" & _
+            '            " AND tds.SystemName=ds.SystemName" & _
+            '            " AND tds.EngineName=ds.EngineName" & _
+            '            " AND tds.DataStoreName=ds.DataStoreName" & _
+            '            " where tds.ProjectName=" & Me.Project.GetQuotedText & _
+            '            " AND tds.EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '            " AND tds.SystemName=" & Quote(DBNULL) & _
+            '            " AND tds.EngineName=" & Quote(DBNULL) & _
+            '            " AND tds.TaskName=" & Me.GetQuotedText & _
+            '            " AND tds.TaskType=" & Me.TaskType
+            'End If
 
 
             cmd.CommandText = sql
@@ -901,15 +935,15 @@ Public Class clsTask
             While dr.Read
                 Dim objDs As clsDatastore
 
-                If Me.Engine IsNot Nothing Then
-                    objDs = SearchDatastoreByName(Me.Engine, GetVal(dr("DatastoreName")), GetVal(dr("EngineName")), _
-                    GetVal(dr("SystemName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")), GetVal(dr("DsDirection")))
+                'If Me.Engine IsNot Nothing Then
+                objDs = SearchDatastoreByName(Me.Engine, GetVal(dr("DatastoreName")), GetVal(dr("EngineName")), _
+                GetVal(dr("SystemName")), GetVal(dr("EnvironmentName")), GetVal(dr("ProjectName")), GetVal(dr("DsDirection")))
 
-                Else
-                    objDs = SearchDatastoreByName(Me.Environment, GetVal(dr("DatastoreName")), GetVal(dr("EnvironmentName")), _
-                    GetVal(dr("ProjectName")))
-                    objDs.DsDirection = GetVal(dr("DsDirection"))
-                End If
+                'Else
+                'objDs = SearchDatastoreByName(Me.Environment, GetVal(dr("DatastoreName")), GetVal(dr("EnvironmentName")), _
+                'GetVal(dr("ProjectName")))
+                'objDs.DsDirection = GetVal(dr("DsDirection"))
+                'End If
 
                 If objDs Is Nothing Then
                     clsLogging.LogEvent("Task Datastore [" & dr("DatastoreName") & "] is not found under this engine")
@@ -969,23 +1003,23 @@ Public Class clsTask
 
             'cmd = cmd.Connection.CreateCommand
 
-            If Me.Engine IsNot Nothing Then
-                sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
-                           " where TaskType=" & Me.TaskType & _
-                           " AND TaskName=" & Me.GetQuotedText & _
-                           " AND EngineName=" & Me.Engine.GetQuotedText & _
-                           " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
-            Else
-                sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
-                           " where TaskType=" & Me.TaskType & _
-                           " AND TaskName=" & Me.GetQuotedText & _
-                           " AND EngineName=" & Quote(DBNULL) & _
-                           " AND SystemName=" & Quote(DBNULL) & _
-                           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
-            End If
+            'If Me.Engine IsNot Nothing Then
+            sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
+                       " where TaskType=" & Me.TaskType & _
+                       " AND TaskName=" & Me.GetQuotedText & _
+                       " AND EngineName=" & Me.Engine.GetQuotedText & _
+                       " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                       " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                       " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
+            'Else
+            'sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
+            '           " where TaskType=" & Me.TaskType & _
+            '           " AND TaskName=" & Me.GetQuotedText & _
+            '           " AND EngineName=" & Quote(DBNULL) & _
+            '           " AND SystemName=" & Quote(DBNULL) & _
+            '           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -1162,11 +1196,11 @@ Public Class clsTask
                 Case modDeclares.enumMappingType.MAPPING_TYPE_FIELD
                     If ReturnDummyObj = False Then
                         If ID <> Text Then
-                            If Me.Engine IsNot Nothing Then
-                                retObj = SearchFieldByName(Me.Engine, ID, ParentName, Me.Environment.Text, Me.Project.Text, Direction)
-                            Else
-                                retObj = SearchFieldByName(Me.Environment, ID, ParentName, Me.Project.Text)
-                            End If
+                            'If Me.Engine IsNot Nothing Then
+                            retObj = SearchFieldByName(Me.Engine, ID, ParentName, Me.Environment.Text, Me.Project.Text, Direction)
+                            'Else
+                            '    retObj = SearchFieldByName(Me.Environment, ID, ParentName, Me.Project.Text)
+                            'End If
 
                             If retObj Is Nothing Then
                                 Return Nothing
@@ -1174,11 +1208,11 @@ Public Class clsTask
                             End If
                             CType(retObj, clsField).CorrectedFieldName = Text
                         Else
-                            If Me.Engine IsNot Nothing Then
-                                retObj = SearchFieldByName(Me.Engine, Text, ParentName, Me.Environment.Text, Me.Project.Text, Direction)
-                            Else
-                                retObj = SearchFieldByName(Me.Environment, ID, ParentName, Me.Project.Text)
-                            End If
+                            'If Me.Engine IsNot Nothing Then
+                            retObj = SearchFieldByName(Me.Engine, Text, ParentName, Me.Environment.Text, Me.Project.Text, Direction)
+                            '    Else
+                            '    retObj = SearchFieldByName(Me.Environment, ID, ParentName, Me.Project.Text)
+                            'End If
 
                             If retObj Is Nothing Then
                                 Return Nothing
@@ -1186,18 +1220,18 @@ Public Class clsTask
                             End If
                         End If
 
-                        If ID <> Text Then
-                            CType(retObj, clsField).CorrectedFieldName = Text
-                        End If
+                    If ID <> Text Then
+                        CType(retObj, clsField).CorrectedFieldName = Text
+                    End If
                     Else
-                        retObj = New clsField '//on 7/23/05
+                    retObj = New clsField '//on 7/23/05
 
-                        CType(retObj, clsField).FieldName = ID '//field name '//by npatel on 9/7/05
-                        CType(retObj, clsField).ParentStructureName = ParentName '//structure name
-                        CType(retObj, clsField).Parent = Me
-                        If ID <> Text Then
-                            CType(retObj, clsField).CorrectedFieldName = Text
-                        End If
+                    CType(retObj, clsField).FieldName = ID '//field name '//by npatel on 9/7/05
+                    CType(retObj, clsField).ParentStructureName = ParentName '//structure name
+                    CType(retObj, clsField).Parent = Me
+                    If ID <> Text Then
+                        CType(retObj, clsField).CorrectedFieldName = Text
+                    End If
                     End If
                 Case modDeclares.enumMappingType.MAPPING_TYPE_FUN
                     retObj = New clsSQFunction
@@ -1298,25 +1332,25 @@ Public Class clsTask
             '//any datastores to add?
             If Me.ObjSources.Count > 0 Or Me.ObjTargets.Count > 0 Then
                 '//Delete all previous entries
-                If Me.Engine IsNot Nothing Then
-                    sql = "DELETE FROM " & Me.Project.tblTaskDS & _
-                                    " WHERE TaskName=" & Me.GetQuotedText & _
-                                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                    'TaskType=" & Me.TaskType & _
-                    '" AND
-                Else
-                    sql = "DELETE FROM " & Me.Project.tblTaskDS & _
-                                    " WHERE TaskName=" & Me.GetQuotedText & _
-                                    " AND EngineName=" & Quote(DBNULL) & _
-                                    " AND SystemName=" & Quote(DBNULL) & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                    ' TaskType=" & Me.TaskType & _
-                    ' " AND
-                End If
+                'If Me.Engine IsNot Nothing Then
+                sql = "DELETE FROM " & Me.Project.tblTaskDS & _
+                                " WHERE TaskName=" & Me.GetQuotedText & _
+                                " AND EngineName=" & Me.Engine.GetQuotedText & _
+                                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                                " AND ProjectName=" & Me.Project.GetQuotedText
+                'TaskType=" & Me.TaskType & _
+                '" AND
+                'Else
+                '    sql = "DELETE FROM " & Me.Project.tblTaskDS & _
+                '                    " WHERE TaskName=" & Me.GetQuotedText & _
+                '                    " AND EngineName=" & Quote(DBNULL) & _
+                '                    " AND SystemName=" & Quote(DBNULL) & _
+                '                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                '                    " AND ProjectName=" & Me.Project.GetQuotedText
+                '    ' TaskType=" & Me.TaskType & _
+                '    ' " AND
+                'End If
 
                 cmd.CommandText = sql
                 Log(sql)
@@ -1325,29 +1359,29 @@ Public Class clsTask
                 '//Now Loop through all sources and add
                 For i = 0 To Me.ObjSources.Count - 1
                     Me.ObjSources(i).DsDirection = "S"
-                    If Me.Engine IsNot Nothing Then
-                        sql = " INSERT INTO " & Me.Project.tblTaskDS & _
-                        "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection) Values( " & _
-                                            Me.TaskType & "," & _
-                                            Me.GetQuotedText & "," & _
-                                            Me.Engine.GetQuotedText & "," & _
-                                            Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                            Me.Environment.GetQuotedText & "," & _
-                                            Me.Project.GetQuotedText & "," & _
-                                            Me.ObjSources(i).GetQuotedText & "," & _
-                                            Quote(Me.ObjSources(i).DsDirection) & ");"
-                    Else
-                        sql = " INSERT INTO " & Me.Project.tblTaskDS & _
-                        "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection) Values( " & _
-                                            Me.TaskType & "," & _
-                                            Me.GetQuotedText & "," & _
-                                            Quote(DBNULL) & "," & _
-                                            Quote(DBNULL) & "," & _
-                                            Me.Environment.GetQuotedText & "," & _
-                                            Me.Project.GetQuotedText & "," & _
-                                            Me.ObjSources(i).GetQuotedText & "," & _
-                                            Quote(Me.ObjSources(i).DsDirection) & ");"
-                    End If
+                    'If Me.Engine IsNot Nothing Then
+                    sql = " INSERT INTO " & Me.Project.tblTaskDS & _
+                    "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection) Values( " & _
+                                        Me.TaskType & "," & _
+                                        Me.GetQuotedText & "," & _
+                                        Me.Engine.GetQuotedText & "," & _
+                                        Me.Engine.ObjSystem.GetQuotedText & "," & _
+                                        Me.Environment.GetQuotedText & "," & _
+                                        Me.Project.GetQuotedText & "," & _
+                                        Me.ObjSources(i).GetQuotedText & "," & _
+                                        Quote(Me.ObjSources(i).DsDirection) & ");"
+                    'Else
+                    'sql = " INSERT INTO " & Me.Project.tblTaskDS & _
+                    '"(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection) Values( " & _
+                    '                    Me.TaskType & "," & _
+                    '                    Me.GetQuotedText & "," & _
+                    '                    Quote(DBNULL) & "," & _
+                    '                    Quote(DBNULL) & "," & _
+                    '                    Me.Environment.GetQuotedText & "," & _
+                    '                    Me.Project.GetQuotedText & "," & _
+                    '                    Me.ObjSources(i).GetQuotedText & "," & _
+                    '                    Quote(Me.ObjSources(i).DsDirection) & ");"
+                    'End If
 
 
                     cmd.CommandText = sql
@@ -1359,29 +1393,29 @@ Public Class clsTask
                 '//Fix: 8/12/05 by npatel
                 For i = 0 To Me.ObjTargets.Count - 1
                     Me.ObjTargets(i).DsDirection() = "T"
-                    If Me.Engine IsNot Nothing Then
-                        sql = " INSERT INTO " & Me.Project.tblTaskDS & _
-                        "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection ) Values( " & _
-                                            Me.TaskType & "," & _
-                                            Me.GetQuotedText & "," & _
-                                            Me.Engine.GetQuotedText & "," & _
-                                            Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                            Me.Environment.GetQuotedText & "," & _
-                                            Me.Project.GetQuotedText & "," & _
-                                            Me.ObjTargets(i).GetQuotedText & "," & _
-                                            Quote(Me.ObjTargets(i).DsDirection) & ");"
-                    Else
-                        sql = " INSERT INTO " & Me.Project.tblTaskDS & _
-                        "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection ) Values( " & _
-                                            Me.TaskType & "," & _
-                                            Me.GetQuotedText & "," & _
-                                            Quote(DBNULL) & "," & _
-                                            Quote(DBNULL) & "," & _
-                                            Me.Environment.GetQuotedText & "," & _
-                                            Me.Project.GetQuotedText & "," & _
-                                            Me.ObjTargets(i).GetQuotedText & "," & _
-                                            Quote(Me.ObjTargets(i).DsDirection) & ");"
-                    End If
+                    'If Me.Engine IsNot Nothing Then
+                    sql = " INSERT INTO " & Me.Project.tblTaskDS & _
+                    "(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection ) Values( " & _
+                                        Me.TaskType & "," & _
+                                        Me.GetQuotedText & "," & _
+                                        Me.Engine.GetQuotedText & "," & _
+                                        Me.Engine.ObjSystem.GetQuotedText & "," & _
+                                        Me.Environment.GetQuotedText & "," & _
+                                        Me.Project.GetQuotedText & "," & _
+                                        Me.ObjTargets(i).GetQuotedText & "," & _
+                                        Quote(Me.ObjTargets(i).DsDirection) & ");"
+                    'Else
+                    'sql = " INSERT INTO " & Me.Project.tblTaskDS & _
+                    '"(TaskType, TaskName, EngineName,SystemName,EnvironmentName,ProjectName, DatastoreName,DsDirection ) Values( " & _
+                    '                    Me.TaskType & "," & _
+                    '                    Me.GetQuotedText & "," & _
+                    '                    Quote(DBNULL) & "," & _
+                    '                    Quote(DBNULL) & "," & _
+                    '                    Me.Environment.GetQuotedText & "," & _
+                    '                    Me.Project.GetQuotedText & "," & _
+                    '                    Me.ObjTargets(i).GetQuotedText & "," & _
+                    '                    Quote(Me.ObjTargets(i).DsDirection) & ");"
+                    'End If
 
                     cmd.CommandText = sql
                     Log(sql)
@@ -1415,47 +1449,47 @@ Public Class clsTask
             tran = cnn.BeginTransaction()
             cmd.Transaction = tran
 
-            If Me.Engine IsNot Nothing Then
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set DESCRIPTION='" & Me.TaskDescription & _
-                    "' where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TASKDESCRIPTION='" & Me.TaskDescription & _
-                    "' where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set DESCRIPTION='" & Me.TaskDescription & _
-                    "' where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblTasks & _
-                    " set TASKDESCRIPTION='" & Me.TaskDescription & _
-                    "' where TaskType=" & Me.TaskType & _
-                    " AND TaskName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-            End If
+            'If Me.Engine IsNot Nothing Then
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set DESCRIPTION='" & Me.TaskDescription & _
+            '    "' where TaskType=" & Me.TaskType & _
+            '    " AND TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Me.Engine.GetQuotedText & _
+            '    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            sql = "Update " & Me.Project.tblTasks & _
+            " set TASKDESCRIPTION='" & Me.TaskDescription & _
+            "' where TaskType=" & Me.TaskType & _
+            " AND TaskName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
+            'Else
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set DESCRIPTION='" & Me.TaskDescription & _
+            '    "' where TaskType=" & Me.TaskType & _
+            '    " AND TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'Else
+            '    sql = "Update " & Me.Project.tblTasks & _
+            '    " set TASKDESCRIPTION='" & Me.TaskDescription & _
+            '    "' where TaskType=" & Me.TaskType & _
+            '    " AND TaskName=" & Me.GetQuotedText & _
+            '    " AND EngineName=" & Quote(DBNULL) & _
+            '    " AND SystemName=" & Quote(DBNULL) & _
+            '    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '    " AND ProjectName=" & Me.Project.GetQuotedText
+            'End If
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
@@ -1478,95 +1512,95 @@ Public Class clsTask
         Dim strSql As String = ""
 
         Try
-            If Me.Engine IsNot Nothing Then
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
-                                "ProjectName" & _
-                                ",EnvironmentName" & _
-                                ",SystemName" & _
-                                ",EngineName" & _
-                                ",TaskName" & _
-                                ",TaskType" & _
-                                ",Description" & _
-                                ",SeqNo" & _
-                                ") " & _
-                             " Values(" & _
-                                Me.Project.GetQuotedText & _
-                                "," & Me.Environment.GetQuotedText & _
-                                "," & Me.Engine.ObjSystem.GetQuotedText & _
-                                "," & Me.Engine.GetQuotedText & _
-                                "," & Me.GetQuotedText & _
-                                "," & Me.TaskType & _
-                                ",'" & FixStr(Me.TaskDescription) & "'" & _
-                                "," & Me.SeqNo & _
-                                ") "
-                Else
-                    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
-                                "ProjectName" & _
-                                ",EnvironmentName" & _
-                                ",SystemName" & _
-                                ",EngineName" & _
-                                ",TaskName" & _
-                                ",TaskType" & _
-                                ",TASKDescription" & _
-                                ",TASKSeqNo" & _
-                                ") " & _
-                             " Values(" & _
-                                Me.Project.GetQuotedText & _
-                                "," & Me.Environment.GetQuotedText & _
-                                "," & Me.Engine.ObjSystem.GetQuotedText & _
-                                "," & Me.Engine.GetQuotedText & _
-                                "," & Me.GetQuotedText & _
-                                "," & Me.TaskType & _
-                                ",'" & FixStr(Me.TaskDescription) & "'" & _
-                                "," & Me.SeqNo & _
-                                ") "
-                End If
-            Else
-                If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
-                                "ProjectName" & _
-                                ",EnvironmentName" & _
-                                ",SystemName" & _
-                                ",EngineName" & _
-                                ",TaskName" & _
-                                ",TaskType" & _
-                                ",Description" & _
-                                ",SeqNo" & _
-                                ") " & _
-                             " Values(" & _
-                                Me.Project.GetQuotedText & _
-                                "," & Me.Environment.GetQuotedText & _
-                                "," & Quote(DBNULL) & _
-                                "," & Quote(DBNULL) & _
-                                "," & Me.GetQuotedText & _
-                                "," & Me.TaskType & _
-                                ",'" & FixStr(Me.TaskDescription) & "'" & _
-                                "," & Me.SeqNo & _
-                                ") "
-                Else
-                    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
-                                "ProjectName" & _
-                                ",EnvironmentName" & _
-                                ",SystemName" & _
-                                ",EngineName" & _
-                                ",TaskName" & _
-                                ",TaskType" & _
-                                ",TASKDescription" & _
-                                ",TASKSeqNo" & _
-                                ") " & _
-                             " Values(" & _
-                                Me.Project.GetQuotedText & _
-                                "," & Me.Environment.GetQuotedText & _
-                                "," & Quote(DBNULL) & _
-                                "," & Quote(DBNULL) & _
-                                "," & Me.GetQuotedText & _
-                                "," & Me.TaskType & _
-                                ",'" & FixStr(Me.TaskDescription) & "'" & _
-                                "," & Me.SeqNo & _
-                                ") "
-                End If
-            End If
+            'If Me.Engine IsNot Nothing Then
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
+            '                "ProjectName" & _
+            '                ",EnvironmentName" & _
+            '                ",SystemName" & _
+            '                ",EngineName" & _
+            '                ",TaskName" & _
+            '                ",TaskType" & _
+            '                ",Description" & _
+            '                ",SeqNo" & _
+            '                ") " & _
+            '             " Values(" & _
+            '                Me.Project.GetQuotedText & _
+            '                "," & Me.Environment.GetQuotedText & _
+            '                "," & Me.Engine.ObjSystem.GetQuotedText & _
+            '                "," & Me.Engine.GetQuotedText & _
+            '                "," & Me.GetQuotedText & _
+            '                "," & Me.TaskType & _
+            '                ",'" & FixStr(Me.TaskDescription) & "'" & _
+            '                "," & Me.SeqNo & _
+            '                ") "
+            'Else
+            strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
+                        "ProjectName" & _
+                        ",EnvironmentName" & _
+                        ",SystemName" & _
+                        ",EngineName" & _
+                        ",TaskName" & _
+                        ",TaskType" & _
+                        ",TASKDescription" & _
+                        ",TASKSeqNo" & _
+                        ") " & _
+                     " Values(" & _
+                        Me.Project.GetQuotedText & _
+                        "," & Me.Environment.GetQuotedText & _
+                        "," & Me.Engine.ObjSystem.GetQuotedText & _
+                        "," & Me.Engine.GetQuotedText & _
+                        "," & Me.GetQuotedText & _
+                        "," & Me.TaskType & _
+                        ",'" & FixStr(Me.TaskDescription) & "'" & _
+                        "," & Me.SeqNo & _
+                        ") "
+            'End If
+            'Else
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
+            '                "ProjectName" & _
+            '                ",EnvironmentName" & _
+            '                ",SystemName" & _
+            '                ",EngineName" & _
+            '                ",TaskName" & _
+            '                ",TaskType" & _
+            '                ",Description" & _
+            '                ",SeqNo" & _
+            '                ") " & _
+            '             " Values(" & _
+            '                Me.Project.GetQuotedText & _
+            '                "," & Me.Environment.GetQuotedText & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Me.GetQuotedText & _
+            '                "," & Me.TaskType & _
+            '                ",'" & FixStr(Me.TaskDescription) & "'" & _
+            '                "," & Me.SeqNo & _
+            '                ") "
+            'Else
+            '    strSql = "INSERT INTO " & Me.Project.tblTasks & "(" & _
+            '                "ProjectName" & _
+            '                ",EnvironmentName" & _
+            '                ",SystemName" & _
+            '                ",EngineName" & _
+            '                ",TaskName" & _
+            '                ",TaskType" & _
+            '                ",TASKDescription" & _
+            '                ",TASKSeqNo" & _
+            '                ") " & _
+            '             " Values(" & _
+            '                Me.Project.GetQuotedText & _
+            '                "," & Me.Environment.GetQuotedText & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Quote(DBNULL) & _
+            '                "," & Me.GetQuotedText & _
+            '                "," & Me.TaskType & _
+            '                ",'" & FixStr(Me.TaskDescription) & "'" & _
+            '                "," & Me.SeqNo & _
+            '                ") "
+            'End If
+            'End If
 
 
 
@@ -1602,95 +1636,95 @@ Public Class clsTask
                 IsAdded = True '//first make flag true and if found in new then make it false
 
                 '//Add mapping to taskmapping table
-                If Me.Engine IsNot Nothing Then
-                    strSql = "INSERT INTO " & Me.Project.tblTaskMap & " (" & _
-                    "ProjectName," & _
-                    "EnvironmentName," & _
-                    "SystemName," & _
-                    "EngineName," & _
-                    "TaskName," & _
-                    "MappingID," & _
-                    "TaskType," & _
-                    "SourceType, " & _
-                    "TargetType, " & _
-                    "MappingSource, " & _
-                    "MappingTarget, " & _
-                    "MappingSourceId, " & _
-                    "MappingTargetId, " & _
-                    "SourceParent, " & _
-                    "TargetParent, " & _
-                    "SourceDataStore, " & _
-                    "TargetDataStore, " & _
-                    "SeqNo, " & _
-                    "IsMapped, " & _
-                    "MappingDesc)" & _
-                    " Values( " & _
-                    Me.Project.GetQuotedText & "," & _
-                    Me.Environment.GetQuotedText & "," & _
-                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                    Me.Engine.GetQuotedText & "," & _
-                    Me.GetQuotedText & "," & _
-                    i & "," & _
-                    Me.TaskType & "," & _
-                    selNew.SourceType & "," & _
-                    selNew.TargetType & "," & _
-                    Quote(FixStr(selNew.GetMappingSourceVal), "'") & "," & _
-                    Quote(FixStr(selNew.GetMappingTargetVal), "'") & "," & _
-                    selNew.GetMappingSourceId & "," & _
-                    selNew.GetMappingTargetId & "," & _
-                    Quote(FixStr(selNew.SourceParent), "'") & "," & _
-                    Quote(FixStr(selNew.TargetParent), "'") & "," & _
-                    Quote(FixStr(selNew.SourceDataStore), "'") & "," & _
-                    Quote(FixStr(selNew.TargetDataStore), "'") & "," & _
-                    selNew.OutMsg & "," & _
-                    Quote(selNew.IsMapped, "'") & "," & _
-                    Quote(selNew.MappingDesc, "'") & _
-                    ");"
-                Else
-                    strSql = "INSERT INTO " & Me.Project.tblTaskMap & " (" & _
-                    "ProjectName," & _
-                    "EnvironmentName," & _
-                    "SystemName," & _
-                    "EngineName," & _
-                    "TaskName," & _
-                    "MappingID," & _
-                    "TaskType," & _
-                    "SourceType, " & _
-                    "TargetType, " & _
-                    "MappingSource, " & _
-                    "MappingTarget, " & _
-                    "MappingSourceId, " & _
-                    "MappingTargetId, " & _
-                    "SourceParent, " & _
-                    "TargetParent, " & _
-                    "SourceDataStore, " & _
-                    "TargetDataStore, " & _
-                    "SeqNo, " & _
-                    "IsMapped, " & _
-                    "MappingDesc)" & _
-                    " Values( " & _
-                    Me.Project.GetQuotedText & "," & _
-                    Me.Environment.GetQuotedText & "," & _
-                    Quote(DBNULL) & "," & _
-                    Quote(DBNULL) & "," & _
-                    Me.GetQuotedText & "," & _
-                    i & "," & _
-                    Me.TaskType & "," & _
-                    selNew.SourceType & "," & _
-                    selNew.TargetType & "," & _
-                    Quote(FixStr(selNew.GetMappingSourceVal), "'") & "," & _
-                    Quote(FixStr(selNew.GetMappingTargetVal), "'") & "," & _
-                    selNew.GetMappingSourceId & "," & _
-                    selNew.GetMappingTargetId & "," & _
-                    Quote(FixStr(selNew.SourceParent), "'") & "," & _
-                    Quote(FixStr(selNew.TargetParent), "'") & "," & _
-                    Quote(FixStr(selNew.SourceDataStore), "'") & "," & _
-                    Quote(FixStr(selNew.TargetDataStore), "'") & "," & _
-                    selNew.OutMsg & "," & _
-                    Quote(selNew.IsMapped, "'") & "," & _
-                    Quote(selNew.MappingDesc, "'") & _
-                    ");"
-                End If
+                'If Me.Engine IsNot Nothing Then
+                strSql = "INSERT INTO " & Me.Project.tblTaskMap & " (" & _
+                "ProjectName," & _
+                "EnvironmentName," & _
+                "SystemName," & _
+                "EngineName," & _
+                "TaskName," & _
+                "MappingID," & _
+                "TaskType," & _
+                "SourceType, " & _
+                "TargetType, " & _
+                "MappingSource, " & _
+                "MappingTarget, " & _
+                "MappingSourceId, " & _
+                "MappingTargetId, " & _
+                "SourceParent, " & _
+                "TargetParent, " & _
+                "SourceDataStore, " & _
+                "TargetDataStore, " & _
+                "SeqNo, " & _
+                "IsMapped, " & _
+                "MappingDesc)" & _
+                " Values( " & _
+                Me.Project.GetQuotedText & "," & _
+                Me.Environment.GetQuotedText & "," & _
+                Me.Engine.ObjSystem.GetQuotedText & "," & _
+                Me.Engine.GetQuotedText & "," & _
+                Me.GetQuotedText & "," & _
+                i & "," & _
+                Me.TaskType & "," & _
+                selNew.SourceType & "," & _
+                selNew.TargetType & "," & _
+                Quote(FixStr(selNew.GetMappingSourceVal), "'") & "," & _
+                Quote(FixStr(selNew.GetMappingTargetVal), "'") & "," & _
+                selNew.GetMappingSourceId & "," & _
+                selNew.GetMappingTargetId & "," & _
+                Quote(FixStr(selNew.SourceParent), "'") & "," & _
+                Quote(FixStr(selNew.TargetParent), "'") & "," & _
+                Quote(FixStr(selNew.SourceDataStore), "'") & "," & _
+                Quote(FixStr(selNew.TargetDataStore), "'") & "," & _
+                selNew.OutMsg & "," & _
+                Quote(selNew.IsMapped, "'") & "," & _
+                Quote(selNew.MappingDesc, "'") & _
+                ");"
+                'Else
+                'strSql = "INSERT INTO " & Me.Project.tblTaskMap & " (" & _
+                '"ProjectName," & _
+                '"EnvironmentName," & _
+                '"SystemName," & _
+                '"EngineName," & _
+                '"TaskName," & _
+                '"MappingID," & _
+                '"TaskType," & _
+                '"SourceType, " & _
+                '"TargetType, " & _
+                '"MappingSource, " & _
+                '"MappingTarget, " & _
+                '"MappingSourceId, " & _
+                '"MappingTargetId, " & _
+                '"SourceParent, " & _
+                '"TargetParent, " & _
+                '"SourceDataStore, " & _
+                '"TargetDataStore, " & _
+                '"SeqNo, " & _
+                '"IsMapped, " & _
+                '"MappingDesc)" & _
+                '" Values( " & _
+                'Me.Project.GetQuotedText & "," & _
+                'Me.Environment.GetQuotedText & "," & _
+                'Quote(DBNULL) & "," & _
+                'Quote(DBNULL) & "," & _
+                'Me.GetQuotedText & "," & _
+                'i & "," & _
+                'Me.TaskType & "," & _
+                'selNew.SourceType & "," & _
+                'selNew.TargetType & "," & _
+                'Quote(FixStr(selNew.GetMappingSourceVal), "'") & "," & _
+                'Quote(FixStr(selNew.GetMappingTargetVal), "'") & "," & _
+                'selNew.GetMappingSourceId & "," & _
+                'selNew.GetMappingTargetId & "," & _
+                'Quote(FixStr(selNew.SourceParent), "'") & "," & _
+                'Quote(FixStr(selNew.TargetParent), "'") & "," & _
+                'Quote(FixStr(selNew.SourceDataStore), "'") & "," & _
+                'Quote(FixStr(selNew.TargetDataStore), "'") & "," & _
+                'selNew.OutMsg & "," & _
+                'Quote(selNew.IsMapped, "'") & "," & _
+                'Quote(selNew.MappingDesc, "'") & _
+                '");"
+                'End If
 
 
                 cmd.CommandText = strSql
@@ -1716,23 +1750,23 @@ Public Class clsTask
         Dim strSql As String = ""
 
         Try
-            If Me.Engine IsNot Nothing Then
-                strSql = "delete from " & Me.Project.tblTaskMap & " " & _
-                                " WHERE TaskName=" & Me.GetQuotedText & _
-                                " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                " AND ProjectName=" & Me.Project.GetQuotedText
-                'TaskType=" & Me.TaskType & _   " AND 
-            Else
-                strSql = "delete from " & Me.Project.tblTaskMap & " " & _
-                                " WHERE TaskName=" & Me.GetQuotedText & _
-                                " AND EngineName=" & Quote(DBNULL) & _
-                                " AND SystemName=" & Quote(DBNULL) & _
-                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                " AND ProjectName=" & Me.Project.GetQuotedText
-                'TaskType=" & Me.TaskType & _ " AND 
-            End If
+            'If Me.Engine IsNot Nothing Then
+            strSql = "delete from " & Me.Project.tblTaskMap & " " & _
+                            " WHERE TaskName=" & Me.GetQuotedText & _
+                            " AND EngineName=" & Me.Engine.GetQuotedText & _
+                            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                            " AND ProjectName=" & Me.Project.GetQuotedText
+            'TaskType=" & Me.TaskType & _   " AND 
+            'Else
+            'strSql = "delete from " & Me.Project.tblTaskMap & " " & _
+            '                " WHERE TaskName=" & Me.GetQuotedText & _
+            '                " AND EngineName=" & Quote(DBNULL) & _
+            '                " AND SystemName=" & Quote(DBNULL) & _
+            '                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            '                " AND ProjectName=" & Me.Project.GetQuotedText
+            ''TaskType=" & Me.TaskType & _ " AND 
+            'End If
 
             cmd.CommandText = strSql
             Log(strSql)

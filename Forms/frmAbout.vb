@@ -260,7 +260,7 @@ Public Class frmAbout
         Me.lblBuildDate.Name = "lblBuildDate"
         Me.lblBuildDate.Size = New System.Drawing.Size(68, 13)
         Me.lblBuildDate.TabIndex = 5
-        Me.lblBuildDate.Text = "6/18/2010"
+        Me.lblBuildDate.Text = "6/30/2010"
         '
         'Label8
         '
@@ -282,7 +282,7 @@ Public Class frmAbout
         Me.lblBuildNumber.Name = "lblBuildNumber"
         Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
         Me.lblBuildNumber.TabIndex = 3
-        Me.lblBuildNumber.Text = "3.3.1.0"
+        Me.lblBuildNumber.Text = "3.3.1.1"
         '
         'frmAbout
         '

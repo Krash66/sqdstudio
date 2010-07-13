@@ -80,7 +80,29 @@ Public Class clsProject
     Public Environments As New Collection
     Public Maplist As New ArrayList
 
-   
+    Private m_ENVexpanded As Boolean
+    Private m_CONNexpanded As Boolean
+    Private m_STRexpanded As Boolean
+    '/// individual Structure folder types
+    Private m_COBOLexpanded As Boolean
+    Private m_COBOLIMSexpanded As Boolean
+    Private m_Cexpanded As Boolean
+    Private m_DDLexpanded As Boolean
+    Private m_DMLexpanded As Boolean
+    Private m_XMLDTDexpanded As Boolean
+
+    Private m_VARtopExpanded As Boolean
+    Private m_SYSexpanded As Boolean
+    Private m_ENGexpanded As Boolean
+    Private m_SRCexpanded As Boolean
+    Private m_SRCselExpanded As Boolean
+    Private m_TGTexpanded As Boolean
+    Private m_VARexpanded As Boolean
+    Private m_PROCexpanded As Boolean
+    Private m_MAINexpanded As Boolean
+
+    Private m_IsLoaded As Boolean
+
 
 #Region "INode Implementation"
 
@@ -391,62 +413,72 @@ Public Class clsProject
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Dim cmd As New System.Data.Odbc.OdbcCommand
-                Dim da As System.Data.Odbc.OdbcDataAdapter
-                Dim dt As New DataTable("temp")
-                Dim dr As DataRow
-                Dim sql As String = ""
-                'Dim strAttrs As String
-                Dim Attrib As String = ""
-                Dim Value As String = ""
+            Dim cmd As New System.Data.Odbc.OdbcCommand
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            Dim Attrib As String = ""
+            Dim Value As String = ""
 
-                If Incmd IsNot Nothing Then
-                    cmd = Incmd
-                Else
-                    cmd = New Odbc.OdbcCommand
-                    cmd.Connection = cnn
-                End If
-
-
-                sql = "SELECT PROJECTNAME,PROJECTATTRB,PROJECTATTRBVALUE FROM " & Me.Project.tblProjectsATTR & _
-                " WHERE PROJECTNAME='" & FixStr(Me.ProjectName) & "'"
-
-                cmd.CommandText = sql
-                Log(sql)
-                da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-                da.Fill(dt)
-                da.Dispose()
-
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    dr = dt.Rows(i)
-
-                    Attrib = GetVal(dr("PROJECTATTRB"))
-                    Select Case Attrib
-                        Case "CDATE"
-                            Me.ProjectCreationDate = GetVal(dr("PROJECTATTRBVALUE"))
-                        Case "CUSTNAME"
-                            Me.ProjectCustomerName = GetVal(dr("PROJECTATTRBVALUE"))
-                        Case "LASTUPDATED"
-                            Me.ProjectLastUpdated = GetVal(dr("PROJECTATTRBVALUE"))
-                        Case "MAINSEP"
-                            Me.MainSeparatorX = GetVal(dr("PROJECTATTRBVALUE"))
-                        Case "VERSION"
-                            Me.ProjectVersion = GetVal(dr("PROJECTATTRBVALUE"))
-                    End Select
-                Next
-
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
+
+            sql = "SELECT PROJECTNAME,PROJECTATTRB,PROJECTATTRBVALUE FROM " & Me.Project.tblProjectsATTR & _
+            " WHERE PROJECTNAME='" & FixStr(Me.ProjectName) & "'"
+
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
+            da.Fill(dt)
+            da.Dispose()
+
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetVal(dr("PROJECTATTRB"))
+                Select Case Attrib
+                    Case "CDATE"
+                        Me.ProjectCreationDate = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "CUSTNAME"
+                        Me.ProjectCustomerName = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "LASTUPDATED"
+                        Me.ProjectLastUpdated = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "MAINSEP"
+                        Me.MainSeparatorX = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "VERSION"
+                        Me.ProjectVersion = GetVal(dr("PROJECTATTRBVALUE"))
+                End Select
+            Next
 
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsProject LoadItems")
+            LogError(ex, "clsProject LoadMe")
             Return False
         End Try
 
     End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
     Public Property IsRenamed() As Boolean Implements INode.IsRenamed
         Get
@@ -991,6 +1023,168 @@ Public Class clsProject
                 Return m_variablesATTR
             End If
         End Get
+    End Property
+
+    Public Property ENVexpanded() As Boolean
+        Get
+            Return m_ENVexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_ENVexpanded = value
+        End Set
+    End Property
+
+    Public Property CONNexpanded() As Boolean
+        Get
+            Return m_CONNexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_CONNexpanded = value
+        End Set
+    End Property
+
+    Public Property STRexpanded() As Boolean
+        Get
+            Return m_STRexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_STRexpanded = value
+        End Set
+    End Property
+
+    Public Property COBOLexpanded() As Boolean
+        Get
+            Return m_COBOLexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_COBOLexpanded = value
+        End Set
+    End Property
+
+    Public Property COBOLIMSexpanded() As Boolean
+        Get
+            Return m_COBOLIMSexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_COBOLIMSexpanded = value
+        End Set
+    End Property
+
+    Public Property Cexpanded() As Boolean
+        Get
+            Return m_Cexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_Cexpanded = value
+        End Set
+    End Property
+
+    Public Property DDLexpanded() As Boolean
+        Get
+            Return m_DDLexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_DDLexpanded = value
+        End Set
+    End Property
+
+    Public Property DMLexpanded() As Boolean
+        Get
+            Return m_DMLexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_DMLexpanded = value
+        End Set
+    End Property
+
+    Public Property XMLDTDexpanded() As Boolean
+        Get
+            Return m_XMLDTDexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_XMLDTDexpanded = value
+        End Set
+    End Property
+
+    Public Property VARtopExpanded() As Boolean
+        Get
+            Return m_VARtopExpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_VARtopExpanded = value
+        End Set
+    End Property
+
+    Public Property SYSexpanded() As Boolean
+        Get
+            Return m_SYSexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_SYSexpanded = value
+        End Set
+    End Property
+
+    Public Property ENGexpanded() As Boolean
+        Get
+            Return m_ENGexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_ENGexpanded = value
+        End Set
+    End Property
+
+    Public Property SRCexpanded() As Boolean
+        Get
+            Return m_SRCexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_SRCexpanded = value
+        End Set
+    End Property
+
+    Public Property SRCselExpanded() As Boolean
+        Get
+            Return m_SRCselExpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_SRCselExpanded = value
+        End Set
+    End Property
+
+    Public Property TGTexpanded() As Boolean
+        Get
+            Return m_TGTexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_TGTexpanded = value
+        End Set
+    End Property
+
+    Public Property VARexpanded() As Boolean
+        Get
+            Return m_VARexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_VARexpanded = value
+        End Set
+    End Property
+
+    Public Property PROCexpanded() As Boolean
+        Get
+            Return m_PROCexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_PROCexpanded = value
+        End Set
+    End Property
+
+    Public Property MAINexpanded() As Boolean
+        Get
+            Return m_MAINexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_MAINexpanded = value
+        End Set
     End Property
 
 #End Region

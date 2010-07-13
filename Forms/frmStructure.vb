@@ -1234,7 +1234,7 @@ nextFilename:       Next
         Dim extString As String = ".*"
 
         objEnv = objThis.Environment
-        objEnv.LoadItems()
+        objEnv.LoadMe()
         If IsChangeObj = False Then
             dlgOpen.Multiselect = True
         Else
@@ -1321,7 +1321,7 @@ nextFilename:       Next
 
         dlgOpen.Multiselect = True
         objEnv = objThis.Environment
-        objEnv.LoadItems()
+        objEnv.LoadMe()
         dlgOpen.Filter = "Cobol Copybook (*.cob)|*.cob|All files (*.*)|*.*"
 
         If objEnv.LocalCobolDir <> "" Then
@@ -1370,10 +1370,10 @@ nextFilename:       Next
 
         Try
             objEnv = objThis.Environment
-            objEnv.LoadItems()
+            objEnv.LoadMe()
             dlgOpen.Filter = "IMS DBD files (*.dbd)|*.dbd|All files (*.*)|*.*"
 
-            If objEnv.LocalCobolDir <> "" Then
+            If objEnv.LocalDBDDir <> "" Then
                 dlgOpen.InitialDirectory = objEnv.LocalDBDDir
             Else
                 dlgOpen.InitialDirectory = "" 'LocalDBDFolderPath

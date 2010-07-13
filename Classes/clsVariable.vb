@@ -16,6 +16,7 @@ Public Class clsVariable
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
     Private m_Environment As clsEnvironment
+    Private m_IsLoaded As Boolean
 
 
 #Region "INode Implementation"
@@ -96,7 +97,7 @@ Public Class clsVariable
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadMe(cmd)
 
 
             obj.VariableName = Me.VariableName
@@ -178,68 +179,35 @@ Public Class clsVariable
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine Is Nothing Then
-                    sql = "Update " & Me.Project.tblVariables & _
-                    " set VariableName=" & Me.GetQuotedText & _
-                    " , EngineName=" & Quote(DBNULL) & _
-                    " , SystemName=" & Quote(DBNULL) & _
-                    " , EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " , ProjectName=" & Me.Project.GetQuotedText & _
-                    " , VarInitVal=" & "'" & FixStr(Me.VarInitVal) & "'" & _
-                    " , VarSize=" & Me.VarSize & _
-                    " , Description='" & FixStr(Me.VariableDescription) & "'" & _
-                    " where VariableName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Quote(DBNULL) & _
-                    " AND SystemName=" & Quote(DBNULL) & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Update " & Me.Project.tblVariables & _
-                    " set VariableName=" & Me.GetQuotedText & _
-                    " , EngineName=" & Me.Engine.GetQuotedText & _
-                    " , SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " , EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " , ProjectName=" & Me.Project.GetQuotedText & _
-                    " , VarInitVal=" & "'" & FixStr(Me.VarInitVal) & "'" & _
-                    " , VarSize=" & Me.VarSize & _
-                    " , Description=" & "'" & FixStr(Me.VariableDescription) & "'" & _
-                    " where VariableName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
+            
+            If Me.Engine Is Nothing Then
+                sql = "Update " & Me.Project.tblVariables & " set VariableName=" & Me.GetQuotedText & _
+                                " , EnvironmentName=" & Me.Environment.GetQuotedText & _
+                                " , ProjectName=" & Me.Project.GetQuotedText & _
+                                " , VariableDescription=" & "'" & FixStr(Me.VariableDescription) & "'" & _
+                                " where VariableName=" & Me.GetQuotedText & _
+                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                                " AND ProjectName=" & Me.Project.GetQuotedText
+                '" AND EngineName=*" & _
+                '" AND SystemName=*" & _
             Else
-                If Me.Engine Is Nothing Then
-                    
-                    sql = "Update " & Me.Project.tblVariables & " set VariableName=" & Me.GetQuotedText & _
-                                    " , EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " , ProjectName=" & Me.Project.GetQuotedText & _
-                                    " , VariableDescription=" & "'" & FixStr(Me.VariableDescription) & "'" & _
-                                    " where VariableName=" & Me.GetQuotedText & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                    '" AND EngineName=*" & _
-                    '" AND SystemName=*" & _
-                Else
-                    sql = "Update " & Me.Project.tblVariables & " set VariableName=" & Me.GetQuotedText & _
-                                    " , EngineName=" & Me.Engine.GetQuotedText & _
-                                    " , SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                    " , EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " , ProjectName=" & Me.Project.GetQuotedText & _
-                                    " , VariableDescription=" & "'" & FixStr(Me.VariableDescription) & "'" & _
-                                    " where VariableName=" & Me.GetQuotedText & _
-                                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-
+                sql = "Update " & Me.Project.tblVariables & " set VariableName=" & Me.GetQuotedText & _
+                                " , EngineName=" & Me.Engine.GetQuotedText & _
+                                " , SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                                " , EnvironmentName=" & Me.Environment.GetQuotedText & _
+                                " , ProjectName=" & Me.Project.GetQuotedText & _
+                                " , VariableDescription=" & "'" & FixStr(Me.VariableDescription) & "'" & _
+                                " where VariableName=" & Me.GetQuotedText & _
+                                " AND EngineName=" & Me.Engine.GetQuotedText & _
+                                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                                " AND ProjectName=" & Me.Project.GetQuotedText
             End If
+
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -271,56 +239,31 @@ Public Class clsVariable
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                If Me.Engine Is Nothing Then
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VarInitVal,VarSize,Description) " & _
-                                    " Values(" & Me.GetQuotedText & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VarInitVal) & "'," & _
-                                    Me.VarSize & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                Else
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VarInitVal,VarSize,Description) " & _
-                                    " Values(" & Me.GetQuotedText & "," & _
-                                    Me.Engine.GetQuotedText & "," & _
-                                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VarInitVal) & "'," & _
-                                    Me.VarSize & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                End If
+            
+            '//When we add new record we need to find Unique Database Record ID.
+            If Me.Engine Is Nothing Then
+                sql = "INSERT INTO " & Me.Project.tblVariables & _
+                                "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
+                                "Values(" & Me.GetQuotedText & "," & _
+                                Quote(DBNULL) & "," & _
+                                Quote(DBNULL) & "," & _
+                                Me.Environment.GetQuotedText & "," & _
+                                Me.Project.GetQuotedText & ",'" & _
+                                FixStr(Me.VariableDescription) & "')"
             Else
-                '//When we add new record we need to find Unique Database Record ID.
-                If Me.Engine Is Nothing Then
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
-                                    "Values(" & Me.GetQuotedText & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                Else
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
-                                    "Values(" & Me.GetQuotedText & "," & _
-                                    Me.Engine.GetQuotedText & "," & _
-                                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                End If
-
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
+                sql = "INSERT INTO " & Me.Project.tblVariables & _
+                                "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
+                                "Values(" & Me.GetQuotedText & "," & _
+                                Me.Engine.GetQuotedText & "," & _
+                                Me.Engine.ObjSystem.GetQuotedText & "," & _
+                                Me.Environment.GetQuotedText & "," & _
+                                Me.Project.GetQuotedText & ",'" & _
+                                FixStr(Me.VariableDescription) & "')"
             End If
+
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -354,57 +297,31 @@ Public Class clsVariable
         Try
             Me.Text = Me.Text.Trim
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                If Me.Engine Is Nothing Then
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName, EngineName,SystemName,EnvironmentName,ProjectName,VarInitVal,VarSize,Description) " & _
-                                    " Values(" & Me.GetQuotedText & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Quote(DBNULL) & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VarInitVal) & "'," & _
-                                    Me.VarSize & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                Else
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName, EngineName,SystemName,EnvironmentName,ProjectName,VarInitVal,VarSize,Description) " & _
-                                    " Values(" & Me.GetQuotedText & "," & _
-                                    Me.Engine.GetQuotedText & "," & _
-                                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VarInitVal) & "'," & _
-                                    Me.VarSize & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                End If
-
+            
+            '//When we add new record we need to find Unique Database Record ID.
+            If Me.Engine Is Nothing Then
+                sql = "INSERT INTO " & Me.Project.tblVariables & _
+                                 "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
+                                 "Values(" & Me.GetQuotedText & "," & _
+                                 Quote(DBNULL) & "," & _
+                                 Quote(DBNULL) & "," & _
+                                 Me.Environment.GetQuotedText & "," & _
+                                 Me.Project.GetQuotedText & ",'" & _
+                                 FixStr(Me.VariableDescription) & "')"
             Else
-                '//When we add new record we need to find Unique Database Record ID.
-                If Me.Engine Is Nothing Then
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                     "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
-                                     "Values(" & Me.GetQuotedText & "," & _
-                                     Quote(DBNULL) & "," & _
-                                     Quote(DBNULL) & "," & _
-                                     Me.Environment.GetQuotedText & "," & _
-                                     Me.Project.GetQuotedText & ",'" & _
-                                     FixStr(Me.VariableDescription) & "')"
-                Else
-                    sql = "INSERT INTO " & Me.Project.tblVariables & _
-                                    "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
-                                    "Values(" & Me.GetQuotedText & "," & _
-                                    Me.Engine.GetQuotedText & "," & _
-                                    Me.Engine.ObjSystem.GetQuotedText & "," & _
-                                    Me.Environment.GetQuotedText & "," & _
-                                    Me.Project.GetQuotedText & ",'" & _
-                                    FixStr(Me.VariableDescription) & "')"
-                End If
-
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
+                sql = "INSERT INTO " & Me.Project.tblVariables & _
+                                "(VariableName,EngineName,SystemName,EnvironmentName,ProjectName,VariableDescription) " & _
+                                "Values(" & Me.GetQuotedText & "," & _
+                                Me.Engine.GetQuotedText & "," & _
+                                Me.Engine.ObjSystem.GetQuotedText & "," & _
+                                Me.Environment.GetQuotedText & "," & _
+                                Me.Project.GetQuotedText & ",'" & _
+                                FixStr(Me.VariableDescription) & "')"
             End If
+
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -433,37 +350,23 @@ Public Class clsVariable
         Dim sql As String = ""
 
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                If Me.Engine Is Nothing Then
-                    sql = "Delete From " & Me.Project.tblVariables & _
-                   " where VariableName=" & Me.GetQuotedText & _
-                   " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                   " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Delete From " & Me.Project.tblVariables & _
-                    " where VariableName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
+            
+            If Me.Engine Is Nothing Then
+                sql = "Delete From " & Me.Project.tblVariables & _
+                 " where VariableName=" & Me.GetQuotedText & _
+                 " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                 " AND ProjectName=" & Me.Project.GetQuotedText
             Else
-                If Me.Engine Is Nothing Then
-                    sql = "Delete From " & Me.Project.tblVariables & _
-                     " where VariableName=" & Me.GetQuotedText & _
-                     " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                     " AND ProjectName=" & Me.Project.GetQuotedText
-                Else
-                    sql = "Delete From " & Me.Project.tblVariables & _
-                    " where VariableName=" & Me.GetQuotedText & _
-                    " AND EngineName=" & Me.Engine.GetQuotedText & _
-                    " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                    " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                    " AND ProjectName=" & Me.Project.GetQuotedText
-                End If
-
-                Me.DeleteATTR(cmd)
+                sql = "Delete From " & Me.Project.tblVariables & _
+                " where VariableName=" & Me.GetQuotedText & _
+                " AND EngineName=" & Me.Engine.GetQuotedText & _
+                " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                " AND ProjectName=" & Me.Project.GetQuotedText
             End If
+
+            Me.DeleteATTR(cmd)
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -485,7 +388,7 @@ Public Class clsVariable
                     Next
                 Next
             End If
-            
+
 
             '/// Now finally we remove the objects from the Object Model
             If RemoveFromParentCollection = True Then
@@ -574,6 +477,12 @@ Public Class clsVariable
 
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
+        Return True
+
+    End Function
+
+    Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
+
         Try
             If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
                 Dim cmd As System.Data.Odbc.OdbcCommand
@@ -608,7 +517,7 @@ Public Class clsVariable
                                     "' AND ENGINENAME='" & DBNULL & _
                                     "' AND VariableName='" & FixStr(Me.VariableName) & "'"
                 End If
-                
+
 
                 cmd.CommandText = sql
                 Log(sql)
@@ -635,11 +544,20 @@ Public Class clsVariable
             Return True
 
         Catch ex As Exception
-            LogError(ex, "clsVariable LoadItems")
+            LogError(ex, "clsVariable LoadMe")
             Return False
         End Try
 
     End Function
+
+    Property IsLoaded() As Boolean Implements INode.IsLoaded
+        Get
+            Return m_IsLoaded
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsLoaded = value
+        End Set
+    End Property
 
 #End Region
 

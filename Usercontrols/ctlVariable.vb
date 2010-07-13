@@ -390,7 +390,7 @@ Public Class ctlVariable
         StartLoad()
 
         objThis = obj '//Load the form env object
-        objThis.LoadItems()
+        objThis.LoadMe()
 
         UpdateFields()
 
