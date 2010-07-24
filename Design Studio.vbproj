@@ -36,6 +36,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <OldToolsVersion>2.0</OldToolsVersion>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <SignAssembly>false</SignAssembly>
     <PublishUrl>ftp://sqdtkarasch/Updates/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -364,6 +365,7 @@
     <Compile Include="Modules\modHelp.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modules\modMultiThread.vb" />
     <Compile Include="Modules\modObjects.vb">
       <SubType>Code</SubType>
     </Compile>

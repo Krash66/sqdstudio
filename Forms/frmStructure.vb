@@ -869,9 +869,9 @@ doAgain:
                     Exit Try
                 End If
                 LoadTreeViewFromXmlFile(objThis, outXMLPath, tvFields, True)
-                If IO.File.Exists(outXMLPath) Then
-                    IO.File.Delete(outXMLPath)
-                End If
+                'If IO.File.Exists(outXMLPath) Then
+                '    IO.File.Delete(outXMLPath)
+                'End If
             Else
                 objThis.LoadItems()
                 '//This will fill out parent/child fields tree from Array of fields
@@ -881,7 +881,8 @@ doAgain:
             Return True
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmStructure FillFieldAttr")
+            Return False
         Finally
             tvFields.EndUpdate()
             lvFieldAttrs.EndUpdate()
