@@ -71,7 +71,6 @@ Public Class frmEnvironment
     Friend WithEvents cmdBrowseLocalDMLDir As System.Windows.Forms.Button
     Friend WithEvents cmdGetDML As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEnvironment))
         Me.txtEnvironmentName = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.txtEnvironmentDesc = New System.Windows.Forms.TextBox
@@ -106,44 +105,37 @@ Public Class frmEnvironment
         Me.txtLocalDMLDir = New System.Windows.Forms.TextBox
         Me.cmdBrowseLocalDMLDir = New System.Windows.Forms.Button
         Me.cmdGetDML = New System.Windows.Forms.Button
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'PictureBox1
-        '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\FormTop\sq_skyblue.jpg"
-        '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(562, 68)
+        Me.Panel1.Size = New System.Drawing.Size(572, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 416)
-        Me.GroupBox1.Size = New System.Drawing.Size(564, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 422)
+        Me.GroupBox1.Size = New System.Drawing.Size(574, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(280, 439)
+        Me.cmdOk.Location = New System.Drawing.Point(290, 445)
         Me.cmdOk.TabIndex = 21
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(376, 439)
+        Me.cmdCancel.Location = New System.Drawing.Point(386, 445)
         Me.cmdCancel.TabIndex = 22
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(472, 439)
+        Me.cmdHelp.Location = New System.Drawing.Point(482, 445)
         Me.cmdHelp.TabIndex = 23
         '
         'Label1
@@ -152,7 +144,7 @@ Public Class frmEnvironment
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(486, 39)
+        Me.Label2.Size = New System.Drawing.Size(496, 39)
         Me.Label2.Text = "Enter an environment name that is unique within a project. An environment is used" & _
             " to distinguish between a development, test, and production environments."
         '
@@ -345,7 +337,7 @@ Public Class frmEnvironment
         'cmdBrowseFieldLocalScript
         '
         Me.cmdBrowseFieldLocalScript.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFieldLocalScript.Location = New System.Drawing.Point(462, 324)
+        Me.cmdBrowseFieldLocalScript.Location = New System.Drawing.Point(462, 325)
         Me.cmdBrowseFieldLocalScript.Name = "cmdBrowseFieldLocalScript"
         Me.cmdBrowseFieldLocalScript.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFieldLocalScript.TabIndex = 15
@@ -452,7 +444,7 @@ Public Class frmEnvironment
         'frmEnvironment
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(562, 478)
+        Me.ClientSize = New System.Drawing.Size(572, 484)
         Me.Controls.Add(Me.cmdGetDML)
         Me.Controls.Add(Me.cmdBrowseLocalDMLDir)
         Me.Controls.Add(Me.txtLocalDMLDir)
@@ -499,7 +491,6 @@ Public Class frmEnvironment
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.Label3, 0)
         Me.Controls.SetChildIndex(Me.txtEnvironmentName, 0)
         Me.Controls.SetChildIndex(Me.Label4, 0)
@@ -526,7 +517,6 @@ Public Class frmEnvironment
         Me.Controls.SetChildIndex(Me.txtLocalDMLDir, 0)
         Me.Controls.SetChildIndex(Me.cmdBrowseLocalDMLDir, 0)
         Me.Controls.SetChildIndex(Me.cmdGetDML, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -693,7 +683,8 @@ doAgain:
     End Sub
 
     '//new by npatel on 8/13/05
-    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, cmdBrowseFileLocalModel.Click, cmdBrowseLocalDMLDir.Click
+    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, cmdBrowseFileLocalModel.Click, cmdBrowseLocalDMLDir.Click, cmdBrowseFieldLocalModel.Click, cmdBrowseFieldLocalScript.Click
+
 
         Dim DefaultDir As String
 
@@ -746,6 +737,8 @@ doAgain:
                     txtLocalDDLDir.Text = dlgBrowseFolder.SelectedPath
                 Case "cmdBrowseLocalDMLDir"
                     txtLocalDMLDir.Text = dlgBrowseFolder.SelectedPath
+                Case "cmdBrowseFieldLocalScript"
+                    txtLocalScriptDir.Text = dlgBrowseFolder.SelectedPath
                 Case "cmdBrowseFieldLocalModel"
                     txtLocalModelDir.Text = dlgBrowseFolder.SelectedPath
             End Select
@@ -753,29 +746,29 @@ doAgain:
         End If
     End Sub
 
-    Private Sub cmdBrowseFieldLocalScript_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFieldLocalScript.Click
+    'Private Sub cmdBrowseFieldLocalScript_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFieldLocalScript.Click
 
-        If dlgBrowseFolder.RootFolder = Nothing Then
-            dlgBrowseFolder.SelectedPath = "" 'LocalSCRIPTFolderPath
-        End If
+    '    If dlgBrowseFolder.RootFolder = Nothing Then
+    '        dlgBrowseFolder.SelectedPath = "" 'LocalSCRIPTFolderPath
+    '    End If
 
-        If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            txtLocalScriptDir.Text = dlgBrowseFolder.SelectedPath
-        End If
+    '    If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+    '        txtLocalScriptDir.Text = dlgBrowseFolder.SelectedPath
+    '    End If
 
-    End Sub
+    'End Sub
 
-    Private Sub cmdBrowseFieldLocalModel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFieldLocalModel.Click
+    'Private Sub cmdBrowseFieldLocalModel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFieldLocalModel.Click
 
-        If dlgBrowseFolder.RootFolder = Nothing Then
-            dlgBrowseFolder.SelectedPath = "" 'LocalModelFolderPath
-        End If
+    '    If dlgBrowseFolder.RootFolder = Nothing Then
+    '        dlgBrowseFolder.SelectedPath = "" 'LocalModelFolderPath
+    '    End If
 
-        If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            txtLocalModelDir.Text = dlgBrowseFolder.SelectedPath
-        End If
+    '    If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
+    '        txtLocalModelDir.Text = dlgBrowseFolder.SelectedPath
+    '    End If
 
-    End Sub
+    'End Sub
 
     Private Sub cmdGetDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdGetDTD.Click
         Dim FTPClient As frmFTPClient = New frmFTPClient

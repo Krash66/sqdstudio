@@ -2114,7 +2114,7 @@ Public Class frmMain
 
             Dim NodeText As String = tvExplorer.SelectedNode.Text
             'tvExplorer.Refresh()
-            FillProject(CurLoadedProject, , True)
+            'FillProject(CurLoadedProject, , True)
             tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
             ShowUsercontrol(tvExplorer.SelectedNode)
 
@@ -2680,7 +2680,7 @@ Public Class frmMain
                         End If
                         NodeText = tvExplorer.SelectedNode.Text
                         'tvExplorer.Refresh()
-                        FillProject(CurLoadedProject, , True)
+                        'FillProject(CurLoadedProject, , True)
                         tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
                     End If
 
@@ -2769,7 +2769,7 @@ Public Class frmMain
                             tvExplorer.SelectedNode = cNode
                             NodeText = tvExplorer.SelectedNode.Text
                             'tvExplorer.Refresh()
-                            FillProject(CurLoadedProject, , True)
+                            'FillProject(CurLoadedProject, , True)
                             tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
                         End If
                     End If
@@ -3335,7 +3335,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '//If the new datastore is valid, add it as a child 
                         '//of the engine and index it properly for it's position in the tree
                         'If obj.Engine IsNot Nothing Then
-                        cNode = AddNode(cNode.Nodes, NodeType, obj)
+                        cNode = AddNode(cNode.Nodes, NodeType, obj, , obj.DsPhysicalSource)
                         'Else
                         '    cNode = AddDSNode(obj, cNode)
                         'End If
@@ -3350,7 +3350,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         'NodeText = tvExplorer.SelectedNode.Text
                         NodeText = obj.DsPhysicalSource
                         'tvExplorer.Refresh()
-                        FillProject(CurLoadedProject, , True)
+                        'FillProject(CurLoadedProject, , True)
                         tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
                     End If
 

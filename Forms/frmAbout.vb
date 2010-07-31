@@ -48,6 +48,8 @@ Public Class frmAbout
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents lblCompany As System.Windows.Forms.Label
     Friend WithEvents lblOwner As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents HelpProvider1 As System.Windows.Forms.HelpProvider
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAbout))
@@ -70,6 +72,8 @@ Public Class frmAbout
         Me.lblBuildDate = New System.Windows.Forms.Label
         Me.Label8 = New System.Windows.Forms.Label
         Me.lblBuildNumber = New System.Windows.Forms.Label
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.Label7 = New System.Windows.Forms.Label
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -192,6 +196,8 @@ Public Class frmAbout
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.SystemColors.Desktop
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.Panel1.Controls.Add(Me.Label7)
+        Me.Panel1.Controls.Add(Me.Label6)
         Me.Panel1.Controls.Add(Me.lblCompany)
         Me.Panel1.Controls.Add(Me.lblOwner)
         Me.Panel1.Controls.Add(Me.Label11)
@@ -212,7 +218,7 @@ Public Class frmAbout
         Me.lblCompany.AutoSize = True
         Me.lblCompany.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCompany.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblCompany.Location = New System.Drawing.Point(117, 104)
+        Me.lblCompany.Location = New System.Drawing.Point(117, 121)
         Me.lblCompany.Name = "lblCompany"
         Me.lblCompany.Size = New System.Drawing.Size(58, 13)
         Me.lblCompany.TabIndex = 9
@@ -223,7 +229,7 @@ Public Class frmAbout
         Me.lblOwner.AutoSize = True
         Me.lblOwner.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOwner.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblOwner.Location = New System.Drawing.Point(117, 80)
+        Me.lblOwner.Location = New System.Drawing.Point(117, 99)
         Me.lblOwner.Name = "lblOwner"
         Me.lblOwner.Size = New System.Drawing.Size(43, 13)
         Me.lblOwner.TabIndex = 8
@@ -234,7 +240,7 @@ Public Class frmAbout
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label11.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label11.Location = New System.Drawing.Point(8, 104)
+        Me.Label11.Location = New System.Drawing.Point(8, 121)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(62, 13)
         Me.Label11.TabIndex = 7
@@ -245,7 +251,7 @@ Public Class frmAbout
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label10.Location = New System.Drawing.Point(8, 80)
+        Me.Label10.Location = New System.Drawing.Point(8, 99)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(47, 13)
         Me.Label10.TabIndex = 6
@@ -256,7 +262,7 @@ Public Class frmAbout
         Me.lblBuildDate.AutoSize = True
         Me.lblBuildDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBuildDate.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblBuildDate.Location = New System.Drawing.Point(117, 56)
+        Me.lblBuildDate.Location = New System.Drawing.Point(117, 77)
         Me.lblBuildDate.Name = "lblBuildDate"
         Me.lblBuildDate.Size = New System.Drawing.Size(68, 13)
         Me.lblBuildDate.TabIndex = 5
@@ -267,7 +273,7 @@ Public Class frmAbout
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(8, 56)
+        Me.Label8.Location = New System.Drawing.Point(8, 77)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(70, 13)
         Me.Label8.TabIndex = 4
@@ -283,6 +289,28 @@ Public Class frmAbout
         Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
         Me.lblBuildNumber.TabIndex = 3
         Me.lblBuildNumber.Text = "3.3.1.1"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.SystemColors.Window
+        Me.Label6.Location = New System.Drawing.Point(8, 55)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(87, 13)
+        Me.Label6.TabIndex = 10
+        Me.Label6.Text = "File Assembly:"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.SystemColors.Window
+        Me.Label7.Location = New System.Drawing.Point(117, 55)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(61, 13)
+        Me.Label7.TabIndex = 11
+        Me.Label7.Text = "3.3.1.101"
         '
         'frmAbout
         '
