@@ -35,7 +35,10 @@ Public Module modDeclares
     Public EnableLogging As Boolean = True
     Public TraceFile As String
     Public errorTrace As String
+    ' These two for rename
     Public NameOfNodeBefore As String
+    'Public PrevObjTreeNode As TreeNode
+
     Public IsEventFromCode As Boolean
 
     '//Points to the INode object of the topmost usercontrol

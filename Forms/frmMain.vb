@@ -2139,8 +2139,15 @@ Public Class frmMain
         IsRename = True
         '// Created for Renaming by Tom Karasch
         ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
-        FillProject(e.Project, True)
-        tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
+        'FillProject(e.Project, True)
+        If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
+            e.ObjTreeNode.Text = e.Text
+        End If
+        'If PrevObjTreeNode IsNot Nothing Then
+        tvExplorer.SelectedNode = e.ObjTreeNode
+        'Else
+        'tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
+        'End If
         ShowUsercontrol(tvExplorer.SelectedNode)
         IsRename = False
 
@@ -2157,6 +2164,13 @@ Public Class frmMain
 
 #End Region
 
+    '#Region "Rename Load"
+
+    '    Sub UpdateTreeAfterRename(ByVal ReNamedObj As INode)
+
+    '    End Sub
+
+    '#End Region
     '//////// TVexplorer tree events .... etc... ////////
 #Region "tvexplorer functions"
 
@@ -3415,7 +3429,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 cNode = obj.ObjTreeNode
                 cNode.Nodes.Clear()
                 cNode.Text = obj.Project.ProjectName
-                SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
+                'SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
                 CType(obj, clsProject).Save()
                 CType(obj, clsProject).SaveToRegistry()
                 MsgClear = False

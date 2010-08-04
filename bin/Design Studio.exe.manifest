@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="1827840">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="1822208">
       <assemblyIdentity name="Design Studio" version="3.3.1.1" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>lEG4mBI20GEqZBm24wRxnnwXHmE=</dsig:DigestValue>
+        <dsig:DigestValue>9SKKXZLRezOchHj+3B+Puqm1Jk8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

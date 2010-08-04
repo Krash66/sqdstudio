@@ -15,6 +15,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = Proj.ObjTreeNode
+
         If ValidateNewName(NewName) = False Then
             RenameProject = False
             Exit Function
@@ -29,101 +31,54 @@ Module modRename
                 cmd.Connection = cnn
                 tran = cnn.BeginTransaction()
                 cmd.Transaction = tran
-                If Proj.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    success = EditProjects(cmd, Proj.ProjectName, NewName, Proj)
-                    If success = True Then
-                        success = EditConnections(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDatastores(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDSSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDSSELECTIONS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditEngines(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditEnvironments(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditStructures(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditSTRUCTFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditSTRSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditStructureSelections(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditSystems(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTaskDatastores(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTaskMappings(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTasks(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditVariables(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                Else
-                    success = EditProjects(cmd, Proj.ProjectName, NewName, Proj)
-                    If success = True Then
-                        success = EditConnections(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDatastores(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDSSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDSSELECTIONS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditEngines(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditEnvironments(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDescriptions(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDESCFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDESCSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditDESCSelections(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditSystems(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTaskDatastores(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTaskMappings(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditTasks(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
-                    If success = True Then
-                        success = EditVariables(cmd, Proj.ProjectName, NewName, Proj)
-                    End If
+                
+                success = EditProjects(cmd, Proj.ProjectName, NewName, Proj)
+                If success = True Then
+                    success = EditConnections(cmd, Proj.ProjectName, NewName, Proj)
                 End If
+                If success = True Then
+                    success = EditDatastores(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDSSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDSSELECTIONS(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditEngines(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditEnvironments(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDescriptions(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDESCFIELDS(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDESCSELFIELDS(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditDESCSelections(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditSystems(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditTaskDatastores(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditTaskMappings(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditTasks(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+                If success = True Then
+                    success = EditVariables(cmd, Proj.ProjectName, NewName, Proj)
+                End If
+
 
                 If success = True Then
                     tran.Commit()
@@ -151,6 +106,8 @@ Module modRename
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
+
+        'PrevObjTreeNode = Env.ObjTreeNode
 
         If ValidateNewName(NewName) = False Then
             RenameEnvironment = False
@@ -183,32 +140,18 @@ Module modRename
                 If success = True Then
                     success = EditEnvironments(cmd, Env.EnvironmentName, NewName, Env)
                 End If
-                If Env.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    If success = True Then
-                        success = EditStructures(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditSTRUCTFIELDS(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditSTRSELFIELDS(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditStructureSelections(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                Else
-                    If success = True Then
-                        success = EditDescriptions(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditDESCFIELDS(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditDESCSELFIELDS(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
-                    If success = True Then
-                        success = EditDESCSelections(cmd, Env.EnvironmentName, NewName, Env)
-                    End If
+                
+                If success = True Then
+                    success = EditDescriptions(cmd, Env.EnvironmentName, NewName, Env)
+                End If
+                If success = True Then
+                    success = EditDESCFIELDS(cmd, Env.EnvironmentName, NewName, Env)
+                End If
+                If success = True Then
+                    success = EditDESCSELFIELDS(cmd, Env.EnvironmentName, NewName, Env)
+                End If
+                If success = True Then
+                    success = EditDESCSelections(cmd, Env.EnvironmentName, NewName, Env)
                 End If
                 If success = True Then
                     success = EditSystems(cmd, Env.EnvironmentName, NewName, Env)
@@ -252,6 +195,8 @@ Module modRename
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
+
+        'PrevObjTreeNode = sys.ObjTreeNode
 
         If ValidateNewName(NewName) = False Then
             RenameSystem = False
@@ -322,6 +267,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = eng.ObjTreeNode
+
         If ValidateNewName(NewName, True) = False Then
             RenameEngine = False
             Exit Function
@@ -387,6 +334,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = struct.ObjTreeNode
+
         If ValidateNewName(NewName) = False Then
             RenameStructure = False
             Exit Function
@@ -407,32 +356,17 @@ Module modRename
                 If success = True Then
                     success = EditDSSELECTIONS(cmd, struct.StructureName, NewName, struct)
                 End If
-                If struct.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    If success = True Then
-                        success = EditStructures(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditSTRUCTFIELDS(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditSTRSELFIELDS(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditStructureSelections(cmd, struct.StructureName, NewName, struct)
-                    End If
-                Else
-                    If success = True Then
-                        success = EditDescriptions(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditDESCFIELDS(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditDESCSELFIELDS(cmd, struct.StructureName, NewName, struct)
-                    End If
-                    If success = True Then
-                        success = EditDESCSelections(cmd, struct.StructureName, NewName, struct)
-                    End If
+                If success = True Then
+                    success = EditDescriptions(cmd, struct.StructureName, NewName, struct)
+                End If
+                If success = True Then
+                    success = EditDESCFIELDS(cmd, struct.StructureName, NewName, struct)
+                End If
+                If success = True Then
+                    success = EditDESCSELFIELDS(cmd, struct.StructureName, NewName, struct)
+                End If
+                If success = True Then
+                    success = EditDESCSelections(cmd, struct.StructureName, NewName, struct)
                 End If
                 If success = True Then
                     success = EditTaskMappings(cmd, struct.StructureName, NewName, struct)
@@ -466,6 +400,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = StrSel.ObjTreeNode
+
         If ValidateNewName(NewName) = False Then
             RenameStructureSelection = False
             Exit Function
@@ -485,26 +421,14 @@ Module modRename
                 If success = True Then
                     success = EditDSSELECTIONS(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
-                If StrSel.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    If success = True Then
-                        success = EditSTRUCTFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
-                    If success = True Then
-                        success = EditSTRSELFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
-                    If success = True Then
-                        success = EditStructureSelections(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
-                Else
-                    If success = True Then
-                        success = EditDESCFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
-                    If success = True Then
-                        success = EditDESCSELFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
-                    If success = True Then
-                        success = EditDESCSelections(cmd, StrSel.SelectionName, NewName, StrSel)
-                    End If
+                If success = True Then
+                    success = EditDESCFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
+                End If
+                If success = True Then
+                    success = EditDESCSELFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
+                End If
+                If success = True Then
+                    success = EditDESCSelections(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
                 If success = True Then
                     success = EditTaskDatastores(cmd, StrSel.SelectionName, NewName, StrSel)
@@ -541,6 +465,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = Conn.ObjTreeNode
+
         If ValidateNewName(NewName) = False Then
             RenameConnection = False
             Exit Function
@@ -558,11 +484,7 @@ Module modRename
 
                 success = EditConnections(cmd, Conn.ConnectionName, NewName, Conn)
                 If success = True Then
-                    If Conn.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        success = EditStructures(cmd, Conn.ConnectionName, NewName, Conn)
-                    Else
-                        success = EditDescriptions(cmd, Conn.ConnectionName, NewName, Conn)
-                    End If
+                    success = EditDescriptions(cmd, Conn.ConnectionName, NewName, Conn)
                 End If
                 If success = True Then
                     success = EditEngines(cmd, Conn.ConnectionName, NewName, Conn)
@@ -594,6 +516,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
         Dim success As Boolean = False
+
+        'PrevObjTreeNode = DS.ObjTreeNode
 
         If ValidateNewName(NewName) = False Then
             RenameDatastore = False
@@ -652,6 +576,8 @@ Module modRename
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
 
+        'PrevObjTreeNode = Task.ObjTreeNode
+
         If ValidateNewName(NewName) = False Then
             RenameTask = False
             Exit Function
@@ -706,6 +632,8 @@ Module modRename
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
+
+        'PrevObjTreeNode = Var.ObjTreeNode
 
         If ValidateNewName(NewName) = False Then
             RenameVariable = False
@@ -881,20 +809,20 @@ Module modRename
 
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
                     objDS = CType(obj, clsDatastore)
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblDatastores & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblDatastores & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
-                   
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDatastores & " Set DatastoreName= '" & NewValue & _
+                                       "' WHERE DatastoreName= '" & OldValue & _
+                                       "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    '    sql = "Update " & objDS.Project.tblDatastores & " Set DatastoreName= '" & NewValue & _
+                    '                       "' WHERE DatastoreName= '" & OldValue & _
+                    '                       "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                       "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
+
 
                 Case Else
                     EditDatastores = False
@@ -905,9 +833,7 @@ Module modRename
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Call EditDatastoresATTR(cmd, OldValue, NewValue, obj)
-
-            EditDatastores = True
+            EditDatastores = EditDatastoresATTR(cmd, OldValue, NewValue, obj)
 
         Catch ex As Exception
             LogError(ex, "modRename EditDatastores", sql)
@@ -953,21 +879,21 @@ Module modRename
 
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE  ', node_datastore
                     objDS = CType(obj, clsDatastore)
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblDatastoresATTR & " Set DatastoreName= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblDatastoresATTR & _
-                        " Set DatastoreName= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
-                    
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDatastoresATTR & " Set DatastoreName= '" & NewValue & _
+                                        "' WHERE DatastoreName= '" & OldValue & _
+                                        "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblDatastoresATTR & _
+                    '" Set DatastoreName= '" & NewValue & _
+                    '                    "' WHERE DatastoreName= '" & OldValue & _
+                    '                    "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
+
 
                 Case Else
                     EditDatastoresATTR = False
@@ -1026,157 +952,157 @@ Module modRename
 
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
                     objDS = CType(obj, clsDatastore)
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblDSselFields & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblDSselFields & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
-                   
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDSselFields & " Set DatastoreName= '" & NewValue & _
+                                       "' WHERE DatastoreName= '" & OldValue & _
+                                       "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblDSselFields & " Set DatastoreName= '" & NewValue & _
+                    '                   "' WHERE DatastoreName= '" & OldValue & _
+                    '                   "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
 
-                    If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
 
-                        If objDS.Engine IsNot Nothing Then
-                            sql = "Update " & objDS.Project.tblDSselFields & " Set Parent= '" & NewValue & _
-                                                    "' WHERE Parent= '" & OldValue & _
-                                                    "' AND DatastoreName='" & NewValue & _
-                                                    "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                                    "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                                    "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                        Else
-                            sql = "Update " & objDS.Project.tblDSselFields & " Set Parent= '" & NewValue & _
-                                                    "' WHERE Parent= '" & OldValue & _
-                                                    "' AND DatastoreName='" & NewValue & _
-                                                    "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                        End If
-                    Else
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    cmd.CommandText = sql
+                    '    Log(sql)
+                    '    cmd.ExecuteNonQuery()
 
-                        If objDS.Engine IsNot Nothing Then
-                            sql = "Update " & objDS.Project.tblDSselFields & " Set ParentName= '" & NewValue & _
-                                                    "' WHERE ParentName= '" & OldValue & _
-                                                    "' AND DatastoreName='" & NewValue & _
-                                                    "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                                    "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                                    "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                        Else
-                            sql = "Update " & objDS.Project.tblDSselFields & " Set ParentName= '" & NewValue & _
-                                                    "' WHERE ParentName= '" & OldValue & _
-                                                    "' AND DatastoreName='" & NewValue & _
-                                                    "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                        End If
-                    End If
+                    '    If objDS.Engine IsNot Nothing Then
+                    '        sql = "Update " & objDS.Project.tblDSselFields & " Set Parent= '" & NewValue & _
+                    '                                "' WHERE Parent= '" & OldValue & _
+                    '                                "' AND DatastoreName='" & NewValue & _
+                    '                                "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                                "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                    '                                "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                    '                                "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    '    Else
+                    '        sql = "Update " & objDS.Project.tblDSselFields & " Set Parent= '" & NewValue & _
+                    '                                "' WHERE Parent= '" & OldValue & _
+                    '                                "' AND DatastoreName='" & NewValue & _
+                    '                                "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                                "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    '    End If
+                    'Else
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
+
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDSselFields & " Set ParentName= '" & NewValue & _
+                                            "' WHERE ParentName= '" & OldValue & _
+                                            "' AND DatastoreName='" & NewValue & _
+                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                            "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                            "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblDSselFields & " Set ParentName= '" & NewValue & _
+                    '                        "' WHERE ParentName= '" & OldValue & _
+                    '                        "' AND DatastoreName='" & NewValue & _
+                    '                        "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                        "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
+                    'End If
 
                 Case NODE_STRUCT
                     objStr = CType(obj, clsStructure)
 
-                    If objStr.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "Update " & objStr.Project.tblDSselFields & _
-                        " Set StructureName= '" & NewValue & _
-                        "',SelectionName= '" & NewValue & _
-                        "' WHERE StructureName= '" & OldValue & _
-                        "' AND SelectionName='" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    'If objStr.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "Update " & objStr.Project.tblDSselFields & _
+                    '    " Set StructureName= '" & NewValue & _
+                    '    "',SelectionName= '" & NewValue & _
+                    '    "' WHERE StructureName= '" & OldValue & _
+                    '    "' AND SelectionName='" & OldValue & _
+                    '    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    '    cmd.CommandText = sql
+                    '    Log(sql)
+                    '    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselFields & " Set StructureName= '" & NewValue & _
-                        "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    '    sql = "Update " & objStr.Project.tblDSselFields & " Set StructureName= '" & NewValue & _
+                    '    "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    '    cmd.CommandText = sql
+                    '    Log(sql)
+                    '    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselFields & " Set Parent= '" & NewValue & _
-                        "' WHERE Parent= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
-                    Else
-                        sql = "Update " & objStr.Project.tblDSselFields & _
-                        " Set DescriptionName= '" & NewValue & _
-                        "',SelectionName= '" & NewValue & _
-                        "' WHERE DescriptionName= '" & OldValue & _
-                        "' AND SelectionName='" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    '    sql = "Update " & objStr.Project.tblDSselFields & " Set Parent= '" & NewValue & _
+                    '    "' WHERE Parent= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    'Else
+                    sql = "Update " & objStr.Project.tblDSselFields & _
+                    " Set DescriptionName= '" & NewValue & _
+                    "',SelectionName= '" & NewValue & _
+                    "' WHERE DescriptionName= '" & OldValue & _
+                    "' AND SelectionName='" & OldValue & _
+                    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselFields & _
-                        " Set DescriptionName= '" & NewValue & _
-                        "' WHERE DescriptionName= '" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    sql = "Update " & objStr.Project.tblDSselFields & _
+                    " Set DescriptionName= '" & NewValue & _
+                    "' WHERE DescriptionName= '" & OldValue & _
+                    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselFields & _
-                        " Set ParentName= '" & NewValue & _
-                        "' WHERE ParentName= '" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
-                    End If
-                   
+                    sql = "Update " & objStr.Project.tblDSselFields & _
+                    " Set ParentName= '" & NewValue & _
+                    "' WHERE ParentName= '" & OldValue & _
+                    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    'End If
+
 
                 Case NODE_STRUCT_SEL
                     objSel = CType(obj, clsStructureSelection)
 
-                    If objSel.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "Update " & objSel.Project.tblDSselFields & " Set SelectionName= '" & NewValue & _
-                        "' WHERE SelectionName= '" & OldValue & "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
-                        "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
+                    'If objSel.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "Update " & objSel.Project.tblDSselFields & " Set SelectionName= '" & NewValue & _
+                    '    "' WHERE SelectionName= '" & OldValue & "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
+                    '    "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    '    cmd.CommandText = sql
+                    '    Log(sql)
+                    '    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objSel.Project.tblDSselFields & _
-                        " Set Parent= '" & NewValue & _
-                        "' WHERE Parent= '" & OldValue & _
-                        "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
-                    Else
-                        sql = "Update " & objSel.Project.tblDSselFields & _
-                        " Set SelectionName= '" & NewValue & _
-                        "' WHERE SelectionName= '" & OldValue & _
-                        "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
-                        "' AND DescriptionName= '" & objSel.ObjStructure.StructureName & "'"
+                    '    sql = "Update " & objSel.Project.tblDSselFields & _
+                    '    " Set Parent= '" & NewValue & _
+                    '    "' WHERE Parent= '" & OldValue & _
+                    '    "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
+                    'Else
+                    sql = "Update " & objSel.Project.tblDSselFields & _
+                    " Set SelectionName= '" & NewValue & _
+                    "' WHERE SelectionName= '" & OldValue & _
+                    "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
+                    "' AND DescriptionName= '" & objSel.ObjStructure.StructureName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objSel.Project.tblDSselFields & _
-                        " Set ParentName= '" & NewValue & _
-                        "' WHERE ParentName= '" & OldValue & _
-                        "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
-                    End If
+                    sql = "Update " & objSel.Project.tblDSselFields & _
+                    " Set ParentName= '" & NewValue & _
+                    "' WHERE ParentName= '" & OldValue & _
+                    "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
+                    'End If
 
 
                 Case Else
@@ -1188,10 +1114,7 @@ Module modRename
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Call EditFkey(cmd, OldValue, NewValue, obj)
-
-            
-            EditDSSELFIELDS = True
+            EditDSSELFIELDS = EditFkey(cmd, OldValue, NewValue, obj)
 
         Catch ex As Exception
             LogError(ex, "modRename EditDSselFields", sql)
@@ -1240,81 +1163,81 @@ Module modRename
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
                     objDS = CType(obj, clsDatastore)
 
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblDSselections & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblDSselections & " Set DatastoreName= '" & NewValue & _
-                                           "' WHERE DatastoreName= '" & OldValue & _
-                                           "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
-                   
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDSselections & " Set DatastoreName= '" & NewValue & _
+                                       "' WHERE DatastoreName= '" & OldValue & _
+                                       "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblDSselections & " Set DatastoreName= '" & NewValue & _
+                    '                   "' WHERE DatastoreName= '" & OldValue & _
+                    '                   "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
+
                     cmd.CommandText = sql
                     Log(sql)
                     cmd.ExecuteNonQuery()
 
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblDSselections & _
-                                            " Set Parent= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & NewValue & _
-                                            "' AND Parent= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblDSselections & _
-                                            " Set Parent= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & NewValue & _
-                                            "' AND Parent= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
-                    
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblDSselections & _
+                                        " Set Parent= '" & NewValue & _
+                                        "' WHERE DatastoreName= '" & NewValue & _
+                                        "' AND Parent= '" & OldValue & _
+                                        "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblDSselections & _
+                    '                    " Set Parent= '" & NewValue & _
+                    '                    "' WHERE DatastoreName= '" & NewValue & _
+                    '                    "' AND Parent= '" & OldValue & _
+                    '                    "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
+
 
                 Case NODE_STRUCT
                     objStr = CType(obj, clsStructure)
 
-                    If objStr.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "Update " & objStr.Project.tblDSselections & " Set StructureName= '" & NewValue & _
-                                            "',  SelectionName= '" & NewValue & "' WHERE StructureName= '" & OldValue & _
-                                            "' AND SelectionName='" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    'If objStr.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "Update " & objStr.Project.tblDSselections & " Set StructureName= '" & NewValue & _
+                    '                        "',  SelectionName= '" & NewValue & "' WHERE StructureName= '" & OldValue & _
+                    '                        "' AND SelectionName='" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    '                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    '    cmd.CommandText = sql
+                    '    Log(sql)
+                    '    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselections & " Set StructureName= '" & NewValue & _
-                        "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    '    sql = "Update " & objStr.Project.tblDSselections & " Set StructureName= '" & NewValue & _
+                    '    "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                    Else
-                        sql = "Update " & objStr.Project.tblDSselections & _
-                        " Set DescriptionName= '" & NewValue & _
-                        "', SelectionName= '" & NewValue & _
-                        "' WHERE DescriptionName= '" & OldValue & _
-                        "' AND SelectionName='" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    'Else
+                    sql = "Update " & objStr.Project.tblDSselections & _
+                    " Set DescriptionName= '" & NewValue & _
+                    "', SelectionName= '" & NewValue & _
+                    "' WHERE DescriptionName= '" & OldValue & _
+                    "' AND SelectionName='" & OldValue & _
+                    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                        cmd.CommandText = sql
-                        Log(sql)
-                        cmd.ExecuteNonQuery()
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
 
-                        sql = "Update " & objStr.Project.tblDSselections & _
-                        " Set DescriptionName= '" & NewValue & _
-                        "' WHERE DescriptionName= '" & OldValue & _
-                        "' AND ProjectName='" & objStr.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    sql = "Update " & objStr.Project.tblDSselections & _
+                    " Set DescriptionName= '" & NewValue & _
+                    "' WHERE DescriptionName= '" & OldValue & _
+                    "' AND ProjectName='" & objStr.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                    End If
-                    
+                    'End If
+
                     cmd.CommandText = sql
                     Log(sql)
                     cmd.ExecuteNonQuery()
@@ -1326,21 +1249,21 @@ Module modRename
                 Case NODE_STRUCT_SEL
                     objSel = CType(obj, clsStructureSelection)
 
-                    If objSel.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "Update " & objSel.Project.tblDSselections & _
-                        " Set SelectionName= '" & NewValue & _
-                        "' WHERE SelectionName= '" & OldValue & _
-                        "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
-                        "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
-                    Else
-                        sql = "Update " & objSel.Project.tblDSselections & _
-                        " Set SelectionName= '" & NewValue & _
-                        "' WHERE SelectionName= '" & OldValue & _
-                        "' AND ProjectName='" & objSel.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
-                        "' AND DescriptionName= '" & objSel.ObjStructure.StructureName & "'"
-                    End If
+                    'If objSel.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "Update " & objSel.Project.tblDSselections & _
+                    '    " Set SelectionName= '" & NewValue & _
+                    '    "' WHERE SelectionName= '" & OldValue & _
+                    '    "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
+                    '    "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
+                    'Else
+                    sql = "Update " & objSel.Project.tblDSselections & _
+                    " Set SelectionName= '" & NewValue & _
+                    "' WHERE SelectionName= '" & OldValue & _
+                    "' AND ProjectName='" & objSel.Project.ProjectName & _
+                    "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & _
+                    "' AND DescriptionName= '" & objSel.ObjStructure.StructureName & "'"
+                    'End If
 
                     cmd.CommandText = sql
                     Log(sql)
@@ -1405,16 +1328,16 @@ Module modRename
 
                 Case NODE_CONNECTION
                     ObjConn = CType(obj, clsConnection)
-                    If ObjConn.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        sql = "Update " & ObjConn.Project.tblEngines & _
-                        " Set ConnectionName= '" & NewValue & _
-                        "' WHERE ConnectionName= '" & OldValue & _
-                        "' AND ProjectName='" & ObjConn.Project.ProjectName & _
-                        "' AND EnvironmentName= '" & ObjConn.Environment.EnvironmentName & "'"
-                    Else
-                        GoTo goto1
-                    End If
-                    
+                    'If ObjConn.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    sql = "Update " & ObjConn.Project.tblEngines & _
+                    '    " Set ConnectionName= '" & NewValue & _
+                    '    "' WHERE ConnectionName= '" & OldValue & _
+                    '    "' AND ProjectName='" & ObjConn.Project.ProjectName & _
+                    '    "' AND EnvironmentName= '" & ObjConn.Environment.EnvironmentName & "'"
+                    'Else
+                    GoTo goto1
+                    'End If
+
                 Case Else
                     EditEngines = False
                     Exit Function
@@ -1424,11 +1347,8 @@ Module modRename
             Log(sql)
             cmd.ExecuteNonQuery()
 
-goto1:      If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Call EditEnginesATTR(cmd, OldValue, NewValue, obj)
-            End If
-
-            EditEngines = True
+goto1:
+            EditEngines = EditEnginesATTR(cmd, OldValue, NewValue, obj)
 
         Catch ex As Exception
             LogError(ex, "modRename EditEngines", sql)
@@ -1528,11 +1448,11 @@ goto1:      If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            EditEnvironments = True
+            EditEnvironments = EditEnvironmentsATTR(cmd, OldValue, NewValue, obj)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                EditEnvironments = EditEnvironmentsATTR(cmd, OldValue, NewValue, obj)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '    EditEnvironments = 
+            'End If
 
         Catch ex As Exception
             LogError(ex, "modRename EditEnvironments", sql)
@@ -1591,11 +1511,11 @@ goto1:      If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            EditProjects = True
+            EditProjects = EditProjectsATTR(cmd, OldValue, NewValue, obj)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                EditProjects = EditProjectsATTR(cmd, OldValue, NewValue, obj)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '    EditProjects = 
+            'End If
 
         Catch ex As Exception
             LogError(ex, "modRename EditProjects", sql)
@@ -2145,11 +2065,11 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            EditSystems = True
+            EditSystems = EditSystemsATTR(cmd, OldValue, NewValue, obj)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                EditSystems = EditSystemsATTR(cmd, OldValue, NewValue, obj)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '    EditSystems = 
+            'End If
 
         Catch ex As Exception
             LogError(ex, "modRename EditSystems", sql)
@@ -2249,39 +2169,39 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
                     objDS = CType(obj, clsDatastore)
-                    If objDS.Engine IsNot Nothing Then
-                        sql = "Update " & objDS.Project.tblTaskDS & _
-                                            " Set DatastoreName= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objDS.Project.tblTaskDS & _
-                                            " Set DatastoreName= '" & NewValue & _
-                                            "' WHERE DatastoreName= '" & OldValue & _
-                                            "' AND ProjectName='" & objDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
-                    End If
+                    'If objDS.Engine IsNot Nothing Then
+                    sql = "Update " & objDS.Project.tblTaskDS & _
+                                        " Set DatastoreName= '" & NewValue & _
+                                        "' WHERE DatastoreName= '" & OldValue & _
+                                        "' AND ProjectName='" & objDS.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objDS.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objDS.Project.tblTaskDS & _
+                    '                    " Set DatastoreName= '" & NewValue & _
+                    '                    "' WHERE DatastoreName= '" & OldValue & _
+                    '                    "' AND ProjectName='" & objDS.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objDS.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
                     objTask = CType(obj, clsTask)
-                    If objTask.Engine IsNot Nothing Then
-                        sql = "Update " & objTask.Project.tblTaskDS & _
-                                            " Set TaskName= '" & NewValue & _
-                                            "' WHERE TaskName= '" & OldValue & _
-                                            "' AND ProjectName='" & objTask.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objTask.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objTask.Project.tblTaskDS & _
-                                            " Set TaskName= '" & NewValue & _
-                                            "' WHERE TaskName= '" & OldValue & _
-                                            "' AND ProjectName='" & objTask.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
-                    End If
+                    'If objTask.Engine IsNot Nothing Then
+                    sql = "Update " & objTask.Project.tblTaskDS & _
+                                        " Set TaskName= '" & NewValue & _
+                                        "' WHERE TaskName= '" & OldValue & _
+                                        "' AND ProjectName='" & objTask.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objTask.Project.tblTaskDS & _
+                    '                    " Set TaskName= '" & NewValue & _
+                    '                    "' WHERE TaskName= '" & OldValue & _
+                    '                    "' AND ProjectName='" & objTask.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case Else
                     EditTaskDatastores = False
@@ -2351,9 +2271,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
                     objTask = CType(obj, clsTask)
 
-                    Call EditMappingSrc(cmd, OldValue, NewValue, objTask)
-
-                    If objTask.Engine IsNot Nothing Then
+                    If EditMappingSrc(cmd, OldValue, NewValue, objTask) = True Then
+                        'If objTask.Engine IsNot Nothing Then
                         sql = "Update " & objTask.Project.tblTaskMap & _
                                            " Set TaskName= '" & NewValue & _
                                            "' WHERE TaskName= '" & OldValue & _
@@ -2361,20 +2280,19 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
                                            "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
                                            "' AND EngineName= '" & objTask.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objTask.Project.tblTaskMap & _
-                                           " Set TaskName= '" & NewValue & _
-                                           "' WHERE TaskName= '" & OldValue & _
-                                           "' AND ProjectName='" & objTask.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
+                        'Else
+                        'sql = "Update " & objTask.Project.tblTaskMap & _
+                        '                   " Set TaskName= '" & NewValue & _
+                        '                   "' WHERE TaskName= '" & OldValue & _
+                        '                   "' AND ProjectName='" & objTask.Project.ProjectName & _
+                        '                   "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
+                        'End If
                     End If
 
                 Case NODE_SOURCEDATASTORE
                     objSDS = CType(obj, clsDatastore)
 
-                    Call EditMappingSrc(cmd, OldValue, NewValue, objSDS)
-
-                    If objSDS.Engine IsNot Nothing Then
+                    If EditMappingSrc(cmd, OldValue, NewValue, objSDS) = True Then
                         sql = "Update " & objSDS.Project.tblTaskMap & _
                                             " Set SourceDatastore= '" & NewValue & _
                                             "' WHERE SourceDatastore= '" & OldValue & _
@@ -2382,20 +2300,22 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                             "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & _
                                             "' AND SystemName= '" & objSDS.Engine.ObjSystem.SystemName & _
                                             "' AND EngineName= '" & objSDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objSDS.Project.tblTaskMap & _
-                                            " Set SourceDatastore= '" & NewValue & _
-                                            "' WHERE SourceDatastore= '" & OldValue & _
-                                            "' AND ProjectName='" & objSDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & "'"
                     End If
+
+                    'If objSDS.Engine IsNot Nothing Then
+
+                    'Else
+                    '    sql = "Update " & objSDS.Project.tblTaskMap & _
+                    '                        " Set SourceDatastore= '" & NewValue & _
+                    '                        "' WHERE SourceDatastore= '" & OldValue & _
+                    '                        "' AND ProjectName='" & objSDS.Project.ProjectName & _
+                    '                        "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_TARGETDATASTORE
                     objTDS = CType(obj, clsDatastore)
 
-                    Call EditMappingSrc(cmd, OldValue, NewValue, objTDS)
-
-                    If objTDS.Engine IsNot Nothing Then
+                    If EditMappingSrc(cmd, OldValue, NewValue, objTDS) = True Then
                         sql = "Update " & objTDS.Project.tblTaskMap & _
                                             " Set TargetDatastore= '" & NewValue & _
                                             "' WHERE TargetDatastore= '" & OldValue & _
@@ -2403,49 +2323,49 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                             "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & _
                                             "' AND SystemName= '" & objTDS.Engine.ObjSystem.SystemName & _
                                             "' AND EngineName= '" & objTDS.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objTDS.Project.tblTaskMap & _
-                                            " Set TargetDatastore= '" & NewValue & _
-                                            "' WHERE TargetDatastore= '" & OldValue & _
-                                            "' AND ProjectName='" & objTDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & "'"
                     End If
+
+                    'If objTDS.Engine IsNot Nothing Then
+
+                    'Else
+                    '    sql = "Update " & objTDS.Project.tblTaskMap & _
+                    '                        " Set TargetDatastore= '" & NewValue & _
+                    '                        "' WHERE TargetDatastore= '" & OldValue & _
+                    '                        "' AND ProjectName='" & objTDS.Project.ProjectName & _
+                    '                        "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_STRUCT
                     objStr = CType(obj, clsStructure)
 
-                    Call EditMappingSrc(cmd, OldValue, NewValue, objStr)
+                    If EditMappingSrc(cmd, OldValue, NewValue, objStr) = True Then
+                        sql = "Update " & objStr.Project.tblTaskMap & _
+                        " Set SourceParent= '" & NewValue & _
+                        "' WHERE SourceParent= '" & OldValue & _
+                        "' AND ProjectName='" & objStr.Project.ProjectName & _
+                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                    sql = "Update " & objStr.Project.tblTaskMap & _
-                    " Set SourceParent= '" & NewValue & _
-                    "' WHERE SourceParent= '" & OldValue & _
-                    "' AND ProjectName='" & objStr.Project.ProjectName & _
-                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                        cmd.CommandText = sql
+                        Log(sql)
+                        cmd.ExecuteNonQuery()
 
-                    cmd.CommandText = sql
-                    Log(sql)
-                    cmd.ExecuteNonQuery()
-
-                    sql = "Update " & objStr.Project.tblTaskMap & _
-                    " Set TargetParent= '" & NewValue & _
-                    "' WHERE TargetParent= '" & OldValue & _
-                    "' AND ProjectName='" & objStr.Project.ProjectName & _
-                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                        sql = "Update " & objStr.Project.tblTaskMap & _
+                        " Set TargetParent= '" & NewValue & _
+                        "' WHERE TargetParent= '" & OldValue & _
+                        "' AND ProjectName='" & objStr.Project.ProjectName & _
+                        "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+                    End If
 
                 Case NODE_STRUCT_SEL
                     objSel = CType(obj, clsStructureSelection)
 
-                    EditMappingSrc(cmd, OldValue, NewValue, objSel)
-
-                    EditTaskMappings = True
+                    EditTaskMappings = EditMappingSrc(cmd, OldValue, NewValue, objSel)
                     Exit Try
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
 
-                    EditMappingSrc(cmd, OldValue, NewValue, objVar)
-
-                    EditTaskMappings = True
+                    EditTaskMappings = EditMappingSrc(cmd, OldValue, NewValue, objVar)
                     Exit Try
 
                 Case Else
@@ -2510,21 +2430,21 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
                     objTask = CType(obj, clsTask)
-                    If objTask.Engine IsNot Nothing Then
-                        sql = "Update " & objTask.Project.tblTasks & _
-                                            " Set TaskName= '" & NewValue & _
-                                            "' WHERE TaskName= '" & OldValue & _
-                                            "' AND ProjectName='" & objTask.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objTask.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objTask.Project.tblTasks & _
-                                            " Set TaskName= '" & NewValue & _
-                                            "' WHERE TaskName= '" & OldValue & _
-                                            "' AND ProjectName='" & objTask.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
-                    End If
+                    'If objTask.Engine IsNot Nothing Then
+                    sql = "Update " & objTask.Project.tblTasks & _
+                                        " Set TaskName= '" & NewValue & _
+                                        "' WHERE TaskName= '" & OldValue & _
+                                        "' AND ProjectName='" & objTask.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objTask.Project.tblTasks & _
+                    '                    " Set TaskName= '" & NewValue & _
+                    '                    "' WHERE TaskName= '" & OldValue & _
+                    '                    "' AND ProjectName='" & objTask.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case Else
                     EditTasks = False
@@ -2584,19 +2504,19 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
-                    If objVar.Engine IsNot Nothing Then
-                        sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
-                                           "' WHERE VariableName= '" & OldValue & _
-                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objVar.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
-                                           "' WHERE VariableName= '" & OldValue & _
-                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
-                    End If
+                    'If objVar.Engine IsNot Nothing Then
+                    sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
+                                       "' WHERE VariableName= '" & OldValue & _
+                                       "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objVar.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
+                    '                   "' WHERE VariableName= '" & OldValue & _
+                    '                   "' AND ProjectName='" & objVar.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
+                    'End If
 
 
                 Case Else
@@ -2608,11 +2528,11 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            EditVariables = True
+            EditVariables = EditVariablesATTR(cmd, OldValue, NewValue, obj)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                EditVariables = EditVariablesATTR(cmd, OldValue, NewValue, obj)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '    EditVariables = 
+            'End If
 
         Catch ex As Exception
             LogError(ex, "modRename EditVariables", sql)
@@ -2661,20 +2581,19 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
-                    If objVar.Engine IsNot Nothing Then
-                        sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
-                                           "' WHERE VariableName= '" & OldValue & _
-                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objVar.Engine.EngineName & "'"
-                    Else
-                        sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
-                                           "' WHERE VariableName= '" & OldValue & _
-                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
-                    End If
-
+                    'If objVar.Engine IsNot Nothing Then
+                    sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
+                                       "' WHERE VariableName= '" & OldValue & _
+                                       "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objVar.Engine.EngineName & "'"
+                    'Else
+                    'sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
+                    '                   "' WHERE VariableName= '" & OldValue & _
+                    '                   "' AND ProjectName='" & objVar.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case Else
                     EditVariablesATTR = False
@@ -2898,32 +2817,32 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             '// we will update the DSselFields Table with the new Fkeys where all the other fields read in
             '// match, so that we put the right fKey in the right selection field
             For i = 0 To FkeyArray.Count - 1
-                If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    sql = "Update " & obj.Project.tblDSselFields & _
-                    " Set ForeignKey= '" & FkeyArray(i) & _
-                    "' WHERE FieldName= '" & FldNameArray(i) & _
-                    "' AND DatastoreName= '" & DSNameArray(i) & _
-                    "' AND EngineName= '" & EngNameArray(i) & _
-                    "' AND SystemName= '" & SysNameArray(i) & _
-                    "' AND SelectionName= '" & SelNameArray(i) & _
-                    "' AND StructureName= '" & StrNameArray(i) & _
-                    "' AND EnvironmentName= '" & EnvNameArray(i) & _
-                    "' AND ProjectName= '" & ProjNameArray(i) & _
-                    "' AND Parent= '" & ParNameArray(i) & _
-                    "' AND DsDirection= '" & DSDirArray(i) & "'"
-                Else
-                    sql = "Update " & obj.Project.tblDSselFields & _
-                    " Set ForeignKey= '" & FkeyArray(i) & _
-                    "' WHERE FieldName= '" & FldNameArray(i) & _
-                    "' AND DatastoreName= '" & DSNameArray(i) & _
-                    "' AND EngineName= '" & EngNameArray(i) & _
-                    "' AND SystemName= '" & SysNameArray(i) & _
-                    "' AND SelectionName= '" & SelNameArray(i) & _
-                    "' AND DescriptionName= '" & StrNameArray(i) & _
-                    "' AND EnvironmentName= '" & EnvNameArray(i) & _
-                    "' AND ProjectName= '" & ProjNameArray(i) & _
-                    "' AND ParentName= '" & ParNameArray(i) & "'"
-                End If
+                'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                '    sql = "Update " & obj.Project.tblDSselFields & _
+                '    " Set ForeignKey= '" & FkeyArray(i) & _
+                '    "' WHERE FieldName= '" & FldNameArray(i) & _
+                '    "' AND DatastoreName= '" & DSNameArray(i) & _
+                '    "' AND EngineName= '" & EngNameArray(i) & _
+                '    "' AND SystemName= '" & SysNameArray(i) & _
+                '    "' AND SelectionName= '" & SelNameArray(i) & _
+                '    "' AND StructureName= '" & StrNameArray(i) & _
+                '    "' AND EnvironmentName= '" & EnvNameArray(i) & _
+                '    "' AND ProjectName= '" & ProjNameArray(i) & _
+                '    "' AND Parent= '" & ParNameArray(i) & _
+                '    "' AND DsDirection= '" & DSDirArray(i) & "'"
+                'Else
+                sql = "Update " & obj.Project.tblDSselFields & _
+                " Set ForeignKey= '" & FkeyArray(i) & _
+                "' WHERE FieldName= '" & FldNameArray(i) & _
+                "' AND DatastoreName= '" & DSNameArray(i) & _
+                "' AND EngineName= '" & EngNameArray(i) & _
+                "' AND SystemName= '" & SysNameArray(i) & _
+                "' AND SelectionName= '" & SelNameArray(i) & _
+                "' AND DescriptionName= '" & StrNameArray(i) & _
+                "' AND EnvironmentName= '" & EnvNameArray(i) & _
+                "' AND ProjectName= '" & ProjNameArray(i) & _
+                "' AND ParentName= '" & ParNameArray(i) & "'"
+                'End If
 
 
                 cmd.CommandText = sql
@@ -2983,54 +2902,51 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
                     objTask = CType(obj, clsTask)
-                    If objTask.Engine IsNot Nothing Then
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
-                                           & objTask.Project.tblTaskMap & _
-                                           " WHERE ProjectName='" & objTask.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objTask.Engine.EngineName & "'"
-                    Else
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
-                                           & objTask.Project.tblTaskMap & _
-                                           " WHERE ProjectName='" & objTask.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
-                    End If
-
+                    'If objTask.Engine IsNot Nothing Then
+                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
+                                       & objTask.Project.tblTaskMap & _
+                                       " WHERE ProjectName='" & objTask.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                    'Else
+                    'sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
+                    '                   & objTask.Project.tblTaskMap & _
+                    '                   " WHERE ProjectName='" & objTask.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_SOURCEDATASTORE
                     objSDS = CType(obj, clsDatastore)
-                    If objSDS.Engine IsNot Nothing Then
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
-                                            objSDS.Project.tblTaskMap & _
-                                            " WHERE ProjectName='" & objSDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & _
-                                            "' AND SystemName= '" & objSDS.Engine.ObjSystem.SystemName & _
-                                            "' AND EngineName= '" & objSDS.Engine.EngineName & "'"
-                    Else
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
-                                            objSDS.Project.tblTaskMap & _
-                                            " WHERE ProjectName='" & objSDS.Project.ProjectName & _
-                                            "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & "'"
-                    End If
-
+                    'If objSDS.Engine IsNot Nothing Then
+                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                                        objSDS.Project.tblTaskMap & _
+                                        " WHERE ProjectName='" & objSDS.Project.ProjectName & _
+                                        "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & _
+                                        "' AND SystemName= '" & objSDS.Engine.ObjSystem.SystemName & _
+                                        "' AND EngineName= '" & objSDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    '                    objSDS.Project.tblTaskMap & _
+                    '                    " WHERE ProjectName='" & objSDS.Project.ProjectName & _
+                    '                    "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_TARGETDATASTORE
                     objTDS = CType(obj, clsDatastore)
-                    If objTDS.Engine IsNot Nothing Then
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
-                                           objTDS.Project.tblTaskMap & _
-                                           " WHERE ProjectName='" & objTDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & _
-                                           "' AND SystemName= '" & objTDS.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objTDS.Engine.EngineName & "'"
-                    Else
-                        sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
-                                           objTDS.Project.tblTaskMap & _
-                                           " WHERE ProjectName='" & objTDS.Project.ProjectName & _
-                                           "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & "'"
-                    End If
-
+                    'If objTDS.Engine IsNot Nothing Then
+                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                                       objTDS.Project.tblTaskMap & _
+                                       " WHERE ProjectName='" & objTDS.Project.ProjectName & _
+                                       "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & _
+                                       "' AND SystemName= '" & objTDS.Engine.ObjSystem.SystemName & _
+                                       "' AND EngineName= '" & objTDS.Engine.EngineName & "'"
+                    'Else
+                    'sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    '                   objTDS.Project.tblTaskMap & _
+                    '                   " WHERE ProjectName='" & objTDS.Project.ProjectName & _
+                    '                   "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & "'"
+                    'End If
 
                 Case NODE_STRUCT
                     objStr = CType(obj, clsStructure)
@@ -3047,7 +2963,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                     "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
 
                 Case NODE_VARIABLE
-                    objvar = CType(obj, clsVariable)
+                    objVar = CType(obj, clsVariable)
                     sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                     objVar.Project.tblTaskMap & _
                     " WHERE ProjectName='" & objVar.Project.ProjectName & _
@@ -3377,54 +3293,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             For Each fld As clsField In NewStructObj.ObjFields
                 For Each sys As clsSystem In NewStructObj.Environment.Systems
                     For Each eng As clsEngine In sys.Engines
-                        'For Each task As clsTask In eng.Mains
-                        '    For Each map As clsMapping In task.ObjMappings
-                        '        Obj = map.MappingSource
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingSource = fld
-                        '            End If
-                        '        End If
-                        '        Obj = map.MappingTarget
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingTarget = fld
-                        '            End If
-                        '        End If
-                        '    Next
-                        'Next
-                        'For Each task As clsTask In eng.Lookups
-                        '    For Each map As clsMapping In task.ObjMappings
-                        '        Obj = map.MappingSource
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingSource = fld
-                        '            End If
-                        '        End If
-                        '        Obj = map.MappingTarget
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingTarget = fld
-                        '            End If
-                        '        End If
-                        '    Next
-                        'Next
-                        'For Each task As clsTask In eng.Joins
-                        '    For Each map As clsMapping In task.ObjMappings
-                        '        Obj = map.MappingSource
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingSource = fld
-                        '            End If
-                        '        End If
-                        '        Obj = map.MappingTarget
-                        '        If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                        '            If CType(Obj, clsField).FieldName = fld.FieldName Then
-                        '                map.MappingTarget = fld
-                        '            End If
-                        '        End If
-                        '    Next
-                        'Next
                         For Each task As clsTask In eng.Procs
                             For Each map As clsMapping In task.ObjMappings
                                 Obj = map.MappingSource
