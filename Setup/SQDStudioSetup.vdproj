@@ -732,14 +732,14 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
-        "ProductCode" = "8:{46C5A60E-D72F-4326-9DB1-5183DB7EFD15}"
-        "PackageCode" = "8:{55374BB1-D5F6-41BD-97ED-8BD58AC67612}"
+        "ProductCode" = "8:{0355E89D-66FA-4D4B-9EF1-237B1D4C1C23}"
+        "PackageCode" = "8:{183C2459-F545-4881-8BF9-C71603834631}"
         "UpgradeCode" = "8:{3D23AB76-63FD-4F07-9B57-66610D351D5E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.3.1102"
+        "ProductVersion" = "8:3.3.1103"
         "Manufacturer" = "8:SQData"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
@@ -1373,7 +1373,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\Design Studio.exe"
+            "SourcePath" = "8:..\\obj\\Release\\Design Studio.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"

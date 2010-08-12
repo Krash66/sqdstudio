@@ -1823,6 +1823,8 @@ Public Class ctlMain
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCASE)
                         ElseIf draggedNode.Text = "SetImage" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetSetImageTemplate)
+                        ElseIf draggedNode.Text = "CURRENTDATE" Then
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCurrentDate)
                         Else
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, _
                             CType(draggedNode.Tag, clsSQFunction).SQFunctionWithInnerText)
@@ -4227,13 +4229,13 @@ Public Class ctlMain
             sb.AppendLine("--You will need to create a Procedure Called P_ROUTE")
             sb.AppendLine("")
             sb.AppendLine("IF CDCOP(CDCIN) = 'R' AND SETIMAGE('BEFORE') = TRUE")
-            sb.AppendLine("Do")
+            sb.AppendLine("DO")
             sb.AppendLine(TAB & "V_IMAGE = 'B'")
             sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
             sb.AppendLine("END")
             sb.AppendLine("")
             sb.AppendLine("IF SETIMAGE('AFTER') = TRUE")
-            sb.AppendLine("Do")
+            sb.AppendLine("DO")
             sb.AppendLine(TAB & "V_IMAGE = 'A'")
             sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
             sb.AppendLine("END")
@@ -4287,6 +4289,18 @@ Public Class ctlMain
 
         Catch ex As Exception
             LogError(ex, "ctlMain GetScriptForCASE")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetScriptForCurrentDate() As String
+
+        Try
+            GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask GetScriptForCURRENTDATE")
             Return ""
         End Try
 

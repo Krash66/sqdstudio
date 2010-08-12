@@ -53,6 +53,8 @@ Partial Class frmScriptGen
         Me.btnParse = New System.Windows.Forms.Button
         Me.cbDebugSrcData = New System.Windows.Forms.CheckBox
         Me.btnGenScript = New System.Windows.Forms.Button
+        Me.btnParseSQD = New System.Windows.Forms.Button
+        Me.btnParseOnlySQD = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.gbPath.SuspendLayout()
         Me.gbStudioFiles.SuspendLayout()
@@ -302,6 +304,8 @@ Partial Class frmScriptGen
         '
         'gbScriptOptions
         '
+        Me.gbScriptOptions.Controls.Add(Me.btnParseOnlySQD)
+        Me.gbScriptOptions.Controls.Add(Me.btnParseSQD)
         Me.gbScriptOptions.Controls.Add(Me.btnParseOnly)
         Me.gbScriptOptions.Controls.Add(Me.gbTarget)
         Me.gbScriptOptions.Controls.Add(Me.gbSource)
@@ -321,11 +325,11 @@ Partial Class frmScriptGen
         '
         'btnParseOnly
         '
-        Me.btnParseOnly.Location = New System.Drawing.Point(519, 20)
+        Me.btnParseOnly.Location = New System.Drawing.Point(498, 14)
         Me.btnParseOnly.Name = "btnParseOnly"
-        Me.btnParseOnly.Size = New System.Drawing.Size(79, 47)
+        Me.btnParseOnly.Size = New System.Drawing.Size(112, 24)
         Me.btnParseOnly.TabIndex = 11
-        Me.btnParseOnly.Text = "Parse Only"
+        Me.btnParseOnly.Text = "Parse Only INL"
         Me.btnParseOnly.UseVisualStyleBackColor = True
         '
         'gbTarget
@@ -427,9 +431,9 @@ Partial Class frmScriptGen
         Me.Label9.ForeColor = System.Drawing.SystemColors.ActiveCaption
         Me.Label9.Location = New System.Drawing.Point(9, 54)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(323, 15)
+        Me.Label9.Size = New System.Drawing.Size(269, 15)
         Me.Label9.TabIndex = 5
-        Me.Label9.Text = "Username and password are needed to properly Parse the Script"
+        Me.Label9.Text = "UID and PWD are needed to properly Parse the Script"
         '
         'cbUID
         '
@@ -444,11 +448,11 @@ Partial Class frmScriptGen
         'btnParse
         '
         Me.btnParse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnParse.Location = New System.Drawing.Point(432, 20)
+        Me.btnParse.Location = New System.Drawing.Point(382, 13)
         Me.btnParse.Name = "btnParse"
-        Me.btnParse.Size = New System.Drawing.Size(81, 48)
+        Me.btnParse.Size = New System.Drawing.Size(110, 24)
         Me.btnParse.TabIndex = 3
-        Me.btnParse.Text = "Generate and Parse"
+        Me.btnParse.Text = "Gen/Parse INL"
         Me.btnParse.UseVisualStyleBackColor = True
         '
         'cbDebugSrcData
@@ -456,20 +460,38 @@ Partial Class frmScriptGen
         Me.cbDebugSrcData.AutoSize = True
         Me.cbDebugSrcData.Location = New System.Drawing.Point(12, 20)
         Me.cbDebugSrcData.Name = "cbDebugSrcData"
-        Me.cbDebugSrcData.Size = New System.Drawing.Size(326, 17)
+        Me.cbDebugSrcData.Size = New System.Drawing.Size(295, 17)
         Me.cbDebugSrcData.TabIndex = 1
-        Me.cbDebugSrcData.Text = "Use Output Messages for Source Data in Procedures"
+        Me.cbDebugSrcData.Text = "Use Output Messages for Source in Procedures"
         Me.cbDebugSrcData.UseVisualStyleBackColor = True
         '
         'btnGenScript
         '
         Me.btnGenScript.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenScript.Location = New System.Drawing.Point(344, 19)
+        Me.btnGenScript.Location = New System.Drawing.Point(310, 13)
         Me.btnGenScript.Name = "btnGenScript"
-        Me.btnGenScript.Size = New System.Drawing.Size(82, 48)
+        Me.btnGenScript.Size = New System.Drawing.Size(68, 54)
         Me.btnGenScript.TabIndex = 0
         Me.btnGenScript.Text = "Generate Script"
         Me.btnGenScript.UseVisualStyleBackColor = True
+        '
+        'btnParseSQD
+        '
+        Me.btnParseSQD.Location = New System.Drawing.Point(382, 44)
+        Me.btnParseSQD.Name = "btnParseSQD"
+        Me.btnParseSQD.Size = New System.Drawing.Size(110, 23)
+        Me.btnParseSQD.TabIndex = 12
+        Me.btnParseSQD.Text = "Gen/Parse SQD"
+        Me.btnParseSQD.UseVisualStyleBackColor = True
+        '
+        'btnParseOnlySQD
+        '
+        Me.btnParseOnlySQD.Location = New System.Drawing.Point(498, 44)
+        Me.btnParseOnlySQD.Name = "btnParseOnlySQD"
+        Me.btnParseOnlySQD.Size = New System.Drawing.Size(112, 23)
+        Me.btnParseOnlySQD.TabIndex = 13
+        Me.btnParseOnlySQD.Text = "Parse Only SQD"
+        Me.btnParseOnlySQD.UseVisualStyleBackColor = True
         '
         'frmScriptGen
         '
@@ -543,5 +565,7 @@ Partial Class frmScriptGen
     Friend WithEvents rbFieldtgt As System.Windows.Forms.RadioButton
     Friend WithEvents rbSelecttgt As System.Windows.Forms.RadioButton
     Friend WithEvents btnParseOnly As System.Windows.Forms.Button
+    Friend WithEvents btnParseOnlySQD As System.Windows.Forms.Button
+    Friend WithEvents btnParseSQD As System.Windows.Forms.Button
 
 End Class

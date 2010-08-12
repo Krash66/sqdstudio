@@ -15,6 +15,7 @@ Public Module modGenerateV3
     Dim ScriptPath As String
     Dim doParse As Boolean
     Dim OnlyParse As Boolean
+    Dim SQDParse As Boolean
     Dim SourceLevel As enumMappingLevel
     Dim TargetLevel As enumMappingLevel
 
@@ -54,7 +55,7 @@ Public Module modGenerateV3
 
 #Region "Main Processes"
 
-    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False) As clsRcode
+    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False) As clsRcode
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -72,6 +73,7 @@ Public Module modGenerateV3
 
         doParse = Not NoParse
         OnlyParse = ParseOnly
+        SQDParse = ParseSQD
         PrintUID = UseUID
         SourceLevel = MappingLevel
         TargetLevel = TgtLevel
@@ -200,9 +202,16 @@ ParseOnly:
             '*****************************************************
             If NoParse = False Then
                 '/// Run Parser
-                If CallParser(RC) = False Then
-                    GoTo ErrorGoTo2
+                If SQDParse = False Then
+                    If CallParser(RC) = False Then
+                        GoTo ErrorGoTo2
+                    End If
+                Else
+                    If CallParserSQD(RC) = False Then
+                        GoTo ErrorGoTo2
+                    End If
                 End If
+                
             End If
 
 ErrorGoTo2:  '/// send returnPath or enumreturncode
@@ -652,13 +661,13 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
 
                     Case 0
-                        rc.ParserPath = pathSQD
+                        rc.ParserPath = pathINL
                         rc.ParseCode = enumParserReturnCode.OK
                         rc.ReturnCode = "Script generated Successfully !!"
                         rc.ErrorLocation = enumErrorLocation.NoErrors
                         rc.Path = pathSQD
 
-                        Log("Script file saved at : " & pathSQD)
+                        Log("Script file saved at : " & pathINL)
 
                     Case Else
                         rc.HasError = True
@@ -693,6 +702,125 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         CallParser = Not rc.HasFatal
 
     End Function
+
+    '//// Function to parse scripts and capture output to files
+    Function CallParserSQD(ByRef rc As clsRcode) As Boolean
+
+        Try
+            Dim FORargs As String = String.Format("{0}{1}", Quote(pathSQD, """") & " ", Quote(pathPRC, """") _
+            & " LIST=ALL A B C D E F G H 1") ' >" & Quote(pathRPT, """") & " 2>" & Quote(pathERR, """"))
+            Dim args As String = FORargs
+            Dim si As New ProcessStartInfo()
+
+            '/// Set all Process Start Information
+            si.WorkingDirectory = GetAppPath()
+            si.Arguments = args
+
+            si.FileName = "sqdparse.exe "
+
+            si.UseShellExecute = False
+            si.CreateNoWindow = True
+            '// Output will be redirected to .RPT file
+            si.RedirectStandardOutput = True
+            si.RedirectStandardError = True
+
+            Using myProcess As New System.Diagnostics.Process()
+                myProcess.StartInfo = si
+
+                Log("Parser Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                Log(si.FileName & args)
+
+                '//Create a new process to parse Script file and dump to RPT file and Error File
+                myProcess.Start()
+
+                Dim OutStr As String = ""
+                Dim ErrStr As String = ""
+
+                '/// split output into multiple threads and capture each output stream into separate buffers
+                OutputToEnd(myProcess, OutStr, ErrStr)
+
+                ''//wait until task is done
+                myProcess.WaitForExit()
+
+                Log("Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
+                Select Case myProcess.ExitCode
+                    Case 8
+                        rc.HasError = True
+                        rc.ParserPath = pathRPT
+                        rc.ParseCode = enumParserReturnCode.Failed
+                        rc.ReturnCode = "Parser Returned: Script Generation Error" ' & Chr(13)
+                        '&  "Would you like to see the report?"
+                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.Path = pathSQD
+
+                    Case 4
+                        rc.HasError = True
+                        rc.ParserPath = pathRPT
+                        rc.ParseCode = enumParserReturnCode.Warning
+                        rc.ReturnCode = "Parser Returned: Script Generation Warning"
+                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.Path = pathSQD
+
+                    Case 1
+                        rc.HasError = True
+                        rc.ParserPath = pathRPT
+                        rc.ParseCode = enumParserReturnCode.Failed
+                        rc.ReturnCode = "Parser Returned: There is a problem with the PATH"
+                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.Path = pathSQD
+
+                    Case Is > 0
+                        rc.HasError = True
+                        rc.ParserPath = GetAppPath() & "sqdgnsqd.log"
+                        rc.ParseCode = enumParserReturnCode.Failed
+                        rc.ReturnCode = "Script generated with errors,"
+                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
+
+                    Case 0
+                        rc.ParserPath = pathSQD
+                        rc.ParseCode = enumParserReturnCode.OK
+                        rc.ReturnCode = "Script generated Successfully !!"
+                        rc.ErrorLocation = enumErrorLocation.NoErrors
+                        rc.Path = pathSQD
+
+                        Log("Script file saved at : " & pathSQD)
+
+                    Case Else
+                        rc.HasError = True
+                        Log("return code >> " & myProcess.ExitCode.ToString & Chr(13) & "return path >> " & pathSQD)
+                End Select
+
+                objWriteRPT.Write(OutStr)
+                objWriteRPT.Write(ErrStr)
+                objWriteERR.Write(ErrStr)
+
+                Log("Parser Report file saved at : " & pathRPT)
+                Log("********* Parser Return Code = " & myProcess.ExitCode & " *********")
+                myProcess.Close()
+
+            End Using
+
+ErrorGoTo:  '/// send returnPath or enumreturncode
+
+
+        Catch ex As Exception
+            LogError(ex, "modGenerate CallParserSQD")
+            rc.HasError = True
+            rc.ErrorCount += 1
+            rc.ReturnCode = ex.Message
+            rc.ErrorPath = pathRPT
+            rc.ErrorLocation = enumErrorLocation.SQDParse
+            rc.ParserPath = ""
+            rc.ParseCode = enumParserReturnCode.NoCode
+            rc.ObjInode = ObjThis
+        End Try
+
+        CallParserSQD = Not rc.HasFatal
+
+    End Function
+
 
 #End Region
 

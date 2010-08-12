@@ -3375,6 +3375,8 @@ ManualGoTo:
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCASE)
                         ElseIf draggedNode.Text = "LOOK" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK)
+                        ElseIf draggedNode.Text = "CURRENTDATE" Then
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCurrentDate)
                         Else
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, _
                             CType(draggedNode.Tag, clsSQFunction).SQFunctionWithInnerText)
@@ -4014,11 +4016,19 @@ fallthru2:          AddMapping(objClip, CurRow)
                 For Each lvItm As ListViewItem In lvMappings.SelectedItems
                     If lvItm.Tag IsNot Nothing Then
                         Dim map As clsMapping = lvItm.Tag
+                        '/// Sources
                         If map.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
                             SrcArr.Add(CType(map.MappingSource, clsField).FieldName)
                         End If
+                        If map.SourceType = enumMappingType.MAPPING_TYPE_FUN Then
+                            SrcArr.Add(CType(map.MappingSource, clsSQFunction).SQFunctionWithInnerText)
+                        End If
+                        '/// Targets
                         If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
                             TgtArr.Add(CType(map.MappingTarget, clsField).FieldName)
+                        End If
+                        If map.TargetType = enumMappingType.MAPPING_TYPE_FUN Then
+                            TgtArr.Add(CType(map.MappingTarget, clsSQFunction).SQFunctionWithInnerText)
                         End If
                     End If
                 Next
@@ -5518,6 +5528,9 @@ fallthru2:          AddMapping(objClip, CurRow)
             Case "CASE"
                 obj.SQFunctionName = GetScriptForCase()
                 obj.SQFunctionWithInnerText = obj.SQFunctionName
+            Case "CURRENTDATE"
+                obj.SQFunctionName = GetScriptForCurrentDate()
+                obj.SQFunctionWithInnerText = obj.SQFunctionName
         End Select
 
     End Function
@@ -5744,6 +5757,18 @@ fallthru2:          AddMapping(objClip, CurRow)
 
         Catch ex As Exception
             LogError(ex, "ctlTask GetScriptForCASE")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetScriptForCurrentDate() As String
+
+        Try
+            GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask GetScriptForCURRENTDATE")
             Return ""
         End Try
 

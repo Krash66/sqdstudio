@@ -474,7 +474,7 @@ Public Class frmEngine
 
         txtEngineName.SelectAll()
         txtReportEvery.Text = 0
-        txtCommitEvery.Text = 1
+        txtCommitEvery.Text = 0
         txtCopybookLib.Text = objThis.ObjSystem.CopybookLib
         txtIncludeLib.Text = objThis.ObjSystem.IncludeLib
         txtDTDLib.Text = objThis.ObjSystem.DTDLib

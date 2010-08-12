@@ -417,7 +417,59 @@ Public Class frmScriptGen
             Log("********* Script Parse End ***********")
 
         Catch ex As Exception
-            LogError(ex, "frmScriptGen btnParse_Click")
+            LogError(ex, "frmScriptGen btnParseOnly_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnParseSQD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnParseSQD.Click
+
+        Try
+            RetCode = New clsRcode
+
+            Select Case ScriptType
+                Case enumGenType.DS
+                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+
+                Case enumGenType.Proc
+                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+
+                Case enumGenType.Eng
+                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True)
+
+            End Select
+            FillResults(True)
+
+            Log("********* Script Generation End ***********")
+
+        Catch ex As Exception
+            LogError(ex, "frmScriptGen btnParseSQD_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnParseOnlySQD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnParseOnlySQD.Click
+
+        Try
+            RetCode = New clsRcode
+
+            Select Case ScriptType
+                Case enumGenType.DS
+                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+
+                Case enumGenType.Proc
+                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+
+                Case enumGenType.Eng
+                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True)
+
+            End Select
+            FillResults(True)
+
+            Log("********* Script Parse End ***********")
+
+        Catch ex As Exception
+            LogError(ex, "frmScriptGen btnParseOnlySQD_Click")
         End Try
 
     End Sub
@@ -482,5 +534,4 @@ Public Class frmScriptGen
 
     End Sub
 
-  
 End Class

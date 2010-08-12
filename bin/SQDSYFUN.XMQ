@@ -149,5 +149,6 @@
     <Procedure NODETYPE="Template" NPARM="0" SYNTAX="Template for Procedure"/>
     <LOOK NODETYPE="Template" NPARM="-1" SYNTAX="LOOK(lookup_name,search_key[,search_key])" DESC="performs a search on a pre-defined lookup or join table and sets the position (pointer) of the lookup table to the row that meets the criteria of the search."/>
     <SetImage NODETYPE="Template" NPARM="0" SYNTAX="Template for SetImage"/>
+    <CURRENTDATE NODETYPE="Template" NPARM="0" SYNTAX="LEFT (DATETIME(),10)" DESC="returns the current date in YYY-MM-DD format."/>
   </Templates>
 </Functions>
