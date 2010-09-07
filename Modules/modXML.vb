@@ -294,6 +294,141 @@ Public Module modXML
     '"DTD" for XML DTD (xml file prefix: ST)
     '"DDL" for SQL DDL (xml file prefix: SL)
     '"INC" for C Header (xml file prefix: SI)
+    'Function GetSQDumpXML(ByVal strFileToParse As String _
+    '                , Optional ByVal StructType As enumStructure = modDeclares.enumStructure.STRUCT_UNKNOWN _
+    '                , Optional ByVal par1 As String = "" _
+    '                , Optional ByVal par2 As String = "") As String
+
+    '    Dim strCommandCode As String = ""
+    '    Dim strFilePrefix As String = ""
+    '    Dim strTempDir As String = GetAppTemp()
+    '    Dim args As String
+
+    '    Try
+    '        Select Case StructType
+    '            Case modDeclares.enumStructure.STRUCT_COBOL
+    '                strFilePrefix = "SC"
+    '                strCommandCode = "COB"
+    '            Case modDeclares.enumStructure.STRUCT_COBOL_IMS
+    '                strFilePrefix = "SS"
+    '                strCommandCode = "DBS"
+    '            Case modDeclares.enumStructure.STRUCT_IMS
+    '                strFilePrefix = "SD"
+    '                strCommandCode = "DBO"
+    '            Case modDeclares.enumStructure.STRUCT_XMLDTD
+    '                strFilePrefix = "ST"
+    '                strCommandCode = "DTD"
+    '            Case modDeclares.enumStructure.STRUCT_REL_DDL
+    '                strFilePrefix = "SL"
+    '                strCommandCode = "DDL"
+    '            Case modDeclares.enumStructure.STRUCT_C
+    '                strFilePrefix = "SH"
+    '                strCommandCode = "INC"
+    '            Case modDeclares.enumStructure.STRUCT_REL_DML_FILE
+    '                strFilePrefix = "SR"
+    '                strCommandCode = "DML"
+    '        End Select
+
+    '        If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
+    '            GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"
+    '        Else
+    '            GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"
+    '        End If
+
+    '        '//delete previous temp file
+    '        If IO.File.Exists(GetSQDumpXML) = True Then
+    '            IO.File.Delete(GetSQDumpXML)
+    '            GetSQDumpXML = ""
+    '        End If
+
+    '        '//delete previous log file
+    '        If IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqduiimp.log")) Then
+    '            IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqduiimp.log"))
+    '        End If
+
+
+    '        args = Quote(strFileToParse, """") & " " & strCommandCode & " " & Quote(strTempDir, """")
+
+    '        If strCommandCode = "DBS" Then
+    '            'par1=> segment name and par2=cob file name
+    '            args = args & " " & par1 & " " & par2
+    '        Else
+    '            args = args
+    '        End If
+
+    '        Debug.Write("sqduiimp.exe" & args)
+    '        Log("sqduiimp.exe " & args)
+
+    '        Try
+    '            '//run out little exe with command line args so it produces meta data in XML format
+    '            Dim si As New System.Diagnostics.ProcessStartInfo
+    '            Dim myProcess As System.Diagnostics.Process
+
+    '            si.CreateNoWindow = True
+    '            si.WindowStyle = ProcessWindowStyle.Hidden
+
+    '            '#If CONFIG = "ETI" Then
+    '            '                si.FileName = GetAppPath() & "ETIuiimp.exe"
+    '            '#Else
+    '            si.FileName = GetAppPath() & "sqduiimp.exe"
+    '            '#End If
+
+    '            si.Arguments = args
+    '            Log(si.FileName & " " & si.Arguments)
+    '            'Log(args)
+    '            '//Create a new process to parse input file and dump to XML
+    '            myProcess = System.Diagnostics.Process.Start(si)
+
+    '            '//wait until task is done
+    '            myProcess.WaitForExit()
+
+    '            MsgBox("exit code >>> " & myProcess.ExitCode, MsgBoxStyle.Information)
+
+    '            If myProcess.ExitCode <> 0 Then
+    '                If MsgBox("Error occurred while parsing the file [" & strFileToParse & "]." & vbCrLf & "Do you want to see the log?", MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, MsgTitle) = MsgBoxResult.Yes Then
+    '                    If IO.File.Exists(IO.Path.Combine(GetAppPath(), "sqduiimp.log")) Then
+    '                        Shell("notepad " & IO.Path.Combine(GetAppPath(), "sqduiimp.log"), AppWinStyle.NormalFocus)
+    '                    End If
+    '                End If
+    '                Return ""
+    '            Else
+    '                '//Now return output file path : <temp folder>\<fileprefix><input filename no extension>.XML
+    '                If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
+    '                    GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"
+    '                Else
+    '                    GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"
+    '                End If
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "modXML GetSQDumpXML .. interior process")
+    '            Return ""
+    '        End Try
+
+    '    Catch ex As Exception
+    '        LogError(ex, "modXML GetSQDumpXML")
+    '        Return ""
+    '    End Try
+
+    'End Function
+
+
+
+
+    '/////////////////////////////////////////////////////////////////////////////////////////
+    '//strFileToParse : Input file path which is to be parsed and exported to XML
+    '//strCommandCode : 3 char command code which will tell SQDUIIMP.exe which type of input file
+    '//par1 : only needed when we use DBS command which export segment info in XML
+    '//par2 : not used
+    '//
+    '//List of Commands and ouputfile prefix for SQDUIIMP.exe
+    '//
+    '"DBO" for DBD (xml file prefix: SD)
+    '"DBS" for COBOL with DBD segment combination (xml file prefix: SS)
+    '"COB" for COBOL without DBD segment combination (xml file prefix: SC)
+    '"DTD" for XML DTD (xml file prefix: ST)
+    '"DDL" for SQL DDL (xml file prefix: SL)
+    '"INC" for C Header (xml file prefix: SI)
     Function GetSQDumpXML(ByVal strFileToParse As String _
                     , Optional ByVal StructType As enumStructure = modDeclares.enumStructure.STRUCT_UNKNOWN _
                     , Optional ByVal par1 As String = "" _
@@ -303,6 +438,9 @@ Public Module modXML
         Dim strFilePrefix As String = ""
         Dim strTempDir As String = GetAppTemp()
         Dim args As String
+        Dim fsERR As System.IO.FileStream
+        Dim objWriteERR As System.IO.StreamWriter
+        Dim PathErr As String
 
         Try
             Select Case StructType
@@ -342,9 +480,9 @@ Public Module modXML
             End If
 
             '//delete previous log file
-            If IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqduiimp.log")) Then
-                IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqduiimp.log"))
-            End If
+            'If IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqduiimp.log")) Then
+            '    IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqduiimp.log"))
+            'End If
 
 
             args = Quote(strFileToParse, """") & " " & strCommandCode & " " & Quote(strTempDir, """")
@@ -356,47 +494,84 @@ Public Module modXML
                 args = args
             End If
 
-            Debug.Write("sqduiimp.exe" & args)
-            Log("sqduiimp.exe " & args)
+            'Debug.Write("sqduiimp.exe" & args)
+            'Log("sqduiimp.exe " & args)
 
             Try
-                '//run out little exe with command line args so it produces meta data in XML format
-                Dim si As New System.Diagnostics.ProcessStartInfo
-                Dim myProcess As System.Diagnostics.Process
+                '//delete previous log file
+                If System.IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqduiimp.ERR")) Then
+                    System.IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqduiimp.ERR"))
+                End If
+                '// create new error file stream
+                fsERR = System.IO.File.Create(IO.Path.Combine(GetAppTemp(), "sqduiimp.ERR"))
+                PathErr = fsERR.Name
+                objWriteERR = New System.IO.StreamWriter(fsERR)
 
-                si.CreateNoWindow = True
-                si.WindowStyle = ProcessWindowStyle.Hidden
-
-                '#If CONFIG = "ETI" Then
-                '                si.FileName = GetAppPath() & "ETIuiimp.exe"
-                '#Else
+                '//run out exe with command line args so it produces meta data in XML format
+                Dim si As New ProcessStartInfo()
+                
                 si.FileName = GetAppPath() & "sqduiimp.exe"
-                '#End If
-
                 si.Arguments = args
-                Log(si.FileName & " " & si.Arguments)
-                'Log(args)
+                si.UseShellExecute = False
+                si.CreateNoWindow = True
+
+                '// Redirect standard error. Let standard output go where it is supposed to go.
+                si.RedirectStandardOutput = False
+                si.RedirectStandardError = True
+
                 '//Create a new process to parse input file and dump to XML
-                myProcess = System.Diagnostics.Process.Start(si)
+                Using myProcess As New System.Diagnostics.Process()
+                    myProcess.StartInfo = si
 
-                '//wait until task is done
-                myProcess.WaitForExit()
+                    Log("Importer Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                    Log(si.FileName & args)
 
-                If myProcess.ExitCode <> 0 Then
-                    If MsgBox("Error occurred while parsing the file [" & strFileToParse & "]." & vbCrLf & "Do you want to see the log?", MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, MsgTitle) = MsgBoxResult.Yes Then
-                        If IO.File.Exists(IO.Path.Combine(GetAppPath(), "sqduiimp.log")) Then
-                            Shell("notepad " & IO.Path.Combine(GetAppPath(), "sqduiimp.log"), AppWinStyle.NormalFocus)
+                    '// Create a new process to asynchronously run sqduiimp.exe
+                    myProcess.Start()
+
+                    Dim OutStr As String = ""
+                    Dim ErrStr As String = ""
+
+                    '/// split output into multiple threads to capture each stream to a string
+                    '/// OutStr stays as "" because StdOut is NOT redirected
+                    OutputToEnd(myProcess, OutStr, ErrStr)
+
+                    '//wait until task is done
+                    myProcess.WaitForExit()
+
+                    Log("Importer Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                    Log("Importer Returned Code : " & myProcess.ExitCode)
+                    'Just for debugging
+                    'MsgBox("exit code >>> " & myProcess.ExitCode, MsgBoxStyle.Information)
+
+                    objWriteERR.Write(ErrStr)
+                    objWriteERR.Close()
+                    fsERR.Close()
+
+                    If myProcess.ExitCode <> 0 Then
+                        If MsgBox("Error occurred while parsing the file [" & strFileToParse & "]." & vbCrLf & _
+                                  "Do you want to see the log?", _
+                                  MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, _
+                                  MsgTitle) = MsgBoxResult.Yes Then
+                            If IO.File.Exists(PathErr) Then
+                                Process.Start(PathErr)
+                            End If
+                        End If
+                        Return ""
+                    Else
+                        '//Now return output file path : <temp folder>\<fileprefix><input filename no extension>.XML
+                        If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
+                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"
+                        Else
+                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"
                         End If
                     End If
-                    Return ""
-                Else
-                    '//Now return output file path : <temp folder>\<fileprefix><input filename no extension>.XML
-                    If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                        GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"
-                    Else
-                        GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"
-                    End If
-                End If
+
+                    Log("Importer Report file saved at : " & PathErr)
+                    Log("********* Importer Return Code = " & myProcess.ExitCode & " *********")
+                    myProcess.Close()
+
+                End Using
 
             Catch ex As Exception
                 LogError(ex, "modXML GetSQDumpXML .. interior process")
@@ -409,7 +584,6 @@ Public Module modXML
         End Try
 
     End Function
-
     '// UnUsed???
     Function EncodeXMLFile(ByVal file As String) As Boolean
         Try

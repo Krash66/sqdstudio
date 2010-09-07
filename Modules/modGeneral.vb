@@ -454,119 +454,264 @@ Public Module modGeneral
 
     'InType=STR,SEL 
     'OutType=DTD, H, DDL
+    'Function ModelScript(ByVal MetaDSN As String, ByVal Id As String, ByVal FileName As String, Optional ByVal InType As String = "STR", Optional ByVal OutType As String = "DTD", Optional ByVal SavePath As String = "", Optional ByVal StrName As String = "", Optional ByVal prefix As String = "") As String
+
+    '    Dim args As String
+    '    Dim si As New System.Diagnostics.ProcessStartInfo
+    '    Dim myProcess As System.Diagnostics.Process
+    '    Dim ext As String
+    '    Dim makeModel As Boolean
+    '    Dim PhysScript As String
+    '    Dim TempPath As String = GetAppTemp()
+
+
+    '    If SavePath = "" Then SavePath = GetAppPath()
+
+    '    Select Case OutType
+    '        Case "DTD"
+    '            ext = "dtd"
+    '        Case "DDL"
+    '            ext = "ddl"
+    '        Case "H"
+    '            ext = "h"
+    '        Case "LOD"
+    '            ext = "lod"
+    '        Case "SQL"
+    '            ext = "sql"
+    '        Case "MSSQL"
+    '            ext = "sql"
+    '        Case Else
+    '            ext = OutType
+    '    End Select
+
+    '    If Strings.Right(TempPath, 1) <> "\" Then
+    '        PhysScript = TempPath & "\" & StrName & "." & ext
+    '    Else
+    '        PhysScript = TempPath & StrName & "." & ext
+    '    End If
+
+    '    If Strings.Right(SavePath, 1) <> "\" Then
+    '        ModelScript = SavePath & "\" & FileName & "." & ext
+    '    Else
+    '        ModelScript = SavePath & FileName & "." & ext
+    '    End If
+
+    '    makeModel = True
+
+    '    If IO.File.Exists(ModelScript) = True Then
+    '        If MsgBox("Model file " & ModelScript & " already exists.  Would you like to replace it?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.No Then
+    '            makeModel = False
+    '            ModelScript = ""
+    '        End If
+    '    End If
+
+    '    If makeModel = True Then
+    '        args = MetaDSN & " " & Id & " " & InType & " " & OutType & " " & Quote(TempPath, """") & " " & prefix
+    '        Log("********* Model Script Generation Start *********")
+    '        Log("SQDUMODL.EXE " & MetaDSN & " " & Id & " " & InType & " " & OutType & " " & Quote(TempPath, """") & " " & prefix)
+
+    '        '//run out little exe with command line args so it produces meta data in XML format
+
+    '        Try
+    '            si.CreateNoWindow = True
+    '            si.WindowStyle = ProcessWindowStyle.Hidden
+
+    '            '#If CONFIG = "ETI" Then
+    '            '                si.FileName = "ETIUMODL.EXE"
+    '            '#Else
+    '            si.FileName = "SQDUMODL.EXE"
+    '            '#End If
+
+    '            si.Arguments = args
+
+    '            myProcess = System.Diagnostics.Process.Start(si)
+
+    '            '//wait until task is done
+    '            myProcess.WaitForExit()
+    '            'Log("Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
+    '            'Select Case myProcess.ExitCode
+    '            '    Case 8
+    '            '        
+    '            '    Case 4
+    '            '       
+
+    '            '    Case 1
+    '            '        
+
+    '            '    Case Is > 0
+    '            '        
+
+    '            '    Case 0
+    '            '       
+
+    '            '    Case Else
+    '            '        
+    '            'End Select
+
+    '            Log("********* Modeler Return Code = " & myProcess.ExitCode & " *********")
+    '            myProcess.Close()
+
+    '            '// New script comes back with original structure name 
+    '            '// so we will change the file name here
+    '            If IO.File.Exists(PhysScript) Then
+    '                IO.File.Copy(PhysScript, ModelScript, True)
+    '            Else
+    '                ModelScript = ""
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "modGeneral ModelScript")
+    '            Return ""
+    '        End Try
+
+    '        Log("********* Model Script Generation End *********")
+    '    End If
+
+    'End Function
+
     Function ModelScript(ByVal MetaDSN As String, ByVal Id As String, ByVal FileName As String, Optional ByVal InType As String = "STR", Optional ByVal OutType As String = "DTD", Optional ByVal SavePath As String = "", Optional ByVal StrName As String = "", Optional ByVal prefix As String = "") As String
 
-        Dim args As String
-        Dim si As New System.Diagnostics.ProcessStartInfo
-        Dim myProcess As System.Diagnostics.Process
-        Dim ext As String
-        Dim makeModel As Boolean
-        Dim PhysScript As String
-        Dim TempPath As String = GetAppTemp()
+        Try
+            Dim args As String
+            'Dim myProcess As System.Diagnostics.Process
+            Dim ext As String
+            Dim makeModel As Boolean
+            Dim PhysScript As String
+            Dim TempPath As String = GetAppTemp()
+            Dim fsERR As System.IO.FileStream
+            Dim objWriteERR As System.IO.StreamWriter
+            Dim PathErr As String
 
 
-        If SavePath = "" Then SavePath = GetAppPath()
+            If SavePath = "" Then SavePath = GetAppPath()
 
-        Select Case OutType
-            Case "DTD"
-                ext = "dtd"
-            Case "DDL"
-                ext = "ddl"
-            Case "H"
-                ext = "h"
-            Case "LOD"
-                ext = "lod"
-            Case "SQL"
-                ext = "sql"
-            Case "MSSQL"
-                ext = "sql"
-            Case Else
-                ext = OutType
-        End Select
+            Select Case OutType
+                Case "DTD"
+                    ext = "dtd"
+                Case "DDL"
+                    ext = "ddl"
+                Case "H"
+                    ext = "h"
+                Case "LOD"
+                    ext = "lod"
+                Case "SQL"
+                    ext = "sql"
+                Case "MSSQL"
+                    ext = "sql"
+                Case Else
+                    ext = OutType
+            End Select
 
-        If Strings.Right(TempPath, 1) <> "\" Then
-            PhysScript = TempPath & "\" & StrName & "." & ext
-        Else
-            PhysScript = TempPath & StrName & "." & ext
-        End If
-
-        If Strings.Right(SavePath, 1) <> "\" Then
-            ModelScript = SavePath & "\" & FileName & "." & ext
-        Else
-            ModelScript = SavePath & FileName & "." & ext
-        End If
-
-        makeModel = True
-
-        If IO.File.Exists(ModelScript) = True Then
-            If MsgBox("Model file " & ModelScript & " already exists.  Would you like to replace it?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.No Then
-                makeModel = False
-                ModelScript = ""
+            If Strings.Right(TempPath, 1) <> "\" Then
+                PhysScript = TempPath & "\" & StrName & "." & ext
+            Else
+                PhysScript = TempPath & StrName & "." & ext
             End If
-        End If
 
-        If makeModel = True Then
-            args = MetaDSN & " " & Id & " " & InType & " " & OutType & " " & Quote(TempPath, """") & " " & prefix
-            Log("********* Model Script Generation Start *********")
-            Log("SQDUMODL.EXE " & MetaDSN & " " & Id & " " & InType & " " & OutType & " " & Quote(TempPath, """") & " " & prefix)
+            If Strings.Right(SavePath, 1) <> "\" Then
+                ModelScript = SavePath & "\" & FileName & "." & ext
+            Else
+                ModelScript = SavePath & FileName & "." & ext
+            End If
 
-            '//run out little exe with command line args so it produces meta data in XML format
+            makeModel = True
 
-            Try
-                si.CreateNoWindow = True
-                si.WindowStyle = ProcessWindowStyle.Hidden
-
-                '#If CONFIG = "ETI" Then
-                '                si.FileName = "ETIUMODL.EXE"
-                '#Else
-                si.FileName = "SQDUMODL.EXE"
-                '#End If
-
-                si.Arguments = args
-
-                myProcess = System.Diagnostics.Process.Start(si)
-
-                '//wait until task is done
-                myProcess.WaitForExit()
-                'Log("Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
-
-                'Select Case myProcess.ExitCode
-                '    Case 8
-                '        
-                '    Case 4
-                '       
-
-                '    Case 1
-                '        
-
-                '    Case Is > 0
-                '        
-
-                '    Case 0
-                '       
-
-                '    Case Else
-                '        
-                'End Select
-
-                Log("********* Modeler Return Code = " & myProcess.ExitCode & " *********")
-                myProcess.Close()
-
-                '// New script comes back with original structure name 
-                '// so we will change the file name here
-                If IO.File.Exists(PhysScript) Then
-                    IO.File.Copy(PhysScript, ModelScript, True)
-                Else
+            If IO.File.Exists(ModelScript) = True Then
+                If MsgBox("Model file " & ModelScript & " already exists.  Would you like to replace it?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.No Then
+                    makeModel = False
                     ModelScript = ""
                 End If
+            End If
 
-            Catch ex As Exception
-                LogError(ex, "modGeneral ModelScript")
-                Return ""
-            End Try
+            If makeModel = True Then
+                args = MetaDSN & " " & Id & " " & InType & " " & OutType & " " & Quote(TempPath, """") & " " & prefix
 
-            Log("********* Model Script Generation End *********")
-        End If
+                '//run out little exe with command line args so it produces meta data in XML format
+                Try
+                    '//delete previous log file
+                    If System.IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR")) Then
+                        System.IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR"))
+                    End If
+                    '// create new error file stream
+                    fsERR = System.IO.File.Create(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR"))
+                    PathErr = fsERR.Name
+                    objWriteERR = New System.IO.StreamWriter(fsERR)
+
+                    Dim si As New ProcessStartInfo()
+
+                    si.FileName = "SQDUMODL.EXE "
+                    si.Arguments = args
+                    si.UseShellExecute = False
+                    si.CreateNoWindow = True
+
+                    '// Redirect Standard Error. Let standard Output go  
+                    si.RedirectStandardOutput = False
+                    si.RedirectStandardError = True
+
+                    '// Create a new process to Model new Description Files
+                    Using myProcess As New System.Diagnostics.Process()
+                        myProcess.StartInfo = si
+
+                        Log("********* Model Script Generation Start *********")
+                        Log("Modeler Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                        Log(si.FileName & args)
+
+                        myProcess.Start()
+
+                        Dim OutStr As String = ""
+                        Dim ErrStr As String = ""
+
+                        '/// split output into multiple threads to capture each stream to a string
+                        '/// OutStr stays as "" because StdOut is NOT redirected
+                        OutputToEnd(myProcess, OutStr, ErrStr)
+
+                        '//wait until task is done
+                        myProcess.WaitForExit()
+
+                        Log("Modeler Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                        Log("Modeler Returned Code : " & myProcess.ExitCode)
+
+                        objWriteERR.Write(ErrStr)
+                        objWriteERR.Close()
+                        fsERR.Close()
+
+                        If myProcess.ExitCode <> 0 Then
+                            If MsgBox("Error occurred while Modeling the Description [" & StrName & "]." & vbCrLf & _
+                                      "Do you want to see the log?", _
+                                      MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, _
+                                      MsgTitle) = MsgBoxResult.Yes Then
+                                If IO.File.Exists(PathErr) Then
+                                    Process.Start(PathErr)
+                                End If
+                            End If
+                            Return ""
+                        End If
+
+                        Log("Modeler Report file saved at : " & PathErr)
+                        Log("********* Modeler Return Code = " & myProcess.ExitCode & " *********")
+                        myProcess.Close()
+
+                    End Using
+
+                    '// New script comes back with original structure name 
+                    '// so we will change the file name here
+                    If IO.File.Exists(PhysScript) Then
+                        IO.File.Copy(PhysScript, ModelScript, True)
+                    Else
+                        ModelScript = ""
+                    End If
+
+                Catch ex As Exception
+                    LogError(ex, "modGeneral ModelScript .. interior process")
+                    Return ""
+                End Try
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral ModelScript")
+            Return ""
+        End Try
 
     End Function
 
@@ -654,6 +799,113 @@ Public Module modGeneral
     'End Function
 
     '/// splits system IO process into multiple threads for Asynchronous output streams
+
+#End Region
+
+#Region "Run SQData"
+
+    Function RunSQData(ByVal pathPRC As String) As String
+
+        '//run out exe with command line args so it produces meta data in XML format
+        Try
+            Dim TempPath As String = GetAppTemp()
+            Dim fsERR As System.IO.FileStream
+            Dim objWriteERR As System.IO.StreamWriter
+            Dim PathErr As String = IO.Path.Combine(GetAppTemp(), "sqdata.ERR")
+            'Dim fsOUT As System.IO.FileStream
+            'Dim objWriteOUT As System.IO.StreamWriter
+            Dim PathOUT As String = IO.Path.Combine(GetDirFromPath(pathPRC), GetFileNameWithoutExtenstionFromPath(pathPRC) & ".OUT")
+
+            Dim FORargs As String = String.Format("{0}", Quote(pathPRC, """"))
+            Dim args As String = FORargs
+            Dim si As New ProcessStartInfo()
+
+            '//delete previous log file
+            If System.IO.File.Exists(PathErr) Then
+                System.IO.File.Delete(PathErr)
+            End If
+            '// create new error log stream
+            fsERR = System.IO.File.Create(PathErr)
+            PathErr = fsERR.Name
+            objWriteERR = New System.IO.StreamWriter(fsERR)
+
+            ''//delete previous output file
+            'If System.IO.File.Exists(PathOUT) Then
+            '    System.IO.File.Delete(PathOUT)
+            'End If
+            ''// create new output file stream
+            'fsOUT = System.IO.File.Create(PathOUT)
+            'PathOUT = fsOUT.Name
+            'objWriteOUT = New System.IO.StreamWriter(fsOUT)
+
+            si.WorkingDirectory = GetAppPath()
+            si.FileName = "SQDATA.EXE "
+            si.Arguments = args
+            si.UseShellExecute = False
+            si.CreateNoWindow = True
+
+            '// Redirect Standard Error. Let standard Output go  
+            si.RedirectStandardOutput = False
+            si.RedirectStandardError = True
+
+            '// Create a new process to Model new Description Files
+            Using myProcess As New System.Diagnostics.Process()
+                myProcess.StartInfo = si
+
+                Log("********* sqdata engine Start *********")
+                Log("sqdata Engine Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                Log(si.FileName & args)
+
+                myProcess.Start()
+
+                Dim OutStr As String = ""
+                Dim ErrStr As String = ""
+
+                '/// split output into multiple threads to capture each stream to a string
+                '/// OutStr stays as "" because StdOut is NOT redirected
+                OutputToEnd(myProcess, OutStr, ErrStr)
+
+                '//wait until task is done
+                myProcess.WaitForExit()
+
+                Log("sqdata engine Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+                Log("sqdata exit Code : " & myProcess.ExitCode)
+
+                objWriteERR.Write(ErrStr)
+                objWriteERR.Close()
+                fsERR.Close()
+
+                'objWriteOUT.Write(OutStr) 
+                'objWriteOUT.Close()
+                'fsOUT.Close()
+
+                If myProcess.ExitCode <> 0 Then
+                    If MsgBox("Error occurred while Engine [" & _
+                              GetFileNameWithoutExtenstionFromPath(pathPRC) & "] Executed." & _
+                              vbCrLf & "Do you want to see the log?", _
+                              MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, _
+                              MsgTitle) = MsgBoxResult.Yes Then
+                        If IO.File.Exists(PathErr) Then
+                            Process.Start(PathErr)
+                        End If
+                    End If
+                    Return ""
+                Else
+                    Return PathErr
+                End If
+
+                Log("Modeler Report file saved at : " & PathErr)
+                Log("********* Modeler Return Code = " & myProcess.ExitCode & " *********")
+                myProcess.Close()
+
+            End Using
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral RunSQData")
+            Return ""
+        End Try
+
+    End Function
 
 #End Region
 

@@ -671,7 +671,8 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                     Case Else
                         rc.HasError = True
-                        Log("return code >> " & myProcess.ExitCode.ToString & Chr(13) & "return path >> " & pathSQD)
+                        Log("return code >> " & myProcess.ExitCode.ToString & _
+                            Chr(13) & "return path >> " & pathSQD)
                 End Select
 
                 objWriteRPT.Write(OutStr)

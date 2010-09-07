@@ -69,6 +69,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_55EA91A987F94245A8381E2941D37074"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5D0A25C668B1414CBCB54D531765533C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -407,6 +413,26 @@
             "TargetName" = "8:ORCL_meta_create.ddl"
             "Tag" = "8:"
             "Folder" = "8:_3A9AE3A017F545C581817DEEC3A5815E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_55EA91A987F94245A8381E2941D37074"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\sqdata.exe"
+            "TargetName" = "8:sqdata.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1373,7 +1399,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
             {
-            "SourcePath" = "8:..\\obj\\Release\\Design Studio.exe"
+            "SourcePath" = "8:..\\obj\\Debug\\Design Studio.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"

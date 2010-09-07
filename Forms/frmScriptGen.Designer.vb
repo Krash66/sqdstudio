@@ -39,6 +39,8 @@ Partial Class frmScriptGen
         Me.lblSummary = New System.Windows.Forms.Label
         Me.lblResult = New System.Windows.Forms.Label
         Me.gbScriptOptions = New System.Windows.Forms.GroupBox
+        Me.btnParseOnlySQD = New System.Windows.Forms.Button
+        Me.btnParseSQD = New System.Windows.Forms.Button
         Me.btnParseOnly = New System.Windows.Forms.Button
         Me.gbTarget = New System.Windows.Forms.GroupBox
         Me.rbAlltgt = New System.Windows.Forms.RadioButton
@@ -53,8 +55,7 @@ Partial Class frmScriptGen
         Me.btnParse = New System.Windows.Forms.Button
         Me.cbDebugSrcData = New System.Windows.Forms.CheckBox
         Me.btnGenScript = New System.Windows.Forms.Button
-        Me.btnParseSQD = New System.Windows.Forms.Button
-        Me.btnParseOnlySQD = New System.Windows.Forms.Button
+        Me.btnSQData = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.gbPath.SuspendLayout()
         Me.gbStudioFiles.SuspendLayout()
@@ -323,6 +324,24 @@ Partial Class frmScriptGen
         Me.gbScriptOptions.TabStop = False
         Me.gbScriptOptions.Text = "Script Generation Options"
         '
+        'btnParseOnlySQD
+        '
+        Me.btnParseOnlySQD.Location = New System.Drawing.Point(498, 44)
+        Me.btnParseOnlySQD.Name = "btnParseOnlySQD"
+        Me.btnParseOnlySQD.Size = New System.Drawing.Size(112, 23)
+        Me.btnParseOnlySQD.TabIndex = 13
+        Me.btnParseOnlySQD.Text = "Parse Only SQD"
+        Me.btnParseOnlySQD.UseVisualStyleBackColor = True
+        '
+        'btnParseSQD
+        '
+        Me.btnParseSQD.Location = New System.Drawing.Point(382, 44)
+        Me.btnParseSQD.Name = "btnParseSQD"
+        Me.btnParseSQD.Size = New System.Drawing.Size(110, 23)
+        Me.btnParseSQD.TabIndex = 12
+        Me.btnParseSQD.Text = "Gen/Parse SQD"
+        Me.btnParseSQD.UseVisualStyleBackColor = True
+        '
         'btnParseOnly
         '
         Me.btnParseOnly.Location = New System.Drawing.Point(498, 14)
@@ -475,23 +494,15 @@ Partial Class frmScriptGen
         Me.btnGenScript.Text = "Generate Script"
         Me.btnGenScript.UseVisualStyleBackColor = True
         '
-        'btnParseSQD
+        'btnSQData
         '
-        Me.btnParseSQD.Location = New System.Drawing.Point(382, 44)
-        Me.btnParseSQD.Name = "btnParseSQD"
-        Me.btnParseSQD.Size = New System.Drawing.Size(110, 23)
-        Me.btnParseSQD.TabIndex = 12
-        Me.btnParseSQD.Text = "Gen/Parse SQD"
-        Me.btnParseSQD.UseVisualStyleBackColor = True
-        '
-        'btnParseOnlySQD
-        '
-        Me.btnParseOnlySQD.Location = New System.Drawing.Point(498, 44)
-        Me.btnParseOnlySQD.Name = "btnParseOnlySQD"
-        Me.btnParseOnlySQD.Size = New System.Drawing.Size(112, 23)
-        Me.btnParseOnlySQD.TabIndex = 13
-        Me.btnParseOnlySQD.Text = "Parse Only SQD"
-        Me.btnParseOnlySQD.UseVisualStyleBackColor = True
+        Me.btnSQData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSQData.Location = New System.Drawing.Point(175, 630)
+        Me.btnSQData.Name = "btnSQData"
+        Me.btnSQData.Size = New System.Drawing.Size(165, 23)
+        Me.btnSQData.TabIndex = 64
+        Me.btnSQData.Text = "Run SQData"
+        Me.btnSQData.UseVisualStyleBackColor = True
         '
         'frmScriptGen
         '
@@ -501,8 +512,10 @@ Partial Class frmScriptGen
         Me.Controls.Add(Me.gbPath)
         Me.Controls.Add(Me.gbResults)
         Me.Controls.Add(Me.gbParseFiles)
+        Me.Controls.Add(Me.btnSQData)
         Me.Name = "frmScriptGen"
         Me.Text = "SQData Studio V3"
+        Me.Controls.SetChildIndex(Me.btnSQData, 0)
         Me.Controls.SetChildIndex(Me.gbParseFiles, 0)
         Me.Controls.SetChildIndex(Me.gbResults, 0)
         Me.Controls.SetChildIndex(Me.gbPath, 0)
@@ -567,5 +580,6 @@ Partial Class frmScriptGen
     Friend WithEvents btnParseOnly As System.Windows.Forms.Button
     Friend WithEvents btnParseOnlySQD As System.Windows.Forms.Button
     Friend WithEvents btnParseSQD As System.Windows.Forms.Button
+    Friend WithEvents btnSQData As System.Windows.Forms.Button
 
 End Class

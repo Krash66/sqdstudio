@@ -7907,6 +7907,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                 envobj = CType(tvExplorer.SelectedNode.Nodes(1).Tag, clsStructure).Environment
 
+                envobj.LoadMe()
                 'FolderBrowserDialog1.SelectedPath = envobj.LocalDBDDir
                 'If FolderBrowserDialog1.ShowDialog(Me) <> Windows.Forms.DialogResult.OK Then
                 '    Exit Sub

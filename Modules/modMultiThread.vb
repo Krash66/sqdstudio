@@ -17,7 +17,7 @@ Module modMultiThread
         Dim worker As BackgroundWorker = CType(sender, BackgroundWorker)
 
         ' Assign the result of the computation
-        ' to the Result property of the DoWorkEventArgs 
+        ' to the Result property of the DoWorkEventArgs  
         ' object. This is will be available to the 
         ' RunWorkerCompleted eventhandler.
         e.Result = ComputeFibonacci(e.Argument, worker, e)

@@ -534,4 +534,21 @@ Public Class frmScriptGen
 
     End Sub
 
+    Private Sub btnSQData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSQData.Click
+
+        Try
+            Dim Success As String
+
+            Success = RunSQData(IO.Path.Combine(txtFolderPath.Text, ObjEng.EngineName & ".PRC"))
+
+            If Success <> "" Then
+                Process.Start(Success)
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmScriptGen btnSQData_click")
+        End Try
+
+    End Sub
+
 End Class
