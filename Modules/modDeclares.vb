@@ -388,9 +388,10 @@ Public Module modDeclares
         ModGenVar = 17
         ModGenMap = 20
         ModGenMain = 25
-        Windows = 27
-        SQDParse = 30
-        FileCreation = 50
+        ModGenWindows = 30
+        ModGenSQDParse = 40
+        ModGenFileCreation = 50
+
         NoErrors = 100
     End Enum
 

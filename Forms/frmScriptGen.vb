@@ -283,7 +283,7 @@ Public Class frmScriptGen
                 '    Shell("notepad.exe " & Quote(RetCode.Path, """"), AppWinStyle.NormalFocus)
                 'End If
             Else
-                If RetCode.ErrorLocation = enumErrorLocation.SQDParse Then
+                If RetCode.ErrorLocation = enumErrorLocation.ModGenSQDParse Then
                     '/// Error while Parsing Script
                     Message = "Script Caused an Error while Parsing:" & Chr(13) & _
                     RetCode.ReturnCode & Chr(13) & _
@@ -350,13 +350,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Proc
-                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Eng
-                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
 
             End Select
 
@@ -377,13 +377,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Proc
-                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Eng
-                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
             End Select
             FillResults(True)
@@ -403,13 +403,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Proc
-                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Eng
-                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True)
 
             End Select
             FillResults(True)
@@ -429,13 +429,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Proc
-                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Eng
-                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True)
 
             End Select
             FillResults(True)
@@ -455,13 +455,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Proc
-                    RetCode = GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
 
                 Case enumGenType.Eng
-                    RetCode = GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True)
 
             End Select
             FillResults(True)

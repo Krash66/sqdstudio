@@ -224,7 +224,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                 RC.ReturnCode = ex.Message
             End If
             If RC.ErrorLocation = enumErrorLocation.NoErrors Then
-                RC.ErrorLocation = enumErrorLocation.Windows
+                RC.ErrorLocation = enumErrorLocation.ModGenWindows
                 RC.ErrorPath = pathSQD
                 RC.ObjInode = ObjThis
             End If
@@ -411,7 +411,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                 RC.ReturnCode = ex.Message
             End If
             If RC.ErrorLocation = enumErrorLocation.NoErrors Then
-                RC.ErrorLocation = enumErrorLocation.Windows
+                RC.ErrorLocation = enumErrorLocation.ModGenWindows
                 RC.ErrorPath = pathSQD
                 RC.ObjInode = ObjThis
             End If
@@ -556,7 +556,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                 RC.ReturnCode = ex.Message
             End If
             If RC.ErrorLocation = enumErrorLocation.NoErrors Then
-                RC.ErrorLocation = enumErrorLocation.Windows
+                RC.ErrorLocation = enumErrorLocation.ModGenWindows
                 RC.ErrorPath = pathSQD
                 RC.ObjInode = ObjThis
             End If
@@ -633,7 +633,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Parser Returned: Script Generation Error" ' & Chr(13)
                         '&  "Would you like to see the report?"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case 4
@@ -641,7 +641,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ParserPath = pathRPT
                         rc.ParseCode = enumParserReturnCode.Warning
                         rc.ReturnCode = "Parser Returned: Script Generation Warning"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case 1
@@ -649,7 +649,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ParserPath = pathRPT
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Parser Returned: There is a problem with the PATH"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case Is > 0
@@ -657,7 +657,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ParserPath = GetAppPath() & "sqdgnsqd.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
 
                     Case 0
@@ -694,7 +694,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             rc.ErrorCount += 1
             rc.ReturnCode = ex.Message
             rc.ErrorPath = pathRPT
-            rc.ErrorLocation = enumErrorLocation.SQDParse
+            rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
             rc.ParserPath = ""
             rc.ParseCode = enumParserReturnCode.NoCode
             rc.ObjInode = ObjThis
@@ -752,7 +752,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Parser Returned: Script Generation Error" ' & Chr(13)
                         '&  "Would you like to see the report?"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case 4
@@ -760,7 +760,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ParserPath = pathRPT
                         rc.ParseCode = enumParserReturnCode.Warning
                         rc.ReturnCode = "Parser Returned: Script Generation Warning"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case 1
@@ -768,7 +768,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ParserPath = pathRPT
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Parser Returned: There is a problem with the PATH"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
 
                     Case Is > 0
@@ -776,7 +776,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ParserPath = GetAppPath() & "sqdgnsqd.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
-                        rc.ErrorLocation = enumErrorLocation.SQDParse
+                        rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
 
                     Case 0
@@ -812,7 +812,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             rc.ErrorCount += 1
             rc.ReturnCode = ex.Message
             rc.ErrorPath = pathRPT
-            rc.ErrorLocation = enumErrorLocation.SQDParse
+            rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
             rc.ParserPath = ""
             rc.ParseCode = enumParserReturnCode.NoCode
             rc.ObjInode = ObjThis
@@ -866,7 +866,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".sqd"
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 GoTo ErrorGoTo
             End Try
 
@@ -887,7 +887,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.HasFatal = True
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".inl"
                 GoTo ErrorGoTo
             End Try
@@ -909,7 +909,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.HasFatal = True
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".tmp"
                 GoTo ErrorGoTo
             End Try
@@ -935,7 +935,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.HasFatal = True
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".rpt"
                 GoTo ErrorGoTo
             End Try
@@ -957,7 +957,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.HasFatal = True
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".ERR"
                 GoTo ErrorGoTo
             End Try
@@ -978,7 +978,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 rc.HasFatal = True
                 rc.ObjInode = ObjThis
                 rc.ReturnCode = ex.Message
-                rc.ErrorLocation = enumErrorLocation.FileCreation
+                rc.ErrorLocation = enumErrorLocation.ModGenFileCreation
                 rc.ErrorPath = ScriptPath & "\" & ScriptName & ".prc"
                 GoTo ErrorGoTo
             End Try
@@ -3805,7 +3805,7 @@ ErrorGoTo:
                         SrcStr = CType(map.MappingSource, clsVariable).VariableName
                     End If
                 End If
-                
+
             End If
 
             If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
@@ -3822,7 +3822,7 @@ ErrorGoTo:
                     TgtStr = CType(map.MappingTarget, clsVariable).VariableName
                 End If
             End If
-            
+
 
             SrcLen = SrcStr.Length
             TgtLen = TgtStr.Length
@@ -4295,7 +4295,7 @@ ErrorGoTo:
             LogError(ex, "modGenerate wBlankLine")
             rc.HasError = True
             rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.Windows
+            rc.ErrorLocation = enumErrorLocation.ModGenWindows
             rc.ErrorPath = pathSQD
         End Try
 
@@ -4315,7 +4315,7 @@ ErrorGoTo:
             LogError(ex, "modGenerate wSemiLine")
             rc.HasError = True
             rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.Windows
+            rc.ErrorLocation = enumErrorLocation.ModGenWindows
             rc.ErrorPath = pathSQD
         End Try
 
@@ -4375,7 +4375,7 @@ ErrorGoTo:
             LogError(ex, "modGenerate wComment")
             rc.HasError = True
             rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.Windows
+            rc.ErrorLocation = enumErrorLocation.ModGenWindows
         End Try
 
         wComment = Not rc.HasFatal
@@ -4398,7 +4398,7 @@ ErrorGoTo:
             LogError(ex, "modGenerate wErrorComment")
             rc.HasError = True
             rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.Windows
+            rc.ErrorLocation = enumErrorLocation.ModGenWindows
         End Try
         Return True
 
@@ -4421,7 +4421,7 @@ ErrorGoTo:
             LogError(ex, "modGenerate AddToLineNo")
             rc.HasError = True
             rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.Windows
+            rc.ErrorLocation = enumErrorLocation.ModGenWindows
             rc.ErrorPath = pathSQD
         End Try
 

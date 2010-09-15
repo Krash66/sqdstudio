@@ -24,9 +24,13 @@ Public Class clsRcode
     Private mPRCPath As String
     Private mGenType As enumGenType
 
-    Dim Rkeys As ArrayList
-    Dim RDS As ArrayList
-    Dim RProcs As ArrayList
+    Private mModPath As String                  'Path to the newly built Model
+    Private mModErrPath As String               'Path to ModelError Log
+    Private mModReturnCode As String                'Modeler Return Code
+
+    'Dim Rkeys As ArrayList
+    'Dim RDS As ArrayList
+    'Dim RProcs As ArrayList
 
 #Region "Properties"
 
@@ -270,6 +274,33 @@ Public Class clsRcode
         End Set
     End Property
 
+    Public Property ModPath() As String
+        Get
+            Return mModPath
+        End Get
+        Set(ByVal value As String)
+            mModPath = value
+        End Set
+    End Property
+
+    Public Property ModErrPath() As String
+        Get
+            Return mModErrPath
+        End Get
+        Set(ByVal value As String)
+            mModErrPath = value
+        End Set
+    End Property
+
+    Public Property ModReturnCode() As String
+        Get
+            Return mModReturnCode
+        End Get
+        Set(ByVal value As String)
+            mModReturnCode = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Methods"
@@ -282,7 +313,7 @@ Public Class clsRcode
         Select Case Me.ErrorLocation
             Case enumErrorLocation.NoErrors
                 '/// No Errors --- Already Handled
-            Case enumErrorLocation.FileCreation
+            Case enumErrorLocation.ModGenFileCreation
                 MessageObj = "While creating file " & Me.ErrorPath & Chr(13) & _
                 "an error occured in Windows as follows: " & Chr(13) & _
                 Me.ReturnCode
@@ -341,11 +372,11 @@ Public Class clsRcode
                 "caused an error occured in Windows as follows: " & Chr(13) & _
                 Me.ReturnCode
 
-            Case enumErrorLocation.Windows
+            Case enumErrorLocation.ModGenWindows
                 MessageObj = "A Windows error occured with this message:" & Chr(13) & _
                 Me.ReturnCode
 
-            Case enumErrorLocation.SQDParse
+            Case enumErrorLocation.ModGenSQDParse
                 '/// Already Handled
 
         End Select
