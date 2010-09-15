@@ -6,14 +6,6 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
-    Friend WithEvents mnuModDSSelDTD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelDDL As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelC As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelLOD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelSQL As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelMSSQL As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem31 As System.Windows.Forms.MenuItem
 
 
     '//This collection holds Inode objects copied into clipboard
@@ -309,7 +301,14 @@ Public Class frmMain
     Friend WithEvents mnuLU As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem23 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddGen As System.Windows.Forms.MenuItem
-
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
+    Friend WithEvents mnuModDSSelDTD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelC As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelLOD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelSQL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelMSSQL As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem31 As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -8103,8 +8102,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     StrObj = CType(StrNode.Tag, clsStructure)
                     NewName = "m" & StrObj.Text
 
-                    retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
-                    strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
+                    retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
+                    'retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
+                    'strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
 
                     If retPath = "" Then
                         MsgBox("There was a problem modeling " & StrObj.Text, MsgBoxStyle.Information, MsgTitle)
