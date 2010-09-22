@@ -34,7 +34,7 @@ doAgain:
         For Each conn As clsConnection In ObjEnv.Connections
             cbConn.Items.Add(New Mylist(conn.ConnectionName, conn))
         Next
-        cbConn.SelectedIndex = 0
+        cbConn.SelectedIndex = -1
 
     End Sub
 

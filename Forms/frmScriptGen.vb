@@ -224,6 +224,7 @@ Public Class frmScriptGen
         Me.gbPath.Enabled = False
         Me.gbStudioFiles.Enabled = False
         Me.gbParseFiles.Enabled = False
+        Me.btnOpenOutput.Enabled = False
 
         cmdOk.Visible = False
         cmdCancel.Text = "Close"
@@ -539,14 +540,30 @@ Public Class frmScriptGen
         Try
             Dim Success As String
 
+            '/// Success is the full path to the SQData engine Log
             Success = RunSQData(IO.Path.Combine(txtFolderPath.Text, ObjEng.EngineName & ".PRC"))
 
             If Success <> "" Then
                 Process.Start(Success)
+                If System.IO.File.Exists(IO.Path.Combine(txtFolderPath.Text, "Output.dat")) = True Then
+                    btnOpenOutput.Enabled = True
+                End If
             End If
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnSQData_click")
+        End Try
+
+    End Sub
+
+    Private Sub btnOpenOutput_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOpenOutput.Click
+
+        Try
+            '/// Open the output file
+            Process.Start(IO.Path.Combine(txtFolderPath.Text, "Output.dat"))
+
+        Catch ex As Exception
+            LogError(ex, "frmScriptGen btnOpenOutput_Click")
         End Try
 
     End Sub

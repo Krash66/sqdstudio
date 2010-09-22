@@ -735,7 +735,7 @@ Public Class ctlMain
                     Dim NewNode As TreeNode
                     For Each ndVar As TreeNode In nd.Nodes
                         If Not (objThis.Text = ndVar.Text) Then
-                            NewNode = AddNode(tvSource.Nodes, NODE_VARIABLE, ndVar.Tag)
+                            NewNode = AddTreeNode(tvSource, NODE_VARIABLE, ndVar.Tag)
                             'NewNode = AddNode(tvTarget.Nodes, NODE_VARIABLE, ndVar.Tag)
                         End If
                     Next
@@ -835,7 +835,7 @@ Public Class ctlMain
                     Dim NewNode As TreeNode
                     For Each ndVar As TreeNode In nd.Nodes
                         If Not (objThis.Text = ndVar.Text) Then
-                            NewNode = AddNode(tvSource.Nodes, NODE_VARIABLE, ndVar.Tag)
+                            NewNode = AddTreeNode(tvSource, NODE_VARIABLE, ndVar.Tag)
                             'NewNode = AddNode(tvTarget.Nodes, NODE_VARIABLE, ndVar.Tag)
                         End If
                     Next
@@ -1089,7 +1089,7 @@ Public Class ctlMain
                     objDsSel = objDs.ObjSelections(i)
                     objDsSel.LoadMe()
                     '// First add a node in the tree for this DSSelection
-                    ndSel = AddNode(ndDs.Nodes, objDsSel.Type, objDsSel, True)
+                    ndSel = AddNode(ndDs, objDsSel.Type, objDsSel, True)
                     '//Add all fields of this DSSelection
                     ndSel.Tag = objDsSel
                     '//load field list for this DSSelection

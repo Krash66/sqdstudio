@@ -80,26 +80,29 @@ Public Class clsProject
     Public Environments As New Collection
     Public Maplist As New ArrayList
 
-    Private m_ENVexpanded As Boolean
-    Private m_CONNexpanded As Boolean
-    Private m_STRexpanded As Boolean
+    Private m_ENVexpanded As Boolean = True
+    Private m_ENV_FOexpanded As Boolean = True
+    Private m_CONNexpanded As Boolean = True
+    Private m_STRexpanded As Boolean = True
     '/// individual Structure folder types
-    Private m_COBOLexpanded As Boolean
-    Private m_COBOLIMSexpanded As Boolean
-    Private m_Cexpanded As Boolean
-    Private m_DDLexpanded As Boolean
-    Private m_DMLexpanded As Boolean
-    Private m_XMLDTDexpanded As Boolean
+    Private m_COBOLexpanded As Boolean = True
+    Private m_COBOLIMSexpanded As Boolean = True
+    Private m_Cexpanded As Boolean = True
+    Private m_DDLexpanded As Boolean = True
+    Private m_DMLexpanded As Boolean = True
+    Private m_XMLDTDexpanded As Boolean = True
 
-    Private m_VARtopExpanded As Boolean
-    Private m_SYSexpanded As Boolean
-    Private m_ENGexpanded As Boolean
-    Private m_SRCexpanded As Boolean
-    Private m_SRCselExpanded As Boolean
-    Private m_TGTexpanded As Boolean
-    Private m_VARexpanded As Boolean
-    Private m_PROCexpanded As Boolean
-    Private m_MAINexpanded As Boolean
+    Private m_VARtopExpanded As Boolean = True
+    Private m_SYS_FOexpanded As Boolean = True
+    Private m_SYSexpanded As Boolean = True
+    Private m_ENG_FOexpanded As Boolean = True
+    Private m_ENGexpanded As Boolean = True
+    Private m_SRCexpanded As Boolean = True
+    Private m_SRCselExpanded As Boolean = False
+    Private m_TGTexpanded As Boolean = True
+    Private m_VARexpanded As Boolean = True
+    Private m_PROCexpanded As Boolean = True
+    Private m_MAINexpanded As Boolean = True
 
     Private m_IsLoaded As Boolean
 
@@ -248,21 +251,14 @@ Public Class clsProject
             'cnn.Open()
             cmd.Connection = cnn
 
-            If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "Update " & Me.Project.tblProjects & " set ProjectName='" & FixStr(Me.ProjectName) & _
-                "',Description='" & FixStr(Me.ProjectDesc) & "',Version='" & FixStr(Me.ProjectVersion) & _
-                "' where ProjectName=" & Me.GetQuotedText
+            
+            sql = "Update " & Me.Project.tblProjects & " set PROJECTNAME='" & FixStr(Me.ProjectName) & _
+            "',PROJECTDESCRIPTION='" & FixStr(Me.ProjectDesc) & "',SECURITYATTR='" & FixStr(Me.SecurityATTR) & _
+            "' where ProjectName=" & Me.GetQuotedText
 
-            Else
-                sql = "Update " & Me.Project.tblProjects & " set PROJECTNAME='" & FixStr(Me.ProjectName) & _
-                "',PROJECTDESCRIPTION='" & FixStr(Me.ProjectDesc) & "',SECURITYATTR='" & FixStr(Me.SecurityATTR) & _
-                "' where ProjectName=" & Me.GetQuotedText
+            Me.DeleteATTR(cmd)
+            Me.InsertATTR(cmd)
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
-           
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
@@ -428,6 +424,11 @@ Public Class clsProject
             Dim Attrib As String = ""
             Dim Value As String = ""
 
+            If cnn Is Nothing Then
+                cnn = New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
+                cnn.Open()
+            End If
+
             If Incmd IsNot Nothing Then
                 cmd = Incmd
             Else
@@ -459,6 +460,46 @@ Public Class clsProject
                         Me.MainSeparatorX = GetVal(dr("PROJECTATTRBVALUE"))
                     Case "VERSION"
                         Me.ProjectVersion = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "ENV_FOexpanded"
+                        Me.ENV_FOexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "ENVexpanded"
+                        Me.ENVexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "CONNexpanded"
+                        Me.CONNexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "STRexpanded"
+                        Me.STRexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "COBOLexpanded"
+                        Me.COBOLexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "COBOLIMSexpanded"
+                        Me.COBOLIMSexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "Cexpanded"
+                        Me.Cexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "XMLDTDexpanded"
+                        Me.XMLDTDexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "DDLexpanded"
+                        Me.DDLexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "DMLexpanded"
+                        Me.DMLexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "SYS_FOexpanded"
+                        Me.SYS_FOexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "SYSexpanded"
+                        Me.SYSexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "ENG_FOexpanded"
+                        Me.ENG_FOexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "ENGexpanded"
+                        Me.ENGexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "SRCexpanded"
+                        Me.SRCexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "SRCselExpanded"
+                        Me.SRCselExpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "TGTexpanded"
+                        Me.TGTexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "VARexpanded"
+                        Me.VARexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "PROCexpanded"
+                        Me.PROCexpanded = GetVal(dr("PROJECTATTRBVALUE"))
+                    Case "MAINexpanded"
+                        Me.MAINexpanded = GetVal(dr("PROJECTATTRBVALUE"))
                 End Select
             Next
 
@@ -675,6 +716,7 @@ Public Class clsProject
             Return m_MapListPath
         End Get
         Set(ByVal value As String)
+            value = Strings.Replace(value, "\\", "\", , , CompareMethod.Text)
             m_MapListPath = value
         End Set
     End Property
@@ -1025,6 +1067,15 @@ Public Class clsProject
         End Get
     End Property
 
+    Public Property ENV_FOexpanded() As Boolean
+        Get
+            Return m_ENV_FOexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_ENV_FOexpanded = value
+        End Set
+    End Property
+
     Public Property ENVexpanded() As Boolean
         Get
             Return m_ENVexpanded
@@ -1115,12 +1166,30 @@ Public Class clsProject
         End Set
     End Property
 
+    Public Property SYS_FOexpanded() As Boolean
+        Get
+            Return m_SYS_FOexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_SYS_FOexpanded = value
+        End Set
+    End Property
+
     Public Property SYSexpanded() As Boolean
         Get
             Return m_SYSexpanded
         End Get
         Set(ByVal value As Boolean)
             m_SYSexpanded = value
+        End Set
+    End Property
+
+    Public Property ENG_FOexpanded() As Boolean
+        Get
+            Return m_ENG_FOexpanded
+        End Get
+        Set(ByVal value As Boolean)
+            m_ENG_FOexpanded = value
         End Set
     End Property
 
@@ -1260,16 +1329,25 @@ Public Class clsProject
                 End If
                 If Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath") IsNot Nothing Then
                     Me.MapListPath = Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath").ToString
+                    Me.MapListPath = Strings.Replace(Me.MapListPath, "\\", "\", , , CompareMethod.Text)
                 Else
                     Me.MapListPath = ""
                 End If
-                ReqLogin = Application.UserAppDataRegistry.GetValue("LoginReq").ToString
+                If Application.UserAppDataRegistry.GetValue("LoginReq") IsNot Nothing Then
+                    ReqLogin = Application.UserAppDataRegistry.GetValue("LoginReq").ToString
+                Else
+                    ReqLogin = ""
+                End If
                 If ReqLogin = "true" Then
                     Me.LoginReq = True
                 Else
                     Me.LoginReq = False
                 End If
-                ReqSchema = Application.UserAppDataRegistry.GetValue("SchemaReq").ToString
+                If Application.UserAppDataRegistry.GetValue("SchemaReq") IsNot Nothing Then
+                    ReqSchema = Application.UserAppDataRegistry.GetValue("SchemaReq").ToString
+                Else
+                    ReqSchema = ""
+                End If
                 If ReqSchema = "true" Then
                     Me.SchemaReq = True
                 Else
@@ -1303,7 +1381,7 @@ Public Class clsProject
 
             cmd.Connection = cnn
 
-            For i As Integer = 0 To 4
+            For i As Integer = 0 To 24
                 Select Case i
                     Case 0
                         Attrib = "CDATE"
@@ -1320,7 +1398,70 @@ Public Class clsProject
                     Case 4
                         Attrib = "VERSION"
                         Value = Me.ProjectVersion
+                    Case 5
+                        Attrib = "ENV_FOexpanded"
+                        Value = Me.ENV_FOexpanded
+                    Case 6
+                        Attrib = "ENVexpanded"
+                        Value = Me.ENVexpanded
+                    Case 7
+                        Attrib = "CONNexpanded"
+                        Value = Me.CONNexpanded
+                    Case 8
+                        Attrib = "STRexpanded"
+                        Value = Me.STRexpanded
+                    Case 9
+                        Attrib = "COBOLexpanded"
+                        Value = Me.COBOLexpanded
+                    Case 10
+                        Attrib = "COBOLIMSexpanded"
+                        Value = Me.COBOLIMSexpanded
+                    Case 11
+                        Attrib = "Cexpanded"
+                        Value = Me.Cexpanded
+                    Case 12
+                        Attrib = "XMLDTDexpanded"
+                        Value = Me.XMLDTDexpanded
+                    Case 13
+                        Attrib = "DDLexpanded"
+                        Value = Me.DDLexpanded
+                    Case 14
+                        Attrib = "DMLexpanded"
+                        Value = Me.DMLexpanded
+                    Case 15
+                        Attrib = "SYS_FOexpanded"
+                        Value = Me.SYS_FOexpanded
+                    Case 16
+                        Attrib = "SYSexpanded"
+                        Value = Me.SYSexpanded
+                    Case 17
+                        Attrib = "ENG_FOexpanded"
+                        Value = Me.ENG_FOexpanded
+                    Case 18
+                        Attrib = "ENGexpanded"
+                        Value = Me.ENGexpanded
+                    Case 19
+                        Attrib = "SRCexpanded"
+                        Value = Me.SRCexpanded
+                    Case 20
+                        Attrib = "SRCselExpanded"
+                        Value = Me.SRCselExpanded
+                    Case 21
+                        Attrib = "TGTexpanded"
+                        Value = Me.TGTexpanded
+                    Case 22
+                        Attrib = "VARexpanded"
+                        Value = Me.VARexpanded
+                    Case 23
+                        Attrib = "PROCexpanded"
+                        Value = Me.PROCexpanded
+                    Case 24
+                        Attrib = "MAINexpanded"
+                        Value = Me.MAINexpanded
+                    Case Else
+
                 End Select
+
                 sql = "INSERT INTO " & Me.Project.tblProjectsATTR & "(PROJECTNAME,PROJECTATTRB,PROJECTATTRBVALUE) " & _
                 "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Attrib) & "','" & FixStr(Value) & "')"
 

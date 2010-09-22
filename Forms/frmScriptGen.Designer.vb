@@ -56,6 +56,7 @@ Partial Class frmScriptGen
         Me.cbDebugSrcData = New System.Windows.Forms.CheckBox
         Me.btnGenScript = New System.Windows.Forms.Button
         Me.btnSQData = New System.Windows.Forms.Button
+        Me.btnOpenOutput = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.gbPath.SuspendLayout()
         Me.gbStudioFiles.SuspendLayout()
@@ -497,12 +498,22 @@ Partial Class frmScriptGen
         'btnSQData
         '
         Me.btnSQData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSQData.Location = New System.Drawing.Point(175, 630)
+        Me.btnSQData.Location = New System.Drawing.Point(12, 629)
         Me.btnSQData.Name = "btnSQData"
         Me.btnSQData.Size = New System.Drawing.Size(165, 23)
         Me.btnSQData.TabIndex = 64
         Me.btnSQData.Text = "Run SQData"
         Me.btnSQData.UseVisualStyleBackColor = True
+        '
+        'btnOpenOutput
+        '
+        Me.btnOpenOutput.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOpenOutput.Location = New System.Drawing.Point(192, 629)
+        Me.btnOpenOutput.Name = "btnOpenOutput"
+        Me.btnOpenOutput.Size = New System.Drawing.Size(146, 23)
+        Me.btnOpenOutput.TabIndex = 65
+        Me.btnOpenOutput.Text = "Open Output.dat"
+        Me.btnOpenOutput.UseVisualStyleBackColor = True
         '
         'frmScriptGen
         '
@@ -512,10 +523,12 @@ Partial Class frmScriptGen
         Me.Controls.Add(Me.gbPath)
         Me.Controls.Add(Me.gbResults)
         Me.Controls.Add(Me.gbParseFiles)
+        Me.Controls.Add(Me.btnOpenOutput)
         Me.Controls.Add(Me.btnSQData)
         Me.Name = "frmScriptGen"
         Me.Text = "SQData Studio V3"
         Me.Controls.SetChildIndex(Me.btnSQData, 0)
+        Me.Controls.SetChildIndex(Me.btnOpenOutput, 0)
         Me.Controls.SetChildIndex(Me.gbParseFiles, 0)
         Me.Controls.SetChildIndex(Me.gbResults, 0)
         Me.Controls.SetChildIndex(Me.gbPath, 0)
@@ -581,5 +594,6 @@ Partial Class frmScriptGen
     Friend WithEvents btnParseOnlySQD As System.Windows.Forms.Button
     Friend WithEvents btnParseSQD As System.Windows.Forms.Button
     Friend WithEvents btnSQData As System.Windows.Forms.Button
+    Friend WithEvents btnOpenOutput As System.Windows.Forms.Button
 
 End Class

@@ -131,14 +131,14 @@ Public Module modXML
                     Dim obj As INode = GetObjectFromXMLAttr(child_xmlnode, XMLType)
                     '//function visible false on first load
                     If obj.Type = NODE_FUN Then
-                        new_tvnode = AddNode(parent_tvnodes, obj.Type, obj, False)
+                        new_tvnode = AddNodeToCol(parent_tvnodes, obj.Type, obj, False)
                     ElseIf obj.Type = NODE_STRUCT_FLD Then
                         obj.Text = CType(obj, clsField).FieldName
                         CType(obj, clsField).Parent = obj
                         CType(obj, clsField).ParentStructureName = obj.Text
-                        new_tvnode = AddNode(parent_tvnodes, obj.Type, obj, True)
+                        new_tvnode = AddNodeToCol(parent_tvnodes, obj.Type, obj, True)
                     Else
-                        new_tvnode = AddNode(parent_tvnodes, obj.Type, obj, True)
+                        new_tvnode = AddNodeToCol(parent_tvnodes, obj.Type, obj, True)
                     End If
                     new_tvnode.Tag = obj
                 Else
@@ -611,7 +611,7 @@ Public Module modXML
                 Next
                 '//add very recently used function node
                 Dim objFolder As New clsFolderNode("Recently Used", NODE_FO_FUNCTION_RECENT)
-                AddNode(tv.Nodes, NODE_FO_FUNCTION_RECENT, objFolder)
+                AddTreeNode(tv, NODE_FO_FUNCTION_RECENT, objFolder)
             End If
 
             Return True

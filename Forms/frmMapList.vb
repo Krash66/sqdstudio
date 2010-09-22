@@ -289,13 +289,13 @@ Public Class frmMapList
             Else
                 '/// see if a file exists for this project 
                 '/// if it doesn't, create a new one
-create:         If System.IO.File.Exists(GetAppTemp() & "\" & ProjObj.ProjectName & "MapList.csv") = False Then
+create:         If System.IO.File.Exists(GetAppTemp() & ProjObj.ProjectName & "MapList.csv") = False Then
                     '/// Create a new Maplist file in the Temp directory
                     Dim newfs As System.IO.FileStream
-                    newfs = System.IO.File.Create(GetAppTemp() & "\" & ProjObj.ProjectName & "MapList.csv")
+                    newfs = System.IO.File.Create(GetAppTemp() & ProjObj.ProjectName & "MapList.csv")
                     newfs.Close()
                 End If
-                ProjObj.MapListPath = GetAppTemp() & "\" & ProjObj.ProjectName & "MapList.csv"
+                ProjObj.MapListPath = GetAppTemp() & ProjObj.ProjectName & "MapList.csv"
                 Filepath = ProjObj.MapListPath
             End If
 
@@ -346,7 +346,9 @@ create:         If System.IO.File.Exists(GetAppTemp() & "\" & ProjObj.ProjectNam
             SaveFD1.FileName = ProjObj.MapListPath
 
             If saveAs = True Then
-                SaveFD1.ShowDialog(Me)
+                If System.IO.File.Exists(SaveFD1.FileName) Then
+                    SaveFD1.ShowDialog(Me)
+                End If
             End If
 
             If SaveFD1.FileName <> "" Then

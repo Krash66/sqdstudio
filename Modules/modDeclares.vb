@@ -459,14 +459,14 @@ Public Module modDeclares
 
         Try
             If TraceFile Is Nothing Then
-                TraceFile = "trace.log"
+                TraceFile = "Trace.log"
             End If
             If errorTrace Is Nothing Then
                 errorTrace = "ErrorTrc.log"
             End If
             If ClearLogOnStartUp = True Then
-                System.IO.File.Delete(GetAppPath() & TraceFile)
-                System.IO.File.Delete(GetAppPath() & errorTrace)
+                System.IO.File.Delete(GetAppTemp() & TraceFile)
+                System.IO.File.Delete(GetAppTemp() & errorTrace)
                 'System.IO.File.Delete(GetAppPath() & "*.log")
             End If
             EnableLogging = True

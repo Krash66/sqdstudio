@@ -654,11 +654,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppPath() & "sqdgnsqd.log"
+                        rc.ParserPath = GetAppTemp() & "sqdgnsqd.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
+                        rc.Path = Quote(GetAppTemp() & "sqdgnsqd.log", """")
 
                     Case 0
                         rc.ParserPath = pathINL
@@ -773,11 +773,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppPath() & "sqdgnsqd.log"
+                        rc.ParserPath = GetAppTemp() & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppPath() & "sqdgnsqd.log", """")
+                        rc.Path = Quote(GetAppTemp() & "sqdparse.log", """")
 
                     Case 0
                         rc.ParserPath = pathSQD

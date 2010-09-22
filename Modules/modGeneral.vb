@@ -584,7 +584,7 @@ Public Module modGeneral
             Dim PathErr As String
 
 
-            If SavePath = "" Then SavePath = GetAppPath()
+            If SavePath = "" Then SavePath = GetAppTemp()
 
             Select Case OutType
                 Case "DTD"
@@ -808,13 +808,13 @@ Public Module modGeneral
 
         '//run out exe with command line args so it produces meta data in XML format
         Try
-            Dim TempPath As String = GetAppTemp()
+            'Dim TempPath As String = GetAppTemp()
             Dim fsERR As System.IO.FileStream
             Dim objWriteERR As System.IO.StreamWriter
-            Dim PathErr As String = IO.Path.Combine(GetAppTemp(), "sqdata.ERR")
+            Dim PathErr As String = IO.Path.Combine(GetDirFromPath(pathPRC), "sqdata.ERR")
             'Dim fsOUT As System.IO.FileStream
             'Dim objWriteOUT As System.IO.StreamWriter
-            Dim PathOUT As String = IO.Path.Combine(GetDirFromPath(pathPRC), GetFileNameWithoutExtenstionFromPath(pathPRC) & ".OUT")
+            'Dim PathOUT As String = IO.Path.Combine(GetDirFromPath(pathPRC), GetFileNameWithoutExtenstionFromPath(pathPRC) & ".OUT")
 
             Dim FORargs As String = String.Format("{0}", Quote(pathPRC, """"))
             Dim args As String = FORargs
@@ -1176,8 +1176,104 @@ Public Module modGeneral
 
     End Function
 
+    '/// Adds nodes to a treenode (tree node collection)
+    Public Function AddNode(ByRef pNode As TreeNode, ByVal NodeType As String, ByVal obj As INode, Optional ByVal NodeVisible As Boolean = True, Optional ByVal NodeText As String = "") As TreeNode
+
+        Try
+            Dim n As New TreeNode
+
+            '//Make folder node in bold all other in regular font
+            If Strings.Left(NodeType, 3) = "FO_" Then
+                n.NodeFont = New Font("Arial", 8, FontStyle.Bold)
+            ElseIf NodeType <> "" Then
+                n.NodeFont = New Font("Arial", 8, FontStyle.Regular)
+            End If
+
+            obj.ObjTreeNode = n
+            If NodeText <> "" Then
+                n.Text = NodeText
+            Else
+                n.Text = obj.Text
+            End If
+
+            n.Tag = obj
+
+            n.ImageIndex = ImgIdxFromName(NodeType, obj)
+            '//TODO: You can change this logic to show open folder for folder node
+            n.SelectedImageIndex = n.ImageIndex
+            pNode.Nodes.Add(n)
+
+            '/// Update Parent Folder Item Count (Number of Children or members)
+            If n.Parent IsNot Nothing Then
+                If CType(n.Parent.Tag, INode).IsFolderNode = True Then
+                    UpdateParentNodeLabel(n)
+                End If
+            End If
+
+            If NodeVisible = True Then
+                n.EnsureVisible()
+            Else
+                n.Collapse()
+            End If
+
+            AddNode = n
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral AddNode")
+            Return Nothing
+        End Try
+
+    End Function
+
     '/// Adds nodes to a treeview (tree node collection)
-    Public Function AddNode(ByRef pNode As TreeNodeCollection, ByVal NodeType As String, ByVal obj As INode, Optional ByVal NodeVisible As Boolean = True, Optional ByVal NodeText As String = "") As TreeNode
+    Public Function AddTreeNode(ByRef pNode As TreeView, ByVal NodeType As String, ByVal obj As INode, Optional ByVal NodeVisible As Boolean = True, Optional ByVal NodeText As String = "") As TreeNode
+
+        Try
+            Dim n As New TreeNode
+
+            '//Make folder node in bold all other in regular font
+            If Strings.Left(NodeType, 3) = "FO_" Then
+                n.NodeFont = New Font("Arial", 8, FontStyle.Bold)
+            ElseIf NodeType <> "" Then
+                n.NodeFont = New Font("Arial", 8, FontStyle.Regular)
+            End If
+
+            obj.ObjTreeNode = n
+            If NodeText <> "" Then
+                n.Text = NodeText
+            Else
+                n.Text = obj.Text
+            End If
+
+            n.Tag = obj
+
+            n.ImageIndex = ImgIdxFromName(NodeType, obj)
+            '//TODO: You can change this logic to show open folder for folder node
+            n.SelectedImageIndex = n.ImageIndex
+            pNode.Nodes.Add(n)
+
+            '/// Update Parent Folder Item Count (Number of Children or members)
+            If n.Parent IsNot Nothing Then
+                UpdateParentNodeLabel(n)
+            End If
+
+            If NodeVisible = True Then
+                n.EnsureVisible()
+            Else
+                n.Collapse()
+            End If
+
+            AddTreeNode = n
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral AddTreeNode")
+            Return Nothing
+        End Try
+
+    End Function
+
+    '/// Adds nodes to a treenodecollection (tree node collection)
+    Public Function AddNodeToCol(ByRef pNode As TreeNodeCollection, ByVal NodeType As String, ByVal obj As INode, Optional ByVal NodeVisible As Boolean = True, Optional ByVal NodeText As String = "") As TreeNode
 
         Try
             Dim n As New TreeNode
@@ -1209,11 +1305,105 @@ Public Module modGeneral
                 n.Collapse()
             End If
 
-            AddNode = n
+            AddNodeToCol = n
 
         Catch ex As Exception
-            LogError(ex, "modGeneral AddNode")
+            LogError(ex, "modGeneral AddNodeToCol")
             Return Nothing
+        End Try
+
+    End Function
+
+    Function UpdateNode(ByRef pNode As TreeNode, ByVal obj As INode) As Boolean
+
+        Dim tempobj As INode
+        Dim objDS As clsDatastore
+
+
+        Try
+            tempobj = pNode.Tag
+
+            pNode.Text = obj.Text
+
+            UpdateParentNodeLabel(pNode)
+
+            '// test to see if it's a Datastore Node then add strSelections under that node
+            If (tempobj.Type = NODE_SOURCEDATASTORE) Or (tempobj.Type = NODE_TARGETDATASTORE) Then
+                objDS = CType(pNode.Tag, clsDatastore)
+                pNode.Text = objDS.DsPhysicalSource
+                objDS.SetDSselParents()
+                AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
+
+            End If
+
+            '// if DS selection then see if parent is a datastrore and not a structure
+            '// then add selections under Datastore node
+            If ((tempobj.Type = NODE_SOURCEDSSEL) Or (tempobj.Type = NODE_TARGETDSSEL)) And ((obj.Type = NODE_SOURCEDATASTORE) Or (obj.Type = NODE_TARGETDATASTORE)) Then
+                objDS = CType(obj, clsDatastore)
+                objDS.SetDSselParents()
+                AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
+            End If
+
+            pNode.Tag = obj
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "UpdateNode=>" & ex.Message)
+        End Try
+
+    End Function
+
+    Public Function UpdateParentNodeLabel(ByRef cNode As TreeNode) As Boolean
+
+        Try
+            If cNode IsNot Nothing Then
+                If cNode.Parent IsNot Nothing Then
+                    If cNode.Parent.Text.StartsWith("(") Then
+                        '/// add 1 to node counter
+                        Dim c As Integer
+                        Dim str As String
+
+                        c = cNode.Parent.Text.IndexOf(")")
+                        str = cNode.Parent.Text
+                        str = str.Remove(1, c - 1)
+                        str = str.Insert(1, cNode.Parent.Nodes.Count.ToString)
+                        cNode.Parent.Text = str
+                    End If
+                End If
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral UpdateParentNodeLabel")
+            Return False
+        End Try
+
+    End Function
+
+    Public Function UpdateParentNodeCount(ByRef pNode As TreeNode) As Boolean
+
+        Try
+            If pNode IsNot Nothing Then
+                If pNode.Text.StartsWith("(") Then
+                    '/// add 1 to node counter
+                    Dim c As Integer
+                    Dim str As String
+
+                    c = pNode.Text.IndexOf(")")
+                    str = pNode.Text
+                    str = str.Remove(1, c - 1)
+                    str = str.Insert(1, pNode.Nodes.Count.ToString)
+                    pNode.Text = str
+                End If
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral UpdateParentNodeCount")
+            Return False
         End Try
 
     End Function
@@ -1687,7 +1877,7 @@ Public Module modGeneral
 
                     If firstFlag = True Then
                         '// add the first level of treenodes into the treeview
-                        ParentNode = AddNode(tv.Nodes, curField.Type, curField, False, curField.FieldName)
+                        ParentNode = AddTreeNode(tv, curField.Type, curField, False, curField.FieldName)
                         '// first time through set the curNode
                         If curNode Is Nothing Then
                             curNode = ParentNode
@@ -1696,7 +1886,7 @@ Public Module modGeneral
                     Else
                         '// now the tree view has nodes OR there was an initial parent node sent in to
                         '// the function to add nodes to. Either way the "firstFlag" was set to false
-                        curNode = AddNode(ParentNode.Nodes, curField.Type, curField, False, curField.FieldName)
+                        curNode = AddNode(ParentNode, curField.Type, curField, False, curField.FieldName)
                         curNode.EnsureVisible()
                     End If
                     '// make the last node level, the current level for the next time through the loop
@@ -1762,12 +1952,26 @@ Public Module modGeneral
 
     '//Creates a Tempfolder in the same location of Application exe file
     Function GetAppTemp(Optional ByVal TempFolderName As String = "Temp") As String
-        Dim AppPath As String = GetAppPath()
 
-        If System.IO.Directory.Exists(AppPath & TempFolderName) = False Then
-            System.IO.Directory.CreateDirectory(AppPath & TempFolderName)
+        Dim AppData As String = System.Windows.Forms.Application.LocalUserAppDataPath()
+        Dim AppTemp As String = ""
+
+        If Right(AppData, 1) <> "\" Then
+            AppData = AppData & "\"
         End If
-        GetAppTemp = AppPath & TempFolderName
+
+        AppTemp = AppData & TempFolderName
+
+        If Right(AppTemp, 1) <> "\" Then
+            AppTemp = AppTemp & "\"
+        End If
+
+        If System.IO.Directory.Exists(AppTemp) = False Then
+            System.IO.Directory.CreateDirectory(AppTemp)
+        End If
+
+        GetAppTemp = AppTemp
+
     End Function
 
     '//Filename with extension
@@ -1835,23 +2039,23 @@ Public Module modGeneral
 
     ' JDM - 0/28/2006 - Find Models folder
     Public Function GetModelPath() As String
-        Return GetAppPath() & "Models"
+        Return GetAppTemp() & "Models"
     End Function
 
     ' JDM - 0/28/2006 - Find Scripts folder
     Public Function GetScriptPath() As String
-        Return GetAppPath() & "Scripts"
+        Return GetAppTemp() & "Scripts"
     End Function
 
     ' JDM - 0/28/2006 - Find Help folder
-    Public Function GetHelpPath() As String
-        Return GetParentPath() & "Help"
-    End Function
+    'Public Function GetHelpPath() As String
+    '    Return GetParentPath() & "Help"
+    'End Function
 
     '// new 12/4/2006 by TK
     '//Creates a Query folder in the Application directory
     Function QueryFolderPath(Optional ByVal QueryFolderName As String = "Queries") As String
-        Dim AppPath As String = GetAppPath()
+        Dim AppPath As String = GetAppTemp()
 
         If System.IO.Directory.Exists(AppPath & QueryFolderName) = False Then
             System.IO.Directory.CreateDirectory(AppPath & QueryFolderName)
@@ -1864,9 +2068,9 @@ Public Module modGeneral
         Dim AppPath As String = GetAppPath()
         Dim AppTemp As String = GetAppTemp()
 
-        If System.IO.Directory.Exists(AppPath & ReportFolderName) = False Then
-            System.IO.Directory.CreateDirectory(AppPath & ReportFolderName)
-        End If
+        'If System.IO.Directory.Exists(AppPath & ReportFolderName) = False Then
+        '    System.IO.Directory.CreateDirectory(AppPath & ReportFolderName)
+        'End If
         'ReportFolderPath = AppPath & ReportFolderName
         ReportFolderPath = GetAppTemp()
 
@@ -2009,7 +2213,7 @@ Public Module modGeneral
             If SubstList.Contains(Instr) = False Then
                 SubstList.Add(Instr)
             End If
-            
+
             Return Instr
 
         Catch ex As Exception

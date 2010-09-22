@@ -2218,13 +2218,6 @@ Public Class frmMain
 
 #End Region
 
-    '#Region "Rename Load"
-
-    '    Sub UpdateTreeAfterRename(ByVal ReNamedObj As INode)
-
-    '    End Sub
-
-    '#End Region
     '//////// TVexplorer tree events .... etc... ////////
 #Region "tvexplorer functions"
 
@@ -2265,6 +2258,9 @@ Public Class frmMain
 
             ShowPopupMenu(tvExplorer.SelectedNode, New Point(e.X, e.Y))
             IsEventFromCode = False
+        Else
+            Dim node_here As TreeNode = tvExplorer.GetNodeAt(e.X, e.Y)
+            tvExplorer.SelectedNode = node_here
         End If
 
     End Sub
@@ -2307,6 +2303,149 @@ Public Class frmMain
         Me.Cursor = Cursors.Default
 
     End Sub
+
+    Private Sub tvExplorer_AfterExpandAfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterExpand, tvExplorer.AfterCollapse
+
+        
+        If tvExplorer.SelectedNode IsNot Nothing Then
+            Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
+            Dim NodeText As String = tvExplorer.SelectedNode.Text
+            Dim NodeState As Boolean = tvExplorer.SelectedNode.IsExpanded
+
+            Select Case Nodetype
+                Case NODE_FO_ENVIRONMENT
+                    CurLoadedProject.ENV_FOexpanded = NodeState
+
+                Case NODE_ENVIRONMENT
+                    CurLoadedProject.ENVexpanded = NodeState
+
+                Case NODE_FO_CONNECTION
+                    CurLoadedProject.CONNexpanded = NodeState
+
+                Case NODE_FO_STRUCT
+                    If NodeText.Contains("Descriptions") = True Then
+                        CurLoadedProject.STRexpanded = NodeState
+                    ElseIf NodeText.EndsWith("COBOL") = True Then
+                        CurLoadedProject.COBOLexpanded = NodeState
+                    ElseIf NodeText.EndsWith("COBOLIMS") = True Then
+                        CurLoadedProject.COBOLIMSexpanded = NodeState
+                    ElseIf NodeText.EndsWith("CHeader") = True Then
+                        CurLoadedProject.Cexpanded = NodeState
+                    ElseIf NodeText.EndsWith("XMLDTD") = True Then
+                        CurLoadedProject.XMLDTDexpanded = NodeState
+                    ElseIf NodeText.EndsWith("DDL") = True Then
+                        CurLoadedProject.DDLexpanded = NodeState
+                    ElseIf NodeText.EndsWith("DML") = True Then
+                        CurLoadedProject.DMLexpanded = NodeState
+                    End If
+
+                Case NODE_FO_SYSTEM
+                    CurLoadedProject.SYS_FOexpanded = NodeState
+
+                Case NODE_SYSTEM
+                    CurLoadedProject.SYSexpanded = NodeState
+
+                Case NODE_FO_ENGINE
+                    CurLoadedProject.ENG_FOexpanded = NodeState
+
+                Case NODE_ENGINE
+                    CurLoadedProject.ENGexpanded = NodeState
+
+                Case NODE_FO_SOURCEDATASTORE
+                    CurLoadedProject.SRCexpanded = NodeState
+
+                Case NODE_SOURCEDATASTORE
+                    CurLoadedProject.SRCselExpanded = NodeState
+
+                Case NODE_FO_TARGETDATASTORE
+                    CurLoadedProject.TGTexpanded = NodeState
+
+                Case NODE_FO_VARIABLE
+                    CurLoadedProject.VARexpanded = NodeState
+
+                Case NODE_FO_PROC
+                    CurLoadedProject.PROCexpanded = NodeState
+
+                Case NODE_FO_MAIN
+                    CurLoadedProject.MAINexpanded = NodeState
+
+                Case Else
+
+            End Select
+        End If
+
+    End Sub
+
+    'Private Sub tvExplorer_AfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
+
+    '    If tvExplorer.SelectedNode.IsExpanded = True Then Exit Sub
+
+    '    If tvExplorer.SelectedNode IsNot Nothing Then
+    '        Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
+    '        Dim NodeText As String = tvExplorer.SelectedNode.Text
+    '        Dim NodeState As Boolean = tvExplorer.SelectedNode.IsExpanded
+
+    '        Select Case Nodetype
+    '            Case NODE_FO_ENVIRONMENT
+    '                CurLoadedProject.ENV_FOexpanded = NodeState
+
+    '            Case NODE_ENVIRONMENT
+    '                CurLoadedProject.ENVexpanded = NodeState
+
+    '            Case NODE_FO_CONNECTION
+    '                CurLoadedProject.CONNexpanded = NodeState
+
+    '            Case NODE_FO_STRUCT
+    '                If NodeText.Contains("Descriptions") = True Then
+    '                    CurLoadedProject.STRexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("COBOL") = True Then
+    '                    CurLoadedProject.COBOLexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("COBOLIMS") = True Then
+    '                    CurLoadedProject.COBOLIMSexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("CHeader") = True Then
+    '                    CurLoadedProject.Cexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("XMLDTD") = True Then
+    '                    CurLoadedProject.XMLDTDexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("DDL") = True Then
+    '                    CurLoadedProject.DDLexpanded = NodeState
+    '                ElseIf NodeText.EndsWith("DML") = True Then
+    '                    CurLoadedProject.DMLexpanded = NodeState
+    '                End If
+
+    '            Case NODE_FO_SYSTEM
+    '                CurLoadedProject.SYS_FOexpanded = NodeState
+
+    '            Case NODE_SYSTEM
+    '                CurLoadedProject.SYSexpanded = NodeState
+
+    '            Case NODE_FO_ENGINE
+    '                CurLoadedProject.ENG_FOexpanded = NodeState
+
+    '            Case NODE_ENGINE
+    '                CurLoadedProject.ENGexpanded = NodeState
+
+    '            Case NODE_FO_SOURCEDATASTORE
+    '                CurLoadedProject.SRCexpanded = NodeState
+
+    '            Case NODE_SOURCEDATASTORE
+    '                CurLoadedProject.SRCselExpanded = NodeState
+
+    '            Case NODE_FO_TARGETDATASTORE
+    '                CurLoadedProject.TGTexpanded = NodeState
+
+    '            Case NODE_FO_VARIABLE
+    '                CurLoadedProject.VARexpanded = NodeState
+
+    '            Case NODE_FO_PROC
+    '                CurLoadedProject.PROCexpanded = NodeState
+
+    '            Case NODE_FO_MAIN
+    '                CurLoadedProject.MAINexpanded = NodeState
+
+    '        End Select
+    '    End If
+
+    'End Sub
 
     Private Sub tvExplorer_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tvExplorer.KeyDown
 
@@ -2488,6 +2627,7 @@ Public Class frmMain
             End If
 
             tvExplorer.BeginUpdate()
+
             'As the mouse moves over nodes, provide feedback to the user
             'by highlighting the node that is the current drop target
             Dim pt As Point = CType(sender, TreeView).PointToClient(New Point(e.X, e.Y))
@@ -2545,7 +2685,7 @@ Public Class frmMain
                     obj = frm2.NewProj()
 
                     If Not (obj Is Nothing) Then
-                        cNode = AddNode(tvExplorer.Nodes, NODE_PROJECT, obj)
+                        cNode = AddTreeNode(tvExplorer, NODE_PROJECT, obj)
                         obj.SeqNo = cNode.Index '//store position in array of nodes
                         If Not (cNode Is Nothing) Then
                             '// set the selected node "project name" to be a 
@@ -2555,7 +2695,7 @@ Public Class frmMain
                         '//When we create new project by default add Environment folder node
                         folderObj = New clsFolderNode("Environments", NODE_FO_ENVIRONMENT)
                         folderObj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, folderObj.Type, folderObj)
+                        AddNode(cNode, folderObj.Type, folderObj)
                     End If
 
                 Case modDeclares.enumAction.ACTION_OPEN
@@ -2566,16 +2706,18 @@ Public Class frmMain
 
                     frm1 = New frmProjOpen
                     obj = frm1.OpenProj()
+                    
 
-                    If Not (obj Is Nothing) Then
+                    If obj IsNot Nothing Then
+                        '// set the current loaded project as the object containing 
+                        '//the array of treenode objects
+                        obj.LoadMe()
+                        CurLoadedProject = obj
                         '// fill the object array with it's child treenodes
                         FillProject(obj)
                     Else
                         Exit Try
                     End If
-                    '// set the current loaded project as the object containing 
-                    '//the array of treenode objects
-                    CurLoadedProject = obj
 
                     '/// This loads the Mapping pattern list if one exists
                     If Application.UserAppDataRegistry.GetValue(CurLoadedProject.ProjectName & "MapListPath") IsNot Nothing Then
@@ -2634,7 +2776,7 @@ Public Class frmMain
 
                     If obj IsNot Nothing Then
                         '// add a node to the parent (project, not the environments folder)
-                        cNode = AddNode(cNode.Nodes, NODE_ENVIRONMENT, obj)
+                        cNode = AddNode(cNode, NODE_ENVIRONMENT, obj)
                         obj.SeqNo = cNode.Index '//store position
                         If Not (cNode Is Nothing) Then
                             '// if it's a valid environment then make it the selected 
@@ -2647,12 +2789,12 @@ Public Class frmMain
                         '//struct folder
                         obj = New clsFolderNode("Connections", NODE_FO_CONNECTION)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//struct folder
                         obj = New clsFolderNode("Descriptions", NODE_FO_STRUCT)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//Datastores folder
                         'obj = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
@@ -2667,7 +2809,7 @@ Public Class frmMain
                         '//variables folder
                         obj = New clsFolderNode("Variables", NODE_FO_VARIABLE)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//tasks folder
                         'obj = New clsFolderNode("Procedures", NODE_FO_PROC)
@@ -2677,7 +2819,7 @@ Public Class frmMain
                         '//sys folder
                         obj = New clsFolderNode("Systems", NODE_FO_SYSTEM)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
                     End If
 
                 Case modDeclares.enumAction.ACTION_DELETE
@@ -2737,7 +2879,7 @@ Public Class frmMain
                     End If
 
                     If Not (obj Is Nothing) Then
-                        cNode = AddNode(cNode.Nodes, NODE_VARIABLE, obj)
+                        cNode = AddNode(cNode, NODE_VARIABLE, obj)
                         '// add the new variable object to the tree as a "variable" node
                         obj.SeqNo = cNode.Index '//index it's store position
 
@@ -2825,7 +2967,7 @@ Public Class frmMain
                     If Not (obj Is Nothing) Then
                         '// if the task is a valid task then add a node to the tree 
                         '//under the proper folder
-                        cNode = AddNode(cNode.Nodes, obj.Type, obj)
+                        cNode = AddNode(cNode, obj.Type, obj)
                         '// make the new task object the current object and 
                         '//save the sequence number so it will be displayed 
                         '//properly in the treeview
@@ -2918,7 +3060,7 @@ Public Class frmMain
                     If Not (obj Is Nothing) Then
                         '// if the new system object is valid add the node to 
                         '// the tree as a system node and index it's position
-                        cNode = AddNode(cNode.Nodes, NODE_SYSTEM, obj)
+                        cNode = AddNode(cNode, NODE_SYSTEM, obj)
                         obj.SeqNo = cNode.Index '//store position
                         If Not (cNode Is Nothing) Then
                             '// if it's a valid node then make it the currently 
@@ -2932,7 +3074,7 @@ Public Class frmMain
                         '// the(New System)
                         obj = New clsFolderNode("Engines", NODE_FO_ENGINE)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
                     End If
 
                 Case modDeclares.enumAction.ACTION_DELETE
@@ -3151,7 +3293,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '//tree node the current node and put object "obj" into it. 
                         '//Then index it in the tree, and make it the currently 
                         '//selected tree node
-                        cNode = AddNode(cNode.Nodes, NODE_STRUCT_SEL, obj)
+                        cNode = AddNode(cNode, NODE_STRUCT_SEL, obj)
                         obj.SeqNo = cNode.Index '//store position
                         If Not (cNode Is Nothing) Then
                             tvExplorer.SelectedNode = cNode
@@ -3202,7 +3344,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '//index in the tree structure and add the node to the tree, 
                     '//then make it the selected node in the tree
                     If obj IsNot Nothing Then
-                        cNode = AddNode(cNode.Nodes, NODE_CONNECTION, obj)
+                        cNode = AddNode(cNode, NODE_CONNECTION, obj)
                         obj.SeqNo = cNode.Index '//store position
                         If Not (cNode Is Nothing) Then
                             '// make the new engine the currently selected tree node
@@ -3252,7 +3394,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                     If Not (obj Is Nothing) Then
                         '// add the new engine node to the tree and index it's position
-                        cNode = AddNode(cNode.Nodes, NODE_ENGINE, obj)
+                        cNode = AddNode(cNode, NODE_ENGINE, obj)
                         obj.SeqNo = cNode.Index '//store position
                         If Not (cNode Is Nothing) Then
                             '// make the new engine the currently selected tree node
@@ -3269,17 +3411,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '//sources folder
                         obj = New clsFolderNode("Sources", NODE_FO_SOURCEDATASTORE)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//targets folder
                         obj = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//variables folder
                         obj = New clsFolderNode("Variables", NODE_FO_VARIABLE)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//tasks folder
                         'obj = New clsFolderNode("Joins", NODE_FO_JOIN)
@@ -3289,12 +3431,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '//tasks folder
                         obj = New clsFolderNode("Procedures", NODE_FO_PROC)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                         '//tasks folder
                         obj = New clsFolderNode("Main", NODE_FO_MAIN)
                         obj.Parent = CType(cNode.Tag, INode)
-                        AddNode(cNode.Nodes, obj.Type, obj)
+                        AddNode(cNode, obj.Type, obj)
 
                     End If
 
@@ -3403,7 +3545,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '//If the new datastore is valid, add it as a child 
                         '//of the engine and index it properly for it's position in the tree
                         'If obj.Engine IsNot Nothing Then
-                        cNode = AddNode(cNode.Nodes, NodeType, obj, , obj.DsPhysicalSource)
+                        cNode = AddNode(cNode, NodeType, obj, , obj.DsPhysicalSource)
                         'Else
                         '    cNode = AddDSNode(obj, cNode)
                         'End If
@@ -3457,14 +3599,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            obj.LoadMe()
+            'obj.LoadMe()
 
             '// Optional Passed Vars added By Tom Karasch for change(i.e. delete, etc...) and rename
             '/// to reload project according to what occured in the object tree.
             If Renamed = False Then
                 If Updated = False Then  '// opening new project
                     '//Add project node
-                    cNode = AddNode(tvExplorer.Nodes, NODE_PROJECT, obj)
+                    cNode = AddTreeNode(tvExplorer, NODE_PROJECT, obj)
                     obj.SeqNo = cNode.Index '//store position
                     IsEventFromCode = True
                     SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
@@ -3511,7 +3653,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objF As clsFolderNode
             objF = New clsFolderNode("Environments", NODE_FO_ENVIRONMENT)
             objF.Parent = CType(cNode.Tag, INode)
-            cNode = AddNode(cNode.Nodes, objF.Type, objF)
+            cNode = AddNode(cNode, objF.Type, objF)
             objF.SeqNo = cNode.Index '//store position
 
             For i = 0 To dt.Rows.Count - 1
@@ -3519,10 +3661,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 FillEnv(cNode, dt.Rows(i), cnn)
             Next
 
+            If obj.ENV_FOexpanded = True Then
+                cNode.Expand()
+            Else
+                cNode.Collapse()
+            End If
+            tvExplorer.Refresh()
 
             cNode = cNode.Parent
-            cNode.EnsureVisible()
-
 
         Catch ex As Exception
             LogError(ex, "fillProject")
@@ -3570,10 +3716,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             '/// Added 6/4/07 by TK
             obj.GetStructureDir()
+
+            If CurLoadedProject.ENVexpanded = True Then
+                cNode.Expand()
+            Else
+                cNode.Collapse()
+            End If
+
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex, "fillEnv")
@@ -3588,7 +3742,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             objCnn = New clsFolderNode("Connections", NODE_FO_CONNECTION)
             objCnn.Parent = CType(cNode.Tag, INode)
-            cNodeCnn = AddNode(cNode.Nodes, objCnn.Type, objCnn)
+            cNodeCnn = AddNode(cNode, objCnn.Type, objCnn)
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & objCnn.Project.tblConnections & " where EnvironmentName=" & obj.GetQuotedText & " AND ProjectName=" & obj.Project.GetQuotedText
@@ -3611,6 +3765,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 FillConn(cNodeCnn, dt.Rows(i), cnn)
             Next
 
+            If CurLoadedProject.CONNexpanded = True Then
+                cNodeCnn.Expand()
+            Else
+                cNodeCnn.Collapse()
+            End If
+
+            tvExplorer.Refresh()
+
         Catch ex As Exception
             LogError(ex, "fillConn")
         End Try
@@ -3623,7 +3785,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objStruct As INode
             objStruct = New clsFolderNode("Descriptions", NODE_FO_STRUCT)
             objStruct.Parent = CType(cNode.Tag, INode)
-            cNodeStruct = AddNode(cNode.Nodes, objStruct.Type, objStruct)
+            cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & obj.Project.tblStructures & _
@@ -3644,14 +3806,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             da.Fill(dt)
             da.Dispose()
 
-            cNodeStruct.Text = "(" & dt.Rows.Count.ToString & ")" & " Descriptions"
+            'cNodeStruct.Text = "(" & dt.Rows.Count.ToString & ")" & " Descriptions"
 
             For i = 0 To dt.Rows.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
                 FillStruct(cNodeStruct, dt.Rows(i), cnn)
+                tvExplorer.Refresh()
             Next
 
-            cNodeStruct.Expand()
+            If CurLoadedProject.STRexpanded = True Then
+                cNodeStruct.Expand()
+            Else
+                cNodeStruct.Collapse()
+            End If
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex, "fillEnv-fillStr")
@@ -3709,7 +3877,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = CType(cNode.Tag, INode)
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar, False)
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from variables where EngineName=" & obj.GetQuotedText & _
@@ -3735,7 +3903,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
                 FillVar(cNodeVar, dt.Rows(i), cnn, True)
+                tvExplorer.Refresh()
             Next
+
+            If CurLoadedProject.VARtopExpanded = True Then
+                cNodeVar.Expand()
+            Else
+                cNodeVar.Collapse()
+            End If
+
+            tvExplorer.Refresh()
+
         Catch ex As Exception
             LogError(ex, "frmMain FillEngine>VariableLoad")
         End Try
@@ -3827,7 +4005,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objSys As INode
             objSys = New clsFolderNode("Systems", NODE_FO_SYSTEM)
             objSys.Parent = CType(cNode.Tag, INode)
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            cNodeSys = AddNode(cNode, objSys.Type, objSys)
 
             dt = New DataTable("temp")
 
@@ -3849,7 +4027,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             For i = 0 To dt.Rows.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
                 FillSys(cNodeSys, dt.Rows(i), cnn)
+                tvExplorer.Refresh()
             Next
+
+            If CurLoadedProject.SYS_FOexpanded = True Then
+                cNodeSys.Expand()
+            Else
+                cNodeSys.Collapse()
+            End If
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex, "FillEnv-FillSys")
@@ -3900,7 +4086,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
             cNode = AddStructNode(obj, cNode)
-            cNode.Expand()
 
         Catch ex As Exception
             LogError(ex, "fillStruct")
@@ -3932,9 +4117,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             For i = 0 To dt.Rows.Count - 1
                 '//Process this (cNode is root node under which we add other nodes)
                 FillStructSel(cNode, dt.Rows(i), cnn)
+                tvExplorer.Refresh()
             Next
-            cNode.Collapse()
-
 
         Catch ex As Exception
             LogError(ex, "fillStruct")
@@ -3971,7 +4155,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             cNode.Collapse()
 
@@ -4019,8 +4203,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex, "fillSys")
@@ -4030,19 +4215,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Now add engines
         '///////////////////////////////////////////////
         Try
-            '//Add systems folder node under env
-            Dim cNodeSys As TreeNode
-            Dim objSys As INode
-            objSys = New clsFolderNode("Engines", NODE_FO_ENGINE)
-            objSys.Parent = CType(cNode.Tag, INode)
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            '//Add engines folder node under env
+            Dim cNodeFOENG As TreeNode
+            Dim objENG As INode
+            objENG = New clsFolderNode("Engines", NODE_FO_ENGINE)
+            objENG.Parent = CType(cNode.Tag, INode)
+            cNodeFOENG = AddNode(cNode, objENG.Type, objENG)
+            tvExplorer.Refresh()
 
             dt = New DataTable("temp")
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & objSys.Project.tblEngines & " where SystemName=" & obj.GetQuotedText & " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & obj.Environment.Project.GetQuotedText
             'Else
-            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,ENGINEDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objSys.Project.tblEngines & _
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,SYSTEMNAME,ENGINENAME,ENGINEDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & objENG.Project.tblEngines & _
                         " where ProjectName=" & obj.Project.GetQuotedText & _
                         " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
                         " AND SystemName=" & obj.GetQuotedText
@@ -4055,11 +4241,26 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             For i = 0 To dt.Rows.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
-                FillEngine(cNodeSys, dt.Rows(i), cnn)
+                FillEngine(cNodeFOENG, dt.Rows(i), cnn)
+                tvExplorer.Refresh()
             Next
 
+            If CurLoadedProject.ENG_FOexpanded = True Then
+                cNodeFOENG.Expand()
+            Else
+                cNodeFOENG.Collapse()
+            End If
+            tvExplorer.Refresh()
+
+            If CurLoadedProject.SYSexpanded = True Then
+                cNode.Expand()
+            Else
+                cNode.Collapse()
+            End If
+            tvExplorer.Refresh()
+
         Catch ex As Exception
-            LogError(ex, "fillSys")
+            LogError(ex, "fillEng")
         End Try
 
     End Function
@@ -4107,8 +4308,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -4123,7 +4325,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj1 = New clsFolderNode("Sources", NODE_FO_SOURCEDATASTORE)
             obj1.Parent = CType(cNode.Tag, INode)
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
+            cNode1 = AddNode(cNode, obj1.Type, obj1, False)
 
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
@@ -4151,11 +4353,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             '/// Add Count to Folder Title
             cNode1.Text = "(" & dt.Rows.Count.ToString & ")" & " Sources"
+            tvExplorer.Refresh()
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
                 FillDataStore(cNode1, dt.Rows(i), cnn, Dir)
+                tvExplorer.Refresh()
             Next
+
+            If CurLoadedProject.SRCexpanded = True Then
+                cNode1.Expand()
+            Else
+                cNode1.Collapse()
+            End If
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -4171,7 +4382,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj2 = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
             obj2.Parent = CType(cNode.Tag, INode)
-            cNode2 = AddNode(cNode.Nodes, obj2.Type, obj2, False)
+            cNode2 = AddNode(cNode, obj2.Type, obj2, False)
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='T' AND EngineName=" & _
@@ -4197,11 +4408,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             '/// Add Count to Folder Title
             cNode2.Text = "(" & dt.Rows.Count.ToString & ")" & " Targets"
+            tvExplorer.Refresh()
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
                 FillDataStore(cNode2, dt.Rows(i), cnn, Dir)
+                tvExplorer.Refresh()
             Next
+
+            If CurLoadedProject.TGTexpanded = True Then
+                cNode2.Expand()
+            Else
+                cNode2.Collapse()
+            End If
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex, sql)
@@ -4216,7 +4436,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = CType(cNode.Tag, INode)
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar, False)
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
@@ -4231,11 +4451,21 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             da.Dispose()
 
             cNodeVar.Text = "(" & dt.Rows.Count.ToString & ")" & " Variables"
+            tvExplorer.Refresh()
 
             For i = 0 To dt.Rows.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
                 FillVar(cNodeVar, dt.Rows(i), cnn)
+                tvExplorer.Refresh()
             Next
+
+            If CurLoadedProject.VARexpanded = True Then
+                cNodeVar.Expand()
+            Else
+                cNodeVar.Collapse()
+            End If
+            tvExplorer.Refresh()
+
         Catch ex As Exception
             LogError(ex, "frmMain FillEngine>VariableLoad")
         End Try
@@ -4262,7 +4492,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '//Add Proc folder
             objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
             objProc.Parent = CType(cNode.Tag, INode)
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
+            cNodeProc = AddNode(cNode, objProc.Type, objProc, False)
+            tvExplorer.Refresh()
 
             '//Add Lookup folder
             'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
@@ -4272,7 +4503,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '//Add Main folder
             objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
             objMain.Parent = CType(cNode.Tag, INode)
-            cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
+            cNodeMain = AddNode(cNode, objMain.Type, objMain, False)
+            tvExplorer.Refresh()
+
+
             dt = New DataTable("temp")
 
             'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
@@ -4320,12 +4554,32 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         'Case 
                         '    FillTasks(cNodeLookup, dt.Rows(i), cnn)
                 End Select
+                tvExplorer.Refresh()
             Next
 
             '/// Add Count to Folder Title
             cNodeProc.Text = "(" & ProcCount.ToString & ")" & " Procedures"
 
-            cNode.Expand()
+            If CurLoadedProject.PROCexpanded = True Then
+                cNodeProc.Expand()
+            Else
+                cNodeProc.Collapse()
+            End If
+            tvExplorer.Refresh()
+
+            If CurLoadedProject.MAINexpanded = True Then
+                cNodeMain.Expand()
+            Else
+                cNodeMain.Collapse()
+            End If
+            tvExplorer.Refresh()
+
+            If CurLoadedProject.ENGexpanded = True Then
+                cNode.Expand()
+            Else
+                cNode.Collapse()
+            End If
+            tvExplorer.Refresh()
 
             For Each ds As clsDatastore In obj.Sources
                 ds.SetIsMapped(False, True)
@@ -4367,11 +4621,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj.TaskName = GetVal(dr.Item("TaskName"))
             obj.TaskType = GetVal(dr.Item("TaskType"))
-            If obj.Parent.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.TaskDescription = GetVal(dr.Item("Description"))
-            Else
-                obj.TaskDescription = GetStr(GetVal(dr("TASKDESCRIPTION")))
-            End If
+            obj.TaskDescription = GetStr(GetVal(dr("TASKDESCRIPTION")))
 
             Select Case obj.TaskType
                 'Case modDeclares.enumTaskType.TASK_JOIN, modDeclares.enumTaskType.TASK_LOOKUP
@@ -4402,7 +4652,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store treeview node index
 
         Catch ex As Exception
@@ -4449,7 +4699,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -4482,7 +4732,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
             AddToCollection(obj.Environment.Connections, obj, obj.GUID)
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -4569,7 +4819,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False, obj.Text)
+            cNode = AddNode(cNode, obj.Type, obj, False, obj.Text)
             obj.SeqNo = cNode.Index '//store position
 
             '// now add Datastore selections to tree
@@ -4577,12 +4827,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             If obj.DsDirection = DS_DIRECTION_SOURCE Then
                 cNode.Text = "(" & obj.ObjSelections.Count.ToString & ")" & obj.DsPhysicalSource
+                If CurLoadedProject.SRCselExpanded = True Then
+                    cNode.Expand()
+                Else
+                    cNode.Collapse()
+                End If
+                tvExplorer.Refresh()
             Else
                 cNode.Text = obj.DsPhysicalSource
+                cNode.Collapse()
             End If
-
-
-            cNode.Collapse()
 
             Return True
 
@@ -4835,13 +5089,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 DSselobj.LoadItems()
 
                 If Not DSselobj.IsChildDSSelection = True Or MapAs = True Then
-                    cnode = AddNode(pNode.Nodes, DSselobj.Type, DSselobj, True)
+                    cnode = AddNode(pNode, DSselobj.Type, DSselobj, True)
                     DSselobj.SeqNo = pNode.Index '//store position
+                    tvExplorer.Refresh()
                     Call addDSSelChildrenToTree(cnode, DSselobj)
                 End If
+                tvExplorer.Refresh()
             Next
-
-            pNode.Collapse()
 
             Return True
 
@@ -4863,12 +5117,11 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 DSselobj = obj.ObjDSSelections(i)
                 DSselobj.LoadItems(, True)
                 If DSselobj.Parent Is obj Then
-                    cnode = AddNode(pNode.Nodes, DSselobj.Type, DSselobj, True)
+                    cnode = AddNode(pNode, DSselobj.Type, DSselobj, True)
                     DSselobj.SeqNo = pNode.Index '//store position
                     Call addDSSelChildrenToTree(cnode, DSselobj) '// recurse for all children
                 End If
             Next
-            pNode.Collapse()
 
             Return True
 
@@ -4905,20 +5158,43 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '//and then add structure node under it
             If IsFound = True Then
                 '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False)
+                cNode = AddNode(nd, obj.Type, obj, False)
                 obj.SeqNo = cNode.Index '//store position
             Else
                 Dim objFol As INode
                 objFol = New clsFolderNode(GetStructureFolderText(obj.StructureType), NODE_FO_STRUCT)
                 objFol.Parent = CType(cNode.Parent.Tag, INode)
                 '//Add Struct Type Folder (i.e. [XML] [COBOLIMS])
-                nd = AddNode(cNode.Nodes, objFol.Type, objFol, False)
+                nd = AddNode(cNode, objFol.Type, objFol, True)
+
                 '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False)
+                cNode = AddNode(nd, obj.Type, obj, True)
                 obj.SeqNo = cNode.Index '//store position
             End If
 
             nd.Text = "(" & nd.Nodes.Count.ToString & ")" & GetStructureFolderText(obj.StructureType)
+
+            Dim nodeState As Boolean
+            If nd.Text.EndsWith("COBOL") = True Then
+                nodeState = CurLoadedProject.COBOLexpanded
+            ElseIf nd.Text.EndsWith("COBOLIMS") = True Then
+                nodeState = CurLoadedProject.COBOLIMSexpanded
+            ElseIf nd.Text.EndsWith("CHeader") = True Then
+                nodeState = CurLoadedProject.Cexpanded
+            ElseIf nd.Text.EndsWith("XMLDTD") = True Then
+                nodeState = CurLoadedProject.XMLDTDexpanded
+            ElseIf nd.Text.EndsWith("DDL") = True Then
+                nodeState = CurLoadedProject.DDLexpanded
+            ElseIf nd.Text.EndsWith("DML") = True Then
+                nodeState = CurLoadedProject.DMLexpanded
+            End If
+
+            If nodeState = True Then
+                nd.Expand()
+            Else
+                nd.Collapse()
+            End If
+            tvExplorer.Refresh()
 
             Return cNode
 
@@ -7169,14 +7445,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             If obj.AddNew(True) = True Then
                 '//Add project node
-                cNode = AddNode(tvExplorer.Nodes, NODE_PROJECT, obj)
+                cNode = AddTreeNode(tvExplorer, NODE_PROJECT, obj)
                 obj.SeqNo = cNode.Index '//store position
 
                 '//Now add and process each environment 
                 '//Add Environment folder node
                 foldObj = New clsFolderNode("Environments", NODE_FO_ENVIRONMENT)
                 foldObj.Parent = CType(cNode.Tag, INode)
-                cNode = AddNode(cNode.Nodes, foldObj.Type, foldObj)
+                cNode = AddNode(cNode, foldObj.Type, foldObj)
                 obj.SeqNo = cNode.Index '//store position
 
                 For i = 0 To objClip.Environments.Count - 1
@@ -7203,7 +7479,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj.Parent = CType(cNode.Tag, INode).Parent '//Project->[Env Folder]->Env
             'obj.Project = CType(cNode.Tag, INode).Project
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7220,7 +7496,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objCnn = New clsFolderNode("Connections", NODE_FO_CONNECTION)
             objCnn.Parent = CType(cNode.Tag, INode)
             'objCnn.Project = CType(cNode.Tag, INode).Project
-            cNodeCnn = AddNode(cNode.Nodes, objCnn.Type, objCnn)
+            cNodeCnn = AddNode(cNode, objCnn.Type, objCnn)
 
             For i = 0 To obj.Connections.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
@@ -7241,7 +7517,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objStruct = New clsFolderNode("Descriptions", NODE_FO_STRUCT)
             objStruct.Parent = CType(cNode.Tag, INode)
             'objStruct.Project = CType(cNode.Tag, INode).Project
-            cNodeStruct = AddNode(cNode.Nodes, objStruct.Type, objStruct)
+            cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
 
             For i = 0 To obj.Structures.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
@@ -7281,7 +7557,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = obj
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar)
 
             For i = 0 To obj.Variables.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
@@ -7323,7 +7599,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objSys = New clsFolderNode("Systems", NODE_FO_SYSTEM)
             objSys.Parent = CType(cNode.Tag, INode)
             'objSys.Project = CType(cNode.Tag, INode).Project
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            cNodeSys = AddNode(cNode, objSys.Type, objSys)
 
             For i = 0 To obj.Systems.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
@@ -7383,7 +7659,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Tag, INode)
             'obj.Project = CType(cNode.Tag, INode).Project
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7435,7 +7711,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
             'obj.Project = CType(cNode.Tag, INode).Project
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7454,7 +7730,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objSys = New clsFolderNode("Engines", NODE_FO_ENGINE)
             objSys.Parent = CType(cNode.Tag, INode)
             'objSys.Project = CType(cNode.Tag, INode).Project
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            cNodeSys = AddNode(cNode, objSys.Type, objSys)
 
             For i = 0 To obj.Engines.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
@@ -7477,7 +7753,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.LoadItems()
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7494,7 +7770,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj1 = New clsFolderNode("Sources", NODE_FO_SOURCEDATASTORE)
             obj1.Parent = obj
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1)
+            cNode1 = AddNode(cNode, obj1.Type, obj1)
 
             cNode1.Text = "(" & obj.Sources.Count.ToString & ")" & " Sources"
 
@@ -7516,7 +7792,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim obj2 As clsFolderNode
             obj2 = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
             obj2.Parent = obj
-            cNode2 = AddNode(cNode.Nodes, obj2.Type, obj2)
+            cNode2 = AddNode(cNode, obj2.Type, obj2)
 
             cNode2.Text = "(" & obj.Targets.Count.ToString & ")" & " Targets"
 
@@ -7538,7 +7814,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = obj
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar)
 
             cNodeVar.Text = "(" & obj.Variables.Count.ToString & ")" & " Variables"
 
@@ -7575,7 +7851,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '//Add Proc folder
             objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
             objProc.Parent = obj
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc)
+            cNodeProc = AddNode(cNode, objProc.Type, objProc)
 
             cNodeProc.Text = "(" & obj.Procs.Count.ToString & ")" & " Procedures"
 
@@ -7592,7 +7868,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '//Add Main folder
             objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
             objMain.Parent = obj
-            cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain)
+            cNodeMain = AddNode(cNode, objMain.Type, objMain)
 
             For i = 0 To obj.Mains.Count - 1
                 FillTasksFromClipboard(cNodeMain, obj.Mains(i + 1))
@@ -7618,7 +7894,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.LoadItems()
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7648,7 +7924,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.LoadItems()   'make sure it is loaded
 
             'obj.SetDSselParents()   'set all the DSselection parents, based on Fkey
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)   ' add node to the tree
+            cNode = AddNode(cNode, obj.Type, obj)   ' add node to the tree
             obj.SeqNo = cNode.Index '//store position
 
 
@@ -7684,7 +7960,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.LoadMappings(True)
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->TaskFolder->Any Task
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7702,7 +7978,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.LoadItems()
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->VarFolder->Var
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -7715,43 +7991,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     '//////// Generalized Functions for the Main Form ////////
 #Region "Non-Node Specific Main Form Functions"
-
-    Function UpdateNode(ByRef pNode As TreeNode, ByVal obj As INode) As Boolean
-
-        Dim tempobj As INode
-        Dim objDS As clsDatastore
-
-        Try
-            tempobj = pNode.Tag
-
-            pNode.Text = obj.Text
-            '// test to see if it's a Datastore Node then add strSelections under that node
-            If (tempobj.Type = NODE_SOURCEDATASTORE) Or (tempobj.Type = NODE_TARGETDATASTORE) Then
-                objDS = CType(pNode.Tag, clsDatastore)
-                pNode.Text = objDS.DsPhysicalSource
-                objDS.SetDSselParents()
-                AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
-
-            End If
-
-            '// if DS selection then see if parent is a datastrore and not a structure
-            '// then add selections under Datastore node
-            If ((tempobj.Type = NODE_SOURCEDSSEL) Or (tempobj.Type = NODE_TARGETDSSEL)) And ((obj.Type = NODE_SOURCEDATASTORE) Or (obj.Type = NODE_TARGETDATASTORE)) Then
-                objDS = CType(obj, clsDatastore)
-                objDS.SetDSselParents()
-                AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
-            End If
-
-
-            pNode.Tag = obj
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "UpdateNode=>" & ex.Message)
-        End Try
-
-    End Function
 
     '//Purpose: Moves tree node in the same level
     Function MoveNode(ByVal nd As TreeNode, ByVal Pos As Integer) As Integer
@@ -7853,6 +8092,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         Try
             Dim inodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
+            Dim pNode As TreeNode = tvExplorer.SelectedNode.Parent
+            Dim selNode As TreeNode = tvExplorer.SelectedNode
 
             If CType(tvExplorer.SelectedNode.Tag, INode).IsFolderNode = True Then
                 If MsgBox("Are you sure you want to delete everything in this folder?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
@@ -7872,11 +8113,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                                 Exit For
                             End If
                         Next
-                        If cnode.Parent.Text = "Descriptions" Or cnode.Parent.Text = "Datastores" Then
+                        If cnode.Parent.Text.Contains("Descriptions") Then
                             cnode.Remove()
                         End If
                         DoDeleteAction = Flag
                     End If
+                End If
+                If tvExplorer.SelectedNode IsNot Nothing Then
+                    UpdateParentNodeCount(selNode)
+                    tvExplorer.SelectedNode.Expand()
                 End If
             Else
                 If inodetype = NODE_STRUCT Or inodetype = NODE_STRUCT_SEL Then
@@ -7895,11 +8140,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         End If
                     End If
                 End If
+                If tvExplorer.SelectedNode IsNot Nothing Then
+                    UpdateParentNodeCount(pNode)
+                    tvExplorer.SelectedNode.Expand()
+                End If
             End If
 
-            If tvExplorer.SelectedNode IsNot Nothing Then
-                tvExplorer.SelectedNode.Expand()
-            End If
+            DoDeleteAction = True
 
         Catch ex As Exception
             LogError(ex, "frmMain DoDeleteAction")
@@ -8549,7 +8796,7 @@ renameTask:             If task.Engine.FindDupNames(task) = True Then
                         taskMain.ObjTargets.Add(destObj)
 
                         pNode = cNode.Parent.Nodes(3)
-                        pNode = AddNode(pNode.Nodes, task.Type, task)
+                        pNode = AddNode(pNode, task.Type, task)
                         task.ObjTreeNode = pNode
                         task.SeqNo = pNode.Index '//store position
                         task.SaveSeqNo(cmd)
@@ -8586,7 +8833,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                 taskMain.AddNew(cmd)
 
                 pNode = cNode.Parent.Nodes(4)
-                pNode = AddNode(pNode.Nodes, taskMain.Type, taskMain)
+                pNode = AddNode(pNode, taskMain.Type, taskMain)
                 taskMain.ObjTreeNode = pNode
                 taskMain.SeqNo = pNode.Index
                 taskMain.SaveSeqNo(cmd)

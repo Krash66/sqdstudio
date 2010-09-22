@@ -178,7 +178,7 @@ Public Module modDatabase
             Dim objF As clsFolderNode
             objF = New clsFolderNode("Environments", NODE_FO_ENVIRONMENT)
             objF.Parent = CType(cNode.Tag, INode)
-            cNode = AddNode(cNode.Nodes, objF.Type, objF)
+            cNode = AddNode(cNode, objF.Type, objF)
             objF.SeqNo = cNode.Index '//store position
 
             For i = 0 To dt.Rows.Count - 1
@@ -237,7 +237,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             '/// Added 6/4/07 by TK
             obj.GetStructureDir()
@@ -255,7 +255,7 @@ Public Module modDatabase
 
             objCnn = New clsFolderNode("Connections", NODE_FO_CONNECTION)
             objCnn.Parent = CType(cNode.Tag, INode)
-            cNodeCnn = AddNode(cNode.Nodes, objCnn.Type, objCnn)
+            cNodeCnn = AddNode(cNode, objCnn.Type, objCnn)
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
                 sql = "Select * from " & objCnn.Project.tblConnections & " where EnvironmentName=" & obj.GetQuotedText & " AND ProjectName=" & obj.Project.GetQuotedText
@@ -290,7 +290,7 @@ Public Module modDatabase
             Dim objStruct As INode
             objStruct = New clsFolderNode("Descriptions", NODE_FO_STRUCT)
             objStruct.Parent = CType(cNode.Tag, INode)
-            cNodeStruct = AddNode(cNode.Nodes, objStruct.Type, objStruct)
+            cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
                 sql = "Select * from " & obj.Project.tblStructures & _
@@ -332,7 +332,7 @@ Public Module modDatabase
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = CType(cNode.Tag, INode)
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar, False)
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
                 sql = "Select * from variables where EngineName=" & obj.GetQuotedText & _
@@ -374,7 +374,7 @@ Public Module modDatabase
             Dim objSys As INode
             objSys = New clsFolderNode("Systems", NODE_FO_SYSTEM)
             objSys.Parent = CType(cNode.Tag, INode)
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            cNodeSys = AddNode(cNode, objSys.Type, objSys)
 
             dt = New DataTable("temp")
 
@@ -518,7 +518,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             cNode.Collapse()
 
@@ -566,7 +566,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -582,7 +582,7 @@ Public Module modDatabase
             Dim objSys As INode
             objSys = New clsFolderNode("Engines", NODE_FO_ENGINE)
             objSys.Parent = CType(cNode.Tag, INode)
-            cNodeSys = AddNode(cNode.Nodes, objSys.Type, objSys)
+            cNodeSys = AddNode(cNode, objSys.Type, objSys)
 
             dt = New DataTable("temp")
 
@@ -654,7 +654,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -670,7 +670,7 @@ Public Module modDatabase
 
             obj1 = New clsFolderNode("Sources", NODE_FO_SOURCEDATASTORE)
             obj1.Parent = CType(cNode.Tag, INode)
-            cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1, False)
+            cNode1 = AddNode(cNode, obj1.Type, obj1, False)
 
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
@@ -716,7 +716,7 @@ Public Module modDatabase
 
             obj2 = New clsFolderNode("Targets", NODE_FO_TARGETDATASTORE)
             obj2.Parent = CType(cNode.Tag, INode)
-            cNode2 = AddNode(cNode.Nodes, obj2.Type, obj2, False)
+            cNode2 = AddNode(cNode, obj2.Type, obj2, False)
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
                 sql = "Select * from " & obj.Project.tblDatastores & " where DsDirection='T' AND EngineName=" & _
@@ -757,7 +757,7 @@ Public Module modDatabase
             Dim objVar As INode
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = CType(cNode.Tag, INode)
-            cNodeVar = AddNode(cNode.Nodes, objVar.Type, objVar, False)
+            cNodeVar = AddNode(cNode, objVar.Type, objVar, False)
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
                 sql = "Select * from variables where EngineName=" & obj.GetQuotedText & " AND SystemName=" & obj.ObjSystem.GetQuotedText & " AND EnvironmentName=" & obj.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & obj.ObjSystem.Environment.Project.GetQuotedText
@@ -801,7 +801,7 @@ Public Module modDatabase
             '//Add Proc folder
             objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
             objProc.Parent = CType(cNode.Tag, INode)
-            cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
+            cNodeProc = AddNode(cNode, objProc.Type, objProc, False)
 
             '//Add Lookup folder
             'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
@@ -811,7 +811,7 @@ Public Module modDatabase
             '//Add Main folder
             objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
             objMain.Parent = CType(cNode.Tag, INode)
-            cNodeMain = AddNode(cNode.Nodes, objMain.Type, objMain, False)
+            cNodeMain = AddNode(cNode, objMain.Type, objMain, False)
             dt = New DataTable("temp")
 
             If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
@@ -934,7 +934,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store treeview node index
 
         Catch ex As Exception
@@ -981,7 +981,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -1014,7 +1014,7 @@ Public Module modDatabase
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
             AddToCollection(obj.Environment.Connections, obj, obj.GUID)
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store position
 
         Catch ex As Exception
@@ -1101,7 +1101,7 @@ Public Module modDatabase
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode.Nodes, obj.Type, obj, False, obj.Text)
+            cNode = AddNode(cNode, obj.Type, obj, False, obj.Text)
             obj.SeqNo = cNode.Index '//store position
 
             cNode.Text = obj.DsPhysicalSource
@@ -1365,7 +1365,7 @@ Public Module modDatabase
                 'End If
 
                 If Not DSselobj.IsChildDSSelection = True Or MapAs = True Then
-                    cnode = AddNode(pNode.Nodes, DSselobj.Type, DSselobj, True)
+                    cnode = AddNode(pNode, DSselobj.Type, DSselobj, True)
                     DSselobj.SeqNo = pNode.Index '//store position
                     Call addDSSelChildrenToTree(cnode, DSselobj)
                 End If
@@ -1393,7 +1393,7 @@ Public Module modDatabase
                 DSselobj = obj.ObjDSSelections(i)
                 DSselobj.LoadItems(, True)
                 If DSselobj.Parent Is obj Then
-                    cnode = AddNode(pNode.Nodes, DSselobj.Type, DSselobj, True)
+                    cnode = AddNode(pNode, DSselobj.Type, DSselobj, True)
                     DSselobj.SeqNo = pNode.Index '//store position
                     Call addDSSelChildrenToTree(cnode, DSselobj) '// recurse for all children
                 End If
@@ -1435,16 +1435,16 @@ Public Module modDatabase
             '//and then add structure node under it
             If IsFound = True Then
                 '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False)
+                cNode = AddNode(nd, obj.Type, obj, False)
                 obj.SeqNo = cNode.Index '//store position
             Else
                 Dim objFol As INode
                 objFol = New clsFolderNode(GetStructureFolderText(obj.StructureType), NODE_FO_STRUCT)
                 objFol.Parent = CType(cNode.Parent.Tag, INode)
                 '//Add Struct Type Folder (i.e. [XML] [COBOLIMS])
-                nd = AddNode(cNode.Nodes, objFol.Type, objFol, False)
+                nd = AddNode(cNode, objFol.Type, objFol, False)
                 '//Add struct node under struct category
-                cNode = AddNode(nd.Nodes, obj.Type, obj, False)
+                cNode = AddNode(nd, obj.Type, obj, False)
                 obj.SeqNo = cNode.Index '//store position
             End If
             Return cNode
