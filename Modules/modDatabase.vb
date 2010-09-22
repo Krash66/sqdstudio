@@ -292,18 +292,18 @@ Public Module modDatabase
             objStruct.Parent = CType(cNode.Tag, INode)
             cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblStructures & _
-                " where EnvironmentName=" & obj.GetQuotedText & _
-                " AND ProjectName=" & obj.Project.GetQuotedText & _
-                " order by structuretype, structureName"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONTYPE,DESCRIPTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblDescriptions & _
-                " where ProjectName=" & obj.Project.GetQuotedText & _
-                " AND EnvironmentName = " & obj.GetQuotedText & _
-                " order by DESCRIPTIONTYPE, DescriptionName"
-                Log(sql)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblStructures & _
+            '    " where EnvironmentName=" & obj.GetQuotedText & _
+            '    " AND ProjectName=" & obj.Project.GetQuotedText & _
+            '    " order by structuretype, structureName"
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONTYPE,DESCRIPTIONDESCRIPTION,CREATED_TIMESTAMP,UPDATED_TIMESTAMP,CREATED_USER_ID,UPDATED_USER_ID from " & obj.Project.tblDescriptions & _
+            " where ProjectName=" & obj.Project.GetQuotedText & _
+            " AND EnvironmentName = " & obj.GetQuotedText & _
+            " order by DESCRIPTIONTYPE, DescriptionName"
+            Log(sql)
+            'End If
 
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             dt = New System.Data.DataTable("temp2")
@@ -457,17 +457,17 @@ Public Module modDatabase
         '//Now add fieldselections
         '///////////////////////////////////////////////
         Try
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                sql = "Select * from " & obj.Project.tblStructSel & " where StructureName=" & obj.GetQuotedText & _
-                " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & _
-                obj.Environment.Project.GetQuotedText & " order by selectionname"
-            Else
-                sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,SELECTIONNAME,ISSYSTEMSEL,SELECTDESCRIPTION from " & obj.Project.tblDescriptionSelect & _
-                " where ProjectName=" & obj.Project.GetQuotedText & _
-                " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
-                " AND DescriptionName = " & obj.GetQuotedText & _
-                " order by selectionname"
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    sql = "Select * from " & obj.Project.tblStructSel & " where StructureName=" & obj.GetQuotedText & _
+            '    " AND EnvironmentName=" & obj.Environment.GetQuotedText & " AND ProjectName=" & _
+            '    obj.Environment.Project.GetQuotedText & " order by selectionname"
+            'Else
+            sql = "Select PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,SELECTIONNAME,ISSYSTEMSEL,SELECTDESCRIPTION from " & obj.Project.tblDescriptionSelect & _
+            " where ProjectName=" & obj.Project.GetQuotedText & _
+            " AND EnvironmentName=" & obj.Environment.GetQuotedText & _
+            " AND DescriptionName = " & obj.GetQuotedText & _
+            " order by selectionname"
+            'End If
 
             Log(sql)
 

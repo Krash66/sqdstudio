@@ -603,13 +603,13 @@ Public Class clsStructureSelection
 
                     Dim fld As clsField
 
-                    If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        fld = SearchFieldByName(Me.ObjStructure, dr("fieldname"), _
-                        dr("structurename"), dr("environmentname"), dr("projectname"))
-                    Else
-                        fld = SearchFieldByName(Me.ObjStructure, dr("fieldname"), _
-                        dr("descriptionname"), dr("environmentname"), dr("projectname"))
-                    End If
+                    'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    fld = SearchFieldByName(Me.ObjStructure, dr("fieldname"), _
+                    '    dr("structurename"), dr("environmentname"), dr("projectname"))
+                    'Else
+                    fld = SearchFieldByName(Me.ObjStructure, dr("fieldname"), _
+                    dr("descriptionname"), dr("environmentname"), dr("projectname"))
+                    'End If
 
                     If fld Is Nothing Then
                         clsLogging.LogEvent("Field [" & dr("fieldname") & "] is missing in the parent structure - " & Me.ObjStructure.Text)

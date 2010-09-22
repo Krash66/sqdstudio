@@ -421,18 +421,18 @@ Module modRename
                 If success = True Then
                     success = EditDSSELECTIONS(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
-                If success = True Then
-                    success = EditDESCFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
-                End If
+                'If success = True Then
+                '    success = EditDESCFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
+                'End If
                 If success = True Then
                     success = EditDESCSELFIELDS(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
                 If success = True Then
                     success = EditDESCSelections(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
-                If success = True Then
-                    success = EditTaskDatastores(cmd, StrSel.SelectionName, NewName, StrSel)
-                End If
+                'If success = True Then
+                '    success = EditTaskDatastores(cmd, StrSel.SelectionName, NewName, StrSel)
+                'End If
                 If success = True Then
                     success = EditTaskMappings(cmd, StrSel.SelectionName, NewName, StrSel)
                 End If
@@ -1547,192 +1547,192 @@ goto1:
     End Function
 
     'done
-    Function EditSTRUCTFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
+    'Function EditSTRUCTFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
-        Dim sql As String = ""
-        Dim objProj As clsProject
-        Dim objEnv As clsEnvironment
-        Dim objStr As clsStructure
+    '    Dim sql As String = ""
+    '    Dim objProj As clsProject
+    '    Dim objEnv As clsEnvironment
+    '    Dim objStr As clsStructure
 
-        Try
-            Select Case obj.Type
-                Case NODE_PROJECT
-                    objProj = CType(obj, clsProject)
-                    sql = "Update " & objProj.Project.tblStructFields & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
+    '    Try
+    '        Select Case obj.Type
+    '            Case NODE_PROJECT
+    '                objProj = CType(obj, clsProject)
+    '                sql = "Update " & objProj.Project.tblStructFields & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
 
-                Case NODE_ENVIRONMENT
-                    objEnv = CType(obj, clsEnvironment)
-                    sql = "Update " & objEnv.Project.tblStructFields & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
+    '            Case NODE_ENVIRONMENT
+    '                objEnv = CType(obj, clsEnvironment)
+    '                sql = "Update " & objEnv.Project.tblStructFields & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
 
-                Case NODE_STRUCT
-                    '/// sets structure name and parent name
-                    objStr = CType(obj, clsStructure)
+    '            Case NODE_STRUCT
+    '                '/// sets structure name and parent name
+    '                objStr = CType(obj, clsStructure)
 
-                    sql = "Update " & objStr.Project.tblStructFields & _
-                    " Set StructureName= '" & NewValue & _
-                    "',ParentName= '" & NewValue & _
-                    "' WHERE StructureName= '" & OldValue & _
-                    "' AND ProjectName='" & objStr.Project.ProjectName & _
-                    "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+    '                sql = "Update " & objStr.Project.tblStructFields & _
+    '                " Set StructureName= '" & NewValue & _
+    '                "',ParentName= '" & NewValue & _
+    '                "' WHERE StructureName= '" & OldValue & _
+    '                "' AND ProjectName='" & objStr.Project.ProjectName & _
+    '                "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                Case Else
-                    EditSTRUCTFIELDS = False
-                    Exit Function
-            End Select
+    '            Case Else
+    '                EditSTRUCTFIELDS = False
+    '                Exit Function
+    '        End Select
 
-            cmd.CommandText = sql
-            Log(sql)
-            cmd.ExecuteNonQuery()
+    '        cmd.CommandText = sql
+    '        Log(sql)
+    '        cmd.ExecuteNonQuery()
 
-            EditSTRUCTFIELDS = True
+    '        EditSTRUCTFIELDS = True
 
-        Catch ex As Exception
-            LogError(ex, "modRename EditStructFields", sql)
-            EditSTRUCTFIELDS = False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "modRename EditStructFields", sql)
+    '        EditSTRUCTFIELDS = False
+    '    End Try
 
-    End Function
-
-    'done
-    Function EditStructures(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
-
-        Dim sql As String = ""
-        Dim objProj As clsProject
-        Dim objEnv As clsEnvironment
-        Dim objStr As clsStructure
-        Dim ObjConn As clsConnection
-
-        Try
-            Select Case obj.Type
-                Case NODE_PROJECT
-                    objProj = CType(obj, clsProject)
-                    sql = "Update " & objProj.Project.tblStructures & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
-
-                Case NODE_ENVIRONMENT
-                    objEnv = CType(obj, clsEnvironment)
-                    sql = "Update " & objEnv.Project.tblStructures & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
-
-                Case NODE_STRUCT
-                    objStr = CType(obj, clsStructure)
-                    sql = "Update " & objStr.Project.tblStructures & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
-
-                Case NODE_CONNECTION
-                    objConn = CType(obj, clsConnection)
-                    sql = "Update " & ObjConn.Project.tblStructures & " Set ConnectionName= '" & NewValue & "' WHERE ConnectionName= '" & OldValue & "' AND ProjectName='" & ObjConn.Project.ProjectName & "' AND EnvironmentName= '" & ObjConn.Environment.EnvironmentName & "'"
-
-                Case Else
-                    EditStructures = False
-                    Exit Function
-            End Select
-
-            cmd.CommandText = sql
-            Log(sql)
-            cmd.ExecuteNonQuery()
-
-            EditStructures = True
-
-        Catch ex As Exception
-            LogError(ex, "modRename EditStructures", sql)
-            EditStructures = False
-        End Try
-
-    End Function
+    'End Function
 
     'done
-    Function EditSTRSELFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
+    'Function EditStructures(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
-        Dim sql As String = ""
-        Dim objProj As clsProject
-        Dim objEnv As clsEnvironment
-        Dim objStr As clsStructure
-        Dim objSel As clsStructureSelection
+    '    Dim sql As String = ""
+    '    Dim objProj As clsProject
+    '    Dim objEnv As clsEnvironment
+    '    Dim objStr As clsStructure
+    '    Dim ObjConn As clsConnection
 
-        Try
-            Select Case obj.Type
-                Case NODE_PROJECT
-                    objProj = CType(obj, clsProject)
-                    sql = "Update " & objProj.Project.tblStrSelFields & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
+    '    Try
+    '        Select Case obj.Type
+    '            Case NODE_PROJECT
+    '                objProj = CType(obj, clsProject)
+    '                sql = "Update " & objProj.Project.tblStructures & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
 
-                Case NODE_ENVIRONMENT
-                    objEnv = CType(obj, clsEnvironment)
-                    sql = "Update " & objEnv.Project.tblStrSelFields & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
+    '            Case NODE_ENVIRONMENT
+    '                objEnv = CType(obj, clsEnvironment)
+    '                sql = "Update " & objEnv.Project.tblStructures & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
 
-                Case NODE_STRUCT
-                    objStr = CType(obj, clsStructure)
-                    sql = "Update " & objStr.Project.tblStrSelFields & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
+    '            Case NODE_STRUCT
+    '                objStr = CType(obj, clsStructure)
+    '                sql = "Update " & objStr.Project.tblStructures & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                Case NODE_STRUCT_SEL
-                    objSel = CType(obj, clsStructureSelection)
-                    sql = "Update " & objSel.Project.tblStrSelFields & " Set SelectionName= '" & NewValue & "' WHERE SelectionName= '" & OldValue & "' AND ProjectName='" & objSel.Project.ProjectName & "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
+    '            Case NODE_CONNECTION
+    '                objConn = CType(obj, clsConnection)
+    '                sql = "Update " & ObjConn.Project.tblStructures & " Set ConnectionName= '" & NewValue & "' WHERE ConnectionName= '" & OldValue & "' AND ProjectName='" & ObjConn.Project.ProjectName & "' AND EnvironmentName= '" & ObjConn.Environment.EnvironmentName & "'"
 
-                Case Else
-                    EditSTRSELFIELDS = False
-                    Exit Function
-            End Select
+    '            Case Else
+    '                EditStructures = False
+    '                Exit Function
+    '        End Select
 
-            cmd.CommandText = sql
-            Log(sql)
-            cmd.ExecuteNonQuery()
+    '        cmd.CommandText = sql
+    '        Log(sql)
+    '        cmd.ExecuteNonQuery()
 
-            EditSTRSELFIELDS = True
+    '        EditStructures = True
 
-        Catch ex As Exception
-            LogError(ex, "modRename EditStrSelFields", sql)
-            EditSTRSELFIELDS = False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "modRename EditStructures", sql)
+    '        EditStructures = False
+    '    End Try
 
-    End Function
+    'End Function
 
     'done
-    Function EditStructureSelections(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
+    'Function EditSTRSELFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
-        Dim sql As String = ""
-        Dim objProj As clsProject
-        Dim objEnv As clsEnvironment
-        Dim objStr As clsStructure
-        Dim objSel As clsStructureSelection
+    '    Dim sql As String = ""
+    '    Dim objProj As clsProject
+    '    Dim objEnv As clsEnvironment
+    '    Dim objStr As clsStructure
+    '    Dim objSel As clsStructureSelection
 
-        Try
-            Select Case obj.Type
-                Case NODE_PROJECT
-                    objProj = CType(obj, clsProject)
-                    sql = "Update " & objProj.Project.tblStructSel & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
+    '    Try
+    '        Select Case obj.Type
+    '            Case NODE_PROJECT
+    '                objProj = CType(obj, clsProject)
+    '                sql = "Update " & objProj.Project.tblStrSelFields & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
 
-                Case NODE_ENVIRONMENT
-                    objEnv = CType(obj, clsEnvironment)
-                    sql = "Update " & objEnv.Project.tblStructSel & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
+    '            Case NODE_ENVIRONMENT
+    '                objEnv = CType(obj, clsEnvironment)
+    '                sql = "Update " & objEnv.Project.tblStrSelFields & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
 
-                Case NODE_STRUCT
-                    objStr = CType(obj, clsStructure)
-                    sql = "Update " & objStr.Project.tblStructSel & " Set StructureName= '" & NewValue & "',SelectionName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "' AND ISSYSTEMSELECT= '1'"
+    '            Case NODE_STRUCT
+    '                objStr = CType(obj, clsStructure)
+    '                sql = "Update " & objStr.Project.tblStrSelFields & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
-                    cmd.CommandText = sql
-                    Log(sql)
-                    cmd.ExecuteNonQuery()
+    '            Case NODE_STRUCT_SEL
+    '                objSel = CType(obj, clsStructureSelection)
+    '                sql = "Update " & objSel.Project.tblStrSelFields & " Set SelectionName= '" & NewValue & "' WHERE SelectionName= '" & OldValue & "' AND ProjectName='" & objSel.Project.ProjectName & "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
 
-                    sql = "Update " & objStr.Project.tblStructSel & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "' AND ISSYSTEMSELECT= '0'"
+    '            Case Else
+    '                EditSTRSELFIELDS = False
+    '                Exit Function
+    '        End Select
 
-                Case NODE_STRUCT_SEL
-                    objSel = CType(obj, clsStructureSelection)
-                    sql = "Update " & objSel.Project.tblStructSel & " Set SelectionName= '" & NewValue & "' WHERE SelectionName= '" & OldValue & "' AND ProjectName= '" & objSel.Project.ProjectName & "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
+    '        cmd.CommandText = sql
+    '        Log(sql)
+    '        cmd.ExecuteNonQuery()
 
-                Case Else
-                    EditStructureSelections = False
-                    Exit Function
-            End Select
+    '        EditSTRSELFIELDS = True
 
-            cmd.CommandText = sql
-            Log(sql)
-            cmd.ExecuteNonQuery()
+    '    Catch ex As Exception
+    '        LogError(ex, "modRename EditStrSelFields", sql)
+    '        EditSTRSELFIELDS = False
+    '    End Try
 
-            EditStructureSelections = True
+    'End Function
 
-        Catch ex As Exception
-            LogError(ex, "modRename EditStructureSelections", sql)
-            EditStructureSelections = False
-        End Try
+    'done
+    'Function EditStructureSelections(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
-    End Function
+    '    Dim sql As String = ""
+    '    Dim objProj As clsProject
+    '    Dim objEnv As clsEnvironment
+    '    Dim objStr As clsStructure
+    '    Dim objSel As clsStructureSelection
+
+    '    Try
+    '        Select Case obj.Type
+    '            Case NODE_PROJECT
+    '                objProj = CType(obj, clsProject)
+    '                sql = "Update " & objProj.Project.tblStructSel & " Set ProjectName= '" & NewValue & "' WHERE ProjectName= '" & OldValue & "'"
+
+    '            Case NODE_ENVIRONMENT
+    '                objEnv = CType(obj, clsEnvironment)
+    '                sql = "Update " & objEnv.Project.tblStructSel & " Set EnvironmentName= '" & NewValue & "' WHERE EnvironmentName= '" & OldValue & "' AND ProjectName='" & objEnv.Project.ProjectName & "'"
+
+    '            Case NODE_STRUCT
+    '                objStr = CType(obj, clsStructure)
+    '                sql = "Update " & objStr.Project.tblStructSel & " Set StructureName= '" & NewValue & "',SelectionName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "' AND ISSYSTEMSELECT= '1'"
+
+    '                cmd.CommandText = sql
+    '                Log(sql)
+    '                cmd.ExecuteNonQuery()
+
+    '                sql = "Update " & objStr.Project.tblStructSel & " Set StructureName= '" & NewValue & "' WHERE StructureName= '" & OldValue & "' AND ProjectName='" & objStr.Project.ProjectName & "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "' AND ISSYSTEMSELECT= '0'"
+
+    '            Case NODE_STRUCT_SEL
+    '                objSel = CType(obj, clsStructureSelection)
+    '                sql = "Update " & objSel.Project.tblStructSel & " Set SelectionName= '" & NewValue & "' WHERE SelectionName= '" & OldValue & "' AND ProjectName= '" & objSel.Project.ProjectName & "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "' AND StructureName= '" & objSel.ObjStructure.StructureName & "'"
+
+    '            Case Else
+    '                EditStructureSelections = False
+    '                Exit Function
+    '        End Select
+
+    '        cmd.CommandText = sql
+    '        Log(sql)
+    '        cmd.ExecuteNonQuery()
+
+    '        EditStructureSelections = True
+
+    '    Catch ex As Exception
+    '        LogError(ex, "modRename EditStructureSelections", sql)
+    '        EditStructureSelections = False
+    '    End Try
+
+    'End Function
 
     'done
     Function EditDESCFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
@@ -2003,7 +2003,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_STRUCT_SEL
                     objSel = CType(obj, clsStructureSelection)
-                    sql = "Update " & objSel.Project.tblStructSel & _
+                    sql = "Update " & objSel.Project.tblDescriptionSelect & _
                     " Set SelectionName= '" & NewValue & _
                     "' WHERE SelectionName= '" & OldValue & _
                     "' AND ProjectName= '" & objSel.Project.ProjectName & _
@@ -2770,14 +2770,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 EnvName = dr.Item("EnvironmentName")
                 ProjName = dr.Item("ProjectName")
                 FldName = dr.Item("FieldName")
-                If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                    ParName = dr.Item("Parent")
-                    DSDir = dr.Item("DsDirection")
-                    StrName = dr.Item("StructureName")
-                Else
-                    ParName = dr.Item("ParentName")
-                    StrName = dr.Item("DescriptionName")
-                End If
+                'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                '    ParName = dr.Item("Parent")
+                '    DSDir = dr.Item("DsDirection")
+                '    StrName = dr.Item("StructureName")
+                'Else
+                ParName = dr.Item("ParentName")
+                StrName = dr.Item("DescriptionName")
+                'End If
 
 
                 '// split the foreign key into it's components (structure.Field) and compare DSSelection part of the 

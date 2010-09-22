@@ -5,7 +5,7 @@ Public Class clsProject
     Private m_ProjectVersion As String = ""
     Private m_SecurityAttr As String = ""
 
-    Private m_ProjectMetaVersion As enumMetaVersion = enumMetaVersion.V2
+    Private m_ProjectMetaVersion As enumMetaVersion = enumMetaVersion.V3
     Private m_ProjectMetaDSN As String = ""
     Private m_ProjectMetaDSNUID As String
     Private m_ProjectMetaDSNPWD As String
@@ -34,18 +34,18 @@ Public Class clsProject
     Private m_connections As String = "CONNECTIONS"
     Private m_connectionsATTR As String = "CONNECTIONSATTR" 'newV3
 
-    Private m_structures As String = "STRUCTURES"  'old
+    'Private m_structures As String = "STRUCTURES"  'old
     Private m_descriptions As String = "DESCRIPTIONS" 'newRV3
     Private m_descriptionsATTR As String = "DESCRIPTIONSATTR" 'newV3
 
-    Private m_structfields As String = "STRUCTFIELDS" 'old
+    'Private m_structfields As String = "STRUCTFIELDS" 'old
     Private m_descriptionfields As String = "DESCRIPTIONFIELDS" 'newRV3
     Private m_descriptionfieldsATTR As String = "DESCRIPTIONFIELDSATTR" 'newV3 ***************
 
-    Private m_structsel As String = "STRUCTSEL" 'old
+    'Private m_structsel As String = "STRUCTSEL" 'old
     Private m_descriptionselect As String = "DESCRIPTIONSELECT" 'newRV3
 
-    Private m_strselfields As String = "STRSELFIELDS" 'old
+    'Private m_strselfields As String = "STRSELFIELDS" 'old
     Private m_descriptionselfields As String = "DESCRIPTSELFIELDS" 'newRV3
 
     Private m_datastores As String = "DATASTORES"
@@ -777,15 +777,15 @@ Public Class clsProject
         End Get
     End Property
 
-    Public ReadOnly Property tblStructures() As String
-        Get
-            If TablePrefix <> "" Then
-                Return TablePrefix & "." & m_structures
-            Else
-                Return m_structures
-            End If
-        End Get
-    End Property
+    'Public ReadOnly Property tblStructures() As String
+    '    Get
+    '        If TablePrefix <> "" Then
+    '            Return TablePrefix & "." & m_structures
+    '        Else
+    '            Return m_structures
+    '        End If
+    '    End Get
+    'End Property
 
     Public ReadOnly Property tblDescriptions() As String
         Get
@@ -807,15 +807,15 @@ Public Class clsProject
         End Get
     End Property
 
-    Public ReadOnly Property tblStructFields() As String
-        Get
-            If TablePrefix <> "" Then
-                Return TablePrefix & "." & m_structfields
-            Else
-                Return m_structfields
-            End If
-        End Get
-    End Property
+    'Public ReadOnly Property tblStructFields() As String
+    '    Get
+    '        If TablePrefix <> "" Then
+    '            Return TablePrefix & "." & m_structfields
+    '        Else
+    '            Return m_structfields
+    '        End If
+    '    End Get
+    'End Property
 
     Public ReadOnly Property tblDescriptionFields() As String
         Get
@@ -837,15 +837,15 @@ Public Class clsProject
         End Get
     End Property
 
-    Public ReadOnly Property tblStructSel() As String
-        Get
-            If TablePrefix <> "" Then
-                Return TablePrefix & "." & m_structsel
-            Else
-                Return m_structsel
-            End If
-        End Get
-    End Property
+    'Public ReadOnly Property tblStructSel() As String
+    '    Get
+    '        If TablePrefix <> "" Then
+    '            Return TablePrefix & "." & m_structsel
+    '        Else
+    '            Return m_structsel
+    '        End If
+    '    End Get
+    'End Property
 
     Public ReadOnly Property tblDescriptionSelect() As String
         Get
@@ -857,15 +857,15 @@ Public Class clsProject
         End Get
     End Property
 
-    Public ReadOnly Property tblStrSelFields() As String
-        Get
-            If TablePrefix <> "" Then
-                Return TablePrefix & "." & m_strselfields
-            Else
-                Return m_strselfields
-            End If
-        End Get
-    End Property
+    'Public ReadOnly Property tblStrSelFields() As String
+    '    Get
+    '        If TablePrefix <> "" Then
+    '            Return TablePrefix & "." & m_strselfields
+    '        Else
+    '            Return m_strselfields
+    '        End If
+    '    End Get
+    'End Property
 
     Public ReadOnly Property tblDescriptionSelFields() As String
         Get
