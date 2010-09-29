@@ -855,6 +855,7 @@ Public Class ctlStructure
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
@@ -867,7 +868,7 @@ Public Class ctlStructure
         cmdSave.Enabled = True
         prevFld.FieldDescModified = True
 
-        RaiseEvent Modified(Me, objThis)
+        OnChange(Me, New EventArgs)
 
     End Sub
 

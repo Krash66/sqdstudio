@@ -14,7 +14,7 @@ Public Class clsDatastore
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     '/// Datastore Properties
     Private m_DatastoreName As String = ""
@@ -586,20 +586,21 @@ Public Class clsDatastore
     '///Done
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
-        'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
-        Dim cmd As System.Data.Odbc.OdbcCommand
-        Dim dr As System.Data.DataRow
-        Dim da As System.Data.Odbc.OdbcDataAdapter
-        Dim dt As System.Data.DataTable
-        Dim sql As String = ""
-        Dim i As Integer
-        Dim DSsel As clsDSSelection
+        
 
         Try
             '//check if fields already loaded in memory?
             If Me.ObjSelections.Count > 0 And Reload = False Then
                 Exit Function
             End If
+            'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim dr As System.Data.DataRow
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As System.Data.DataTable
+            Dim sql As String = ""
+            Dim i As Integer
+            Dim DSsel As clsDSSelection
 
             If Incmd IsNot Nothing Then
                 cmd = Incmd
@@ -668,6 +669,8 @@ Public Class clsDatastore
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
@@ -753,6 +756,8 @@ Public Class clsDatastore
                         Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                 End Select
             Next
+
+            Me.IsLoaded = True
 
             Return True
 

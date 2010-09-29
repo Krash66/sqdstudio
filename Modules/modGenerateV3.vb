@@ -53,9 +53,11 @@ Public Module modGenerateV3
 
     Dim ResWords As New Collection
 
-#Region "Main Processes"
+#Region " Main Processes "
 
     Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False) As clsRcode
+
+        Log("********* Script Generation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -93,7 +95,8 @@ Public Module modGenerateV3
 
             Call PopulateResWords()
 
-            Log("********* Script Generation Start *********")
+            Log("********* Script File Creation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
 
             '*****************************************************
             '/// create files
@@ -129,6 +132,8 @@ Public Module modGenerateV3
                 GoTo ErrorGoTo
             End If
 
+            Log("********* Data Definition Section Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
             '*****************************************************
             '/// write Datastores, Structures, Joins, & Lookups
             wComment(RC, "-------------------------------------------------------------")
@@ -146,6 +151,7 @@ Public Module modGenerateV3
                 GoTo ErrorGoTo
             End If
 
+            Log("********* Field Specification Section Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
             '*****************************************************
             '/// Field Specs
             wComment(RC, "-------------------------------------------------------------")
@@ -166,6 +172,7 @@ Public Module modGenerateV3
                 GoTo ErrorGoTo
             End If
 
+            Log("********* Procedure Section Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
             '*****************************************************
             '/// write Procs
             wComment(RC, "-------------------------------------------------------------")
@@ -175,6 +182,7 @@ Public Module modGenerateV3
                 GoTo ErrorGoTo
             End If
 
+            Log("********* Main Section Section Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
             '*****************************************************
             '/// write Main
             wComment(RC, "-------------------------------------------------------------")
@@ -198,6 +206,8 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 GoTo ErrorGoTo2
             End If
 
+            Log("********* Script Creation Complete : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
 ParseOnly:
             '*****************************************************
             If NoParse = False Then
@@ -211,7 +221,7 @@ ParseOnly:
                         GoTo ErrorGoTo2
                     End If
                 End If
-                
+
             End If
 
 ErrorGoTo2:  '/// send returnPath or enumreturncode
@@ -583,22 +593,25 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
 #End Region
 
-#Region "Parser function"
+#Region " Parser function "
 
     '//// Function to parse scripts and capture output to files
     Function CallParser(ByRef rc As clsRcode) As Boolean
 
         Try
-            Dim FORargs As String = String.Format("{0}{1}", Quote(pathINL, """") & " ", Quote(pathPRC, """") _
-            & " LIST=ALL A B C D E F G H 1") ' >" & Quote(pathRPT, """") & " 2>" & Quote(pathERR, """"))
+            Dim FORargs As String = String.Format("{0}{1}", Quote(GetFileNameFromPath(pathINL), """") & " ", _
+              Quote(GetFileNameFromPath(pathPRC), """") & " LIST=ALL A B C D E F G H 1")
+            ' >" & Quote(pathRPT, """") & " 2>" & Quote(pathERR, """"))
             Dim args As String = FORargs
             Dim si As New ProcessStartInfo()
 
+            Log("*** Parser Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
             '/// Set all Process Start Information
-            si.WorkingDirectory = GetAppPath()
+            si.WorkingDirectory = GetDirFromPath(pathPRC)  'GetAppPath() '
             si.Arguments = args
 
-            si.FileName = "sqdparse.exe "
+            si.FileName = GetAppPath() & "sqdparse.exe "
 
             si.UseShellExecute = False
             si.CreateNoWindow = True
@@ -609,8 +622,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             Using myProcess As New System.Diagnostics.Process()
                 myProcess.StartInfo = si
 
-                Log("Parser Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
-                Log(si.FileName & args)
+                Log("*** " & si.FileName & args)
 
                 '//Create a new process to parse Script file and dump to RPT file and Error File
                 myProcess.Start()
@@ -623,8 +635,6 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                 ''//wait until task is done
                 myProcess.WaitForExit()
-
-                Log("Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
                 Select Case myProcess.ExitCode
                     Case 8
@@ -667,7 +677,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ErrorLocation = enumErrorLocation.NoErrors
                         rc.Path = pathSQD
 
-                        Log("Script file saved at : " & pathINL)
+                        Log("*** Script file saved at : " & pathINL)
 
                     Case Else
                         rc.HasError = True
@@ -679,8 +689,9 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
 
-                Log("Parser Report file saved at : " & pathRPT)
-                Log("********* Parser Return Code = " & myProcess.ExitCode & " *********")
+                Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")
+                Log("*** Parser Report file saved at : " & pathRPT)
+                Log("*** Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
                 myProcess.Close()
 
             End Using
@@ -708,16 +719,19 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
     Function CallParserSQD(ByRef rc As clsRcode) As Boolean
 
         Try
-            Dim FORargs As String = String.Format("{0}{1}", Quote(pathSQD, """") & " ", Quote(pathPRC, """") _
-            & " LIST=ALL A B C D E F G H 1") ' >" & Quote(pathRPT, """") & " 2>" & Quote(pathERR, """"))
+            Dim FORargs As String = String.Format("{0}{1}", Quote(GetFileNameFromPath(pathSQD), """") & _
+            " ", Quote(GetFileNameFromPath(pathPRC), """") & " LIST=ALL A B C D E F G H 1")
+            '' >" & Quote(pathRPT, """") & " 2>" & Quote(pathERR, """"))
             Dim args As String = FORargs
             Dim si As New ProcessStartInfo()
 
+            Log("*** Parser Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
             '/// Set all Process Start Information
-            si.WorkingDirectory = GetAppPath()
+            si.WorkingDirectory = GetDirFromPath(pathPRC)  'GetAppPath()
             si.Arguments = args
 
-            si.FileName = "sqdparse.exe "
+            si.FileName = GetAppPath() & "sqdparse.exe "
 
             si.UseShellExecute = False
             si.CreateNoWindow = True
@@ -728,8 +742,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             Using myProcess As New System.Diagnostics.Process()
                 myProcess.StartInfo = si
 
-                Log("Parser Run Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
-                Log(si.FileName & args)
+                Log("*** " & si.FileName & args)
 
                 '//Create a new process to parse Script file and dump to RPT file and Error File
                 myProcess.Start()
@@ -742,8 +755,6 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
                 ''//wait until task is done
                 myProcess.WaitForExit()
-
-                Log("Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
                 Select Case myProcess.ExitCode
                     Case 8
@@ -786,7 +797,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ErrorLocation = enumErrorLocation.NoErrors
                         rc.Path = pathSQD
 
-                        Log("Script file saved at : " & pathSQD)
+                        Log("*** Script file saved at : " & pathSQD)
 
                     Case Else
                         rc.HasError = True
@@ -797,8 +808,10 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
 
-                Log("Parser Report file saved at : " & pathRPT)
-                Log("********* Parser Return Code = " & myProcess.ExitCode & " *********")
+
+                Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")
+                Log("*** Parser Report file saved at : " & pathRPT)
+                Log("*** Parser Run Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
                 myProcess.Close()
 
             End Using
@@ -822,10 +835,9 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
     End Function
 
-
 #End Region
 
-#Region "Create Output Files and Write Headers"
+#Region " Create Output Files and Write Headers "
 
     Function CreateFiles(ByRef rc As clsRcode) As Boolean
 
@@ -1100,7 +1112,7 @@ ErrorGoTo:
 
 #End Region
 
-#Region "Object Functions"
+#Region " Object Functions "
 
     Function prtDatastores(ByRef rc As clsRcode) As Boolean
 
@@ -1116,7 +1128,7 @@ ErrorGoTo:
                 'wComment(rc, "---------------------------------------------------------------------")
                 ds = CType(ObjThis.Sources(i), clsDatastore)
                 ds.LoadMe()
-                ds.LoadItems(True)
+                ds.LoadItems()
 
                 If ds.IsLookUp = False Then
                     If prtDS(rc, ds) = False Then
@@ -1134,7 +1146,7 @@ ErrorGoTo:
                 'wComment(rc, "---------------------------------------------------------------------")
                 ds = CType(ObjThis.Targets(i), clsDatastore)
                 ds.LoadMe()
-                ds.LoadItems(True)
+                ds.LoadItems()
 
                 If prtDS(rc, ds) = False Then
                     GoTo ErrorGoTo
@@ -2234,7 +2246,7 @@ errorgoto:
 
 #End Region
 
-#Region "Write to file Functions"
+#Region " Write to file Functions "
 
     Function wHeaderComments(ByRef rc As clsRcode, ByVal LineNo As Integer, ByVal instr As String, Optional ByVal ArgStr As String = "") As Boolean
 
@@ -4281,7 +4293,7 @@ ErrorGoTo:
 
 #End Region
 
-#Region "Helper Functions and subs"
+#Region " Helper Functions and subs "
 
     Function wBlankLine(ByRef rc As clsRcode) As Boolean
 
@@ -4507,29 +4519,27 @@ ErrorGoTo:
             Select Case objSys.OSType
                 Case "z/OS"
                     If IsDBD = False Then
-                        If descLib.Trim <> "" Then
-                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath1)) _
-                            & ")"
+                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
+                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath1)) & ")"
                         Else
                             DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath1))
                         End If
                     Else
-                        If descLib.Trim <> "" Then
-                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) _
-                            & ")"
+                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
+                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
                         Else
                             DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2))
                         End If
                     End If
                 Case "UNIX"
                     If IsDBD = False Then
-                        If descLib.Trim <> "" Then
+                        If descLib.Trim <> "" Then  'And descLib.Contains("/") = True 
                             DDstr = descLib & "/" & GetFileNameOnly(str.fPath1)
                         Else
                             DDstr = str.fPath1
                         End If
                     Else
-                        If descLib.Trim <> "" Then
+                        If descLib.Trim <> "" Then  'And descLib.Contains("/") = True 
                             DDstr = descLib & "/" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2
@@ -4537,16 +4547,21 @@ ErrorGoTo:
                     End If
                 Case "Windows"
                     If IsDBD = False Then
-                        If descLib.Trim <> "" Then
+                        If descLib.Trim <> "" And descLib.Contains("\") = True Then
                             DDstr = descLib & "\" & GetFileNameOnly(str.fPath1)
                         Else
                             DDstr = str.fPath1
                         End If
                     Else
-                        If descLib.Trim <> "" Then
+                        If descLib.Trim <> "" And descLib.Contains("\") = True Then
                             DDstr = descLib & "\" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2
+                        End If
+                    End If
+                    If DDstr.Contains("/") = False Then
+                        If DDstr.Contains(ScriptPath) = True Then
+                            DDstr = DDstr.Replace(ScriptPath, ".")
                         End If
                     End If
             End Select
@@ -4734,6 +4749,113 @@ ErrorGoTo:
         Catch ex As Exception
             LogError(ex, "modGenerateV3 QuoteRes")
             Return InStr
+        End Try
+
+    End Function
+
+#End Region
+
+#Region " Run SQData "
+
+    Function RunSQData(ByVal pathPRC As String) As String
+
+        '//run out exe with command line args so it produces meta data in XML format
+        Try
+            'Dim TempPath As String = GetAppTemp()
+            Dim fsERR As System.IO.FileStream
+            Dim objWriteERR As System.IO.StreamWriter
+            Dim PathErr As String = IO.Path.Combine(GetDirFromPath(pathPRC), "sqdata.ERR")
+            'Dim fsOUT As System.IO.FileStream
+            'Dim objWriteOUT As System.IO.StreamWriter
+            'Dim PathOUT As String = IO.Path.Combine(GetDirFromPath(pathPRC), GetFileNameWithoutExtenstionFromPath(pathPRC) & ".OUT")
+
+            Dim FORargs As String = String.Format("{0}", Quote(GetFileNameFromPath(pathPRC), """"))
+            Dim args As String = FORargs
+            Dim si As New ProcessStartInfo()
+
+            Log("********* sqdata engine start *********")
+            Log("*** SQData Engine Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
+            '//delete previous log file
+            If System.IO.File.Exists(PathErr) Then
+                System.IO.File.Delete(PathErr)
+            End If
+            '// create new error log stream
+            fsERR = System.IO.File.Create(PathErr)
+            PathErr = fsERR.Name
+            objWriteERR = New System.IO.StreamWriter(fsERR)
+
+            ''//delete previous output file
+            'If System.IO.File.Exists(PathOUT) Then
+            '    System.IO.File.Delete(PathOUT)
+            'End If
+            ''// create new output file stream
+            'fsOUT = System.IO.File.Create(PathOUT)
+            'PathOUT = fsOUT.Name
+            'objWriteOUT = New System.IO.StreamWriter(fsOUT)
+
+            si.WorkingDirectory = GetDirFromPath(pathPRC)
+            si.FileName = GetAppPath() & "SQDATA.EXE "
+            si.Arguments = args
+            si.UseShellExecute = False
+            si.CreateNoWindow = True
+
+            '// Redirect Standard Error. Let standard Output go  
+            si.RedirectStandardOutput = False
+            si.RedirectStandardError = True
+
+            '// Create a new process to Model new Description Files
+            Using myProcess As New System.Diagnostics.Process()
+                myProcess.StartInfo = si
+
+                Log("*** " & si.FileName & args)
+
+                myProcess.Start()
+
+                Dim OutStr As String = ""
+                Dim ErrStr As String = ""
+
+                '/// split output into multiple threads to capture each stream to a string
+                '/// OutStr stays as "" because StdOut is NOT redirected
+                OutputToEnd(myProcess, OutStr, ErrStr)
+
+                '//wait until task is done
+                myProcess.WaitForExit()
+
+                objWriteERR.Write(ErrStr)
+                objWriteERR.Close()
+                fsERR.Close()
+
+                'objWriteOUT.Write(OutStr) 
+                'objWriteOUT.Close()
+                'fsOUT.Close()
+
+                If myProcess.ExitCode <> 0 Then
+                    If MsgBox("Error occurred while Engine [" & _
+                              GetFileNameWithoutExtenstionFromPath(pathPRC) & "] Executed." & _
+                              vbCrLf & "Do you want to see the log?", _
+                              MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, _
+                              MsgTitle) = MsgBoxResult.Yes Then
+                        If IO.File.Exists(PathErr) Then
+                            Process.Start(PathErr)
+                        End If
+                    End If
+                    RunSQData = ""
+                Else
+                    RunSQData = PathErr
+                End If
+
+                Log("*** SQData Engine Return Code = " & myProcess.ExitCode & " *********")
+                Log("*** SQData Engine Report file saved at : " & PathErr)
+                Log("*** SQData Engine Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
+
+                myProcess.Close()
+
+            End Using
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral RunSQData")
+            Return ""
         End Try
 
     End Function

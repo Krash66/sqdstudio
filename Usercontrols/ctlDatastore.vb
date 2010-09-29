@@ -1227,6 +1227,7 @@ Public Class ctlDatastore
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
@@ -3656,6 +3657,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         prevfld.FieldDescModified = True
 

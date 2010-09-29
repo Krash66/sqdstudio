@@ -20,7 +20,6 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmReport))
         Me.gbDGV1 = New System.Windows.Forms.GroupBox
         Me.DGV1 = New System.Windows.Forms.DataGridView
         Me.lblName = New System.Windows.Forms.Label
@@ -29,18 +28,11 @@ Partial Class frmReport
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuClrCell = New System.Windows.Forms.ToolStripMenuItem
         Me.SaveFD = New System.Windows.Forms.SaveFileDialog
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.gbDGV1.SuspendLayout()
         CType(Me.DGV1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '"dio\images\FormTop\sq_skyblue.jpg"
         '
         'Panel1
         '
@@ -180,9 +172,7 @@ Partial Class frmReport
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.gbDGV1.ResumeLayout(False)
         CType(Me.DGV1, System.ComponentModel.ISupportInitialize).EndInit()

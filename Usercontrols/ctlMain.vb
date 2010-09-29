@@ -109,22 +109,23 @@ Public Class ctlMain
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
     End Sub
 
-    Private Sub OnCodeChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    'Private Sub OnCodeChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-        If IsEventFromCode = True Then Exit Sub
+    '    If IsEventFromCode = True Then Exit Sub
 
-        objCurMap.IsModified = True
-        objThis.IsModified = True
-        cmdSave.Enabled = True
+    '    objCurMap.IsModified = True
+    '    objThis.IsModified = True
+    '    cmdSave.Enabled = True
 
-        OnChange(Me, New EventArgs)
+    '    OnChange(Me, New EventArgs)
 
-    End Sub
+    'End Sub
 
     'Private Sub OnDescChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
     '

@@ -17,7 +17,7 @@ Public Class clsEngine
     Private m_Connection As clsConnection
     Private m_DateFormat As String = ""
     Private m_Main As String = ""
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     Public Sources As New Collection
     Public Targets As New Collection
@@ -526,6 +526,7 @@ Public Class clsEngine
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -585,7 +586,7 @@ Public Class clsEngine
                 End Select
             Next
 
-            'End If
+            Me.IsLoaded = True
 
             Return True
 

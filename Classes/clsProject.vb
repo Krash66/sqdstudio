@@ -104,7 +104,7 @@ Public Class clsProject
     Private m_PROCexpanded As Boolean = True
     Private m_MAINexpanded As Boolean = True
 
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
 
 #Region "INode Implementation"
@@ -416,6 +416,8 @@ Public Class clsProject
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As New System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
@@ -502,6 +504,8 @@ Public Class clsProject
                         Me.MAINexpanded = GetVal(dr("PROJECTATTRBVALUE"))
                 End Select
             Next
+
+            Me.IsLoaded = True
 
             Return True
 

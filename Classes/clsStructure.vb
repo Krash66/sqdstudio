@@ -20,7 +20,7 @@ Public Class clsStructure
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     
 #Region "INode Implementation"
@@ -885,6 +885,8 @@ Public Class clsStructure
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
@@ -932,6 +934,8 @@ Public Class clsStructure
                         Me.StructureType = GetVal(dr("DESCRIPTIONATTRBVALUE"))
                 End Select
             Next
+
+            Me.IsLoaded = True
 
             Return True
 

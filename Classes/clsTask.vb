@@ -13,7 +13,7 @@ Public Class clsTask
     Private m_ObjParent As INode
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     '//8/15/05 : we dont allow datastore update (add/delete task datastore) from usercontrol so when save 
     '//from usercontrol set this flag so we skip datastore operation
@@ -563,6 +563,8 @@ Public Class clsTask
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As New System.Data.Odbc.OdbcCommand
 
             If Incmd IsNot Nothing Then
@@ -573,7 +575,9 @@ Public Class clsTask
             End If
 
             LoadDatastores(cmd)
-            LoadMappings(True, cmd)
+            LoadMappings(, cmd)
+
+            Me.IsLoaded = True
 
             Return True
 
@@ -974,22 +978,9 @@ Public Class clsTask
 
     Public Function LoadMappings(Optional ByVal Reload As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Integer
 
-        'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
-        'Dim cmd As System.Data.Odbc.OdbcCommand
-        Dim dr As System.Data.Odbc.OdbcDataReader
-        'Dim objHash As New Hashtable
-        Dim sql As String = ""
+        
 
         Try
-            Dim cmd As System.Data.Odbc.OdbcCommand
-
-            If Incmd IsNot Nothing Then
-                cmd = Incmd
-            Else
-                cmd = New Odbc.OdbcCommand
-                cmd.Connection = cnn
-            End If
-
             If Reload = False Then
                 '//check if already loaded ?
                 If Me.IsDisturbed = False Then
@@ -997,6 +988,20 @@ Public Class clsTask
                 Else
                     Me.IsDisturbed = False
                 End If
+            End If
+
+            'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
+            'Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim dr As System.Data.Odbc.OdbcDataReader
+            'Dim objHash As New Hashtable
+            Dim sql As String = ""
+            Dim cmd As System.Data.Odbc.OdbcCommand
+
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
 
             'cmd.Connection.Open()
@@ -1113,7 +1118,7 @@ Public Class clsTask
             '///doesn't return anything
 
         Catch ex As Exception
-            LogError(ex, "clsTask LoadMappings", sql)
+            LogError(ex, "clsTask LoadMappings")
         Finally
             'cnn.Close()
         End Try

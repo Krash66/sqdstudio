@@ -10,6 +10,9 @@ Public Class ctlEnvironment
     Dim objThis As New clsEnvironment
     Dim IsNewObj As Boolean
     Friend WithEvents FBD1 As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents gbRelDir As System.Windows.Forms.GroupBox
+    Friend WithEvents txtRelDir As System.Windows.Forms.TextBox
+    Friend WithEvents btnRelDir As System.Windows.Forms.Button
 
 
     Private destination As String
@@ -126,12 +129,16 @@ Public Class ctlEnvironment
         Me.btnFTPc = New System.Windows.Forms.Button
         Me.btnFTPdml = New System.Windows.Forms.Button
         Me.FBD1 = New System.Windows.Forms.FolderBrowserDialog
+        Me.gbRelDir = New System.Windows.Forms.GroupBox
+        Me.btnRelDir = New System.Windows.Forms.Button
+        Me.txtRelDir = New System.Windows.Forms.TextBox
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbScrDir.SuspendLayout()
         Me.gbFTP.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
+        Me.gbRelDir.SuspendLayout()
         Me.SuspendLayout()
         '
         'cmdSave
@@ -139,7 +146,7 @@ Public Class ctlEnvironment
         Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdSave.Location = New System.Drawing.Point(338, 476)
+        Me.cmdSave.Location = New System.Drawing.Point(337, 507)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.Size = New System.Drawing.Size(72, 24)
         Me.cmdSave.TabIndex = 201
@@ -150,7 +157,7 @@ Public Class ctlEnvironment
         Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdClose.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdClose.Location = New System.Drawing.Point(418, 476)
+        Me.cmdClose.Location = New System.Drawing.Point(417, 507)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(72, 24)
         Me.cmdClose.TabIndex = 202
@@ -162,9 +169,9 @@ Public Class ctlEnvironment
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.GroupBox1.ForeColor = System.Drawing.Color.White
-        Me.GroupBox1.Location = New System.Drawing.Point(8, 460)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 491)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(562, 7)
+        Me.GroupBox1.Size = New System.Drawing.Size(561, 7)
         Me.GroupBox1.TabIndex = 30
         Me.GroupBox1.TabStop = False
         '
@@ -186,7 +193,7 @@ Public Class ctlEnvironment
         Me.txtLocalCDir.Location = New System.Drawing.Point(54, 110)
         Me.txtLocalCDir.MaxLength = 300
         Me.txtLocalCDir.Name = "txtLocalCDir"
-        Me.txtLocalCDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalCDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalCDir.TabIndex = 5
         '
         'txtEnvironmentDesc
@@ -200,7 +207,7 @@ Public Class ctlEnvironment
         Me.txtEnvironmentDesc.Multiline = True
         Me.txtEnvironmentDesc.Name = "txtEnvironmentDesc"
         Me.txtEnvironmentDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtEnvironmentDesc.Size = New System.Drawing.Size(319, 62)
+        Me.txtEnvironmentDesc.Size = New System.Drawing.Size(319, 42)
         Me.txtEnvironmentDesc.TabIndex = 8
         '
         'txtEnvironmentName
@@ -241,7 +248,7 @@ Public Class ctlEnvironment
         Me.txtLocalDTDDir.Location = New System.Drawing.Point(54, 162)
         Me.txtLocalDTDDir.MaxLength = 300
         Me.txtLocalDTDDir.Name = "txtLocalDTDDir"
-        Me.txtLocalDTDDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalDTDDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalDTDDir.TabIndex = 2
         '
         'Label5
@@ -262,7 +269,7 @@ Public Class ctlEnvironment
         Me.txtLocalDDLDir.Location = New System.Drawing.Point(54, 84)
         Me.txtLocalDDLDir.MaxLength = 300
         Me.txtLocalDDLDir.Name = "txtLocalDDLDir"
-        Me.txtLocalDDLDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalDDLDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalDDLDir.TabIndex = 3
         '
         'Label6
@@ -283,14 +290,14 @@ Public Class ctlEnvironment
         Me.txtLocalCobolDir.Location = New System.Drawing.Point(54, 32)
         Me.txtLocalCobolDir.MaxLength = 300
         Me.txtLocalCobolDir.Name = "txtLocalCobolDir"
-        Me.txtLocalCobolDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalCobolDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalCobolDir.TabIndex = 4
         '
         'cmdHelp
         '
         Me.cmdHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdHelp.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdHelp.Location = New System.Drawing.Point(498, 476)
+        Me.cmdHelp.Location = New System.Drawing.Point(497, 507)
         Me.cmdHelp.Name = "cmdHelp"
         Me.cmdHelp.Size = New System.Drawing.Size(72, 24)
         Me.cmdHelp.TabIndex = 203
@@ -300,7 +307,7 @@ Public Class ctlEnvironment
         '
         Me.cmdBrowseFileLocalC.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalC.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalC.Location = New System.Drawing.Point(422, 111)
+        Me.cmdBrowseFileLocalC.Location = New System.Drawing.Point(483, 111)
         Me.cmdBrowseFileLocalC.Name = "cmdBrowseFileLocalC"
         Me.cmdBrowseFileLocalC.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalC.TabIndex = 105
@@ -310,7 +317,7 @@ Public Class ctlEnvironment
         '
         Me.cmdBrowseFileLocalCobol.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalCobol.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalCobol.Location = New System.Drawing.Point(422, 31)
+        Me.cmdBrowseFileLocalCobol.Location = New System.Drawing.Point(483, 31)
         Me.cmdBrowseFileLocalCobol.Name = "cmdBrowseFileLocalCobol"
         Me.cmdBrowseFileLocalCobol.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalCobol.TabIndex = 104
@@ -320,7 +327,7 @@ Public Class ctlEnvironment
         '
         Me.cmdBrowseFileLocalDDL.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalDDL.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalDDL.Location = New System.Drawing.Point(422, 83)
+        Me.cmdBrowseFileLocalDDL.Location = New System.Drawing.Point(483, 83)
         Me.cmdBrowseFileLocalDDL.Name = "cmdBrowseFileLocalDDL"
         Me.cmdBrowseFileLocalDDL.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalDDL.TabIndex = 103
@@ -330,7 +337,7 @@ Public Class ctlEnvironment
         '
         Me.cmdBrowseFileLocalDTD.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalDTD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalDTD.Location = New System.Drawing.Point(422, 161)
+        Me.cmdBrowseFileLocalDTD.Location = New System.Drawing.Point(483, 161)
         Me.cmdBrowseFileLocalDTD.Name = "cmdBrowseFileLocalDTD"
         Me.cmdBrowseFileLocalDTD.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalDTD.TabIndex = 102
@@ -340,7 +347,7 @@ Public Class ctlEnvironment
         '
         Me.cmdBrowseFileLocalScript.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalScript.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalScript.Location = New System.Drawing.Point(422, 29)
+        Me.cmdBrowseFileLocalScript.Location = New System.Drawing.Point(483, 29)
         Me.cmdBrowseFileLocalScript.Name = "cmdBrowseFileLocalScript"
         Me.cmdBrowseFileLocalScript.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalScript.TabIndex = 106
@@ -364,7 +371,7 @@ Public Class ctlEnvironment
         Me.txtLocalScriptDir.Location = New System.Drawing.Point(54, 30)
         Me.txtLocalScriptDir.MaxLength = 300
         Me.txtLocalScriptDir.Name = "txtLocalScriptDir"
-        Me.txtLocalScriptDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalScriptDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalScriptDir.TabIndex = 6
         '
         'Label2
@@ -384,14 +391,14 @@ Public Class ctlEnvironment
         Me.txtLocalModelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtLocalModelDir.Location = New System.Drawing.Point(54, 58)
         Me.txtLocalModelDir.Name = "txtLocalModelDir"
-        Me.txtLocalModelDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalModelDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalModelDir.TabIndex = 7
         '
         'cmdBrowseFileLocalModel
         '
         Me.cmdBrowseFileLocalModel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFileLocalModel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalModel.Location = New System.Drawing.Point(422, 59)
+        Me.cmdBrowseFileLocalModel.Location = New System.Drawing.Point(483, 59)
         Me.cmdBrowseFileLocalModel.Name = "cmdBrowseFileLocalModel"
         Me.cmdBrowseFileLocalModel.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFileLocalModel.TabIndex = 107
@@ -401,7 +408,7 @@ Public Class ctlEnvironment
         '
         Me.cmdPutScr.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdPutScr.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdPutScr.Location = New System.Drawing.Point(6, 19)
+        Me.cmdPutScr.Location = New System.Drawing.Point(6, 17)
         Me.cmdPutScr.Name = "cmdPutScr"
         Me.cmdPutScr.Size = New System.Drawing.Size(32, 21)
         Me.cmdPutScr.TabIndex = 204
@@ -411,7 +418,7 @@ Public Class ctlEnvironment
         '
         Me.btnBrowseFileLocalDML.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnBrowseFileLocalDML.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnBrowseFileLocalDML.Location = New System.Drawing.Point(422, 135)
+        Me.btnBrowseFileLocalDML.Location = New System.Drawing.Point(483, 135)
         Me.btnBrowseFileLocalDML.Name = "btnBrowseFileLocalDML"
         Me.btnBrowseFileLocalDML.Size = New System.Drawing.Size(25, 21)
         Me.btnBrowseFileLocalDML.TabIndex = 206
@@ -424,7 +431,7 @@ Public Class ctlEnvironment
         Me.txtLocalDMLDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtLocalDMLDir.Location = New System.Drawing.Point(54, 136)
         Me.txtLocalDMLDir.Name = "txtLocalDMLDir"
-        Me.txtLocalDMLDir.Size = New System.Drawing.Size(362, 20)
+        Me.txtLocalDMLDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalDMLDir.TabIndex = 208
         '
         'Label9
@@ -446,7 +453,7 @@ Public Class ctlEnvironment
         Me.gbName.ForeColor = System.Drawing.Color.White
         Me.gbName.Location = New System.Drawing.Point(3, 3)
         Me.gbName.Name = "gbName"
-        Me.gbName.Size = New System.Drawing.Size(343, 144)
+        Me.gbName.Size = New System.Drawing.Size(343, 124)
         Me.gbName.TabIndex = 210
         Me.gbName.TabStop = False
         Me.gbName.Text = "Environment Properties"
@@ -460,7 +467,7 @@ Public Class ctlEnvironment
         Me.gbDesc.ForeColor = System.Drawing.Color.White
         Me.gbDesc.Location = New System.Drawing.Point(6, 45)
         Me.gbDesc.Name = "gbDesc"
-        Me.gbDesc.Size = New System.Drawing.Size(331, 90)
+        Me.gbDesc.Size = New System.Drawing.Size(331, 70)
         Me.gbDesc.TabIndex = 42
         Me.gbDesc.TabStop = False
         Me.gbDesc.Text = "Description"
@@ -473,9 +480,9 @@ Public Class ctlEnvironment
         Me.gbScrDir.Controls.Add(Me.Label1)
         Me.gbScrDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScrDir.ForeColor = System.Drawing.Color.White
-        Me.gbScrDir.Location = New System.Drawing.Point(3, 357)
+        Me.gbScrDir.Location = New System.Drawing.Point(3, 132)
         Me.gbScrDir.Name = "gbScrDir"
-        Me.gbScrDir.Size = New System.Drawing.Size(505, 68)
+        Me.gbScrDir.Size = New System.Drawing.Size(566, 68)
         Me.gbScrDir.TabIndex = 211
         Me.gbScrDir.TabStop = False
         Me.gbScrDir.Text = "Local Script Directory"
@@ -486,9 +493,9 @@ Public Class ctlEnvironment
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbFTP.Controls.Add(Me.cmdPutScr)
         Me.gbFTP.ForeColor = System.Drawing.Color.White
-        Me.gbFTP.Location = New System.Drawing.Point(453, 10)
+        Me.gbFTP.Location = New System.Drawing.Point(514, 12)
         Me.gbFTP.Name = "gbFTP"
-        Me.gbFTP.Size = New System.Drawing.Size(46, 49)
+        Me.gbFTP.Size = New System.Drawing.Size(46, 47)
         Me.gbFTP.TabIndex = 205
         Me.gbFTP.TabStop = False
         Me.gbFTP.Text = "FTP"
@@ -516,9 +523,9 @@ Public Class ctlEnvironment
         Me.GroupBox5.Controls.Add(Me.cmdBrowseFileLocalC)
         Me.GroupBox5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox5.ForeColor = System.Drawing.Color.White
-        Me.GroupBox5.Location = New System.Drawing.Point(3, 153)
+        Me.GroupBox5.Location = New System.Drawing.Point(3, 205)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(505, 198)
+        Me.GroupBox5.Size = New System.Drawing.Size(566, 198)
         Me.GroupBox5.TabIndex = 212
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Local Description Directories"
@@ -535,7 +542,7 @@ Public Class ctlEnvironment
         Me.GroupBox3.Controls.Add(Me.btnFTPdml)
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
-        Me.GroupBox3.Location = New System.Drawing.Point(453, 15)
+        Me.GroupBox3.Location = New System.Drawing.Point(514, 15)
         Me.GroupBox3.Name = "GroupBox3"
         Me.GroupBox3.Size = New System.Drawing.Size(46, 177)
         Me.GroupBox3.TabIndex = 210
@@ -597,19 +604,52 @@ Public Class ctlEnvironment
         Me.btnFTPdml.TabIndex = 207
         Me.btnFTPdml.Text = "<-"
         '
+        'gbRelDir
+        '
+        Me.gbRelDir.Controls.Add(Me.btnRelDir)
+        Me.gbRelDir.Controls.Add(Me.txtRelDir)
+        Me.gbRelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbRelDir.ForeColor = System.Drawing.Color.White
+        Me.gbRelDir.Location = New System.Drawing.Point(3, 133)
+        Me.gbRelDir.Name = "gbRelDir"
+        Me.gbRelDir.Size = New System.Drawing.Size(505, 56)
+        Me.gbRelDir.TabIndex = 213
+        Me.gbRelDir.TabStop = False
+        Me.gbRelDir.Text = "Default Directory (Relative Path)"
+        Me.gbRelDir.Visible = False
+        '
+        'btnRelDir
+        '
+        Me.btnRelDir.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnRelDir.Location = New System.Drawing.Point(459, 18)
+        Me.btnRelDir.Name = "btnRelDir"
+        Me.btnRelDir.Size = New System.Drawing.Size(34, 23)
+        Me.btnRelDir.TabIndex = 1
+        Me.btnRelDir.Text = ".."
+        Me.btnRelDir.UseVisualStyleBackColor = False
+        '
+        'txtRelDir
+        '
+        Me.txtRelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtRelDir.Location = New System.Drawing.Point(9, 20)
+        Me.txtRelDir.Name = "txtRelDir"
+        Me.txtRelDir.Size = New System.Drawing.Size(438, 20)
+        Me.txtRelDir.TabIndex = 0
+        '
         'ctlEnvironment
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Controls.Add(Me.gbScrDir)
+        Me.Controls.Add(Me.gbRelDir)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.cmdHelp)
         Me.Controls.Add(Me.cmdClose)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.GroupBox5)
-        Me.Controls.Add(Me.gbScrDir)
         Me.Controls.Add(Me.gbName)
         Me.ForeColor = System.Drawing.Color.White
         Me.Name = "ctlEnvironment"
-        Me.Size = New System.Drawing.Size(578, 508)
+        Me.Size = New System.Drawing.Size(577, 539)
         Me.gbName.ResumeLayout(False)
         Me.gbName.PerformLayout()
         Me.gbDesc.ResumeLayout(False)
@@ -620,6 +660,8 @@ Public Class ctlEnvironment
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
+        Me.gbRelDir.ResumeLayout(False)
+        Me.gbRelDir.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -675,10 +717,11 @@ Public Class ctlEnvironment
 
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnvironmentName.TextChanged, txtEnvironmentDesc.TextChanged, txtLocalDTDDir.TextChanged, txtLocalDDLDir.TextChanged, txtLocalCobolDir.TextChanged, txtLocalCDir.TextChanged, txtLocalScriptDir.TextChanged, txtLocalModelDir.TextChanged, txtLocalDMLDir.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnvironmentName.TextChanged, txtEnvironmentDesc.TextChanged, txtLocalDTDDir.TextChanged, txtLocalDDLDir.TextChanged, txtLocalCobolDir.TextChanged, txtLocalCDir.TextChanged, txtLocalScriptDir.TextChanged, txtLocalModelDir.TextChanged, txtLocalDMLDir.TextChanged, txtRelDir.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
@@ -699,7 +742,7 @@ Public Class ctlEnvironment
     End Sub
 
     '//new by npatel on 8/13/05
-    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, btnBrowseFileLocalDML.Click, cmdBrowseFileLocalModel.Click
+    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, btnBrowseFileLocalDML.Click, cmdBrowseFileLocalModel.Click, btnRelDir.Click
 
         Dim DefaultDir As String
         'Dim testdir As String
@@ -727,6 +770,9 @@ Public Class ctlEnvironment
         'model Dir is actually DBD dir
         Dim Modeldir As String = ""
         Dim Modelpre As String = ""
+        'relative directory/base dir/default dir
+        Dim RelDir As String = ""
+        Dim RelPre As String = ""
 
         'Dim TempArr As Char()
         'Dim TempStr As String
@@ -806,6 +852,16 @@ Public Class ctlEnvironment
                 Else
                     Modeldir = txtLocalModelDir.Text
                 End If
+            Case "btnRelDir"
+                If txtRelDir.Text.Contains("%") = True Then
+                    preIDX = txtRelDir.Text.IndexOf("%")
+                    pathIDX = txtRelDir.Text.LastIndexOf("%")
+                    RelPre = Strings.Mid(txtRelDir.Text, preIDX + 2, pathIDX - preIDX - 1)
+                    RelDir = Strings.Right(txtRelDir.Text, txtRelDir.Text.Length - pathIDX - 1)
+                    RelDir = System.Environment.GetEnvironmentVariable(RelPre) & RelDir
+                Else
+                    RelDir = txtRelDir.Text
+                End If
         End Select
 
         Select Case CType(sender, Button).Name
@@ -851,6 +907,12 @@ Public Class ctlEnvironment
                 Else
                     FBD1.SelectedPath = Modeldir
                 End If
+            Case "btnRelDir"
+                If RelDir = "" Then
+                    FBD1.SelectedPath = DefaultDir
+                Else
+                    FBD1.SelectedPath = RelDir
+                End If
         End Select
 
         If FBD1.ShowDialog() = DialogResult.OK Then
@@ -876,6 +938,9 @@ Public Class ctlEnvironment
                 Case "cmdBrowseFileLocalModel"
                     txtLocalModelDir.Text = FBD1.SelectedPath
                     objThis.LocalDBDDir = FBD1.SelectedPath
+                Case "btnRelDir"
+                    txtRelDir.Text = FBD1.SelectedPath
+                    objThis.RelDir = FBD1.SelectedPath
             End Select
             objThis.DefaultStrDir = FBD1.SelectedPath
         End If
@@ -1035,6 +1100,7 @@ Public Class ctlEnvironment
             objThis.LocalDMLDir = txtLocalDMLDir.Text
             objThis.LocalScriptDir = txtLocalScriptDir.Text
             objThis.LocalDBDDir = txtLocalModelDir.Text
+            objThis.RelDir = txtRelDir.Text
 
             objThis.SetStructureDir()
 
@@ -1087,6 +1153,7 @@ Public Class ctlEnvironment
         txtLocalDMLDir.Text = objThis.LocalDMLDir
         txtLocalScriptDir.Text = objThis.LocalScriptDir
         txtLocalModelDir.Text = objThis.LocalDBDDir
+        txtRelDir.Text = objThis.RelDir
 
     End Function
 
@@ -1102,5 +1169,4 @@ Public Class ctlEnvironment
 
     End Function
 
-    
 End Class

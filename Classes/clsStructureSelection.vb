@@ -11,7 +11,7 @@ Public Class clsStructureSelection
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     Public ObjDSselections As New Collection '// collection of dsselections using this selection design
     Public ObjSelectionFields As New ArrayList '//Array of Fields selected with in structure
@@ -556,6 +556,8 @@ Public Class clsStructureSelection
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim dr As System.Data.DataRow
             Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -619,8 +621,13 @@ Public Class clsStructureSelection
                 Next
             End If
 
+            Me.IsLoaded = True
+
+            Return True
+
         Catch ex As Exception
             LogError(ex, "clsSS LoadMe")
+            Return False
         End Try
 
     End Function

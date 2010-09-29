@@ -556,6 +556,7 @@ Public Class ctlConnection
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 

@@ -927,10 +927,10 @@ Public Module modDatabase
                     End If
             End Select
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                obj.LoadDatastores()
-                obj.LoadMappings()
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    obj.LoadDatastores()
+            '    obj.LoadMappings()
+            'End If
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 

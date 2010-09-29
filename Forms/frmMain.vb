@@ -5829,13 +5829,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         DoModelAction(, "LOD")
 
     End Sub
-    '// not finished
+
     Private Sub mnuModDSSelSQL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelSQL.Click
 
         DoModelAction(, "SQL")
 
     End Sub
-    '// Not finished
+
     Private Sub mnuModDSSelMSSQL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelMSSQL.Click
 
         DoModelAction(, "MSSQL")

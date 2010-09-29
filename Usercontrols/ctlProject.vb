@@ -70,6 +70,8 @@ Public Class ctlProject
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.cmdHelp = New System.Windows.Forms.Button
         Me.gbProj = New System.Windows.Forms.GroupBox
+        Me.lblMetaVer = New System.Windows.Forms.Label
+        Me.txtMetaVer = New System.Windows.Forms.TextBox
         Me.Label1 = New System.Windows.Forms.Label
         Me.txtCreateDate = New System.Windows.Forms.TextBox
         Me.gbV3 = New System.Windows.Forms.GroupBox
@@ -77,8 +79,6 @@ Public Class ctlProject
         Me.txtCust = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
-        Me.txtMetaVer = New System.Windows.Forms.TextBox
-        Me.lblMetaVer = New System.Windows.Forms.Label
         Me.gbProj.SuspendLayout()
         Me.gbV3.SuspendLayout()
         Me.SuspendLayout()
@@ -212,6 +212,22 @@ Public Class ctlProject
         Me.gbProj.TabStop = False
         Me.gbProj.Text = "Project Properties"
         '
+        'lblMetaVer
+        '
+        Me.lblMetaVer.AutoSize = True
+        Me.lblMetaVer.Location = New System.Drawing.Point(6, 100)
+        Me.lblMetaVer.Name = "lblMetaVer"
+        Me.lblMetaVer.Size = New System.Drawing.Size(108, 13)
+        Me.lblMetaVer.TabIndex = 25
+        Me.lblMetaVer.Text = "MetaData Version"
+        '
+        'txtMetaVer
+        '
+        Me.txtMetaVer.Location = New System.Drawing.Point(141, 97)
+        Me.txtMetaVer.Name = "txtMetaVer"
+        Me.txtMetaVer.Size = New System.Drawing.Size(341, 20)
+        Me.txtMetaVer.TabIndex = 24
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -276,22 +292,6 @@ Public Class ctlProject
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "Customer Name"
         '
-        'txtMetaVer
-        '
-        Me.txtMetaVer.Location = New System.Drawing.Point(141, 97)
-        Me.txtMetaVer.Name = "txtMetaVer"
-        Me.txtMetaVer.Size = New System.Drawing.Size(341, 20)
-        Me.txtMetaVer.TabIndex = 24
-        '
-        'lblMetaVer
-        '
-        Me.lblMetaVer.AutoSize = True
-        Me.lblMetaVer.Location = New System.Drawing.Point(6, 100)
-        Me.lblMetaVer.Name = "lblMetaVer"
-        Me.lblMetaVer.Size = New System.Drawing.Size(108, 13)
-        Me.lblMetaVer.TabIndex = 25
-        Me.lblMetaVer.Text = "MetaData Version"
-        '
         'ctlProject
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -344,10 +344,11 @@ Public Class ctlProject
 
     End Sub
     
-    Private Sub OnChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMetaDSN.TextChanged, txtProjectName.TextChanged, txtVersion.TextChanged, txtCreateDate.TextChanged, txtLastUpd.TextChanged, txtCust.TextChanged
+    Private Sub OnChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMetaDSN.TextChanged, txtProjectName.TextChanged, txtVersion.TextChanged, txtCreateDate.TextChanged, txtLastUpd.TextChanged, txtCust.TextChanged, txtMetaVer.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 

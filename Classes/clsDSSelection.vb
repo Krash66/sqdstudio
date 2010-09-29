@@ -26,7 +26,7 @@ Public Class clsDSSelection
     Private m_IsMapped As Boolean = False
     Private m_ObjEngine As clsEngine
     Private m_Environment As clsEnvironment
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     Public DSSelectionFields As New ArrayList '//Array of Fields selected with in structure
     Public OldDSSelectionFields As New ArrayList '//Array of Old fields
@@ -348,6 +348,8 @@ Public Class clsDSSelection
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
         
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim dr As System.Data.DataRow
             Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -410,6 +412,8 @@ Public Class clsDSSelection
                     End If
                 End If
             Next
+
+            Me.IsLoaded = True
 
             Return True
 

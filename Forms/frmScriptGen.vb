@@ -254,6 +254,7 @@ Public Class frmScriptGen
             Me.gbPath.Enabled = True
             Me.gbStudioFiles.Enabled = True
             Me.gbParseFiles.Enabled = Parsed
+            Me.btnSQData.Enabled = Parsed
 
             Return True
 
@@ -363,7 +364,7 @@ Public Class frmScriptGen
 
             FillResults(False)
 
-            Log("********* Script Generation End ***********")
+            Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnGenScript_Click")
@@ -389,7 +390,7 @@ Public Class frmScriptGen
             End Select
             FillResults(True)
 
-            Log("********* Script Generation End ***********")
+            Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParse_Click")
@@ -441,7 +442,7 @@ Public Class frmScriptGen
             End Select
             FillResults(True)
 
-            Log("********* Script Generation End ***********")
+            Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParseSQD_Click")

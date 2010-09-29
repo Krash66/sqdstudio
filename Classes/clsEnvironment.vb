@@ -12,13 +12,16 @@ Public Class clsEnvironment
     Private m_LocalDMLDir As String
     Private m_LocalDBDDir As String
     Private m_LocalScriptDir As String
+    Private m_DefaultStrDir As String = ""
+    'Relative base project directory
+    Private m_RelDir As String = ""
+
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
-    Private m_DefaultStrDir As String = ""
     Private m_OldDMLobj As clsDMLinfo = Nothing
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     Public Connections As New Collection
     Public Structures As New Collection
@@ -491,6 +494,8 @@ Public Class clsEnvironment
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             Dim cmd As New System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
@@ -537,8 +542,12 @@ Public Class clsEnvironment
                         Me.LocalDBDDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
                     Case "LOCALSCRIPTDIR"
                         Me.LocalScriptDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
+                    Case "RELDIR"
+                        Me.RelDir = GetStr(GetVal(dr("ENVIRONMENTATTRBVALUE")))
                 End Select
             Next
+
+            Me.IsLoaded = True
 
             Return True
 
@@ -706,6 +715,15 @@ Public Class clsEnvironment
         End Set
     End Property
 
+    Public Property RelDir() As String
+        Get
+            Return m_RelDir
+        End Get
+        Set(ByVal value As String)
+            m_RelDir = value
+        End Set
+    End Property
+
     Public Property OldDMLobj() As clsDMLinfo
         Get
             Return m_OldDMLobj
@@ -760,7 +778,7 @@ Public Class clsEnvironment
 
             'cmd.Connection = cnn
 
-            For i As Integer = 0 To 7
+            For i As Integer = 0 To 8
                 Select Case i
                     Case 0
                         Attrib = "DEFAULTSTRDIR"
@@ -786,6 +804,9 @@ Public Class clsEnvironment
                     Case 7
                         Attrib = "LOCALSCRIPTDIR"
                         Value = Me.LocalScriptDir
+                    Case 8
+                        Attrib = "RELDIR"
+                        Value = Me.RelDir
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblEnvironmentsATTR & _

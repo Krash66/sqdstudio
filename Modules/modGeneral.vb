@@ -802,113 +802,6 @@ Public Module modGeneral
 
 #End Region
 
-#Region "Run SQData"
-
-    Function RunSQData(ByVal pathPRC As String) As String
-
-        '//run out exe with command line args so it produces meta data in XML format
-        Try
-            'Dim TempPath As String = GetAppTemp()
-            Dim fsERR As System.IO.FileStream
-            Dim objWriteERR As System.IO.StreamWriter
-            Dim PathErr As String = IO.Path.Combine(GetDirFromPath(pathPRC), "sqdata.ERR")
-            'Dim fsOUT As System.IO.FileStream
-            'Dim objWriteOUT As System.IO.StreamWriter
-            'Dim PathOUT As String = IO.Path.Combine(GetDirFromPath(pathPRC), GetFileNameWithoutExtenstionFromPath(pathPRC) & ".OUT")
-
-            Dim FORargs As String = String.Format("{0}", Quote(pathPRC, """"))
-            Dim args As String = FORargs
-            Dim si As New ProcessStartInfo()
-
-            '//delete previous log file
-            If System.IO.File.Exists(PathErr) Then
-                System.IO.File.Delete(PathErr)
-            End If
-            '// create new error log stream
-            fsERR = System.IO.File.Create(PathErr)
-            PathErr = fsERR.Name
-            objWriteERR = New System.IO.StreamWriter(fsERR)
-
-            ''//delete previous output file
-            'If System.IO.File.Exists(PathOUT) Then
-            '    System.IO.File.Delete(PathOUT)
-            'End If
-            ''// create new output file stream
-            'fsOUT = System.IO.File.Create(PathOUT)
-            'PathOUT = fsOUT.Name
-            'objWriteOUT = New System.IO.StreamWriter(fsOUT)
-
-            si.WorkingDirectory = GetAppPath()
-            si.FileName = "SQDATA.EXE "
-            si.Arguments = args
-            si.UseShellExecute = False
-            si.CreateNoWindow = True
-
-            '// Redirect Standard Error. Let standard Output go  
-            si.RedirectStandardOutput = False
-            si.RedirectStandardError = True
-
-            '// Create a new process to Model new Description Files
-            Using myProcess As New System.Diagnostics.Process()
-                myProcess.StartInfo = si
-
-                Log("********* sqdata engine Start *********")
-                Log("sqdata Engine Started : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
-                Log(si.FileName & args)
-
-                myProcess.Start()
-
-                Dim OutStr As String = ""
-                Dim ErrStr As String = ""
-
-                '/// split output into multiple threads to capture each stream to a string
-                '/// OutStr stays as "" because StdOut is NOT redirected
-                OutputToEnd(myProcess, OutStr, ErrStr)
-
-                '//wait until task is done
-                myProcess.WaitForExit()
-
-                Log("sqdata engine Ended : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
-                Log("sqdata exit Code : " & myProcess.ExitCode)
-
-                objWriteERR.Write(ErrStr)
-                objWriteERR.Close()
-                fsERR.Close()
-
-                'objWriteOUT.Write(OutStr) 
-                'objWriteOUT.Close()
-                'fsOUT.Close()
-
-                If myProcess.ExitCode <> 0 Then
-                    If MsgBox("Error occurred while Engine [" & _
-                              GetFileNameWithoutExtenstionFromPath(pathPRC) & "] Executed." & _
-                              vbCrLf & "Do you want to see the log?", _
-                              MsgBoxStyle.Critical Or MsgBoxStyle.YesNoCancel, _
-                              MsgTitle) = MsgBoxResult.Yes Then
-                        If IO.File.Exists(PathErr) Then
-                            Process.Start(PathErr)
-                        End If
-                    End If
-                    Return ""
-                Else
-                    Return PathErr
-                End If
-
-                Log("Modeler Report file saved at : " & PathErr)
-                Log("********* Modeler Return Code = " & myProcess.ExitCode & " *********")
-                myProcess.Close()
-
-            End Using
-
-        Catch ex As Exception
-            LogError(ex, "modGeneral RunSQData")
-            Return ""
-        End Try
-
-    End Function
-
-#End Region
-
 #Region "Asynchronous Stream Read and Write"
 
     '/// New object to buffer Asynchonous data streams
@@ -1977,7 +1870,7 @@ Public Module modGeneral
     '//Filename with extension
     Public Function GetFileNameFromPath(ByVal sPath As String) As String
         If sPath <> "" Then
-            GetFileNameFromPath = sPath.Substring(sPath.IndexOf("\"))
+            GetFileNameFromPath = sPath.Substring(sPath.LastIndexOf("\") + 1)
         Else
             GetFileNameFromPath = ""
         End If

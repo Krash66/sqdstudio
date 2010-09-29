@@ -526,7 +526,7 @@ Public Class ctlStructureSelection
         cmdSave.Enabled = True
         prevFld.FieldDescModified = True
 
-        RaiseEvent Modified(Me, objThis)
+        OnChange(Me, New EventArgs)
 
     End Sub
 

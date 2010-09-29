@@ -1717,6 +1717,7 @@ Public Class ctlTask
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
@@ -1727,10 +1728,9 @@ Public Class ctlTask
         If IsEventFromCode = True Then Exit Sub
 
         objCurMap.IsModified = True
-        objThis.IsModified = True
-        cmdSave.Enabled = True
+        objCurMap.IsLoaded = False
 
-        RaiseEvent Modified(Me, objThis)
+        OnChange(Me, New EventArgs)
 
     End Sub
 
@@ -1739,10 +1739,9 @@ Public Class ctlTask
         If IsEventFromCode = True Then Exit Sub
 
         objCurMap.IsModified = True
-        objThis.IsModified = True
-        cmdSave.Enabled = True
+        objCurMap.IsLoaded = False
 
-        RaiseEvent Modified(Me, objThis)
+        OnChange(Me, New EventArgs)
 
     End Sub
 

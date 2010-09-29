@@ -16,7 +16,7 @@ Public Class clsVariable
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
     Private m_Environment As clsEnvironment
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
 
 #Region "INode Implementation"
@@ -484,62 +484,63 @@ Public Class clsVariable
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Dim cmd As System.Data.Odbc.OdbcCommand
-                Dim da As System.Data.Odbc.OdbcDataAdapter
-                Dim dt As New DataTable("temp")
-                Dim dr As DataRow
-                Dim sql As String = ""
-                'Dim strAttrs As String
-                Dim Attrib As String = ""
-                Dim Value As String = ""
+            If Me.IsLoaded = True Then Exit Try
 
-                If Incmd IsNot Nothing Then
-                    cmd = Incmd
-                Else
-                    cmd = New Odbc.OdbcCommand
-                    cmd.Connection = cnn
-                End If
+            Dim cmd As System.Data.Odbc.OdbcCommand
+            Dim da As System.Data.Odbc.OdbcDataAdapter
+            Dim dt As New DataTable("temp")
+            Dim dr As DataRow
+            Dim sql As String = ""
+            'Dim strAttrs As String
+            Dim Attrib As String = ""
+            Dim Value As String = ""
 
-
-                If Me.Engine IsNot Nothing Then
-                    sql = "SELECT VARIABLEATTRB,VARIABLEATTRBVALUE FROM " & Me.Project.tblVariablesATTR & _
-                                    " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
-                                    "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
-                                    "' AND SystemNAME='" & FixStr(Me.Engine.ObjSystem.SystemName) & _
-                                    "' AND ENGINENAME='" & FixStr(Me.Engine.EngineName) & _
-                                    "' AND VariableName='" & FixStr(Me.VariableName) & "'"
-                Else
-                    sql = "SELECT VARIABLEATTRB,VARIABLEATTRBVALUE FROM " & Me.Project.tblVariablesATTR & _
-                                    " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
-                                    "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
-                                    "' AND SystemNAME='" & DBNULL & _
-                                    "' AND ENGINENAME='" & DBNULL & _
-                                    "' AND VariableName='" & FixStr(Me.VariableName) & "'"
-                End If
-
-
-                cmd.CommandText = sql
-                Log(sql)
-                da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
-                da.Fill(dt)
-                da.Dispose()
-
-                For i As Integer = 0 To dt.Rows.Count - 1
-                    dr = dt.Rows(i)
-
-                    Attrib = GetVal(dr("VARIABLEATTRB"))
-                    Select Case Attrib
-                        Case "VARINITVAL"
-                            Me.VarInitVal = GetVal(dr("VARIABLEATTRBVALUE"))
-                        Case "VARSIZE"
-                            Me.VarSize = GetVal(dr("VARIABLEATTRBVALUE"))
-                        Case "DESCRIPTION"
-                            Me.VariableDescription = GetStr(GetVal(dr("VARIABLEATTRBVALUE")))
-                    End Select
-                Next
-
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
+
+
+            If Me.Engine IsNot Nothing Then
+                sql = "SELECT VARIABLEATTRB,VARIABLEATTRBVALUE FROM " & Me.Project.tblVariablesATTR & _
+                                " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
+                                "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
+                                "' AND SystemNAME='" & FixStr(Me.Engine.ObjSystem.SystemName) & _
+                                "' AND ENGINENAME='" & FixStr(Me.Engine.EngineName) & _
+                                "' AND VariableName='" & FixStr(Me.VariableName) & "'"
+            Else
+                sql = "SELECT VARIABLEATTRB,VARIABLEATTRBVALUE FROM " & Me.Project.tblVariablesATTR & _
+                                " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
+                                "' AND ENVIRONMENTNAME='" & FixStr(Me.Environment.EnvironmentName) & _
+                                "' AND SystemNAME='" & DBNULL & _
+                                "' AND ENGINENAME='" & DBNULL & _
+                                "' AND VariableName='" & FixStr(Me.VariableName) & "'"
+            End If
+
+
+            cmd.CommandText = sql
+            Log(sql)
+            da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
+            da.Fill(dt)
+            da.Dispose()
+
+            For i As Integer = 0 To dt.Rows.Count - 1
+                dr = dt.Rows(i)
+
+                Attrib = GetVal(dr("VARIABLEATTRB"))
+                Select Case Attrib
+                    Case "VARINITVAL"
+                        Me.VarInitVal = GetVal(dr("VARIABLEATTRBVALUE"))
+                    Case "VARSIZE"
+                        Me.VarSize = GetVal(dr("VARIABLEATTRBVALUE"))
+                    Case "DESCRIPTION"
+                        Me.VariableDescription = GetStr(GetVal(dr("VARIABLEATTRBVALUE")))
+                End Select
+            Next
+
+            Me.IsLoaded = True
 
             Return True
 

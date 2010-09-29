@@ -2,7 +2,12 @@ Public Class frmEnvironment
     Inherits SQDStudio.frmBlank
 
     Public objThis As New clsEnvironment
-    
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents txtRelDir As System.Windows.Forms.TextBox
+    Friend WithEvents btnRelDir As System.Windows.Forms.Button
+    Friend WithEvents cmdPutRelDir As System.Windows.Forms.Button
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+
 
     Dim IsNewObj As Boolean
 
@@ -105,37 +110,42 @@ Public Class frmEnvironment
         Me.txtLocalDMLDir = New System.Windows.Forms.TextBox
         Me.cmdBrowseLocalDMLDir = New System.Windows.Forms.Button
         Me.cmdGetDML = New System.Windows.Forms.Button
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.txtRelDir = New System.Windows.Forms.TextBox
+        Me.btnRelDir = New System.Windows.Forms.Button
+        Me.cmdPutRelDir = New System.Windows.Forms.Button
+        Me.Label13 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(572, 68)
+        Me.Panel1.Size = New System.Drawing.Size(567, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 422)
-        Me.GroupBox1.Size = New System.Drawing.Size(574, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 462)
+        Me.GroupBox1.Size = New System.Drawing.Size(569, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(290, 445)
+        Me.cmdOk.Location = New System.Drawing.Point(285, 485)
         Me.cmdOk.TabIndex = 21
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(386, 445)
+        Me.cmdCancel.Location = New System.Drawing.Point(381, 485)
         Me.cmdCancel.TabIndex = 22
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(482, 445)
+        Me.cmdHelp.Location = New System.Drawing.Point(477, 485)
         Me.cmdHelp.TabIndex = 23
         '
         'Label1
@@ -144,7 +154,7 @@ Public Class frmEnvironment
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(496, 39)
+        Me.Label2.Size = New System.Drawing.Size(491, 39)
         Me.Label2.Text = "Enter an environment name that is unique within a project. An environment is used" & _
             " to distinguish between a development, test, and production environments."
         '
@@ -167,7 +177,7 @@ Public Class frmEnvironment
         '
         'txtEnvironmentDesc
         '
-        Me.txtEnvironmentDesc.Location = New System.Drawing.Point(160, 362)
+        Me.txtEnvironmentDesc.Location = New System.Drawing.Point(162, 408)
         Me.txtEnvironmentDesc.MaxLength = 1000
         Me.txtEnvironmentDesc.Multiline = True
         Me.txtEnvironmentDesc.Name = "txtEnvironmentDesc"
@@ -178,7 +188,7 @@ Public Class frmEnvironment
         'Label4
         '
         Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(24, 365)
+        Me.Label4.Location = New System.Drawing.Point(24, 408)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(128, 20)
         Me.Label4.TabIndex = 10
@@ -441,10 +451,66 @@ Public Class frmEnvironment
         Me.cmdGetDML.TabIndex = 115
         Me.cmdGetDML.Text = "<-"
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(24, 367)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(103, 13)
+        Me.Label12.TabIndex = 116
+        Me.Label12.Text = "Default Directory"
+        Me.Label12.Visible = False
+        '
+        'txtRelDir
+        '
+        Me.txtRelDir.Location = New System.Drawing.Point(162, 364)
+        Me.txtRelDir.Name = "txtRelDir"
+        Me.txtRelDir.Size = New System.Drawing.Size(288, 20)
+        Me.txtRelDir.TabIndex = 117
+        Me.txtRelDir.Visible = False
+        '
+        'btnRelDir
+        '
+        Me.btnRelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRelDir.Location = New System.Drawing.Point(462, 364)
+        Me.btnRelDir.Name = "btnRelDir"
+        Me.btnRelDir.Size = New System.Drawing.Size(25, 21)
+        Me.btnRelDir.TabIndex = 118
+        Me.btnRelDir.Text = ".."
+        Me.btnRelDir.UseVisualStyleBackColor = True
+        Me.btnRelDir.Visible = False
+        '
+        'cmdPutRelDir
+        '
+        Me.cmdPutRelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdPutRelDir.Location = New System.Drawing.Point(502, 364)
+        Me.cmdPutRelDir.Name = "cmdPutRelDir"
+        Me.cmdPutRelDir.Size = New System.Drawing.Size(32, 21)
+        Me.cmdPutRelDir.TabIndex = 119
+        Me.cmdPutRelDir.Text = "->"
+        Me.cmdPutRelDir.UseVisualStyleBackColor = True
+        Me.cmdPutRelDir.Visible = False
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(504, 99)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(30, 13)
+        Me.Label13.TabIndex = 120
+        Me.Label13.Text = "FTP"
+        '
         'frmEnvironment
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(572, 484)
+        Me.ClientSize = New System.Drawing.Size(567, 524)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.cmdPutRelDir)
+        Me.Controls.Add(Me.btnRelDir)
+        Me.Controls.Add(Me.txtRelDir)
+        Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.cmdGetDML)
         Me.Controls.Add(Me.cmdBrowseLocalDMLDir)
         Me.Controls.Add(Me.txtLocalDMLDir)
@@ -517,6 +583,11 @@ Public Class frmEnvironment
         Me.Controls.SetChildIndex(Me.txtLocalDMLDir, 0)
         Me.Controls.SetChildIndex(Me.cmdBrowseLocalDMLDir, 0)
         Me.Controls.SetChildIndex(Me.cmdGetDML, 0)
+        Me.Controls.SetChildIndex(Me.Label12, 0)
+        Me.Controls.SetChildIndex(Me.txtRelDir, 0)
+        Me.Controls.SetChildIndex(Me.btnRelDir, 0)
+        Me.Controls.SetChildIndex(Me.cmdPutRelDir, 0)
+        Me.Controls.SetChildIndex(Me.Label13, 0)
         Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -683,7 +754,7 @@ doAgain:
     End Sub
 
     '//new by npatel on 8/13/05
-    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, cmdBrowseFileLocalModel.Click, cmdBrowseLocalDMLDir.Click, cmdBrowseFieldLocalModel.Click, cmdBrowseFieldLocalScript.Click
+    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, cmdBrowseFileLocalModel.Click, cmdBrowseLocalDMLDir.Click, cmdBrowseFieldLocalModel.Click, cmdBrowseFieldLocalScript.Click, btnRelDir.Click
 
 
         Dim DefaultDir As String
@@ -723,6 +794,10 @@ doAgain:
                 If dlgBrowseFolder.SelectedPath = Nothing Then
                     dlgBrowseFolder.SelectedPath = DefaultDir
                 End If
+            Case "btnRelDir"
+                If dlgBrowseFolder.SelectedPath = Nothing Then
+                    dlgBrowseFolder.SelectedPath = DefaultDir
+                End If
         End Select
 
         If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -741,6 +816,8 @@ doAgain:
                     txtLocalScriptDir.Text = dlgBrowseFolder.SelectedPath
                 Case "cmdBrowseFieldLocalModel"
                     txtLocalModelDir.Text = dlgBrowseFolder.SelectedPath
+                Case "btnRelDir"
+                    txtRelDir.Text = dlgBrowseFolder.SelectedPath
             End Select
             objThis.DefaultStrDir = dlgBrowseFolder.SelectedPath
         End If
@@ -854,7 +931,24 @@ doAgain:
         Dim FTPClient As frmFTPClient = New frmFTPClient
         Dim destination As String
 
-        destination = FTPClient.BrowseFile(Me.txtLocalScriptDir.Text, ".ddl", modDeclares.enumCalledFrom.BY_ENVIRONMENT)
+        destination = FTPClient.BrowseFile(Me.txtLocalScriptDir.Text, ".*", modDeclares.enumCalledFrom.BY_ENVIRONMENT)
+
+        If destination <> "" Then
+            destination = GetCaseSensetivePath(destination)
+            objThis.LocalScriptDir = destination
+            txtLocalScriptDir.Text = destination
+        End If
+    End Sub
+
+    'Private Sub btnRelDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRelDir.Click
+
+    'End Sub
+
+    Private Sub cmdPutRelDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdPutRelDir.Click
+        Dim FTPClient As frmFTPClient = New frmFTPClient
+        Dim destination As String
+
+        destination = FTPClient.BrowseFile(Me.txtRelDir.Text, ".*", modDeclares.enumCalledFrom.BY_ENVIRONMENT)
 
         If destination <> "" Then
             destination = GetCaseSensetivePath(destination)

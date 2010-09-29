@@ -13,6 +13,7 @@ Public Class ctlInclude
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         cmdSave.Enabled = True
         RaiseEvent Modified(Me, objThis)
 
@@ -57,6 +58,7 @@ Public Class ctlInclude
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
+        objThis.IsLoaded = False
         RaiseEvent Modified(Me, objThis)
 
         If txtName.Text.Trim = "" Then

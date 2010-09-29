@@ -13,7 +13,7 @@ Public Class clsSystem
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
-    Private m_IsLoaded As Boolean
+    Private m_IsLoaded As Boolean = False
 
     Public CopybookLib As String = ""
     Public IncludeLib As String = ""
@@ -409,6 +409,8 @@ Public Class clsSystem
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
+            If Me.IsLoaded = True Then Exit Try
+
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim da As System.Data.Odbc.OdbcDataAdapter
@@ -462,7 +464,7 @@ Public Class clsSystem
                 End Select
             Next
 
-            'End If
+            Me.IsLoaded = True
 
             Return True
 
