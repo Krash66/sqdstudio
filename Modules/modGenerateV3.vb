@@ -2926,12 +2926,14 @@ ErrorGoTo:
     Function wDSsuffix(ByRef rc As clsRcode, ByRef ds As clsDatastore) As Boolean
 
         Try
-            Dim FORds3 As String = String.Format("{0,12}{1}", " ", "FOR " & GetOperType(ds.OperationType))
+            If ds.OperationType <> "" Then
+                Dim FORds3 As String = String.Format("{0,12}{1}", " ", "FOR " & GetOperType(ds.OperationType))
 
-            objWriteSQD.WriteLine(FORds3)
-            objWriteINL.WriteLine(FORds3)
-            objWriteTMP.WriteLine(FORds3)
-            AddToLineNo(rc)
+                objWriteSQD.WriteLine(FORds3)
+                objWriteINL.WriteLine(FORds3)
+                objWriteTMP.WriteLine(FORds3)
+                AddToLineNo(rc)
+            End If
 
         Catch ex As Exception
             LogError(ex, "modGenerate wDSsuffix")

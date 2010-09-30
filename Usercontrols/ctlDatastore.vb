@@ -2054,6 +2054,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             enumDatastore.DS_ORACLECDC, enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR, enumDatastore.DS_RELATIONAL, _
             enumDatastore.DS_IMSDB
                 cmbOperationType.Items.Clear()
+                cmbOperationType.Items.Add(New Mylist("", ""))
                 cmbOperationType.Items.Add(New Mylist("Insert", DS_OPERATION_INSERT))
                 cmbOperationType.Items.Add(New Mylist("Update", DS_OPERATION_UPDATE))
                 cmbOperationType.Items.Add(New Mylist("Delete", DS_OPERATION_DELETE))
@@ -2062,6 +2063,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 cmbOperationType.Items.Add(New Mylist("Replace", DS_OPERATION_REPLACE))
             Case Else
                 cmbOperationType.Items.Clear()
+                cmbOperationType.Items.Add(New Mylist("", ""))
                 cmbOperationType.Items.Add(New Mylist("Insert", DS_OPERATION_INSERT))
                 'cmbOperationType.Items.Add(New Mylist("Update", DS_OPERATION_UPDATE))
                 'cmbOperationType.Items.Add(New Mylist("Delete", DS_OPERATION_DELETE))

@@ -3179,7 +3179,10 @@ fallThru:               lvMappings.MultiSelect = True '// now again turnmulti se
 
             For Each objFld In objSel.DSSelectionFields
                 If Not (objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And cbGroupItems.Checked = False) Then
+                    '********************************************************************************
+                    '/// ****************** commented out for Function testing **********************
                     If IsDuplicateItem(objFld, dirType, False) = False Then
+
                         '//TODO Add field and create new mapping
                         If objFld.FieldName <> "" Then
                             objFld.Text = objFld.ParentStructureName & "." & objFld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
@@ -3230,11 +3233,13 @@ fallThru:               lvMappings.MultiSelect = True '// now again turnmulti se
                 If dirType = modDeclares.enumDirection.DI_SOURCE Then
                     ManualMapping(lvItm, draggedNode, dirType, True)
                 Else
-                    If IsDuplicateItem(CType(draggedNode.Tag, clsField), dirType, False) = False Then
-                        ManualMapping(lvItm, draggedNode, dirType, True)
-                    Else
-                        MsgBox("Duplicate field was found", MsgBoxStyle.Exclamation, MsgTitle)
-                    End If
+
+                    '///***** commented out for Testing of Functions ************
+                    'If IsDuplicateItem(CType(draggedNode.Tag, clsField), dirType, False) = False Then
+                    ManualMapping(lvItm, draggedNode, dirType, True)
+                    'Else
+                    'MsgBox("Duplicate field was found", MsgBoxStyle.Exclamation, MsgTitle)
+                    'End If
                 End If
             End If
 
