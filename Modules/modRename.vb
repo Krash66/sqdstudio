@@ -2504,19 +2504,19 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
-                    'If objVar.Engine IsNot Nothing Then
-                    sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
-                                       "' WHERE VariableName= '" & OldValue & _
-                                       "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                       "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
-                                       "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
-                                       "' AND EngineName= '" & objVar.Engine.EngineName & "'"
-                    'Else
-                    'sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
-                    '                   "' WHERE VariableName= '" & OldValue & _
-                    '                   "' AND ProjectName='" & objVar.Project.ProjectName & _
-                    '                   "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
-                    'End If
+                    If objVar.Engine IsNot Nothing Then
+                        sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
+                                           "' WHERE VariableName= '" & OldValue & _
+                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
+                                           "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
+                                           "' AND EngineName= '" & objVar.Engine.EngineName & "'"
+                    Else
+                        sql = "Update " & objVar.Project.tblVariables & " Set VariableName= '" & NewValue & _
+                                           "' WHERE VariableName= '" & OldValue & _
+                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
+                    End If
 
 
                 Case Else
@@ -2581,19 +2581,19 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
-                    'If objVar.Engine IsNot Nothing Then
-                    sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
-                                       "' WHERE VariableName= '" & OldValue & _
-                                       "' AND ProjectName='" & objVar.Project.ProjectName & _
-                                       "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
-                                       "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
-                                       "' AND EngineName= '" & objVar.Engine.EngineName & "'"
-                    'Else
-                    'sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
-                    '                   "' WHERE VariableName= '" & OldValue & _
-                    '                   "' AND ProjectName='" & objVar.Project.ProjectName & _
-                    '                   "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
-                    'End If
+                    If objVar.Engine IsNot Nothing Then
+                        sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
+                                           "' WHERE VariableName= '" & OldValue & _
+                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & _
+                                           "' AND SystemName= '" & objVar.Engine.ObjSystem.SystemName & _
+                                           "' AND EngineName= '" & objVar.Engine.EngineName & "'"
+                    Else
+                        sql = "Update " & objVar.Project.tblVariablesATTR & " Set VariableName= '" & NewValue & _
+                                           "' WHERE VariableName= '" & OldValue & _
+                                           "' AND ProjectName='" & objVar.Project.ProjectName & _
+                                           "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
+                    End If
 
                 Case Else
                     EditVariablesATTR = False
@@ -3011,14 +3011,18 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                         NewMapSrc.Replace("," & OldValue & " ", "," & NewValue & " ")
 
                     Case NODE_STRUCT, NODE_STRUCT_SEL, NODE_VARIABLE
+
                         NewMapSrc.Replace("'" & OldValue & "'", "'" & NewValue & "'")
                         NewMapSrc.Replace("." & OldValue & ".", "." & NewValue & ".")
                         NewMapSrc.Replace("(" & OldValue & " ", "(" & NewValue & " ")
                         NewMapSrc.Replace("(" & OldValue & ",", "(" & NewValue & ",")
+                        NewMapSrc.Replace("(" & OldValue & ".", "(" & NewValue & ".")
                         NewMapSrc.Replace(" " & OldValue & ")", " " & NewValue & ")")
                         NewMapSrc.Replace(" " & OldValue & ",", " " & NewValue & ",")
+                        NewMapSrc.Replace(" " & OldValue & ".", " " & NewValue & ".")
                         NewMapSrc.Replace("," & OldValue & ")", "," & NewValue & ")")
                         NewMapSrc.Replace("," & OldValue & " ", "," & NewValue & " ")
+                        NewMapSrc.Replace("," & OldValue & ".", "," & NewValue & ".")
 
                 End Select
 
@@ -3027,10 +3031,11 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 '// if the old Mapping Source Field doesn't match the New "replaced" Mapping Source
                 '// field, then we will need to update it, so save all of the row data to 
                 '// arraylists so they can be replaced one at a time in the loop below
-                If Not (NewMapSrc.ToString = MapSource.ToString) Then
-                    TaskNameArray.Add(TaskName)
+                If Strings.Equals(NewMapSrc.ToString, MapSource.ToString) Then
+
                     SeqNoArray.Add(SeqNo)
                     MapSourceArray.Add(NewMapSrc.ToString)
+                    TaskNameArray.Add(TaskName)
                     EngineNameArray.Add(EngineName)
                     SystemNameArray.Add(SystemName)
                     EnvironmentNameArray.Add(EnvName)

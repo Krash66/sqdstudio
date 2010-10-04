@@ -69,30 +69,30 @@ Partial Class frmScriptGen
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(640, 68)
+        Me.Panel1.Size = New System.Drawing.Size(638, 68)
         '
         'GroupBox1
         '
         Me.GroupBox1.Location = New System.Drawing.Point(1, 606)
-        Me.GroupBox1.Size = New System.Drawing.Size(642, 7)
+        Me.GroupBox1.Size = New System.Drawing.Size(640, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(358, 629)
+        Me.cmdOk.Location = New System.Drawing.Point(356, 629)
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(454, 629)
+        Me.cmdCancel.Location = New System.Drawing.Point(452, 629)
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(550, 629)
+        Me.cmdHelp.Location = New System.Drawing.Point(548, 629)
         '
         'Label1
         '
@@ -100,7 +100,7 @@ Partial Class frmScriptGen
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(564, 39)
+        Me.Label2.Size = New System.Drawing.Size(562, 39)
         Me.Label2.Text = "Choose to View, Save or Transfer each different type of generated script file."
         '
         'gbPath
@@ -513,12 +513,12 @@ Partial Class frmScriptGen
         Me.btnOpenOutput.Name = "btnOpenOutput"
         Me.btnOpenOutput.Size = New System.Drawing.Size(146, 23)
         Me.btnOpenOutput.TabIndex = 65
-        Me.btnOpenOutput.Text = "Open Output.dat"
+        Me.btnOpenOutput.Text = "Open Output Data"
         Me.btnOpenOutput.UseVisualStyleBackColor = True
         '
         'frmScriptGen
         '
-        Me.ClientSize = New System.Drawing.Size(640, 668)
+        Me.ClientSize = New System.Drawing.Size(638, 668)
         Me.Controls.Add(Me.gbScriptOptions)
         Me.Controls.Add(Me.gbStudioFiles)
         Me.Controls.Add(Me.gbPath)

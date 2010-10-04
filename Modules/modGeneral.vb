@@ -315,7 +315,15 @@ Public Module modGeneral
 
     Function Quote(ByVal s As String, Optional ByVal ch As String = "'") As String
 
+        'If s.Trim.StartsWith("'") And s.Trim.EndsWith("'") Then
+        '    Quote = s.Trim
+        'ElseIf s.StartsWith("'") And s.EndsWith("'") = False Then
+        '    Quote = s & ch
+        'ElseIf s.StartsWith("'") = False And s.EndsWith("'") = True Then
+        '    Quote = ch & s
+        'Else
         Quote = ch & s & ch
+        'End If
 
     End Function
 

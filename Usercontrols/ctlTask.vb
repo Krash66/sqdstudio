@@ -1051,7 +1051,7 @@ Public Class ctlTask
         Me.lvMappings.Location = New System.Drawing.Point(0, 32)
         Me.lvMappings.Name = "lvMappings"
         Me.lvMappings.ShowItemToolTips = True
-        Me.lvMappings.Size = New System.Drawing.Size(501, 384)
+        Me.lvMappings.Size = New System.Drawing.Size(500, 390)
         Me.lvMappings.TabIndex = 5
         Me.lvMappings.UseCompatibleStateImageBehavior = False
         Me.lvMappings.View = System.Windows.Forms.View.Details

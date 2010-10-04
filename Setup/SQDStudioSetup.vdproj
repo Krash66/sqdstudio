@@ -15,13 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_275BE570A11648D4B163AD3FE95A09EB"
+        "MsmKey" = "8:_288656F8E0CA4FD5B7F3542FC93D2341"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_288656F8E0CA4FD5B7F3542FC93D2341"
+        "MsmKey" = "8:_2C68259274964137B96AA65677DDCFD7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,6 +45,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_47A91441EFC44137860C0086A619E478"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4ACD0DE1F7A14ABA9096072203B6E6DB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -63,13 +69,37 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_69DFC75AB30A4829B3E4008DC9047DD5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_845DC56D006F42BFA32049A96C2EB4F8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9A429861446B4C9A8696875D8538149C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_A436BCA5879647D5A7E213A2A070F071"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A89B330C233F4FAD8A0C81E91E713F70"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B741F68AD90A4BB5B6DC0BB28B2F3A09"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -94,6 +124,18 @@
         "Entry"
         {
         "MsmKey" = "8:_D8C222C230FD44CCB88D03E0E893C1D1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E5FE1E6B20604E30B12758A3F073D2AB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EAB96AD584C84711A4A14A6F871F94B1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -249,12 +291,12 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_275BE570A11648D4B163AD3FE95A09EB"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_288656F8E0CA4FD5B7F3542FC93D2341"
             {
-            "SourcePath" = "8:..\\bin\\supporting files\\sqdumodl.exe"
-            "TargetName" = "8:sqdumodl.exe"
+            "SourcePath" = "8:..\\ReadMeSQLserver.txt"
+            "TargetName" = "8:ReadMeSQLserver.txt"
             "Tag" = "8:"
-            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -269,12 +311,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_288656F8E0CA4FD5B7F3542FC93D2341"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C68259274964137B96AA65677DDCFD7"
             {
-            "SourcePath" = "8:..\\ReadMeSQLserver.txt"
-            "TargetName" = "8:ReadMeSQLserver.txt"
+            "SourcePath" = "8:..\\bin\\3.7.7\\sqdata.exe"
+            "TargetName" = "8:sqdata.exe"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_49EF58B6B023414682577D7D86D1BEDA"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -315,6 +357,26 @@
             "TargetName" = "8:DesignStudio.chm"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_47A91441EFC44137860C0086A619E478"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.6\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_813F086A18E24F4DB87CF7FCF485ADFC"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -389,6 +451,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_69DFC75AB30A4829B3E4008DC9047DD5"
+            {
+            "SourcePath" = "8:..\\bin\\3.6.14\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_CD11FB4F4D754EA29BCEB29A0B79483E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_845DC56D006F42BFA32049A96C2EB4F8"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.6\\sqdata.exe"
+            "TargetName" = "8:sqdata.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_813F086A18E24F4DB87CF7FCF485ADFC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A429861446B4C9A8696875D8538149C"
             {
             "SourcePath" = "8:..\\V3MetaData.mdb"
@@ -409,12 +511,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A436BCA5879647D5A7E213A2A070F071"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.12\\sqdata.exe"
+            "TargetName" = "8:sqdata.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_CE90FC0365864CA0A83529E1857998B1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A89B330C233F4FAD8A0C81E91E713F70"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\ORCL_meta_drop.ddl"
             "TargetName" = "8:ORCL_meta_drop.ddl"
             "Tag" = "8:"
             "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B741F68AD90A4BB5B6DC0BB28B2F3A09"
+            {
+            "SourcePath" = "8:..\\bin\\3.6.14\\sqdata.exe"
+            "TargetName" = "8:sqdata.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_CD11FB4F4D754EA29BCEB29A0B79483E"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -495,6 +637,46 @@
             "TargetName" = "8:database_process.ico"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E5FE1E6B20604E30B12758A3F073D2AB"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.12\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_CE90FC0365864CA0A83529E1857998B1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EAB96AD584C84711A4A14A6F871F94B1"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.7\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_49EF58B6B023414682577D7D86D1BEDA"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -629,6 +811,50 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_49EF58B6B023414682577D7D86D1BEDA"
+                    {
+                    "Name" = "8:3.7.7"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_14E9E1ACEA12466E857B0C7E50B26E43"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_813F086A18E24F4DB87CF7FCF485ADFC"
+                    {
+                    "Name" = "8:3.7.6"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_6E43396E4A74429F9CEBE4FAFBB5033F"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_CD11FB4F4D754EA29BCEB29A0B79483E"
+                    {
+                    "Name" = "8:3.6.14"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_54D4AE2024874B98A9C78328C2CA5ECD"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_CE90FC0365864CA0A83529E1857998B1"
+                    {
+                    "Name" = "8:3.7.12"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_37C1F1F80E0740BEB033B8B536540A5B"
+                        "Folders"
+                        {
+                        }
+                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_DB8348C779684E02A15B9A8CD5A88C2E"
                     {
                     "Name" = "8:MetaData"

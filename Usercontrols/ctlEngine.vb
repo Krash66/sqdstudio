@@ -8,6 +8,8 @@ Public Class ctlEngine
 
     
     Dim objThis As New clsEngine
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents cmbEngVer As System.Windows.Forms.ComboBox
 
     Dim IsNewObj As Boolean
 
@@ -109,10 +111,13 @@ Public Class ctlEngine
         Me.Label8 = New System.Windows.Forms.Label
         Me.btnMain = New System.Windows.Forms.Button
         Me.txtMain = New System.Windows.Forms.TextBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.cmbEngVer = New System.Windows.Forms.ComboBox
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbLib.SuspendLayout()
         Me.gbMain.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
         'cmdSave
@@ -475,9 +480,9 @@ Public Class ctlEngine
         Me.gbMain.Controls.Add(Me.txtMain)
         Me.gbMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMain.ForeColor = System.Drawing.Color.White
-        Me.gbMain.Location = New System.Drawing.Point(4, 375)
+        Me.gbMain.Location = New System.Drawing.Point(4, 475)
         Me.gbMain.Name = "gbMain"
-        Me.gbMain.Size = New System.Drawing.Size(674, 217)
+        Me.gbMain.Size = New System.Drawing.Size(674, 117)
         Me.gbMain.TabIndex = 105
         Me.gbMain.TabStop = False
         Me.gbMain.Text = "Main Procedure"
@@ -488,7 +493,7 @@ Public Class ctlEngine
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(27, 189)
+        Me.Label8.Location = New System.Drawing.Point(27, 89)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(567, 18)
         Me.Label8.TabIndex = 2
@@ -499,7 +504,7 @@ Public Class ctlEngine
         Me.btnMain.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnMain.Enabled = False
         Me.btnMain.ForeColor = System.Drawing.Color.Black
-        Me.btnMain.Location = New System.Drawing.Point(8, 188)
+        Me.btnMain.Location = New System.Drawing.Point(8, 88)
         Me.btnMain.Name = "btnMain"
         Me.btnMain.Size = New System.Drawing.Size(152, 23)
         Me.btnMain.TabIndex = 1
@@ -520,12 +525,33 @@ Public Class ctlEngine
         Me.txtMain.Name = "txtMain"
         Me.txtMain.ReadOnly = True
         Me.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMain.Size = New System.Drawing.Size(659, 163)
+        Me.txtMain.Size = New System.Drawing.Size(659, 63)
         Me.txtMain.TabIndex = 0
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.cmbEngVer)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.ForeColor = System.Drawing.Color.White
+        Me.GroupBox3.Location = New System.Drawing.Point(3, 375)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(204, 57)
+        Me.GroupBox3.TabIndex = 106
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Parser/Engine Version"
+        '
+        'cmbEngVer
+        '
+        Me.cmbEngVer.FormattingEnabled = True
+        Me.cmbEngVer.Location = New System.Drawing.Point(15, 19)
+        Me.cmbEngVer.Name = "cmbEngVer"
+        Me.cmbEngVer.Size = New System.Drawing.Size(177, 21)
+        Me.cmbEngVer.TabIndex = 0
         '
         'ctlEngine
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.gbMain)
         Me.Controls.Add(Me.gbLib)
         Me.Controls.Add(Me.gbName)
@@ -545,6 +571,7 @@ Public Class ctlEngine
         Me.gbLib.PerformLayout()
         Me.gbMain.ResumeLayout(False)
         Me.gbMain.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -601,6 +628,7 @@ Public Class ctlEngine
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
             objThis.Main = txtMain.Text
+            objThis.EngVersion = cmbEngVer.Text
 
             Dim temp As Mylist = cbConn.SelectedItem
 
@@ -710,7 +738,7 @@ Public Class ctlEngine
         End Select
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged, cmbEngVer.SelectedIndexChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -760,6 +788,7 @@ Public Class ctlEngine
 
             SetComboConn()
             setComboDate()
+            setEngVer()
 
             If objThis.ForceCommit = True Then
                 cbForceCommit.Checked = True
@@ -817,6 +846,28 @@ Public Class ctlEngine
 
         Catch ex As Exception
             LogError(ex, "ctlEngine setcomboDateFormat")
+        End Try
+
+    End Sub
+
+    Sub setEngVer()
+
+        Try
+            cmbEngVer.Items.Clear()
+
+            cmbEngVer.Items.Add(New Mylist("3.7.12", "3.7.12"))
+            cmbEngVer.Items.Add(New Mylist("3.7.7", "3.7.7"))
+            cmbEngVer.Items.Add(New Mylist("3.7.6", "3.7.6"))
+            cmbEngVer.Items.Add(New Mylist("3.6.14", "3.6.14"))
+
+            If objThis.EngVersion.Trim <> "" Then
+                SetListItemByValue(cmbEngVer, objThis.EngVersion, False)
+            Else
+                cmbEngVer.SelectedIndex = 0
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine setEngVer")
         End Try
 
     End Sub

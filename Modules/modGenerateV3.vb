@@ -4020,7 +4020,7 @@ ErrorGoTo:
 
             Select Case map.TargetType
                 Case enumMappingType.MAPPING_TYPE_CONSTANT
-                    TgtStr = CType(map.MappingTarget, Integer)
+                    TgtStr = CType(map.MappingTarget, clsVariable).VariableName
                 Case enumMappingType.MAPPING_TYPE_FUN
                     TgtStr = CType(map.MappingTarget, clsSQFunction).SQFunctionWithInnerText
                 Case enumMappingType.MAPPING_TYPE_VAR
@@ -4051,7 +4051,7 @@ ErrorGoTo:
             Else
                 Select Case map.SourceType
                     Case enumMappingType.MAPPING_TYPE_CONSTANT
-                        SrcStr = CType(map.MappingSource, Integer)
+                        SrcStr = CType(map.MappingSource, clsVariable).VariableName
                     Case enumMappingType.MAPPING_TYPE_FUN
                         SrcStr = CType(map.MappingSource, clsSQFunction).SQFunctionWithInnerText
                     Case enumMappingType.MAPPING_TYPE_VAR
@@ -4535,16 +4535,22 @@ ErrorGoTo:
                     End If
                 Case "UNIX"
                     If IsDBD = False Then
-                        If descLib.Trim <> "" Then  'And descLib.Contains("/") = True 
+                        If descLib.Trim <> "" Then  'And descLib.Contains("/") = True
                             DDstr = descLib & "/" & GetFileNameOnly(str.fPath1)
                         Else
-                            DDstr = str.fPath1
+                            DDstr = str.fPath1.Replace("\", "/")
                         End If
                     Else
-                        If descLib.Trim <> "" Then  'And descLib.Contains("/") = True 
+                        If descLib.Trim <> "" Then    'And descLib.Contains("/") = True
                             DDstr = descLib & "/" & GetFileNameOnly(str.fPath2)
                         Else
-                            DDstr = str.fPath2
+                            DDstr = str.fPath2.Replace("\", "/")
+                        End If
+                    End If
+                    If DDstr.Contains("/") = True Then
+                        Dim UnixScriptPath As String = ScriptPath.Replace("\", "/")
+                        If DDstr.Contains(UnixScriptPath) = True Then
+                            DDstr = DDstr.Replace(UnixScriptPath & "/", "")
                         End If
                     End If
                 Case "Windows"
@@ -4563,7 +4569,7 @@ ErrorGoTo:
                     End If
                     If DDstr.Contains("/") = False Then
                         If DDstr.Contains(ScriptPath) = True Then
-                            DDstr = DDstr.Replace(ScriptPath, ".")
+                            DDstr = DDstr.Replace(ScriptPath & "\", "")
                         End If
                     End If
             End Select

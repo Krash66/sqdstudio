@@ -18,6 +18,7 @@ Public Class clsEngine
     Private m_DateFormat As String = ""
     Private m_Main As String = ""
     Private m_IsLoaded As Boolean = False
+    Private m_EngVersion As String
 
     Public Sources As New Collection
     Public Targets As New Collection
@@ -583,6 +584,8 @@ Public Class clsEngine
                         Me.ReportFile = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "MAIN"
                         Me.Main = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "ENGVER"
+                        Me.EngVersion = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                 End Select
             Next
 
@@ -763,6 +766,15 @@ Public Class clsEngine
         End Set
     End Property
 
+    Public Property EngVersion() As String
+        Get
+            Return m_EngVersion
+        End Get
+        Set(ByVal value As String)
+            m_EngVersion = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Methods"
@@ -823,7 +835,7 @@ Public Class clsEngine
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 10
+            For i As Integer = 0 To 11
                 Select Case i
                     Case 0
                         Attrib = "COMMITEVERY"
@@ -862,6 +874,9 @@ Public Class clsEngine
                     Case 10
                         Attrib = "MAIN"
                         Value = Me.Main
+                    Case 11
+                        Attrib = "ENGVER"
+                        Value = Me.EngVersion
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblEnginesATTR & _

@@ -2193,7 +2193,7 @@ Public Class frmMain
         IsRename = True
         '// Created for Renaming by Tom Karasch
         ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
-        'FillProject(e.Project, True)
+        FillProject(e.Project, True)
         If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
             e.ObjTreeNode.Text = e.Text
         End If
@@ -2244,7 +2244,7 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub tvExplorer_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvExplorer.MouseDown
+    Private Sub tvExplorer_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvExplorer.MouseClick
 
         ' See if this is the right button.
         If e.Button = Windows.Forms.MouseButtons.Right Then
