@@ -194,11 +194,11 @@ Public Class frmLog
     Public Function ShowLog() As Boolean
 
         Try
-            If IO.File.Exists(GetAppTemp() & errorTrace) Then
+            If IO.File.Exists(GetAppTemp() & "\" & errorTrace) Then
                 txtLog.Text = LoadTextFile(GetAppTemp() & errorTrace)
             End If
-            If IO.File.Exists(GetAppTemp() & TraceFile) Then
-                SqlLog.Text = LoadTextFile(GetAppTemp() & TraceFile)
+            If IO.File.Exists(GetAppTemp() & "\" & TraceFile) Then
+                SqlLog.Text = LoadTextFile(GetAppTemp() & "\" & TraceFile)
             End If
         Catch ex As Exception
         End Try
@@ -217,9 +217,9 @@ Public Class frmLog
     Private Sub cmdClearLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClearLog.Click
 
         Try
-            IO.File.Delete(GetAppTemp() & errorTrace)
+            IO.File.Delete(GetAppTemp() & "\" & errorTrace)
             txtLog.Text = ""
-            IO.File.Delete(GetAppTemp() & TraceFile)
+            IO.File.Delete(GetAppTemp() & "\" & TraceFile)
             SqlLog.Text = ""
         Catch ex As Exception
         End Try

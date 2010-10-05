@@ -13,6 +13,10 @@ Public Module modGenerateV3
     Private semi As String = ";"
 
     Dim ScriptPath As String
+    '/// Parser and Engine Paths
+    Dim ParserPath As String
+    Dim EnginePath As String
+
     Dim doParse As Boolean
     Dim OnlyParse As Boolean
     Dim SQDParse As Boolean
@@ -89,6 +93,14 @@ Public Module modGenerateV3
                 EngObj.Connection.LoadMe()
             End If
 
+            If EngObj.EngVersion <> "" Then
+                ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
+                EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+            Else
+                ParserPath = GetAppPath() & "sqdparse.exe"
+                EnginePath = GetAppPath() & "sqdata.exe"
+            End If
+            
 
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text
@@ -611,7 +623,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             si.WorkingDirectory = GetDirFromPath(pathPRC)  'GetAppPath() '
             si.Arguments = args
 
-            si.FileName = GetAppPath() & "sqdparse.exe "
+            si.FileName = ParserPath
 
             si.UseShellExecute = False
             si.CreateNoWindow = True
@@ -664,11 +676,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppTemp() & "sqdgnsqd.log"
+                        rc.ParserPath = GetAppTemp() & "\" & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppTemp() & "sqdgnsqd.log", """")
+                        rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
 
                     Case 0
                         rc.ParserPath = pathINL
@@ -731,7 +743,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             si.WorkingDirectory = GetDirFromPath(pathPRC)  'GetAppPath()
             si.Arguments = args
 
-            si.FileName = GetAppPath() & "sqdparse.exe "
+            si.FileName = ParserPath
 
             si.UseShellExecute = False
             si.CreateNoWindow = True
@@ -784,11 +796,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppTemp() & "sqdparse.log"
+                        rc.ParserPath = GetAppTemp() & "\" & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppTemp() & "sqdparse.log", """")
+                        rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
 
                     Case 0
                         rc.ParserPath = pathSQD
@@ -2684,19 +2696,6 @@ ErrorGoTo:
             Dim strCharCode As String
             Dim bYes As Boolean = True
 
-            If ds.DsDirection = DS_DIRECTION_SOURCE Then
-                If ds.DsCharacterCode = DS_CHARACTERCODE_EBCDIC Then
-                    strCharCode = "EBCDIC"
-                Else
-                    strCharCode = "ASCII"
-                End If
-                Dim ForCC As String = String.Format("{0,12}{1}", " ", strCharCode)
-                objWriteSQD.WriteLine(ForCC)
-                objWriteINL.WriteLine(ForCC)
-                objWriteTMP.WriteLine(ForCC)
-                AddToLineNo(rc)
-            End If
-
             '/// write character delimiter
             If ds.TextQualifier <> "" Then
                 bYes = True
@@ -2747,6 +2746,19 @@ ErrorGoTo:
                 objWriteSQD.WriteLine(ForDScolDel)
                 objWriteINL.WriteLine(ForDScolDel)
                 objWriteTMP.WriteLine(ForDScolDel)
+                AddToLineNo(rc)
+            End If
+
+            If ds.DsDirection = DS_DIRECTION_SOURCE Then
+                If ds.DsCharacterCode = DS_CHARACTERCODE_EBCDIC Then
+                    strCharCode = "EBCDIC"
+                Else
+                    strCharCode = "ASCII"
+                End If
+                Dim ForCC As String = String.Format("{0,12}{1}", " ", strCharCode)
+                objWriteSQD.WriteLine(ForCC)
+                objWriteINL.WriteLine(ForCC)
+                objWriteTMP.WriteLine(ForCC)
                 AddToLineNo(rc)
             End If
 
@@ -4803,7 +4815,7 @@ ErrorGoTo:
             'objWriteOUT = New System.IO.StreamWriter(fsOUT)
 
             si.WorkingDirectory = GetDirFromPath(pathPRC)
-            si.FileName = GetAppPath() & "SQDATA.EXE "
+            si.FileName = EnginePath
             si.Arguments = args
             si.UseShellExecute = False
             si.CreateNoWindow = True

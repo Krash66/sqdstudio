@@ -1863,9 +1863,9 @@ Public Module modGeneral
 
         AppTemp = AppData & TempFolderName
 
-        If Right(AppTemp, 1) <> "\" Then
-            AppTemp = AppTemp & "\"
-        End If
+        'If Right(AppTemp, 1) <> "\" Then
+        '    AppTemp = AppTemp & "\"
+        'End If
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -1873,6 +1873,15 @@ Public Module modGeneral
 
         GetAppTemp = AppTemp
 
+    End Function
+
+    Function GetAppTempImp(Optional ByVal TempFolderName As String = "Temp") As String
+        Dim AppPath As String = GetAppPath()
+
+        If System.IO.Directory.Exists(AppPath & TempFolderName) = False Then
+            System.IO.Directory.CreateDirectory(AppPath & TempFolderName)
+        End If
+        GetAppTempImp = AppPath & TempFolderName
     End Function
 
     '//Filename with extension
@@ -1940,12 +1949,12 @@ Public Module modGeneral
 
     ' JDM - 0/28/2006 - Find Models folder
     Public Function GetModelPath() As String
-        Return GetAppTemp() & "Models"
+        Return GetAppTemp() & "\" & "Models"
     End Function
 
     ' JDM - 0/28/2006 - Find Scripts folder
     Public Function GetScriptPath() As String
-        Return GetAppTemp() & "Scripts"
+        Return GetAppTemp() & "\" & "Scripts"
     End Function
 
     ' JDM - 0/28/2006 - Find Help folder
@@ -1956,7 +1965,7 @@ Public Module modGeneral
     '// new 12/4/2006 by TK
     '//Creates a Query folder in the Application directory
     Function QueryFolderPath(Optional ByVal QueryFolderName As String = "Queries") As String
-        Dim AppPath As String = GetAppTemp()
+        Dim AppPath As String = GetAppTemp() & "\"
 
         If System.IO.Directory.Exists(AppPath & QueryFolderName) = False Then
             System.IO.Directory.CreateDirectory(AppPath & QueryFolderName)

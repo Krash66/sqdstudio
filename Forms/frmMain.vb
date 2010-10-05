@@ -5547,12 +5547,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuModDSSelSQL.Enabled = True
                     mnuModDSSelMSSQL.Enabled = True
                     '/// make sure modeling options are visible
-                    mnuModDSSelC.Visible = True
-                    mnuModDSSelDDL.Visible = True
-                    mnuModDSSelDTD.Visible = True
-                    mnuModDSSelLOD.Visible = True
-                    mnuModDSSelSQL.Visible = True
-                    mnuModDSSelMSSQL.Visible = True
+                    mnuModDSSelC.Visible = False
+                    mnuModDSSelDDL.Visible = False
+                    mnuModDSSelDTD.Visible = False
+                    mnuModDSSelLOD.Visible = False
+                    mnuModDSSelSQL.Visible = False
+                    mnuModDSSelMSSQL.Visible = False
 
                     If CType(obj, clsDSSelection).ObjDatastore.Engine Is Nothing Then
                         mnuAddDS.Text = "Add Datastore"
@@ -8280,29 +8280,29 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '//////////////////////////////////////////////////////
                 Select Case OutType
                     Case "DTD"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case "DDL"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case "H"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case "LOD"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case "SQL"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case "MSSQL"
-                        retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        'strSaveDir, obj.Text, obj.Project.TablePrefix)
+                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                        strSaveDir, obj.Text, obj.Project.TablePrefix)
                     Case Else
                         retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
                         strSaveDir, obj.Text, obj.Project.TablePrefix)
@@ -8349,9 +8349,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     StrObj = CType(StrNode.Tag, clsStructure)
                     NewName = "m" & StrObj.Text
 
-                    retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
-                    'retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
-                    'strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
+                    'retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
+                    retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
+                    strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
 
                     If retPath = "" Then
                         MsgBox("There was a problem modeling " & StrObj.Text, MsgBoxStyle.Information, MsgTitle)

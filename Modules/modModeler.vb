@@ -26,7 +26,7 @@ Module modModeler
     Dim OutType As String = ""
     Dim FileExt As String = ""
     Dim FullPathModl As String = ""
-    Dim ErrFile As String = GetAppTemp() & "ModelErr.Log"
+    Dim ErrFile As String = GetAppTemp() & "\" & "ModelErr.Log"
 
 
     'FileStreams and stream writers
