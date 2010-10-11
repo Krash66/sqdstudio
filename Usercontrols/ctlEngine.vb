@@ -486,6 +486,7 @@ Public Class ctlEngine
         Me.gbMain.TabIndex = 105
         Me.gbMain.TabStop = False
         Me.gbMain.Text = "Main Procedure"
+        Me.gbMain.Visible = False
         '
         'Label8
         '
@@ -780,11 +781,11 @@ Public Class ctlEngine
             txtDDLLib.Text = objThis.DDLLib
             txtMain.Text = objThis.Main
 
-            If objThis.Main.Trim = "" Then
-                gbMain.Visible = False
-            Else
-                gbMain.Visible = True
-            End If
+            'If objThis.Main.Trim = "" Then
+            gbMain.Visible = False
+            'Else
+            'gbMain.Visible = True
+            'End If
 
             SetComboConn()
             setComboDate()

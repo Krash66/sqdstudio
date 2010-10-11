@@ -2804,9 +2804,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                     EnvNameArray.Add(EnvName)
                     ProjNameArray.Add(ProjName)
                     ParNameArray.Add(ParName)
-                    If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                        DSDirArray.Add(DSDir)
-                    End If
+                    'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+                    '    DSDirArray.Add(DSDir)
+                    'End If
                 End If
 
             End While
@@ -2865,6 +2865,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
     Function EditMappingSrc(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim dr As System.Data.Odbc.OdbcDataReader = Nothing
+        Dim dt As New DataTable("temp")
+
         Dim objSDS As clsDatastore
         Dim objTDS As clsDatastore
         Dim objStr As clsStructure
@@ -2903,7 +2905,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
                     objTask = CType(obj, clsTask)
                     'If objTask.Engine IsNot Nothing Then
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
                                        & objTask.Project.tblTaskMap & _
                                        " WHERE ProjectName='" & objTask.Project.ProjectName & _
                                        "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
@@ -2919,7 +2921,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Case NODE_SOURCEDATASTORE
                     objSDS = CType(obj, clsDatastore)
                     'If objSDS.Engine IsNot Nothing Then
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                                         objSDS.Project.tblTaskMap & _
                                         " WHERE ProjectName='" & objSDS.Project.ProjectName & _
                                         "' AND EnvironmentName= '" & objSDS.Environment.EnvironmentName & _
@@ -2935,7 +2937,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Case NODE_TARGETDATASTORE
                     objTDS = CType(obj, clsDatastore)
                     'If objTDS.Engine IsNot Nothing Then
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                                        objTDS.Project.tblTaskMap & _
                                        " WHERE ProjectName='" & objTDS.Project.ProjectName & _
                                        "' AND EnvironmentName= '" & objTDS.Environment.EnvironmentName & _
@@ -2950,21 +2952,21 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Case NODE_STRUCT
                     objStr = CType(obj, clsStructure)
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                     objStr.Project.tblTaskMap & _
                     " WHERE ProjectName='" & objStr.Project.ProjectName & _
                     "' AND EnvironmentName= '" & objStr.Environment.EnvironmentName & "'"
 
                 Case NODE_STRUCT_SEL
                     objSel = CType(obj, clsStructureSelection)
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                     objSel.Project.tblTaskMap & _
                     " WHERE ProjectName='" & objSel.Project.ProjectName & _
                     "' AND EnvironmentName= '" & objSel.ObjStructure.Environment.EnvironmentName & "'"
 
                 Case NODE_VARIABLE
                     objVar = CType(obj, clsVariable)
-                    sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
+                    sql = "SELECT MAPPINGSOURCE, MAPPINGID, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " & _
                     objVar.Project.tblTaskMap & _
                     " WHERE ProjectName='" & objVar.Project.ProjectName & _
                     "' AND EnvironmentName= '" & objVar.Environment.EnvironmentName & "'"
@@ -2982,8 +2984,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             '// read in all the appropriate fields so that we know where the MappingSource field came from
             While dr.Read
-                MapString = GetVal(dr.Item("MappingSource"))
-                SeqNo = GetVal(dr.Item("SEQNO"))
+                MapString = GetVal(dr.Item("MAPPINGSOURCE"))
+                SeqNo = GetVal(dr.Item("MAPPINGID"))
                 TaskName = GetVal(dr.Item("TASKNAME"))
                 EngineName = GetVal(dr.Item("ENGINENAME"))
                 SystemName = GetVal(dr.Item("SYSTEMNAME"))
@@ -3031,7 +3033,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 '// if the old Mapping Source Field doesn't match the New "replaced" Mapping Source
                 '// field, then we will need to update it, so save all of the row data to 
                 '// arraylists so they can be replaced one at a time in the loop below
-                If Strings.Equals(NewMapSrc.ToString, MapSource.ToString) Then
+                If NewMapSrc.ToString <> MapSource.ToString Then
 
                     SeqNoArray.Add(SeqNo)
                     MapSourceArray.Add(NewMapSrc.ToString)
@@ -3057,7 +3059,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             For i = 0 To SeqNoArray.Count - 1
                 sql = "UPDATE " & obj.Project.tblTaskMap & _
                 " SET MappingSource= '" & FixStr(MapSourceArray(i)) & _
-                "' WHERE SEQNO= " & CInt(SeqNoArray(i)) & _
+                "' WHERE MAPPINGID= " & CInt(SeqNoArray(i)) & _
                 " AND TASKNAME= '" & FixStr(TaskNameArray(i)) & _
                 "' AND ENGINENAME='" & FixStr(EngineNameArray(i)) & _
                 "' AND SYSTEMNAME='" & FixStr(SystemNameArray(i)) & _
@@ -3116,8 +3118,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Exit Function
             End If
 
-
-
             Dim frm As frmRplcDescRet
             Dim Replace As Boolean
 
@@ -3130,7 +3130,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             End If
 
             If Replace = True Then
-                ReplaceStrFile = SQLReplaceFile(NewStrObj, OldStrObj, HasBadNames)
+                ReplaceStrFile = SQLReplaceFile(NewStrObj, OldStrObj, AddedFieldList, DeletedFieldList)
             Else
                 ReplaceStrFile = False
             End If
@@ -3190,7 +3190,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
     End Function
 
     '/// added by TKarasch April 07 to replace Structure file ... to update MetaData
-    Function SQLReplaceFile(ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal HasBadNames As Boolean) As Boolean
+    Function SQLReplaceFile(ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal newList As ArrayList, ByVal oldList As ArrayList) As Boolean
 
         '// All Comparison testing of fields has been done before we open Metadata
         '// so we are sure that Updating of metadata will work without errors
@@ -3212,17 +3212,17 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             cmd.Transaction = tran
 
             '// First set cascade based on whether fields are to be replaced one to one or not
-            If HasBadNames = False Then
-                '// Only delete OldStrObj from two tables and add NewStrObj back in it's place
-                cascade = False
-            Else
-                '// Delete OldStrObj from Structures, Datastores and Mappings
-                '// Delete all selections, structure, coresponding DSselections, and mappings
-                '// Add back in to Structures and StructFields Table ONLY, because number of 
-                '// fields Has Changed, so we will not guess on Selections, selected fields,
-                '/// mappings, etc...
-                cascade = True
-            End If
+            'If HasBadNames = False Then
+            '    '// Only delete OldStrObj from two tables and add NewStrObj back in it's place
+            '    cascade = False
+            'Else
+            '    '// Delete OldStrObj from Structures, Datastores and Mappings
+            '    '// Delete all selections, structure, coresponding DSselections, and mappings
+            '    '// Add back in to Structures and StructFields Table ONLY, because number of 
+            '    '// fields Has Changed, so we will not guess on Selections, selected fields,
+            '    '/// mappings, etc...
+            '    cascade = True
+            'End If
 
             '// Now delete Structure and fields from metadata and parent collections based on cascade
             '// If either delete or add operations fail, then ROLLBACK transaction
@@ -3317,6 +3317,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                     End If
                                 End If
                             Next
+                            'task.Save(True)
                         Next
                     Next
                 Next
@@ -3341,7 +3342,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             For Each DSSel As clsDSSelection In OldStrObj.SysAllSelection.ObjDSselections
                 Dim DS As clsDatastore = DSSel.ObjDatastore
-                If DSSel.Delete(cmd, cnn, True, False) = True Then
+                If DSSel.Delete(cmd, cnn, False, False) = True Then
                     Dim NewDSsel As clsDSSelection
                     cmd.Connection = cnn
                     NewDSsel = DS.CloneSSeltoDSSel(NewStrObj.SysAllSelection, , True, cmd)

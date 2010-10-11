@@ -1958,7 +1958,9 @@ ErrorGoTo2: Next
                             End If
                         Next
                     End If
-
+                    If SourceName = "" Then
+                        SourceName = CType(Proc.ObjSources(0), clsDatastore).DatastoreName
+                    End If
                 End If
                 'If i = 0 Then
                 '    First = True

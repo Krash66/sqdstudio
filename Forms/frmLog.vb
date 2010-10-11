@@ -195,7 +195,7 @@ Public Class frmLog
 
         Try
             If IO.File.Exists(GetAppTemp() & "\" & errorTrace) Then
-                txtLog.Text = LoadTextFile(GetAppTemp() & errorTrace)
+                txtLog.Text = LoadTextFile(GetAppTemp() & "\" & errorTrace)
             End If
             If IO.File.Exists(GetAppTemp() & "\" & TraceFile) Then
                 SqlLog.Text = LoadTextFile(GetAppTemp() & "\" & TraceFile)
