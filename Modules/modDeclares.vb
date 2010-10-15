@@ -62,6 +62,8 @@ Public Module modDeclares
 
     Public SubstList As New Collection
 
+    Public Procs As New Collection
+
 #End Region
 
 #Region "Private Variables"
@@ -471,13 +473,13 @@ Public Module modDeclares
             End If
             EnableLogging = True
 
+            Log("Trace Enabled")
+            Return True
+
         Catch ex As Exception
             LogError(ex, "modDeclares LoadGlobalValues")
             Return False
         End Try
-
-        Log("Trace Enabled")
-        Return True
 
     End Function
 

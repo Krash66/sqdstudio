@@ -457,21 +457,12 @@ Public Class clsField
             'cnn.Open()
             cmd.Connection = cnn
 
-            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-            '    sql = "Update " & Me.Project.tblStructFields & " " & _
-            '                   "set FIELDDESC='" & Me.FieldDesc & "' " & _
-            '                   "where FieldName= " & Me.GetQuotedText & _
-            '                   " AND StructureName=" & Me.Struct.GetQuotedText & _
-            '                   " AND EnvironmentName=" & Me.Struct.Environment.GetQuotedText & _
-            '                   " AND ProjectName=" & Me.Project.GetQuotedText
-            'Else
             sql = "Update " & Me.Project.tblDescriptionFields & " " & _
                            "set DESCFIELDDESCRIPTION='" & Me.FieldDesc & "' " & _
                            "where FieldName= " & Me.GetQuotedText & _
                            " AND DescriptionName=" & Me.Struct.GetQuotedText & _
                            " AND EnvironmentName=" & Me.Struct.Environment.GetQuotedText & _
                            " AND ProjectName=" & Me.Project.GetQuotedText
-            'End If
 
             cmd.CommandText = sql
             Log(sql)

@@ -480,9 +480,9 @@ Public Class ctlEngine
         Me.gbMain.Controls.Add(Me.txtMain)
         Me.gbMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMain.ForeColor = System.Drawing.Color.White
-        Me.gbMain.Location = New System.Drawing.Point(4, 475)
+        Me.gbMain.Location = New System.Drawing.Point(4, 438)
         Me.gbMain.Name = "gbMain"
-        Me.gbMain.Size = New System.Drawing.Size(674, 117)
+        Me.gbMain.Size = New System.Drawing.Size(674, 154)
         Me.gbMain.TabIndex = 105
         Me.gbMain.TabStop = False
         Me.gbMain.Text = "Main Procedure"
@@ -494,7 +494,7 @@ Public Class ctlEngine
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(27, 89)
+        Me.Label8.Location = New System.Drawing.Point(27, 126)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(567, 18)
         Me.Label8.TabIndex = 2
@@ -505,7 +505,7 @@ Public Class ctlEngine
         Me.btnMain.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnMain.Enabled = False
         Me.btnMain.ForeColor = System.Drawing.Color.Black
-        Me.btnMain.Location = New System.Drawing.Point(8, 88)
+        Me.btnMain.Location = New System.Drawing.Point(8, 125)
         Me.btnMain.Name = "btnMain"
         Me.btnMain.Size = New System.Drawing.Size(152, 23)
         Me.btnMain.TabIndex = 1
@@ -526,7 +526,7 @@ Public Class ctlEngine
         Me.txtMain.Name = "txtMain"
         Me.txtMain.ReadOnly = True
         Me.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMain.Size = New System.Drawing.Size(659, 63)
+        Me.txtMain.Size = New System.Drawing.Size(659, 100)
         Me.txtMain.TabIndex = 0
         '
         'GroupBox3

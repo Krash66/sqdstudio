@@ -2103,6 +2103,18 @@ Public Class frmMain
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
+        If Application.CommonAppDataRegistry.GetValue("WinState") IsNot Nothing Then
+            Dim winStr As String = Application.CommonAppDataRegistry.GetValue("WinState")
+            Select Case winStr
+                Case "Maximized"
+                    Me.WindowState = FormWindowState.Maximized
+                Case "Normal"
+                    Me.WindowState = FormWindowState.Normal
+                Case Else
+                    Me.WindowState = FormWindowState.Normal
+            End Select
+
+        End If
         InitMain()
         LoadGlobalValues()
         ToolBar1.Buttons(enumToolBarButtons.TB_MAP).Enabled = False
@@ -2139,6 +2151,9 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+
+        '/// Save Window State
+        Application.CommonAppDataRegistry.SetValue("WinState", Me.WindowState)
         '//save project settings
         If Not CurLoadedProject Is Nothing Then
             CurLoadedProject.Save(True)
@@ -3610,6 +3625,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     obj.SeqNo = cNode.Index '//store position
                     IsEventFromCode = True
                     SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
+                    'Me.WindowState = CType(obj, clsProject).WinState
                     IsEventFromCode = False
                     MsgClear = True
                 Else   '// Reloading project and tree to reflect MetaData Changes
@@ -4654,6 +4670,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             cNode = AddNode(cNode, obj.Type, obj, False)
             obj.SeqNo = cNode.Index '//store treeview node index
+            If Procs.Contains(obj.TaskName) Then
+                cNode.ForeColor = Color.Red
+            End If
 
         Catch ex As Exception
             LogError(ex)
@@ -5148,7 +5167,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         Try
             For Each nd In cNode.Nodes
-                If nd.Text.Contains(GetStructureFolderText(obj.StructureType)) = True Then
+                If nd.Text.EndsWith(GetStructureFolderText(obj.StructureType)) = True Then
                     IsFound = True
                     Exit For
                 End If

@@ -1090,7 +1090,7 @@ Public Module modGeneral
                 n.NodeFont = New Font("Arial", 8, FontStyle.Regular)
             End If
 
-            obj.ObjTreeNode = n
+
             If NodeText <> "" Then
                 n.Text = NodeText
             Else
@@ -1116,7 +1116,7 @@ Public Module modGeneral
             Else
                 n.Collapse()
             End If
-
+            obj.ObjTreeNode = n
             AddNode = n
 
         Catch ex As Exception

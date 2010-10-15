@@ -467,7 +467,7 @@ Module modObjects
             For Each fld As clsField In objSel.ObjStructure.ObjFields
                 'fld = objSel.DSSelectionFields(i)
                 If (fld.FieldName = FieldName) And (fld.Struct.StructureName = StructureName) And (fld.Struct.Environment.EnvironmentName = EnvironmentName) And (fld.Project.ProjectName = ProjectName) And (fld.ParentName = objSel.ObjStructure.StructureName) Then
-                    Return fld
+                    Return fld.Clone(objSel)
                     Exit Function
                 End If
             Next
@@ -490,13 +490,6 @@ Module modObjects
         Try
             Dim dsSelName As String = DSsel.SelectionName
             Dim SrchEnv As clsEnvironment = DSsel.ObjDatastore.Environment
-
-            'If DSsel.Parent.Type = NODE_ENVIRONMENT Then
-            '    SrchEnv = DSsel.Parent
-            'Else
-            '    SrchEnv = DSsel.ObjDatastore.Environment
-            'End If
-
 
             For Each str As clsStructure In SrchEnv.Structures
                 For Each sel As clsStructureSelection In str.StructureSelections
@@ -675,6 +668,40 @@ Module modObjects
             Next
 
             SearchDSselForStructureRef = TempList
+
+        Catch ex As Exception
+            LogError(ex, "modObjects SearchDSselForStructureRef")
+            Return Nothing
+        End Try
+
+    End Function
+
+    Function SearchSSForDSSelRef(ByRef objsel As clsStructureSelection) As Collection
+
+        Try
+            Dim TempList As New Collection
+            TempList.Clear()
+
+            For Each sys As clsSystem In objsel.ObjStructure.Environment.Systems
+                For Each eng As clsEngine In sys.Engines
+                    For Each sds As clsDatastore In eng.Sources
+                        For Each sdsSel As clsDSSelection In sds.ObjSelections
+                            If sdsSel.ObjSelection Is objsel Then
+                                TempList.Add(sdsSel)
+                            End If
+                        Next
+                    Next
+                    For Each tds As clsDatastore In eng.Targets
+                        For Each tdsSel As clsDSSelection In tds.ObjSelections
+                            If tdsSel.ObjSelection Is objsel Then
+                                TempList.Add(tdsSel)
+                            End If
+                        Next
+                    Next
+                Next
+            Next
+
+            SearchSSForDSSelRef = TempList
 
         Catch ex As Exception
             LogError(ex, "modObjects SearchDSselForStructureRef")

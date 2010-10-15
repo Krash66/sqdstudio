@@ -3493,7 +3493,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         'lblFieldName.Text = cNode.Text
         'lblFieldNameDesc.Text = lblFieldName.Text
-        prevfld = cNode.Tag
+        prevfld = CType(cNode.Tag, clsField)
         IsEventFromCode = True
         txtFieldDesc.Text = prevfld.FieldDesc
         startcolor = cNode.ForeColor
@@ -3535,7 +3535,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cStructFolder = cNode.Nodes(1)
 
             AddChildrenNoFolder(cStructFolder.Clone, tvDatastoreStructures.Nodes)
-            tvDatastoreStructures.ExpandAll()
+            tvDatastoreStructures.CollapseAll()
 
 
             '//Now load selected fields and check if object is already created and user is editing it
@@ -3657,13 +3657,21 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     Private Sub txtFieldDesc_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFieldDesc.TextChanged
 
-        If IsEventFromCode = True Then Exit Sub
-        objThis.IsModified = True
-        objThis.IsLoaded = False
-        cmdSave.Enabled = True
-        prevfld.FieldDescModified = True
+        Try
+            If IsEventFromCode = True Then Exit Sub
+            objThis.IsModified = True
+            objThis.IsLoaded = False
+            cmdSave.Enabled = True
+            If prevfld IsNot Nothing Then
+                prevfld.FieldDescModified = True
+            End If
 
-        RaiseEvent Modified(Me, objThis)
+            RaiseEvent Modified(Me, objThis)
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore txtFieldDesc_TextChanged")
+        End Try
+        
 
     End Sub
 

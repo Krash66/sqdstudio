@@ -446,20 +446,25 @@ Public Class clsMapping
     Public Function GetMappingSourceVal() As String
 
         Try
-            If Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
-                '///Use corrected text insted of actual field name  : 9/7/05 issue #48
-                If CType(Me.MappingSource, clsField).CorrectedFieldName <> "" Then
-                    Return CType(Me.MappingSource, clsField).CorrectedFieldName
+            If Me.MappingSource IsNot Nothing Then
+                If Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
+                    '///Use corrected text insted of actual field name  : 9/7/05 issue #48
+                    If CType(Me.MappingSource, clsField).CorrectedFieldName <> "" Then
+                        Return CType(Me.MappingSource, clsField).CorrectedFieldName
+                    Else
+                        Return CType(Me.MappingSource, clsField).FieldName
+                    End If
+                ElseIf Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+                    Return " "
                 Else
-                    Return CType(Me.MappingSource, clsField).FieldName
+                    '//Other than Field all are string type
+                    Return CType(Me.MappingSource, INode).Text
                 End If
-
-            ElseIf Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-                Return " "
             Else
-                '//Other than Field all are string type
-                Return CType(Me.MappingSource, INode).Text
+                Me.SourceType = enumMappingType.MAPPING_TYPE_NONE
+                Return " "
             End If
+            
 
         Catch ex As Exception
             LogError(ex, "clsMapping GetMappingSourceVal")
@@ -473,18 +478,23 @@ Public Class clsMapping
     Public Function GetMappingSourceId() As Object
 
         Try
-            If Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
-               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _
-               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Or _
-               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT Then
-                Return "''"
-            Else
-                If CType(Me.MappingSource, INode).GetQuotedText Is Nothing Then
+            If Me.MappingSource IsNot Nothing Then
+                If Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
+                               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _
+                               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Or _
+                               Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT Then
                     Return "''"
                 Else
-                    Return CType(Me.MappingSource, INode).GetQuotedText
+                    If CType(Me.MappingSource, INode).GetQuotedText Is Nothing Then
+                        Return "''"
+                    Else
+                        Return CType(Me.MappingSource, INode).GetQuotedText
+                    End If
                 End If
+            Else
+                Return "''"
             End If
+            
 
         Catch ex As Exception
             LogError(ex, "clsMapping GetMappingSourceId")
@@ -497,17 +507,21 @@ Public Class clsMapping
     Public Function GetMappingTargetId() As Object
 
         Try
-            If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
+            If Me.MappingTarget IsNot Nothing Then
+                If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
                Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _
                Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Or _
                Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT Then
-                Return "''"
-            Else
-                If CType(Me.MappingTarget, INode).GetQuotedText Is Nothing Then
                     Return "''"
                 Else
-                    Return CType(Me.MappingTarget, INode).GetQuotedText
+                    If CType(Me.MappingTarget, INode).GetQuotedText = "''" Then
+                        Return "''"
+                    Else
+                        Return CType(Me.MappingTarget, INode).GetQuotedText
+                    End If
                 End If
+            Else
+                Return "''"
             End If
 
         Catch ex As Exception
@@ -521,34 +535,40 @@ Public Class clsMapping
     Public Function GetMappingTargetVal() As String
 
         Try
-            If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
-                '///Use corrected text insted of actual field name  : 9/7/05 issue #48
-                If CType(Me.MappingTarget, clsField).CorrectedFieldName <> "" Then
+            If Me.MappingTarget IsNot Nothing Then
+                If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
+                    '///Use corrected text insted of actual field name  : 9/7/05 issue #48
+                    If CType(Me.MappingTarget, clsField).CorrectedFieldName <> "" Then
+                        Return CType(Me.MappingTarget, clsField).CorrectedFieldName
+                    Else
+                        Return CType(Me.MappingTarget, clsField).FieldName
+                    End If
+
+                ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+                    If Me.MappingTarget Is Nothing Then
+                        Dim tempObj As New clsField
+                        Me.MappingTarget = tempObj
+                    End If
+
+                    '// added 11/3/06 by KS and TK
+                    CType(Me.MappingTarget, clsField).CorrectedFieldName = "__COL" & Me.SeqNo
+
                     Return CType(Me.MappingTarget, clsField).CorrectedFieldName
+                ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
+                    If CType(Me.MappingTarget, clsVariable).CorrectedVariableName <> "" Then
+                        Return CType(Me.MappingTarget, clsVariable).CorrectedVariableName
+                    Else
+                        Return CType(Me.MappingTarget, clsVariable).Text
+                    End If
                 Else
-                    Return CType(Me.MappingTarget, clsField).FieldName
-                End If
-
-            ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-                If Me.MappingTarget Is Nothing Then
-                    Dim tempObj As New clsField
-                    Me.MappingTarget = tempObj
-                End If
-
-                '// added 11/3/06 by KS and TK
-                CType(Me.MappingTarget, clsField).CorrectedFieldName = "__COL" & Me.SeqNo
-
-                Return CType(Me.MappingTarget, clsField).CorrectedFieldName
-            ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
-                If CType(Me.MappingTarget, clsVariable).CorrectedVariableName <> "" Then
-                    Return CType(Me.MappingTarget, clsVariable).CorrectedVariableName
-                Else
-                    Return CType(Me.MappingTarget, clsVariable).Text
+                    '//Other than Field all are string type
+                    Return CType(Me.MappingTarget, INode).Text
                 End If
             Else
-                '//Other than Field all are string type
-                Return CType(Me.MappingTarget, INode).Text
+                Me.TargetType = enumMappingType.MAPPING_TYPE_NONE
+                Return ""
             End If
+            
 
         Catch ex As Exception
             LogError(ex, "clsMapping GetMappingTargetVal")
@@ -578,15 +598,17 @@ Public Class clsMapping
     Public Function UpdateMappingTargetValue() As Boolean
 
         Try
-            If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
-               Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
-                If CType(Me.MappingTarget, clsField).CorrectedFieldName <> "" Then
-                    Me.MappingTargetValue = CType(Me.MappingTarget, clsField).CorrectedFieldName
-                End If
-            ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
-                If CType(Me.MappingTarget, clsVariable).CorrectedVariableName <> "" Then
-                    Me.MappingTargetValue = CType(Me.MappingTarget, clsVariable).CorrectedVariableName
-                    CType(Me.MappingTarget, clsVariable).Text = CType(Me.MappingTarget, clsVariable).CorrectedVariableName
+            If Me.MappingTarget IsNot Nothing Then
+                If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Or _
+                              Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
+                    If CType(Me.MappingTarget, clsField).CorrectedFieldName <> "" Then
+                        Me.MappingTargetValue = CType(Me.MappingTarget, clsField).CorrectedFieldName
+                    End If
+                ElseIf Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
+                    If CType(Me.MappingTarget, clsVariable).CorrectedVariableName <> "" Then
+                        Me.MappingTargetValue = CType(Me.MappingTarget, clsVariable).CorrectedVariableName
+                        CType(Me.MappingTarget, clsVariable).Text = CType(Me.MappingTarget, clsVariable).CorrectedVariableName
+                    End If
                 End If
             End If
 

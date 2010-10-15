@@ -1233,9 +1233,11 @@ Public Class ctlStructure
         End Select
 
         dlgOpen.Filter = strFilter
+        dlgOpen.FileName = txtFilePath.Text
+        dlgOpen.Multiselect = False
 
         If dlgOpen.ShowDialog() = DialogResult.OK Then
-            txtFilePath.Text = dlgOpen.FileName
+            'txtFilePath.Text = dlgOpen.FileName
             UpdateControls()
         End If
 
@@ -1244,9 +1246,11 @@ Public Class ctlStructure
     Private Sub cmdBrowseCobolFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseCobolFile.Click
 
         dlgOpen.Filter = "Cobol Copybook (*.cob)|*.cob|All files (*.*)|*.*"
+        dlgOpen.FileName = txtCobolFilePath.Text
+        dlgOpen.Multiselect = False
 
         If dlgOpen.ShowDialog() = DialogResult.OK Then
-            txtCobolFilePath.Text = dlgOpen.FileName
+            'txtCobolFilePath.Text = dlgOpen.FileName
 
             If (chkAddDBD.Checked = True And txtDBDFilePath.Text <> "") Then
                 objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS
@@ -1261,9 +1265,11 @@ Public Class ctlStructure
     Private Sub cmdBrowseDBDFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseDBDFile.Click
 
         dlgOpen.Filter = "IMS DBD files (*.dbd)|*.dbd|All files (*.*)|*.*"
+        dlgOpen.FileName = txtDBDFilePath.Text
+        dlgOpen.Multiselect = False
 
         If dlgOpen.ShowDialog() = DialogResult.OK Then
-            txtDBDFilePath.Text = dlgOpen.FileName
+            'txtDBDFilePath.Text = dlgOpen.FileName
 
             If (txtCobolFilePath.Text <> "") Then
                 objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS

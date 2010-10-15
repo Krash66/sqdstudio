@@ -15,6 +15,7 @@ Public Class clsProject
     Private m_ProductVersion As String = ""
     Private m_ProjectDesc As String = ""
     Private m_ProjectLastUpdated As String = ""
+    'Private m_WinState As System.Windows.Forms.FormWindowState
 
     Private m_LoginReq As Boolean
     Private m_SchemaReq As Boolean
@@ -24,7 +25,7 @@ Public Class clsProject
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsRenamed As Boolean = False
-    Private m_MapListPath As String
+    Private m_MapListPath As String = ""
     Private m_ChgVer As Boolean = False
 
     '/// For dynamic Table Names
@@ -1260,6 +1261,15 @@ Public Class clsProject
         End Set
     End Property
 
+    'Public Property WinState() As System.Windows.Forms.FormWindowState
+    '    Get
+    '        Return m_WinState
+    '    End Get
+    '    Set(ByVal value As System.Windows.Forms.FormWindowState)
+    '        m_WinState = value
+    '    End Set
+    'End Property
+
 #End Region
 
 #Region "Methods"
@@ -1279,7 +1289,9 @@ Public Class clsProject
             Application.UserAppDataRegistry.SetValue("ODBCType", Me.ODBCtype)
             Application.UserAppDataRegistry.SetValue("TablePrefix", Me.TablePrefix)
             Application.UserAppDataRegistry.SetValue("CreationDate", Me.ProjectCreationDate)
-            Application.UserAppDataRegistry.SetValue(Me.ProjectName & "MapListPath", Me.MapListPath)
+            If Me.MapListPath IsNot Nothing Then
+                Application.UserAppDataRegistry.SetValue(Me.ProjectName & "MapListPath", Me.MapListPath)
+            End If
             Application.UserAppDataRegistry.SetValue("MetaVer", Me.ProjectMetaVersion.ToString)
             If Me.LoginReq = True Then
                 ReqLogin = "true"

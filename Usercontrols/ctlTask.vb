@@ -1756,7 +1756,7 @@ Public Class ctlTask
             cbGroupItems.Checked = objThis.Engine.MapGroupItems
         End If
 
-        objThis.ObjTreeNode = cNode
+        'objThis.ObjTreeNode = cNode
 
         SetTaskTitle(objThis.TaskType)
 
@@ -3484,6 +3484,10 @@ ManualGoTo:
 
         objThis.CallFromUsercontrol = True '//8/15/05
         Save()
+        objThis.ObjTreeNode.ForeColor = Color.Black
+        If Procs.Contains(objThis.TaskName) Then
+            Procs.Remove(objThis.TaskName)
+        End If
         objThis.CallFromUsercontrol = False '//8/15/05
 
     End Sub

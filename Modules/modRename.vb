@@ -3098,16 +3098,18 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
         '// return value from "compareOldNewFldNames" function to determine status for replacement
         Dim IntRet As Integer
-        '// are the new field names different form the old field names
-        Dim HasBadNames As Boolean = False
         '// Arraylists to get populated by CompareOldNewFldNames function
         '***** Array of New Fields in Incoming description that don't exist in the existing description
         Dim AddedFieldList As New ArrayList
         '***** Array of Old Fields in current description that don't exist in the existing description
         Dim DeletedFieldList As New ArrayList
 
+        'Dim Engs As New Collection
+
         AddedFieldList.Clear()
         DeletedFieldList.Clear()
+        Procs.Clear()
+        'Engs.Clear()
 
         Try
             IntRet = CompareOldNewFldNames(NewStrObj.ObjFields, OldStrObj.ObjFields, AddedFieldList, DeletedFieldList)
@@ -3122,15 +3124,10 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             Dim Replace As Boolean
 
             frm = New frmRplcDescRet
-            Replace = frm.ShowFldDiff(NewStrObj, OldStrObj, AddedFieldList, DeletedFieldList)
-
-            '//// new 1/15/10
-            If AddedFieldList.Count > 0 Or DeletedFieldList.Count > 0 Then
-                HasBadNames = True
-            End If
+            Replace = frm.ShowFldDiff(NewStrObj, OldStrObj, AddedFieldList, DeletedFieldList, Procs)
 
             If Replace = True Then
-                ReplaceStrFile = SQLReplaceFile(NewStrObj, OldStrObj, AddedFieldList, DeletedFieldList)
+                ReplaceStrFile = SQLReplaceFile(NewStrObj, OldStrObj, AddedFieldList, DeletedFieldList, Procs)
             Else
                 ReplaceStrFile = False
             End If
@@ -3190,92 +3187,56 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
     End Function
 
     '/// added by TKarasch April 07 to replace Structure file ... to update MetaData
-    Function SQLReplaceFile(ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal newList As ArrayList, ByVal oldList As ArrayList) As Boolean
+    Function SQLReplaceFile(ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal addList As ArrayList, ByVal delList As ArrayList, ByRef procedures As Collection) As Boolean
 
         '// All Comparison testing of fields has been done before we open Metadata
         '// so we are sure that Updating of metadata will work without errors
         '// and all deletes and adds will happen in one Transaction, so rollback is possible
-
-        'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
         Dim cascade As Boolean = False
-        Dim Step1 As Boolean
         Dim success As Boolean = True
 
         Try
             '// start SQL Tran
-            'cnn = New Odbc.OdbcConnection(NewStrObj.Project.MetaConnectionString)
-            'cnn.Open()
             cmd.Connection = cnn
             tran = cnn.BeginTransaction()
             cmd.Transaction = tran
 
-            '// First set cascade based on whether fields are to be replaced one to one or not
-            'If HasBadNames = False Then
-            '    '// Only delete OldStrObj from two tables and add NewStrObj back in it's place
-            '    cascade = False
-            'Else
-            '    '// Delete OldStrObj from Structures, Datastores and Mappings
-            '    '// Delete all selections, structure, coresponding DSselections, and mappings
-            '    '// Add back in to Structures and StructFields Table ONLY, because number of 
-            '    '// fields Has Changed, so we will not guess on Selections, selected fields,
-            '    '/// mappings, etc...
-            '    cascade = True
-            'End If
 
-            '// Now delete Structure and fields from metadata and parent collections based on cascade
+            '// Now delete fields from metadata that are no longer present in 
             '// If either delete or add operations fail, then ROLLBACK transaction
-            If OldStrObj.Delete(cmd, cnn, cascade, cascade) = True Then
-                If cascade = False Then
-                    RemoveFromCollection(NewStrObj.Environment.Structures, OldStrObj.GUID)
-                    '///**** Very important ****
-                    '/// now fields pointers must be swapped in all of the correponding mapping 
-                    '// objects so that tasks and mappings will recognize the new fields
-                    If UpdateMappings(NewStrObj) = False Then
-                        tran.Rollback()
-                        Step1 = False
-                    End If
-                End If
-                '// Now add the new Structure properties back in to metadata
-                If NewStrObj.AddNew(cmd) = True Then
-                    '// Now add any additional fields to the DSSelectionFields Table
-                    If UpdateDSSelFldsForStrChng(cnn, cmd, NewStrObj, OldStrObj) = True Then
-                        '// All went well, then commit
-                        tran.Commit()
-                        Step1 = True
+            If OldStrObj.DeleteATTR(cmd) = True Then
+                If NewStrObj.InsertATTR(cmd) = True Then
+                    If ChangeStrFieldsForReplace(cmd, NewStrObj, OldStrObj, addList, delList) = True Then
+                        If UpdateDSSelFldsForStrChng(cmd, NewStrObj, OldStrObj, addList, delList) = True Then
+                            If UpdateMappings(cmd, NewStrObj, OldStrObj, procedures, addList, delList) = True Then
+                                '// All went well, then commit
+                                tran.Commit()
+                                success = True
+                            Else
+                                tran.Rollback()
+                                success = False
+                            End If
+                        Else
+                            tran.Rollback()
+                            success = False
+                        End If
                     Else
                         tran.Rollback()
-                        Step1 = False
+                        success = False
                     End If
                 Else
                     tran.Rollback()
-                    Step1 = False
+                    success = False
                 End If
             Else
                 tran.Rollback()
-                Step1 = False
+                success = False
             End If
 
-            If Step1 = True Then
-                For Each DSsel As clsDSSelection In NewStrObj.SysAllSelection.ObjDSselections
-                    If DSsel.ObjDatastore.Save() = False Then
-                        success = False
-                    End If
-                Next
-                If success = False Then
-                    MsgBox("There were problems changing the description in your datastores." & Chr(13) & _
-                    "Please check your Datastores and Procedures for possible" & Chr(13) & _
-                    "problems related to changing your description file.", MsgBoxStyle.Exclamation, "Problems changing Description file")
-                    Return False
-                    Exit Try
-                Else
-                    Return True
-                End If
-            Else
-                Return False
-                Exit Try
-            End If
+
+            SQLReplaceFile = success
 
         Catch ex As Exception
             LogError(ex, "modRename SQLReplaceFile")
@@ -3287,76 +3248,372 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    '/// function used when replacing structure files.
-    '// this function updates the mapping source and target fields
-    '// that are in mappings that use the replaced structure 
-    Function UpdateMappings(ByRef NewStructObj As clsStructure) As Boolean
+    Function ChangeStrFieldsForReplace(ByRef cmd As Odbc.OdbcCommand, ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal addList As ArrayList, ByVal delList As ArrayList) As Boolean
 
         Try
-            Dim Obj As Object
+            Dim sql As String = ""
+            '/// First Delete fields no longer present in new structure and retain their seqnos
+            '/// Table DescFields and descselflds
+            '/DescFlds
+            mainwindow.StatusBar1.Text = "Deleting fields no longer in Description File..."
+            For Each fld As clsField In delList
+                sql = "DELETE FROM " & NewStrObj.Project.tblDescriptionFields & " WHERE" & _
+                " PROJECTNAME = " & NewStrObj.Project.GetQuotedText & _
+                " AND ENVIRONMENTNAME= " & NewStrObj.Environment.GetQuotedText & _
+                " AND DESCRIPTIONNAME= " & NewStrObj.GetQuotedText & _
+                " AND FIELDNAME= " & fld.GetQuotedText
 
-            For Each fld As clsField In NewStructObj.ObjFields
-                For Each sys As clsSystem In NewStructObj.Environment.Systems
-                    For Each eng As clsEngine In sys.Engines
-                        For Each task As clsTask In eng.Procs
-                            For Each map As clsMapping In task.ObjMappings
-                                Obj = map.MappingSource
-                                If Obj IsNot Nothing Then
-                                    If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                                        If CType(Obj, clsField).FieldName = fld.FieldName Then
-                                            map.MappingSource = fld
-                                        End If
-                                    End If
-                                End If
-                                Obj = map.MappingTarget
-                                If Obj IsNot Nothing Then
-                                    If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
-                                        If CType(Obj, clsField).FieldName = fld.FieldName Then
-                                            map.MappingTarget = fld
-                                        End If
-                                    End If
-                                End If
-                            Next
-                            'task.Save(True)
-                        Next
-                    Next
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+            Next
+            '/DescSelFlds
+            For Each fld As clsField In delList
+                sql = "DELETE FROM " & NewStrObj.Project.tblDescriptionSelFields & " WHERE" & _
+                " PROJECTNAME = " & NewStrObj.Project.GetQuotedText & _
+                " AND ENVIRONMENTNAME= " & NewStrObj.Environment.GetQuotedText & _
+                " AND DESCRIPTIONNAME= " & NewStrObj.GetQuotedText & _
+                " AND FIELDNAME= " & fld.GetQuotedText
+
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+            Next
+
+            '/// Next Add New Structure Fields into metadata for new structure based on seqno
+            '/// Table DescFields
+            mainwindow.StatusBar1.Text = "Inserting new fields added by New Description File..."
+            For Each fld As clsField In addList
+                sql = "INSERT INTO " & NewStrObj.Project.tblDescriptionFields & " (" & _
+                    "ProjectName, " & _
+                    "EnvironmentName, " & _
+                    "DescriptionName, " & _
+                    "FieldName, " & _
+                    "ParentName, " & _
+                    "SEQNO, " & _
+                    "DescFieldDescription, " & _
+                    "NChildren, " & _
+                    "NLevel, " & _
+                    "Ntimes, " & _
+                    "NOccNo, " & _
+                    "Datatype, " & _
+                    "NOffSet, " & _
+                    "NLength, " & _
+                    "NScale, " & _
+                    "CanNull, " & _
+                    "ISKEY, " & _
+                    "OrgName, " & _
+                    "DateFormat, " & _
+                    "Label, " & _
+                    "InitVal, " & _
+                    "ReType, " & _
+                    "InValid, " & _
+                    "ExtType, " & _
+                    "IdentVal, " & _
+                    "ForeignKey) " & _
+                    "Values(" & _
+                    NewStrObj.Project.GetQuotedText & "," & _
+                    NewStrObj.Environment.GetQuotedText & "," & _
+                    NewStrObj.GetQuotedText & "," & _
+                    Quote(fld.FieldName) & "," & _
+                    Quote(fld.ParentName) & "," & _
+                    fld.SeqNo & "," & _
+                    Quote(fld.FieldDesc) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
+                    fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
+                    Quote(fld.OrgName) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
+                    Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                    ");"
+
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+            Next
+
+            '/// Update all fields to reflect any changes in attributes
+            '/// table DescFields
+            mainwindow.StatusBar1.Text = "Updating all field attributes in New Description File..."
+            For Each fld As clsField In NewStrObj.ObjFields
+                sql = "UPDATE " & NewStrObj.Project.tblDescriptionFields & " SET " & _
+                "DescFieldDescription= " & Quote(fld.FieldDesc) & "," & _
+                "NChildren= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
+                "NLevel= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
+                "Ntimes= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
+                "NOccNo= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
+                "Datatype= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
+                "NOffSet= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
+                "NLength= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
+                "NScale= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
+                "CanNull= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
+                "ISKEY= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
+                "OrgName= " & Quote(fld.OrgName) & "," & _
+                "DateFormat= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
+                "Label= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
+                "InitVal= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
+                "ReType= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
+                "InValid= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
+                "ExtType= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
+                "IdentVal= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
+                "ForeignKey= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                " WHERE " & _
+                "ProjectName= " & NewStrObj.Project.GetQuotedText & _
+                " AND EnvironmentName= " & NewStrObj.Environment.GetQuotedText & _
+                " AND DescriptionName= " & NewStrObj.GetQuotedText & _
+                " AND FieldName= " & Quote(fld.FieldName) & _
+                " AND ParentName= " & Quote(fld.ParentName) & _
+                " AND SEQNO= " & fld.SeqNo
+
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+            Next
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modRename ChangeStrFieldsForReplace")
+            Return False
+        End Try
+
+    End Function
+
+    Function UpdateDSSelFldsForStrChng(ByRef cmd As Odbc.OdbcCommand, ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByVal addList As ArrayList, ByVal delList As ArrayList) As Boolean
+
+        Try
+            Dim sql As String = ""
+
+            OldStrObj.SysAllSelection.ObjDSselections = SearchSSForDSSelRef(OldStrObj.SysAllSelection)
+
+            '/// For each DSSel affected, delete fields that no longer exist in new structure and retain seqnos
+            '/// Table DSSelFlds
+            mainwindow.StatusBar1.Text = "Deleting fields from Datastore Selections not in New Description File..."
+            For Each DSSel As clsDSSelection In OldStrObj.SysAllSelection.ObjDSselections
+                For Each fld As clsField In delList
+                    sql = "DELETE FROM " & NewStrObj.Project.tblDSselFields & " WHERE " & _
+                    "PROJECTNAME = " & DSSel.Project.GetQuotedText & _
+                    " AND ENVIRONMENTNAME= " & DSSel.Environment.GetQuotedText & _
+                    " AND SYSTEMNAME= " & DSSel.Engine.ObjSystem.GetQuotedText & _
+                    " AND ENGINENAME= " & DSSel.Engine.GetQuotedText & _
+                    " AND DATASTORENAME= " & DSSel.ObjDatastore.GetQuotedText & _
+                    " AND DESCRIPTIONNAME= " & NewStrObj.GetQuotedText & _
+                    " AND FIELDNAME= " & fld.GetQuotedText
+
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
+                Next
+            Next
+
+            '/// Next Add New DSSel Fields for new structure based on seqnos
+            '/// Table DSSelFlds
+            mainwindow.StatusBar1.Text = "Inserting all new fields into Datastore Selections..."
+            For Each DSSel As clsDSSelection In OldStrObj.SysAllSelection.ObjDSselections
+                For Each objfld As clsField In addList
+                    sql = "INSERT INTO " & NewStrObj.Project.tblDSselFields & " (" & _
+                            "ProjectName," & _
+                            "EnvironmentName," & _
+                            "SystemName," & _
+                            "EngineName," & _
+                            "DatastoreName," & _
+                            "DescriptionName, " & _
+                            "SelectionName, " & _
+                            "FieldName, " & _
+                            "ParentName, " & _
+                            "SEQNO, " & _
+                            "DescFieldDescription, " & _
+                            "NChildren, " & _
+                            "NLevel, " & _
+                            "Ntimes, " & _
+                            "NOccNo, " & _
+                            "Datatype, " & _
+                            "NOffSet, " & _
+                            "NLength, " & _
+                            "NScale, " & _
+                            "CanNull, " & _
+                            "ISKEY, " & _
+                            "OrgName, " & _
+                            "DateFormat, " & _
+                            "Label, " & _
+                            "InitVal, " & _
+                            "ReType, " & _
+                            "InValid, " & _
+                            "ExtType, " & _
+                            "IdentVal, " & _
+                            "ForeignKey) " & _
+                            "Values( " & _
+                            DSSel.Project.GetQuotedText & "," & _
+                            DSSel.Engine.ObjSystem.Environment.GetQuotedText & "," & _
+                            DSSel.Engine.ObjSystem.GetQuotedText & "," & _
+                            DSSel.Engine.GetQuotedText & "," & _
+                            DSSel.ObjDatastore.GetQuotedText & "," & _
+                            DSSel.ObjStructure.GetQuotedText & "," & _
+                            DSSel.GetQuotedText & "," & _
+                            objfld.GetQuotedText & "," & _
+                            Quote(objfld.ParentName) & "," & _
+                            objfld.SeqNo & "," & _
+                            Quote(objfld.FieldDesc) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
+                            objfld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY)) & "," & _
+                            Quote(objfld.OrgName) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATEFORMAT)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_LABEL)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_IDENTVAL)) & "," & _
+                            Quote(objfld.GetFieldAttr(enumFieldAttributes.ATTR_FKEY)) & _
+                            ");" '//TK 11/8/06 and 4/5/07 and 2/15/09
+
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
+                Next
+            Next
+
+            '/// Update all fields to reflect any changes in attributes from new Description File
+            '/// Table DSSelFlds
+            mainwindow.StatusBar1.Text = "Updating all field attributes in Datastores for new Description File..."
+            For Each DSSel As clsDSSelection In OldStrObj.SysAllSelection.ObjDSselections
+                For Each fld As clsField In NewStrObj.ObjFields
+                    sql = "UPDATE " & DSSel.Project.tblDSselFields & " SET " & _
+                    "NChildren= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_NCHILDREN) & "," & _
+                    "NLevel= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_LEVEL) & "," & _
+                    "Ntimes= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_TIMES) & "," & _
+                    "NOccNo= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_OCCURS) & "," & _
+                    "Datatype= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE)) & "," & _
+                    "NOffSet= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_OFFSET) & "," & _
+                    "NLength= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) & "," & _
+                    "NScale= " & fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE) & "," & _
+                    "CanNull= " & Quote(fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL)) & _
+                    " WHERE " & _
+                    "ProjectName= " & DSSel.Project.GetQuotedText & _
+                    " AND EnvironmentName= " & DSSel.Environment.GetQuotedText & _
+                    " AND SYSTEMNAME= " & DSSel.Engine.ObjSystem.GetQuotedText & _
+                    " AND ENGINENAME= " & DSSel.Engine.GetQuotedText & _
+                    " AND DATASTORENAME= " & DSSel.ObjDatastore.GetQuotedText & _
+                    " AND DescriptionName= " & DSSel.GetQuotedText & _
+                    " AND FieldName= " & Quote(fld.FieldName) '& _
+                    '" AND ParentName= " & Quote(fld.ParentName) '& _
+                    '" AND SEQNO= " & fld.SeqNo
+
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
                 Next
             Next
 
             Return True
 
         Catch ex As Exception
-            LogError(ex, "UpdateMappings modRename")
+            LogError(ex, "modRename UpdateDSSelFldsForStrChng")
             Return False
         End Try
 
     End Function
 
-    Function UpdateDSSelFldsForStrChng(ByRef cnn As Odbc.OdbcConnection, ByRef cmd As Odbc.OdbcCommand, ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure) As Boolean
+    '/// function used when replacing structure files.
+    '// this function updates the mapping source and target fields
+    '// that are in mappings that use the replaced structure 
+    Function UpdateMappings(ByRef cmd As Odbc.OdbcCommand, ByRef NewStrObj As clsStructure, ByRef OldStrObj As clsStructure, ByRef procedures As Collection, ByVal addList As ArrayList, ByVal delList As ArrayList) As Boolean
 
         Try
-            If NewStrObj.ObjFields.Count = OldStrObj.ObjFields.Count Then
-                Return True
-                Exit Function
-            End If
+            Dim sql As String = ""
+            Dim Obj As Object
+            Dim success As Boolean = False
 
-            For Each DSSel As clsDSSelection In OldStrObj.SysAllSelection.ObjDSselections
-                Dim DS As clsDatastore = DSSel.ObjDatastore
-                If DSSel.Delete(cmd, cnn, False, False) = True Then
-                    Dim NewDSsel As clsDSSelection
-                    cmd.Connection = cnn
-                    NewDSsel = DS.CloneSSeltoDSSel(NewStrObj.SysAllSelection, , True, cmd)
-                    DS.ObjSelections.Add(NewDSsel)
+            '/// For each procedure in the procedure section, delete mapping sources or targets for fields in the delList
+            '/// Object manipulation
+            mainwindow.StatusBar1.Text = "Updating all Mappings to reflect new Description File..."
+            For Each task As clsTask In procedures
+                For Each map As clsMapping In task.ObjMappings
+                    Obj = map.MappingSource
+                    If Obj IsNot Nothing Then
+                        For Each fld As clsField In delList
+                            If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
+                                If CType(Obj, clsField).FieldName = fld.FieldName Then
+                                    map.MappingSource = Nothing
+                                    map.SourceType = enumMappingType.MAPPING_TYPE_NONE
+                                    map.SourceDataStore = ""
+                                    map.SourceParent = ""
+                                    map.IsModified = True
+                                End If
+                            End If
+                            If CType(Obj, INode).Type = NODE_FUN Then
+                                If CType(Obj, clsSQFunction).SQFunctionWithInnerText.Contains(fld.FieldName) Then
+                                    map.MappingSource = Nothing
+                                    map.SourceType = enumMappingType.MAPPING_TYPE_NONE
+                                    map.SourceDataStore = ""
+                                    map.SourceParent = ""
+                                    map.IsModified = True
+                                End If
+                            End If
+                        Next
+                    End If
+                    Obj = map.MappingTarget
+                    If Obj IsNot Nothing Then
+                        For Each fld As clsField In delList
+                            If CType(Obj, INode).Type = NODE_STRUCT_FLD Then
+                                If CType(Obj, clsField).FieldName = fld.FieldName Then
+                                    map.MappingTarget = Nothing
+                                    map.TargetType = enumMappingType.MAPPING_TYPE_NONE
+                                    map.TargetDataStore = ""
+                                    map.TargetParent = ""
+                                    map.IsModified = True
+                                End If
+                            End If
+                            If CType(Obj, INode).Type = NODE_FUN Then
+                                If CType(Obj, clsSQFunction).SQFunctionWithInnerText.Contains(fld.FieldName) Then
+                                    map.MappingTarget = Nothing
+                                    map.TargetType = enumMappingType.MAPPING_TYPE_NONE
+                                    map.TargetDataStore = ""
+                                    map.TargetParent = ""
+                                    map.IsModified = True
+                                End If
+                            End If
+                        Next
+                    End If
+                Next
+                '/// Save the new mappings for the task
+                '/// UPDATE(taskmappings)
+                success = task.DeleteMappings(cmd)
+                If success = True Then
+                    success = task.AddNewMappings(cmd)
                 Else
-                    Return False
-                    Exit Try
+                    success = False
+                End If
+                If success = False Then
+                    Exit For
                 End If
             Next
 
-            Return True
+            Return success
 
         Catch ex As Exception
-            LogError(ex, "modRename UpdateDSSelFldsForStrChng")
+            LogError(ex, "UpdateMappings modRename")
             Return False
         End Try
 

@@ -1622,17 +1622,17 @@ Public Class clsTask
 
     End Function
 
-    Private Function AddNewMappings(ByRef cmd As Data.Odbc.OdbcCommand) As Boolean
+    Function AddNewMappings(ByRef cmd As Data.Odbc.OdbcCommand) As Boolean
 
         '//Delete unselected selections
         Dim strSql As String = ""
         Dim i As Integer
         Dim IsAdded As Boolean
         Dim selNew As clsMapping
-        Dim dummy As New clsMapping
+        'Dim dummy As New clsMapping
 
         Try
-            dummy.Parent = Me
+            'dummy.Parent = Me
 
             '//compare each new selection with old one
             For i = 0 To Me.ObjMappings.Count - 1
@@ -1750,7 +1750,7 @@ Public Class clsTask
 
     End Function
 
-    Private Function DeleteMappings(ByRef cmd As Data.Odbc.OdbcCommand) As Boolean
+    Function DeleteMappings(ByRef cmd As Data.Odbc.OdbcCommand) As Boolean
 
         Dim strSql As String = ""
 

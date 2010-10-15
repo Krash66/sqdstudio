@@ -4,8 +4,11 @@ Public Class frmRplcDescRet
     Private OldStr As clsStructure
     Private AddList As ArrayList
     Private DelList As ArrayList
+    Dim Procs As Collection
+    'Dim Engs As Collection
 
     Private Sub cmdOk_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOk.Click
+
         DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()
 
@@ -20,6 +23,8 @@ Public Class frmRplcDescRet
 
     Private Sub cmdHelp_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
 
+
+
     End Sub
 
     Sub StartLoad()
@@ -29,6 +34,7 @@ Public Class frmRplcDescRet
         txtName.Text = OldStr.StructureName
         txtOldPath.Text = OldStr.fPath1
         txtNewPath.Text = NewStr.fPath1
+        
         LoadFields()
         LoadProcs()
 
@@ -67,6 +73,8 @@ Public Class frmRplcDescRet
             For Each sys As clsSystem In EnvObj.Systems
                 For Each eng As clsEngine In sys.Engines
                     For Each proc As clsTask In eng.Procs
+                        proc.LoadItems()
+
                         For Each map As clsMapping In proc.ObjMappings
                             Obj = map.MappingSource
                             If Obj IsNot Nothing Then
@@ -74,6 +82,12 @@ Public Class frmRplcDescRet
                                     Dim fld As clsField = CType(Obj, clsField)
                                     If fld.ParentStructureName = OldStr.StructureName Then
                                         lvProc.Items.Add(eng.EngineName).SubItems.Add(proc.TaskName)
+                                        'If Engs.Contains(eng.Key) = False Then
+                                        '    Engs.Add(eng, eng.Key)
+                                        'End If
+                                        If Procs.Contains(proc.TaskName) = False Then
+                                            Procs.Add(proc, proc.TaskName)
+                                        End If
                                         GoTo NextProc
                                     End If
                                 End If
@@ -84,6 +98,12 @@ Public Class frmRplcDescRet
                                     Dim fld As clsField = CType(Obj, clsField)
                                     If fld.ParentStructureName = OldStr.StructureName Then
                                         lvProc.Items.Add(eng.EngineName).SubItems.Add(proc.TaskName)
+                                        'If Engs.Contains(eng.Key) = False Then
+                                        '    Engs.Add(eng, eng.Key)
+                                        'End If
+                                        If Procs.Contains(proc.TaskName) = False Then
+                                            Procs.Add(proc, proc.TaskName)
+                                        End If
                                         GoTo NextProc
                                     End If
                                 End If
@@ -105,14 +125,14 @@ NextProc:           Next
 
     End Sub
 
-    Public Function ShowFldDiff(ByVal NewObj As clsStructure, ByVal OldObj As clsStructure, ByVal newList As ArrayList, ByVal oldList As ArrayList) As Boolean
+    Public Function ShowFldDiff(ByVal NewObj As clsStructure, ByVal OldObj As clsStructure, ByVal newList As ArrayList, ByVal oldList As ArrayList, ByRef procedures As Collection) As Boolean
 
         Try
             NewStr = NewObj
             OldStr = OldObj
             AddList = newList
             DelList = oldList
-
+            Procs = procedures
             StartLoad()
             EndLoad()
 
