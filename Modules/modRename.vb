@@ -651,6 +651,9 @@ Module modRename
                 cmd.Transaction = tran
 
                 success = EditVariables(cmd, Var.VariableName, NewName, Var)
+                If success = True Then
+                    success = EditTaskMappings(cmd, Var.VariableName, NewName, Var)
+                End If
 
                 If success = True Then
                     tran.Commit()
@@ -3012,7 +3015,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                         NewMapSrc.Replace("," & OldValue & ")", "," & NewValue & ")")
                         NewMapSrc.Replace("," & OldValue & " ", "," & NewValue & " ")
 
-                    Case NODE_STRUCT, NODE_STRUCT_SEL, NODE_VARIABLE
+                    Case NODE_STRUCT, NODE_STRUCT_SEL
 
                         NewMapSrc.Replace("'" & OldValue & "'", "'" & NewValue & "'")
                         NewMapSrc.Replace("." & OldValue & ".", "." & NewValue & ".")
@@ -3025,6 +3028,10 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                         NewMapSrc.Replace("," & OldValue & ")", "," & NewValue & ")")
                         NewMapSrc.Replace("," & OldValue & " ", "," & NewValue & " ")
                         NewMapSrc.Replace("," & OldValue & ".", "," & NewValue & ".")
+
+                    Case NODE_VARIABLE
+
+                        NewMapSrc.Replace(OldValue, NewValue)
 
                 End Select
 
@@ -3088,6 +3095,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     '// functions in this region are called from the frmStructure form 
     '// when replacing structure files ... by Tom Karasch April and June 2007
+    '// *** Rewritten: October 2010 by TK
 #Region "Replace structure file"
 
     '/// added by TKarasch April 07 to replace Structure file ... 
@@ -3543,7 +3551,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
         Try
             Dim sql As String = ""
             Dim Obj As Object
-            Dim success As Boolean = False
+            Dim success As Boolean = True
 
             '/// For each procedure in the procedure section, delete mapping sources or targets for fields in the delList
             '/// Object manipulation

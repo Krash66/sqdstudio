@@ -524,7 +524,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             wComment(RC, "-------------------------------------------------------------")
             wComment(RC, "        DATA DEFINITION SECTION")
             wComment(RC, "-------------------------------------------------------------")
-            If prtDS(RC) = False Then
+            If prtDS(RC, DSObj) = False Then
                 GoTo ErrorGoTo
             End If
 
@@ -657,6 +657,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         '&  "Would you like to see the report?"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 4
                         rc.HasError = True
@@ -665,6 +666,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Parser Returned: Script Generation Warning"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 1
                         rc.HasError = True
@@ -673,6 +675,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Parser Returned: There is a problem with the PATH"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case Is > 0
                         rc.HasError = True
@@ -681,14 +684,15 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 0
                         rc.ParserPath = pathINL
                         rc.ParseCode = enumParserReturnCode.OK
-                        rc.ReturnCode = "Script generated Successfully !!"
+                        rc.ReturnCode = "Script generated and Parsed Successfully !!"
                         rc.ErrorLocation = enumErrorLocation.NoErrors
                         rc.Path = pathSQD
-
+                        rc.ParserRC = myProcess.ExitCode
                         Log("*** Script file saved at : " & pathINL)
 
                     Case Else
@@ -777,6 +781,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         '&  "Would you like to see the report?"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 4
                         rc.HasError = True
@@ -785,6 +790,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Parser Returned: Script Generation Warning"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 1
                         rc.HasError = True
@@ -793,6 +799,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Parser Returned: There is a problem with the PATH"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = pathSQD
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case Is > 0
                         rc.HasError = True
@@ -801,6 +808,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
                         rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
+                        rc.ParserRC = myProcess.ExitCode
 
                     Case 0
                         rc.ParserPath = pathSQD
@@ -808,7 +816,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         rc.ReturnCode = "Script generated Successfully !!"
                         rc.ErrorLocation = enumErrorLocation.NoErrors
                         rc.Path = pathSQD
-
+                        rc.ParserRC = myProcess.ExitCode
                         Log("*** Script file saved at : " & pathSQD)
 
                     Case Else
@@ -2970,6 +2978,8 @@ ErrorGoTo:
         Try
             Dim objEng As clsEngine = DSsel.ObjDatastore.Engine
             Dim objSys As clsSystem = objEng.ObjSystem
+
+            objSys.LoadMe()
 
             Dim FORstr1 As String = String.Format("{0}{1}{2}", "DESCRIPTION ", _
             GetStrType(struct.StructureType), Quote(GetStrPath(struct, objEng)))

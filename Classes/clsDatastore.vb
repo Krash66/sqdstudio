@@ -586,8 +586,6 @@ Public Class clsDatastore
     '///Done
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
-        
-
         Try
             '//check if fields already loaded in memory?
             If Me.ObjSelections.Count > 0 And Reload = False Then
@@ -631,6 +629,9 @@ Public Class clsDatastore
 
             cmd.CommandText = sql
             Log(sql)
+            If Incmd IsNot Nothing Then
+                cmd.Transaction = Incmd.Transaction
+            End If
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cmd.Connection)
             dt = New System.Data.DataTable("temp2")
             da.Fill(dt)

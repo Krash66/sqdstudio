@@ -23,7 +23,15 @@ Public Class frmRplcDescRet
 
     Private Sub cmdHelp_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
 
+        ShowHelp(modHelp.HHId.H_Change_Desc)
 
+    End Sub
+
+    Private Sub me_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+
+        If e.KeyCode = Keys.F1 Then
+            ShowHelp(modHelp.HHId.H_Change_Desc)
+        End If
 
     End Sub
 
@@ -34,7 +42,7 @@ Public Class frmRplcDescRet
         txtName.Text = OldStr.StructureName
         txtOldPath.Text = OldStr.fPath1
         txtNewPath.Text = NewStr.fPath1
-        
+
         LoadFields()
         LoadProcs()
 

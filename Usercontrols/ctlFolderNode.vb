@@ -77,6 +77,7 @@ Public Class ctlFolderNode
         Me.lv.Size = New System.Drawing.Size(512, 328)
         Me.lv.TabIndex = 32
         Me.lv.UseCompatibleStateImageBehavior = False
+        Me.lv.View = System.Windows.Forms.View.Tile
         '
         'ColumnHeader1
         '

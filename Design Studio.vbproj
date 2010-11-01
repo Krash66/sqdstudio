@@ -365,7 +365,6 @@
     <Compile Include="Modules\modHelp.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modules\modImport.vb" />
     <Compile Include="Modules\modModeler.vb" />
     <Compile Include="Modules\modMultiThread.vb" />
     <Compile Include="Modules\modObjects.vb">

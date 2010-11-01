@@ -2342,7 +2342,7 @@ doAgain:
             cStructFolder = cNode.Nodes(1)
 
             AddChildrenNoFolder(cStructFolder.Clone, tvDatastoreStructures.Nodes)
-            tvDatastoreStructures.ExpandAll()
+            tvDatastoreStructures.CollapseAll()
 
 
             '//Now load selected fields and check if object is already created and user is editing it

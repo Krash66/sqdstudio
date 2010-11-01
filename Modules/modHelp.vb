@@ -67,6 +67,7 @@ Module modHelp
         H_Relational_DML_EXISTING_File = 1497
         H_Model_Structure = 1500
         H_Structure_Field_Attributes = 1510
+        H_Change_Desc = 1515
         H_Systems = 1520
         H_Connections = 1530
         H_Engines = 1540

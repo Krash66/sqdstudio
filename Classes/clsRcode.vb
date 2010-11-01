@@ -9,6 +9,7 @@ Public Class clsRcode
     Private mReturnCode As String               'return code (if errors or if warnings or no errors)
     Private mErrorLocation As enumErrorLocation 'part of the generator module that caused the error
     Private mParserCode As enumParserReturnCode 'the Parser's return code
+    Private mParserRC As Integer
     Private mLocalErrorMsg As String
     Private mParserPath As String               'Path the Parser sent Back
     Private mObjInode As INode                  'Object where the error occured
@@ -121,6 +122,15 @@ Public Class clsRcode
         End Get
         Set(ByVal value As enumParserReturnCode)
             mParserCode = value
+        End Set
+    End Property
+
+    Public Property ParserRC() As Integer
+        Get
+            Return mParserRC
+        End Get
+        Set(ByVal value As Integer)
+            mParserRC = value
         End Set
     End Property
 

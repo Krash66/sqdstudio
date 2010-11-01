@@ -289,7 +289,7 @@ Partial Class frmScriptGen
         'lblSummary
         '
         Me.lblSummary.AutoSize = True
-        Me.lblSummary.Location = New System.Drawing.Point(6, 38)
+        Me.lblSummary.Location = New System.Drawing.Point(6, 30)
         Me.lblSummary.Name = "lblSummary"
         Me.lblSummary.Size = New System.Drawing.Size(57, 13)
         Me.lblSummary.TabIndex = 1

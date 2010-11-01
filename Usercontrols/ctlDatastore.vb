@@ -1419,14 +1419,14 @@ Public Class ctlDatastore
             gbExtProps.Enabled = False
             txtPoll.Text = ""
         End If
-
-        SetAccessCombo(DatastoreType)
-
         '//AccessMethod is Enable for all except Relational,IMS,VSAM
         cmbAccessMethod.Enabled = Not (DatastoreType = enumDatastore.DS_RELATIONAL Or _
         DatastoreType = enumDatastore.DS_VSAM Or _
         DatastoreType = enumDatastore.DS_IMSDB Or _
         DatastoreType = enumDatastore.DS_INCLUDE)
+
+        SetAccessCombo(DatastoreType)
+
 
         'label UOW is visible to db2, ims and trigger based cdc
         lblUOW.Enabled = DatastoreType = modDeclares.enumDatastore.DS_DB2CDC 'Or _
@@ -2034,6 +2034,8 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
                     cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
                     cmbAccessMethod.SelectedIndex = 0
+                Case Else
+                    cmbAccessMethod.Items.Clear()
             End Select
         Else
             cmbAccessMethod.Items.Clear()
@@ -2043,7 +2045,10 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbAccessMethod.SelectedIndex = 0
         End If
 
-        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+        If cmbAccessMethod.Enabled = True Then
+            SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+        End If
+
 
     End Sub
 
@@ -2942,7 +2947,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         txtPoll.Text = objThis.Poll  '// add by TK 12/22/09
         txtRestart.Text = objThis.Restart
 
-        SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+        If cmbAccessMethod.Enabled = True Then
+            SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+        End If
         SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode, False)
 
         If objThis.DsAccessMethod = DS_ACCESSMETHOD_IP Then

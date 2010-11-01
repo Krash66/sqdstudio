@@ -180,6 +180,7 @@ ErrorGoTo:      '/// on errors
 
         Catch ex As Exception
             LogError(ex, "modModeler PopulateFromObject")
+            Return False
         End Try
 
     End Function

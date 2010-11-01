@@ -7,7 +7,6 @@ Public Class frmMain
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
 
-
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
 
@@ -309,6 +308,8 @@ Public Class frmMain
     Friend WithEvents mnuModDSSelSQL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelMSSQL As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem31 As System.Windows.Forms.MenuItem
+    Friend WithEvents btnBackup As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem25 As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -360,6 +361,8 @@ Public Class frmMain
         Me.mnuCloseProject = New System.Windows.Forms.MenuItem
         Me.mnuCloseAllProjects = New System.Windows.Forms.MenuItem
         Me.MenuItem7 = New System.Windows.Forms.MenuItem
+        Me.btnBackup = New System.Windows.Forms.MenuItem
+        Me.MenuItem25 = New System.Windows.Forms.MenuItem
         Me.mnuSave = New System.Windows.Forms.MenuItem
         Me.MenuItem10 = New System.Windows.Forms.MenuItem
         Me.mnuExit = New System.Windows.Forms.MenuItem
@@ -567,9 +570,9 @@ Public Class frmMain
         '
         Me.lblStatusMsg.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatusMsg.ForeColor = System.Drawing.Color.Blue
-        Me.lblStatusMsg.Location = New System.Drawing.Point(321, 5)
+        Me.lblStatusMsg.Location = New System.Drawing.Point(351, 5)
         Me.lblStatusMsg.Name = "lblStatusMsg"
-        Me.lblStatusMsg.Size = New System.Drawing.Size(625, 21)
+        Me.lblStatusMsg.Size = New System.Drawing.Size(595, 21)
         Me.lblStatusMsg.TabIndex = 7
         Me.lblStatusMsg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -909,8 +912,10 @@ Public Class frmMain
         '
         'OpenFileDialog1
         '
-        Me.OpenFileDialog1.Filter = "SQData Studio Project Files (*.sqp)|*.sqp|All files (*.*)|*.*"
+        Me.OpenFileDialog1.DefaultExt = "*.mdb"
+        Me.OpenFileDialog1.Filter = "Design Studio MetaData (*.mdb)|*.mdb|All files (*.*)|*.*"
         Me.OpenFileDialog1.FilterIndex = 0
+        Me.OpenFileDialog1.Title = "MetaData to Backup"
         '
         'mnuMain
         '
@@ -919,7 +924,7 @@ Public Class frmMain
         'mnuFile
         '
         Me.mnuFile.Index = 0
-        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuNewProject, Me.mnuOpenProject, Me.MenuItem2, Me.mnuCloseProject, Me.mnuCloseAllProjects, Me.MenuItem7, Me.mnuSave, Me.MenuItem10, Me.mnuExit})
+        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuNewProject, Me.mnuOpenProject, Me.MenuItem2, Me.mnuCloseProject, Me.mnuCloseAllProjects, Me.MenuItem7, Me.btnBackup, Me.MenuItem25, Me.mnuSave, Me.MenuItem10, Me.mnuExit})
         Me.mnuFile.Shortcut = System.Windows.Forms.Shortcut.CtrlF
         Me.mnuFile.Text = "&File"
         '
@@ -955,20 +960,30 @@ Public Class frmMain
         Me.MenuItem7.Index = 5
         Me.MenuItem7.Text = "-"
         '
+        'btnBackup
+        '
+        Me.btnBackup.Index = 6
+        Me.btnBackup.Text = "Backup MetaData"
+        '
+        'MenuItem25
+        '
+        Me.MenuItem25.Index = 7
+        Me.MenuItem25.Text = "-"
+        '
         'mnuSave
         '
-        Me.mnuSave.Index = 6
+        Me.mnuSave.Index = 8
         Me.mnuSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS
         Me.mnuSave.Text = "Save"
         '
         'MenuItem10
         '
-        Me.MenuItem10.Index = 7
+        Me.MenuItem10.Index = 9
         Me.MenuItem10.Text = "-"
         '
         'mnuExit
         '
-        Me.mnuExit.Index = 8
+        Me.mnuExit.Index = 10
         Me.mnuExit.Text = "Exit"
         '
         'mnuEdit
@@ -1819,8 +1834,10 @@ Public Class frmMain
         '
         'SaveFileDialog1
         '
-        Me.SaveFileDialog1.DefaultExt = "*.sqp"
-        Me.SaveFileDialog1.Filter = "SQData Studio Project Files (*.sqp)|*.sqp |All files (*.*)|*.*"
+        Me.SaveFileDialog1.CreatePrompt = True
+        Me.SaveFileDialog1.DefaultExt = "*.mdb"
+        Me.SaveFileDialog1.Filter = "Design Studio MetaData (*.mdb)|*.mdb |All files (*.*)|*.*"
+        Me.SaveFileDialog1.Title = "Save MetaData Backup"
         '
         'pnlProp
         '
@@ -5179,6 +5196,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '//Add struct node under struct category
                 cNode = AddNode(nd, obj.Type, obj, False)
                 obj.SeqNo = cNode.Index '//store position
+                tvExplorer.Refresh()
             Else
                 Dim objFol As INode
                 objFol = New clsFolderNode(GetStructureFolderText(obj.StructureType), NODE_FO_STRUCT)
@@ -5189,6 +5207,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '//Add struct node under struct category
                 cNode = AddNode(nd, obj.Type, obj, True)
                 obj.SeqNo = cNode.Index '//store position
+                tvExplorer.Refresh()
             End If
 
             nd.Text = "(" & nd.Nodes.Count.ToString & ")" & GetStructureFolderText(obj.StructureType)
@@ -5566,12 +5585,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuModDSSelSQL.Enabled = True
                     mnuModDSSelMSSQL.Enabled = True
                     '/// make sure modeling options are visible
-                    mnuModDSSelC.Visible = False
-                    mnuModDSSelDDL.Visible = False
-                    mnuModDSSelDTD.Visible = False
-                    mnuModDSSelLOD.Visible = False
-                    mnuModDSSelSQL.Visible = False
-                    mnuModDSSelMSSQL.Visible = False
+                    mnuModDSSelC.Visible = True
+                    mnuModDSSelDDL.Visible = True
+                    mnuModDSSelDTD.Visible = True
+                    mnuModDSSelLOD.Visible = True
+                    mnuModDSSelSQL.Visible = True
+                    mnuModDSSelMSSQL.Visible = True
 
                     If CType(obj, clsDSSelection).ObjDatastore.Engine Is Nothing Then
                         mnuAddDS.Text = "Add Datastore"
@@ -6570,7 +6589,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     End Sub
 
     Private Sub mnuSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSave.Click
+
         If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+
+    End Sub
+
+    Private Sub btnBackup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBackup.Click
+
+        If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+        backMeta()
 
     End Sub
 
@@ -7473,6 +7500,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 foldObj.Parent = CType(cNode.Tag, INode)
                 cNode = AddNode(cNode, foldObj.Type, foldObj)
                 obj.SeqNo = cNode.Index '//store position
+                tvExplorer.Refresh()
 
                 For i = 0 To objClip.Environments.Count - 1
                     '//Process this env
@@ -7516,6 +7544,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objCnn.Parent = CType(cNode.Tag, INode)
             'objCnn.Project = CType(cNode.Tag, INode).Project
             cNodeCnn = AddNode(cNode, objCnn.Type, objCnn)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Connections.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
@@ -7537,6 +7566,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objStruct.Parent = CType(cNode.Tag, INode)
             'objStruct.Project = CType(cNode.Tag, INode).Project
             cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Structures.Count - 1
                 '//Process this (cNode1 is root node under which we add other structures)
@@ -7577,6 +7607,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objVar = New clsFolderNode("Variables", NODE_FO_VARIABLE)
             objVar.Parent = obj
             cNodeVar = AddNode(cNode, objVar.Type, objVar)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Variables.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
@@ -7619,6 +7650,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objSys.Parent = CType(cNode.Tag, INode)
             'objSys.Project = CType(cNode.Tag, INode).Project
             cNodeSys = AddNode(cNode, objSys.Type, objSys)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Systems.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
@@ -7643,6 +7675,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->StructFolder->Struct
             cNode = AddStructNode(obj, cNode)
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7680,6 +7713,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7732,6 +7766,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7750,6 +7785,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objSys.Parent = CType(cNode.Tag, INode)
             'objSys.Project = CType(cNode.Tag, INode).Project
             cNodeSys = AddNode(cNode, objSys.Type, objSys)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Engines.Count - 1
                 '//Process this (cNode2 is root node under which we add other systems)
@@ -7774,6 +7810,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7792,6 +7829,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode1 = AddNode(cNode, obj1.Type, obj1)
 
             cNode1.Text = "(" & obj.Sources.Count.ToString & ")" & " Sources"
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Sources.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
@@ -7814,6 +7852,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode2 = AddNode(cNode, obj2.Type, obj2)
 
             cNode2.Text = "(" & obj.Targets.Count.ToString & ")" & " Targets"
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Targets.Count - 1
                 ''//Process this (cNode1 is root node under which we add other structures)
@@ -7836,6 +7875,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNodeVar = AddNode(cNode, objVar.Type, objVar)
 
             cNodeVar.Text = "(" & obj.Variables.Count.ToString & ")" & " Variables"
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Variables.Count - 1
                 ''//Process this (cNode2 is root node under which we add other systems)
@@ -7873,6 +7913,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNodeProc = AddNode(cNode, objProc.Type, objProc)
 
             cNodeProc.Text = "(" & obj.Procs.Count.ToString & ")" & " Procedures"
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Procs.Count - 1
                 FillTasksFromClipboard(cNodeProc, obj.Procs(i + 1))
@@ -7888,6 +7929,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
             objMain.Parent = obj
             cNodeMain = AddNode(cNode, objMain.Type, objMain)
+            tvExplorer.Refresh()
 
             For i = 0 To obj.Mains.Count - 1
                 FillTasksFromClipboard(cNodeMain, obj.Mains(i + 1))
@@ -7915,6 +7957,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7945,7 +7988,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.SetDSselParents()   'set all the DSselection parents, based on Fkey
             cNode = AddNode(cNode, obj.Type, obj)   ' add node to the tree
             obj.SeqNo = cNode.Index '//store position
-
+            tvExplorer.Refresh()
 
 
             If cmd Is Nothing Then ' save datastore so that meta is updated correctly
@@ -7962,7 +8005,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Return True
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillDataStoreFromClipboard")
             Return False
         End Try
 
@@ -7981,6 +8024,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->TaskFolder->Any Task
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -7999,6 +8043,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->VarFolder->Var
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -8246,7 +8291,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim envobj As clsEnvironment
 
         Try
-
             obj = CType(tvExplorer.SelectedNode.Tag, INode)
 
             If obj.IsFolderNode = False Then
@@ -8288,44 +8332,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                 NewName = InputBox("Please Name Your Model", "Model Name", "m" & obj.Text)
 
-
-                'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                'strSaveDir, obj.Text, obj.Project.TablePrefix)
-
-
-
                 '//////////////////// NEW MODELER /////////////////////
                 'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
                 '//////////////////////////////////////////////////////
-                Select Case OutType
-                    Case "DTD"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case "DDL"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case "H"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case "LOD"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case "SQL"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case "MSSQL"
-                        'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                    Case Else
-                        retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                        strSaveDir, obj.Text, obj.Project.TablePrefix)
-                End Select
+
+                '//////////////////// OLD MODELER /////////////////////
+                retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                strSaveDir, obj.Text, obj.Project.TablePrefix)
+                '//////////////////////////////////////////////////////
 
                 If retPath <> "" Then
                     Process.Start(retPath)
@@ -8338,15 +8352,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Dim success As Integer = 0
                 Dim Total As Integer = 0
 
-                envobj = CType(tvExplorer.SelectedNode.Nodes(1).Tag, clsStructure).Environment
+                envobj = CType(tvExplorer.SelectedNode.Nodes(0).Tag, clsStructure).Environment
 
                 envobj.LoadMe()
-                'FolderBrowserDialog1.SelectedPath = envobj.LocalDBDDir
-                'If FolderBrowserDialog1.ShowDialog(Me) <> Windows.Forms.DialogResult.OK Then
-                '    Exit Sub
-                'Else
-                '    strSaveDir = FolderBrowserDialog1.SelectedPath
-                'End If
+                
                 Select Case OutType
                     Case "DTD"
                         strSaveDir = envobj.LocalDTDDir
@@ -8368,9 +8377,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     StrObj = CType(StrNode.Tag, clsStructure)
                     NewName = "m" & StrObj.Text
 
-                    'retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
+                    '//////////////////// NEW MODELER /////////////////////
+                    'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                    '//////////////////////////////////////////////////////
+
+                    '//////////////////// OLD MODELER /////////////////////
                     retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
                     strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
+                    '//////////////////////////////////////////////////////
 
                     If retPath = "" Then
                         MsgBox("There was a problem modeling " & StrObj.Text, MsgBoxStyle.Information, MsgTitle)
@@ -8380,7 +8394,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
                     Total += 1
                 Next
-                MsgBox("You Successfully created " & success & " models, out of " & Total & " attempted." & Chr(13) & "New Models were written to directory:" & Chr(13) & strSaveDir & Chr(13) & "See the log for a list of Failures", MsgBoxStyle.Information, "Structure Modelling")
+                If MsgBox("You Successfully created " & success & " models, out of " & Total & " attempted." & Chr(13) & "New Models were written to directory:" & Chr(13) & strSaveDir & Chr(13) & "See the log for a list of Failures" & Chr(13) & "Would you like to go to the directory of your Models?", MsgBoxStyle.OkCancel, "Structure Modelling") = MsgBoxResult.Ok Then
+                    'Shell(strSaveDir)
+                    Process.Start(strSaveDir)
+                End If
             End If
 
         Catch ex As Exception
@@ -8500,13 +8517,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     ToolBar1.Buttons(enumToolBarButtons.TB_STRUCT).Enabled = True
                     If NodeType = NODE_STRUCT Then
                         objTopMost = ctStr.EditObj(nd.Tag)
-                        nd.Expand()
+                        'nd.Expand()
                     End If
                 Case NODE_STRUCT_SEL
                     ToolBar1.Buttons(enumToolBarButtons.TB_STRUCTSEL).Enabled = True
                     If NodeType = NODE_STRUCT_SEL Then
                         objTopMost = ctStrSel.EditObj(nd.Tag)
-                        nd.Expand()
+                        'nd.Expand()
                     End If
                 Case NODE_SYSTEM
                     ToolBar1.Buttons(enumToolBarButtons.TB_SYS).Enabled = True
@@ -8522,7 +8539,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     ToolBar1.Buttons(enumToolBarButtons.TB_DATASTORE).Enabled = True
                     If NodeType = NODE_SOURCEDATASTORE Or NodeType = NODE_TARGETDATASTORE Then
                         ToolBar1.Buttons(enumToolBarButtons.TB_QUERY).Enabled = False
-                        nd.ExpandAll()
+                        'nd.ExpandAll()
                         If CType(nd.Tag, clsDatastore).DatastoreType = enumDatastore.DS_INCLUDE Then
                             ctInc.Refresh()
                             objTopMost = ctInc.EditObj(nd.Tag)
@@ -8534,7 +8551,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
                     ToolBar1.Buttons(enumToolBarButtons.TB_DATASTORE).Enabled = True
                     ToolBar1.Buttons(enumToolBarButtons.TB_QUERY).Enabled = True
-                    nd.ExpandAll()
+                    'nd.ExpandAll()
                     DSSelObj = nd.Tag
                     objTopMost = ctDs.EditObj(DSSelObj.ObjDatastore, DSSelObj.ObjDatastore.ObjTreeNode, nd)
                 Case NODE_VARIABLE
@@ -8562,7 +8579,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Case Else
                     If CType(nd.Tag, INode).IsFolderNode = True Then
                         objTopMost = ctFolder.EditObj(nd, nd.Tag)
-                        nd.Expand()
+                        'nd.Expand()
                     End If
                     '//TODO
             End Select
@@ -8680,10 +8697,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End Select
 
             Try
-                cmd.Connection = cnn
-                tran = cnn.BeginTransaction()
-                cmd.Transaction = tran
-
                 Select Case (CType(sender, MenuItem).Text)
                     Case "Binary"
                         dsType = modDeclares.enumDatastore.DS_BINARY
@@ -8728,11 +8741,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 obj = GetClipboardObject(newObjParent, index)
                 dsObj = CType(obj, clsDatastore)
 
+                cmd.Connection = cnn
+                tran = cnn.BeginTransaction()
+                cmd.Transaction = tran
+
                 For i = 0 To dsObj.ObjSelections.Count - 1
 
                     '******************** put m in here
 
-                    destObj = dsObj.Clone(dsObj.Parent)
+                    destObj = dsObj.Clone(dsObj.Parent, , cmd)
                     destObj.ObjSelections.Clear()
                     destObj.ObjSelections.Add(dsObj.ObjSelections(i))
 
@@ -8980,6 +8997,49 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
         Catch ex As Exception
             LogError(ex, "frmMain mnuGenRepStr_Click")
+        End Try
+
+    End Sub
+
+#End Region
+
+#Region "BackupMeta"
+
+    Sub backMeta()
+        '/// Created 10/22/10 by TK
+        '/// Metadata Backup
+        Try
+            If CurLoadedProject IsNot Nothing Then
+                If cnn IsNot Nothing Then
+                    If cnn.DataSource.Contains("ACCESS") = False Then
+                        MsgBox("This not an MSAccess Database file and can not be backed up", MsgBoxStyle.Information, "Can not backup")
+                        Exit Try
+                    Else
+                        '/// driver is an access driver, so can backup
+                        OpenFileDialog1.Multiselect = False
+                        OpenFileDialog1.InitialDirectory = GetDirFromPath(cnn.Database)
+                        OpenFileDialog1.FileName = GetFileNameOnly(cnn.Database)
+                        If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                            SaveFileDialog1.FileName = InputBox("Please Name Your Backup", "Backup Name", "BAK_" & _
+                                                                GetFileNameOnly(OpenFileDialog1.FileName))
+                            If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+                                System.IO.File.Copy(OpenFileDialog1.FileName, SaveFileDialog1.FileName)
+                            Else
+                                MsgBox("MetaData backup cancelled by User", MsgBoxStyle.Information, "No Backup")
+                            End If
+                        Else
+                            MsgBox("MetaData backup cancelled by User", MsgBoxStyle.Information, "No Backup")
+                        End If
+                    End If
+                Else
+                    MsgBox("MetaData has no connection value", MsgBoxStyle.Information, "No Backup")
+                End If
+            Else
+                MsgBox("No Project open. MetaData not defined", MsgBoxStyle.Information, "No Backup")
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain backMeta")
         End Try
 
     End Sub

@@ -1809,19 +1809,43 @@ Public Class clsTask
             'Next
 
             'sb.Append(")" & vbCrLf)
-            sb.Append("{" & vbCrLf)
-            sb.Append("CASE" & vbCrLf)
-            For Each sel In sDs.ObjSelections
-                taskName = "P_" & sel.Text
-                sb.Append(TAB & "WHEN(RECNAME(" & sDs.Text & ") = '" & sel.Text & "')" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
-                sb.Append(TAB & "DO" & vbCrLf)
-                sb.Append(TAB & TAB & "CALLPROC(" & taskName & ")" & vbCrLf)
-                sb.Append(TAB & "END" & vbCrLf)
-                sb.Append(vbCrLf)
-            Next
-            'sb.Append(")" & vbCrLf)
-            sb.AppendLine("}")   '& inDsNode.Text
+            'sb.Append("{" & vbCrLf)
+            'sb.Append("CASE" & vbCrLf)
+            'For Each sel In sDs.ObjSelections
+            '    taskName = "P_" & sel.Text
+            '    sb.Append(TAB & "WHEN(RECNAME(" & sDs.Text & ") = '" & sel.Text & "')" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
+            '    sb.Append(TAB & "DO" & vbCrLf)
+            '    sb.Append(TAB & TAB & "CALLPROC(" & taskName & ")" & vbCrLf)
+            '    sb.Append(TAB & "END" & vbCrLf)
+            '    sb.Append(vbCrLf)
+            'Next
+            ''sb.Append(")" & vbCrLf)
+            'sb.AppendLine("}")   '& inDsNode.Text
 
+
+
+
+            sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+            For Each sel In sDs.ObjSelections
+                'count += 1
+                'If count <= objThis.Procs.Count Then
+                '    taskName = CType(objThis.Procs(count), clsTask).TaskName
+                'Else
+                taskName = ""
+                'End If
+                For Each proc As clsTask In Me.Engine.Procs
+                    If proc.TaskName.Contains(sel.Text) = True Then
+                        taskName = proc.TaskName
+                        Exit For
+                    End If
+                Next
+
+                sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
+                sb.AppendLine(TAB & "DO")
+                sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
+                sb.AppendLine(TAB & "END") '& vbCrLf)
+                'sb.Append(vbCrLf)
+            Next
             GetMainText = sb.ToString
 
         Catch ex As Exception

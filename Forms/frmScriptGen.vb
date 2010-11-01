@@ -273,10 +273,11 @@ Public Class frmScriptGen
             If RetCode.HasError = False Then
                 '/// Good Script
                 Message = "Script Generator wrote:" & Chr(13) & _
-                    RetCode.SQDline & " lines to .SQD file," & Chr(13) & _
-                    RetCode.INLline & " lines to .INL file and" & Chr(13) & _
-                    RetCode.TMPline & " lines to .TMP file" & Chr(13) & _
+                    RetCode.SQDline & " lines to .SQD file and" & Chr(13) & _
+                    RetCode.INLline & " lines to .INL file" & Chr(13) & _
                     RetCode.ReturnCode
+                'RetCode.TMPline & " lines to .TMP file" & Chr(13) & _
+
                 'If MsgBox("Script Generator wrote:" & Chr(13) & _
                 '    RetCode.SQDline & " lines to .SQD file," & Chr(13) & _
                 '    RetCode.INLline & " lines to .INL file and" & Chr(13) & _
@@ -289,10 +290,11 @@ Public Class frmScriptGen
                     '/// Error while Parsing Script
                     Message = "Script Caused an Error while Parsing:" & Chr(13) & _
                     RetCode.ReturnCode & Chr(13) & _
+                    "Parser Return Code: " & RetCode.ParserRC.ToString & Chr(13) & _
                     "Generator wrote:" & Chr(13) & _
-                    RetCode.SQDline & " lines to .SQD file," & Chr(13) & _
-                    RetCode.INLline & " lines to .INL file and" & Chr(13) & _
-                    RetCode.TMPline & " lines to .TMP file"
+                    RetCode.SQDline & " lines to .SQD file and" & Chr(13) & _
+                    RetCode.INLline & " lines to .INL file"  ' & Chr(13) & _
+                    'RetCode.TMPline & " lines to .TMP file"
                     'If MsgBox("Script Caused an Error while Parsing:" & Chr(13) & Chr(13) & _
                     'RetCode.ReturnCode & Chr(13) & Chr(13) & _
                     '"Generator wrote:" & Chr(13) & _
@@ -307,9 +309,9 @@ Public Class frmScriptGen
                     '/// Error in Windows (e.g. Object problems)
                     Message = "Script Generation Returned Errors:" & Chr(13) & _
                     "Generator wrote:" & Chr(13) & _
-                    RetCode.SQDline & " lines to .SQD file," & Chr(13) & _
-                    RetCode.INLline & " lines to .INL file and" & Chr(13) & _
-                    RetCode.TMPline & " lines to .TMP file"
+                    RetCode.SQDline & " lines to .SQD file and" & Chr(13) & _
+                    RetCode.INLline & " lines to .INL file"   '& Chr(13) & _
+                    'RetCode.TMPline & " lines to .TMP file"
                     'If MsgBox("Script Generation Returned The Following Error:" & Chr(13) & _
                     'RetCode.GetGUIErrorMsg() & Chr(13) & Chr(13) & _
                     '"Error Occured at:" & Chr(13) & _

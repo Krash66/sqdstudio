@@ -112,6 +112,7 @@ Partial Class frmRplcDescRet
         Me.txtNewPath.ReadOnly = True
         Me.txtNewPath.Size = New System.Drawing.Size(444, 20)
         Me.txtNewPath.TabIndex = 60
+        Me.txtNewPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'txtOldPath
         '
@@ -123,6 +124,7 @@ Partial Class frmRplcDescRet
         Me.txtOldPath.ReadOnly = True
         Me.txtOldPath.Size = New System.Drawing.Size(444, 20)
         Me.txtOldPath.TabIndex = 61
+        Me.txtOldPath.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'lblNewPath
         '
