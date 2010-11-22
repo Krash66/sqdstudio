@@ -497,6 +497,7 @@ Partial Class frmScriptGen
         '
         'btnSQData
         '
+        Me.btnSQData.Enabled = False
         Me.btnSQData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSQData.Location = New System.Drawing.Point(12, 629)
         Me.btnSQData.Name = "btnSQData"
@@ -504,9 +505,11 @@ Partial Class frmScriptGen
         Me.btnSQData.TabIndex = 64
         Me.btnSQData.Text = "Run SQData"
         Me.btnSQData.UseVisualStyleBackColor = True
+        Me.btnSQData.Visible = False
         '
         'btnOpenOutput
         '
+        Me.btnOpenOutput.Enabled = False
         Me.btnOpenOutput.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnOpenOutput.Location = New System.Drawing.Point(192, 629)
         Me.btnOpenOutput.Name = "btnOpenOutput"
@@ -514,6 +517,7 @@ Partial Class frmScriptGen
         Me.btnOpenOutput.TabIndex = 65
         Me.btnOpenOutput.Text = "Open Output Data"
         Me.btnOpenOutput.UseVisualStyleBackColor = True
+        Me.btnOpenOutput.Visible = False
         '
         'frmScriptGen
         '

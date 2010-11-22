@@ -95,14 +95,14 @@ Public Module modGenerateV3
                 EngObj.Connection.LoadMe()
             End If
 
-            If EngObj.EngVersion <> "" Then
-                ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
-                EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
-            Else
-                ParserPath = GetAppPath() & "sqdparse.exe"
-                EnginePath = GetAppPath() & "sqdata.exe"
-            End If
-            
+            'If EngObj.EngVersion <> "" Then
+            '    ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
+            '    EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+            'Else
+            ParserPath = GetAppPath() & "sqdparse.exe"
+            EnginePath = GetAppPath() & "sqdata.exe"
+            'End If
+
 
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text

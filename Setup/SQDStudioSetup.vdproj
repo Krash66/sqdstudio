@@ -63,12 +63,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_510103C16F1B437C83B31AAD5F670B35"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_55EA91A987F94245A8381E2941D37074"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -333,7 +327,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -393,7 +387,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -437,26 +431,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_510103C16F1B437C83B31AAD5F670B35"
-            {
-            "SourcePath" = "8:..\\bin\\supporting files\\sqdumodl.exe"
-            "TargetName" = "8:sqdumodl.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_55EA91A987F94245A8381E2941D37074"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\sqdata.exe"
@@ -473,7 +447,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -493,7 +467,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -513,7 +487,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -553,7 +527,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -593,7 +567,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -693,7 +667,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -713,7 +687,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
@@ -842,7 +816,7 @@
                     "Name" = "8:3.7.7"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
+                    "Transitive" = "11:TRUE"
                     "Property" = "8:_14E9E1ACEA12466E857B0C7E50B26E43"
                         "Folders"
                         {
@@ -853,7 +827,7 @@
                     "Name" = "8:3.7.6"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
+                    "Transitive" = "11:TRUE"
                     "Property" = "8:_6E43396E4A74429F9CEBE4FAFBB5033F"
                         "Folders"
                         {
@@ -864,7 +838,7 @@
                     "Name" = "8:3.6.14"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
+                    "Transitive" = "11:TRUE"
                     "Property" = "8:_54D4AE2024874B98A9C78328C2CA5ECD"
                         "Folders"
                         {
@@ -875,7 +849,7 @@
                     "Name" = "8:3.7.12"
                     "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
+                    "Transitive" = "11:TRUE"
                     "Property" = "8:_37C1F1F80E0740BEB033B8B536540A5B"
                         "Folders"
                         {
@@ -933,7 +907,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
         "ProductCode" = "8:{612D2F2E-CFBD-4C04-B874-3AAC48A8D79C}"
-        "PackageCode" = "8:{EC2D4032-3879-4FB8-9F03-8DE47C1797EF}"
+        "PackageCode" = "8:{D327BEC3-1EDA-4374-B903-05D4E65A7B79}"
         "UpgradeCode" = "8:{3D23AB76-63FD-4F07-9B57-66610D351D5E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"

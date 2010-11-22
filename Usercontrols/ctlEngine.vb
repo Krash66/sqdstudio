@@ -532,6 +532,7 @@ Public Class ctlEngine
         'GroupBox3
         '
         Me.GroupBox3.Controls.Add(Me.cmbEngVer)
+        Me.GroupBox3.Enabled = False
         Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
         Me.GroupBox3.Location = New System.Drawing.Point(3, 375)
@@ -540,6 +541,7 @@ Public Class ctlEngine
         Me.GroupBox3.TabIndex = 106
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Parser/Engine Version"
+        Me.GroupBox3.Visible = False
         '
         'cmbEngVer
         '
