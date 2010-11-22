@@ -57,6 +57,11 @@ Module modModeler
             FileExt = getFileExt()
             OutPath = ModPath
 
+            ObjSel = Nothing
+            ObjStr = Nothing
+            ObjDSSel = Nothing
+
+
             '/// create new, complete model path
             If Strings.Right(OutPath, 1) <> "\" Then
                 FullPathModl = OutPath & "\" & NameModl & FileExt
@@ -91,8 +96,12 @@ Module modModeler
 
             If success Then
                 Select Case OutType
-                    Case "DDL"
-                        success = objModelDDL()
+                    Case "DB2DDL"
+                        success = objModelDB2DDL()
+                    Case "ORADDL"
+                        success = objModelORADDL()
+                    Case "SQLDDL"
+                        success = objModelSQLDDL()
                     Case "H"
                         success = objModelC()
                     Case "DTD"
@@ -191,7 +200,7 @@ ErrorGoTo:      '/// on errors
 
 #Region "DDL"
 
-    Function objModelDDL() As Boolean
+    Function objModelDB2DDL() As Boolean
 
         Try
             Dim fldLen As Integer
@@ -199,6 +208,7 @@ ErrorGoTo:      '/// on errors
             Dim FORKey As String
             Dim NameFld As String
             Dim fldattr As String
+            Dim OutAttr As String
             Dim first As Boolean = True
 
             objWriteOut.WriteLine(FORcreate)
@@ -214,13 +224,15 @@ ErrorGoTo:      '/// on errors
                     NameFld = "," & fld.FieldName
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
-                fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString & "(" & fldLen & ")"
+                fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "DB2DDL", fldLen)
+
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
-                fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "yes" Then
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, fldattr, "NOT NULL")
+                fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
                 Else
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, fldattr)
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
                 End If
                 objWriteOut.WriteLine(FORKey)
 nextgoto:   Next
@@ -231,7 +243,104 @@ nextgoto:   Next
             Return True
 
         Catch ex As Exception
-            LogError(ex, "modModeler objModelDDL")
+            LogError(ex, "modModeler objModelDB2DDL")
+            Return False
+        End Try
+
+    End Function
+
+    Function objModelORADDL() As Boolean
+
+        Try
+            Dim fldLen As Integer
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", TableName)
+            Dim FORKey As String
+            Dim NameFld As String
+            Dim fldattr As String
+            Dim OutAttr As String
+            Dim first As Boolean = True
+
+            objWriteOut.WriteLine(FORcreate)
+            wBracket(OpenClose.OPEN, True)
+
+            For Each fld As clsField In FldArray
+                '/// skip groupitems
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
+                If first = True Then
+                    NameFld = " " & fld.FieldName
+                    first = False
+                Else
+                    NameFld = "," & fld.FieldName
+                End If
+                fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "ORADDL", fldLen)
+
+
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
+                fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                Else
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
+                End If
+                objWriteOut.WriteLine(FORKey)
+nextgoto:   Next
+
+            wBracket(OpenClose.CLOSE, False)
+            wSemiLine()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modModeler objModelORADDL")
+            Return False
+        End Try
+
+    End Function
+
+    Function objModelSQLDDL() As Boolean
+
+        Try
+            Dim fldLen As Integer
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", TableName)
+            Dim FORKey As String
+            Dim NameFld As String
+            Dim fldattr As String
+            Dim OutAttr As String
+            Dim first As Boolean = True
+
+            objWriteOut.WriteLine(FORcreate)
+            wBracket(OpenClose.OPEN, True)
+
+            For Each fld As clsField In FldArray
+                '/// skip groupitems
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
+                If first = True Then
+                    NameFld = " " & fld.FieldName
+                    first = False
+                Else
+                    NameFld = "," & fld.FieldName
+                End If
+                fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "SQLDDL", fldLen)
+
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
+                fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                Else
+                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
+                End If
+                objWriteOut.WriteLine(FORKey)
+nextgoto:   Next
+
+            wBracket(OpenClose.CLOSE, False)
+            wSemiLine()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modModeler objModelSQLDDL")
             Return False
         End Try
 
@@ -249,6 +358,8 @@ nextgoto:   Next
             Dim FORfld As String
             Dim NameFld As String
             Dim fldattr As String
+            Dim OutAttr As String
+            Dim OutLen As String
             Dim first As Boolean = True
 
             objWriteOut.WriteLine(FORcreate)
@@ -259,10 +370,16 @@ nextgoto:   Next
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
 
                 NameFld = fld.FieldName
-                fldLen = "(" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ");"
+                fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                If fldLen < 1 Then
+                    OutLen = ""
+                Else
+                    OutLen = "(" & fldLen & ")"
+                End If
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "H", fldLen)
 
-                FORfld = String.Format("{0,4}{1,-20}{2,30}{3,6}", " ", fldattr, NameFld, fldLen)
+                FORfld = String.Format("{0,4}{1,-20}{2,30}{3,6}", " ", OutAttr, NameFld, OutLen)
 
                 objWriteOut.WriteLine(FORfld)
 nextgoto:   Next
@@ -352,6 +469,7 @@ nextgoto1:  Next
             Dim FORfld As String
             Dim NameFld As String
             Dim fldattr As String
+            Dim OutAttr As String
             Dim first As Boolean = True
             Dim Pos As Integer = 1
 
@@ -371,8 +489,9 @@ nextgoto1:  Next
                 End If
                 fldLen = "(" & Pos.ToString & ":" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ")"
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "ORADDL", 0)
 
-                FORfld = String.Format("{0,4}{1,-30}{2,-30}{3}", " ", NameFld, "POSITION" & fldLen, fldattr)
+                FORfld = String.Format("{0,4}{1,-30}{2,-30}{3}", " ", NameFld, "POSITION" & fldLen, OutAttr)
 
                 objWriteOut.WriteLine(FORfld)
                 Pos = Pos + fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
@@ -723,7 +842,7 @@ nextgoto3:  Next
             Select Case OutType
                 Case "DTD"
                     getFileExt = ".dtd"
-                Case "DDL"
+                Case "DB2DDL", "ORADDL", "SQLDDL"
                     getFileExt = ".ddl"
                 Case "H"
                     getFileExt = ".h"
@@ -740,6 +859,110 @@ nextgoto3:  Next
         Catch ex As Exception
             LogError(ex, "modModeler getFileExt")
             Return ""
+        End Try
+
+    End Function
+
+    Function GetOutFldType(ByVal InType As String, ByVal ModType As String, ByVal fldLen As Integer) As String
+
+        Try
+            Dim OutLen As String
+            If fldLen > 0 Then
+                OutLen = "(" & fldLen.ToString & ")"
+            Else
+                OutLen = ""
+            End If
+            Select Case ModType
+
+                Case "H"
+                    Select Case InType
+                        Case "CHAR", "VARCHAR", "VARCHAR2", "NUMERIC", "DATE", "TIMESTAMP", "TIME", "TEXTNUM", "ZONE"
+                            GetOutFldType = "char"
+                        Case "BINARY"
+                            GetOutFldType = "unsigned char"
+                        Case "INTEGER"
+                            GetOutFldType = "int"
+                        Case "SMALLINT"
+                            GetOutFldType = "short"
+                        Case "DECIMAL"
+                            GetOutFldType = "double"
+                        Case Else
+                            GetOutFldType = InType
+                    End Select
+
+                Case "DB2DDL"
+                    Select Case InType
+                        Case "CHAR", "TEXTNUM", "ZONE"
+                            GetOutFldType = "CHAR" & OutLen
+                        Case "VARCHAR", "VARCHAR2"
+                            GetOutFldType = "VARCHAR" & OutLen
+                        Case "DATE"
+                            GetOutFldType = "DATE"
+                        Case "TIMESTAMP"
+                            GetOutFldType = "TIMESTAMP"
+                        Case "TIME"
+                            GetOutFldType = "TIME"
+                        Case "BINARY"
+                            GetOutFldType = "BINARY" & OutLen
+                        Case "INTEGER"
+                            GetOutFldType = "INTEGER" & OutLen
+                        Case "SMALLINT"
+                            GetOutFldType = "SMALLINT"
+                        Case "NUMERIC", "DECIMAL"
+                            GetOutFldType = "DECIMAL" & OutLen
+                        Case Else
+                            GetOutFldType = InType & OutLen
+                    End Select
+
+                Case "ORADDL"
+                    Select Case InType
+                        Case "CHAR", "TEXTNUM", "ZONE"
+                            GetOutFldType = "CHAR" & OutLen
+                        Case "VARCHAR"
+                            GetOutFldType = "VARCHAR" & OutLen
+                        Case "VARCHAR2"
+                            GetOutFldType = "VARCHAR2" & OutLen
+                        Case "DATE"
+                            GetOutFldType = "DATE"
+                        Case "TIMESTAMP", "TIME"
+                            GetOutFldType = "TIMESTAMP"
+                        Case "BINARY"
+                            GetOutFldType = "RAW" & OutLen
+                        Case "NUMERIC", "DECIMAL", "SMALLINT", "INTEGER"
+                            GetOutFldType = "NUMBER" & OutLen
+                        Case Else
+                            GetOutFldType = InType & OutLen
+                    End Select
+
+                Case "SQLDDL"
+                    Select Case InType
+                        Case "CHAR", "TEXTNUM", "ZONE"
+                            GetOutFldType = "CHAR" & OutLen
+                        Case "VARCHAR", "VARCHAR2"
+                            GetOutFldType = "VARCHAR" & OutLen
+                        Case "NUMERIC"
+                            GetOutFldType = "NUMERIC" & OutLen
+                        Case "DATE", "TIMESTAMP", "TIME"
+                            GetOutFldType = "DATETIME"
+                        Case "INTEGER"
+                            GetOutFldType = "INT"
+                        Case "BINARY"
+                            GetOutFldType = "BINARY" & OutLen
+                        Case "DECIMAL"
+                            GetOutFldType = "DECIMAL" & OutLen
+                        Case "SMALLINT"
+                            GetOutFldType = "SMALLINT" & OutLen
+                        Case Else
+                            GetOutFldType = InType & OutLen
+                    End Select
+
+                Case Else
+                    GetOutFldType = ""
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "modModeler GetOutFldType")
+            GetOutFldType = ""
         End Try
 
     End Function

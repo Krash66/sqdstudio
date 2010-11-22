@@ -6,6 +6,7 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
+   
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -174,7 +175,7 @@ Public Class frmMain
     Friend WithEvents mnuAddTask As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddVar As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddStructSubset As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModelStructDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelStructDB2DDL As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem13 As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem15 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelStructDTD As System.Windows.Forms.MenuItem
@@ -182,7 +183,7 @@ Public Class frmMain
     Friend WithEvents mnuModelStructSQL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelStructMSSQL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelStructDB2 As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModelStructSelectionDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSSDB2DDL As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem18 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelStructSelectionDTD As System.Windows.Forms.MenuItem
     Friend WithEvents mnuScriptEngine As System.Windows.Forms.MenuItem
@@ -302,7 +303,7 @@ Public Class frmMain
     Friend WithEvents mnuAddGen As System.Windows.Forms.MenuItem
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents mnuModDSSelDTD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModDSSelDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModDSSelDB2DDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelC As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelLOD As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelSQL As System.Windows.Forms.MenuItem
@@ -310,6 +311,12 @@ Public Class frmMain
     Friend WithEvents MenuItem31 As System.Windows.Forms.MenuItem
     Friend WithEvents btnBackup As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem25 As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelOraDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSQLDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSSOraDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSSSQLDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelDSSelOraDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelDSSelSQLDDL As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -401,7 +408,9 @@ Public Class frmMain
         Me.mnuAddStructSubset = New System.Windows.Forms.MenuItem
         Me.MenuItem13 = New System.Windows.Forms.MenuItem
         Me.mnuModelStructDTD = New System.Windows.Forms.MenuItem
-        Me.mnuModelStructDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelStructDB2DDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelOraDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelSQLDDL = New System.Windows.Forms.MenuItem
         Me.mnuModelStructHeader = New System.Windows.Forms.MenuItem
         Me.mnuModelStructLOD = New System.Windows.Forms.MenuItem
         Me.mnuModelStructSQL = New System.Windows.Forms.MenuItem
@@ -483,7 +492,7 @@ Public Class frmMain
         Me.mnuMapAsIMSLEBat = New System.Windows.Forms.MenuItem
         Me.MenuItem33 = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelDTD = New System.Windows.Forms.MenuItem
-        Me.mnuModDSSelDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModDSSelDB2DDL = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelC = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelLOD = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelSQL = New System.Windows.Forms.MenuItem
@@ -519,7 +528,7 @@ Public Class frmMain
         Me.mnuDelStructSelection = New System.Windows.Forms.MenuItem
         Me.MenuItem18 = New System.Windows.Forms.MenuItem
         Me.mnuModelStructSelectionDTD = New System.Windows.Forms.MenuItem
-        Me.mnuModelStructSelectionDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelSSDB2DDL = New System.Windows.Forms.MenuItem
         Me.mnuModelStructSelectionHeader = New System.Windows.Forms.MenuItem
         Me.mnuModelSSLOD = New System.Windows.Forms.MenuItem
         Me.mnuModelSSSQL = New System.Windows.Forms.MenuItem
@@ -531,9 +540,6 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.SCmain = New System.Windows.Forms.SplitContainer
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.ctMain = New SQDStudio.ctlMain
         Me.ctInc = New SQDStudio.ctlInclude
         Me.ctFolder = New SQDStudio.ctlFolderNode
@@ -547,6 +553,13 @@ Public Class frmMain
         Me.ctEnv = New SQDStudio.ctlEnvironment
         Me.ctPrj = New SQDStudio.ctlProject
         Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.SCmain = New System.Windows.Forms.SplitContainer
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.mnuModelSSSQLDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelSSOraDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelDSSelSQLDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelDSSelOraDDL = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1107,7 +1120,7 @@ Public Class frmMain
         'mnuPopupStruct
         '
         Me.mnuPopupStruct.Index = 2
-        Me.mnuPopupStruct.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStruct, Me.mnuAddStructSubset, Me.MenuItem13, Me.mnuModelStructDTD, Me.mnuModelStructDDL, Me.mnuModelStructHeader, Me.mnuModelStructLOD, Me.mnuModelStructSQL, Me.mnuModelStructMSSQL, Me.mnuModelStructDB2, Me.MenuItem15, Me.mnuDelStruct, Me.mnuChgStruct, Me.mnuDelAllStruct, Me.MenuItem6, Me.mnuCopyStruct, Me.mnuPasteStruct, Me.MenuItem21, Me.mnuGenRepStr})
+        Me.mnuPopupStruct.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStruct, Me.mnuAddStructSubset, Me.MenuItem13, Me.mnuModelStructDTD, Me.mnuModelStructDB2DDL, Me.mnuModelOraDDL, Me.mnuModelSQLDDL, Me.mnuModelStructHeader, Me.mnuModelStructLOD, Me.mnuModelStructSQL, Me.mnuModelStructMSSQL, Me.mnuModelStructDB2, Me.MenuItem15, Me.mnuDelStruct, Me.mnuChgStruct, Me.mnuDelAllStruct, Me.MenuItem6, Me.mnuCopyStruct, Me.mnuPasteStruct, Me.MenuItem21, Me.mnuGenRepStr})
         Me.mnuPopupStruct.Text = "mnuPopupStruct"
         '
         'mnuAddStruct
@@ -1177,81 +1190,91 @@ Public Class frmMain
         Me.mnuModelStructDTD.Index = 3
         Me.mnuModelStructDTD.Text = "Model DTD"
         '
-        'mnuModelStructDDL
+        'mnuModelStructDB2DDL
         '
-        Me.mnuModelStructDDL.Index = 4
-        Me.mnuModelStructDDL.Text = "Model DDL"
+        Me.mnuModelStructDB2DDL.Index = 4
+        Me.mnuModelStructDB2DDL.Text = "Model DB2 DDL"
+        '
+        'mnuModelOraDDL
+        '
+        Me.mnuModelOraDDL.Index = 5
+        Me.mnuModelOraDDL.Text = "Model Oracle DDL"
+        '
+        'mnuModelSQLDDL
+        '
+        Me.mnuModelSQLDDL.Index = 6
+        Me.mnuModelSQLDDL.Text = "Model MSSQL DDL"
         '
         'mnuModelStructHeader
         '
-        Me.mnuModelStructHeader.Index = 5
+        Me.mnuModelStructHeader.Index = 7
         Me.mnuModelStructHeader.Text = "Model C"
         '
         'mnuModelStructLOD
         '
-        Me.mnuModelStructLOD.Index = 6
+        Me.mnuModelStructLOD.Index = 8
         Me.mnuModelStructLOD.Text = "Oracle Load"
         '
         'mnuModelStructSQL
         '
-        Me.mnuModelStructSQL.Index = 7
+        Me.mnuModelStructSQL.Index = 9
         Me.mnuModelStructSQL.Text = "Oracle Trigger"
         '
         'mnuModelStructMSSQL
         '
-        Me.mnuModelStructMSSQL.Index = 8
+        Me.mnuModelStructMSSQL.Index = 10
         Me.mnuModelStructMSSQL.Text = "SQL Server Trigger"
         '
         'mnuModelStructDB2
         '
         Me.mnuModelStructDB2.Enabled = False
-        Me.mnuModelStructDB2.Index = 9
+        Me.mnuModelStructDB2.Index = 11
         Me.mnuModelStructDB2.Text = "DB2 Load"
         Me.mnuModelStructDB2.Visible = False
         '
         'MenuItem15
         '
-        Me.MenuItem15.Index = 10
+        Me.MenuItem15.Index = 12
         Me.MenuItem15.Text = "-"
         '
         'mnuDelStruct
         '
-        Me.mnuDelStruct.Index = 11
+        Me.mnuDelStruct.Index = 13
         Me.mnuDelStruct.Text = "Delete Description"
         '
         'mnuChgStruct
         '
-        Me.mnuChgStruct.Index = 12
+        Me.mnuChgStruct.Index = 14
         Me.mnuChgStruct.Text = "Change Description File"
         '
         'mnuDelAllStruct
         '
-        Me.mnuDelAllStruct.Index = 13
+        Me.mnuDelAllStruct.Index = 15
         Me.mnuDelAllStruct.Text = "Delete All"
         '
         'MenuItem6
         '
-        Me.MenuItem6.Index = 14
+        Me.MenuItem6.Index = 16
         Me.MenuItem6.Text = "-"
         '
         'mnuCopyStruct
         '
-        Me.mnuCopyStruct.Index = 15
+        Me.mnuCopyStruct.Index = 17
         Me.mnuCopyStruct.Text = "Copy"
         '
         'mnuPasteStruct
         '
-        Me.mnuPasteStruct.Index = 16
+        Me.mnuPasteStruct.Index = 18
         Me.mnuPasteStruct.Text = "Paste"
         '
         'MenuItem21
         '
-        Me.MenuItem21.Index = 17
+        Me.MenuItem21.Index = 19
         Me.MenuItem21.Text = "-"
         '
         'mnuGenRepStr
         '
-        Me.mnuGenRepStr.Index = 18
+        Me.mnuGenRepStr.Index = 20
         Me.mnuGenRepStr.Text = "Generate Report"
         '
         'mnuPopupConnection
@@ -1334,7 +1357,7 @@ Public Class frmMain
         'mnuPopupDS
         '
         Me.mnuPopupDS.Index = 5
-        Me.mnuPopupDS.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddDS, Me.mnuLU, Me.mnuDelDS, Me.MenuItem29, Me.mnuCopyDS, Me.mnuPasteDS, Me.MenuItem11, Me.MenuItem9, Me.MenuItem33, Me.mnuModDSSelDTD, Me.mnuModDSSelDDL, Me.mnuModDSSelC, Me.mnuModDSSelLOD, Me.mnuModDSSelSQL, Me.mnuModDSSelMSSQL, Me.MenuItem31, Me.mnuQuery, Me.mnuDelAllDS, Me.MenuItem14, Me.mnuScriptDS})
+        Me.mnuPopupDS.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddDS, Me.mnuLU, Me.mnuDelDS, Me.MenuItem29, Me.mnuCopyDS, Me.mnuPasteDS, Me.MenuItem11, Me.MenuItem9, Me.MenuItem33, Me.mnuModDSSelDTD, Me.mnuModDSSelDB2DDL, Me.mnuModelDSSelOraDDL, Me.mnuModelDSSelSQLDDL, Me.mnuModDSSelC, Me.mnuModDSSelLOD, Me.mnuModDSSelSQL, Me.mnuModDSSelMSSQL, Me.MenuItem31, Me.mnuQuery, Me.mnuDelAllDS, Me.MenuItem14, Me.mnuScriptDS})
         Me.mnuPopupDS.Text = "mnuPopupDatastore"
         '
         'mnuAddDS
@@ -1596,60 +1619,60 @@ Public Class frmMain
         Me.mnuModDSSelDTD.Index = 9
         Me.mnuModDSSelDTD.Text = "Model DTD"
         '
-        'mnuModDSSelDDL
+        'mnuModDSSelDB2DDL
         '
-        Me.mnuModDSSelDDL.Enabled = False
-        Me.mnuModDSSelDDL.Index = 10
-        Me.mnuModDSSelDDL.Text = "Model DDL"
+        Me.mnuModDSSelDB2DDL.Enabled = False
+        Me.mnuModDSSelDB2DDL.Index = 10
+        Me.mnuModDSSelDB2DDL.Text = "Model DB2 DDL"
         '
         'mnuModDSSelC
         '
         Me.mnuModDSSelC.Enabled = False
-        Me.mnuModDSSelC.Index = 11
+        Me.mnuModDSSelC.Index = 13
         Me.mnuModDSSelC.Text = "Model C"
         '
         'mnuModDSSelLOD
         '
         Me.mnuModDSSelLOD.Enabled = False
-        Me.mnuModDSSelLOD.Index = 12
+        Me.mnuModDSSelLOD.Index = 14
         Me.mnuModDSSelLOD.Text = "Oracle LOD"
         '
         'mnuModDSSelSQL
         '
         Me.mnuModDSSelSQL.Enabled = False
-        Me.mnuModDSSelSQL.Index = 13
+        Me.mnuModDSSelSQL.Index = 15
         Me.mnuModDSSelSQL.Text = "Oracle Trigger"
         '
         'mnuModDSSelMSSQL
         '
         Me.mnuModDSSelMSSQL.Enabled = False
-        Me.mnuModDSSelMSSQL.Index = 14
+        Me.mnuModDSSelMSSQL.Index = 16
         Me.mnuModDSSelMSSQL.Text = "SQL Server Trigger"
         '
         'MenuItem31
         '
-        Me.MenuItem31.Index = 15
+        Me.MenuItem31.Index = 17
         Me.MenuItem31.Text = "-"
         '
         'mnuQuery
         '
-        Me.mnuQuery.Index = 16
+        Me.mnuQuery.Index = 18
         Me.mnuQuery.Text = "Query"
         Me.mnuQuery.Visible = False
         '
         'mnuDelAllDS
         '
-        Me.mnuDelAllDS.Index = 17
+        Me.mnuDelAllDS.Index = 19
         Me.mnuDelAllDS.Text = "Delete all"
         '
         'MenuItem14
         '
-        Me.MenuItem14.Index = 18
+        Me.MenuItem14.Index = 20
         Me.MenuItem14.Text = "-"
         '
         'mnuScriptDS
         '
-        Me.mnuScriptDS.Index = 19
+        Me.mnuScriptDS.Index = 21
         Me.mnuScriptDS.Text = "Script"
         '
         'mnuPopupVariable
@@ -1763,7 +1786,7 @@ Public Class frmMain
         'mnuPopupStructSelection
         '
         Me.mnuPopupStructSelection.Index = 9
-        Me.mnuPopupStructSelection.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStructSelection, Me.mnuDelStructSelection, Me.MenuItem18, Me.mnuModelStructSelectionDTD, Me.mnuModelStructSelectionDDL, Me.mnuModelStructSelectionHeader, Me.mnuModelSSLOD, Me.mnuModelSSSQL, Me.mnuModelSSMSSQL, Me.mnuModelSSDB2, Me.MenuItem19, Me.mnuCopyStructSel, Me.mnuPasteStructSel})
+        Me.mnuPopupStructSelection.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStructSelection, Me.mnuDelStructSelection, Me.MenuItem18, Me.mnuModelStructSelectionDTD, Me.mnuModelSSDB2DDL, Me.mnuModelSSOraDDL, Me.mnuModelSSSQLDDL, Me.mnuModelStructSelectionHeader, Me.mnuModelSSLOD, Me.mnuModelSSSQL, Me.mnuModelSSMSSQL, Me.mnuModelSSDB2, Me.MenuItem19, Me.mnuCopyStructSel, Me.mnuPasteStructSel})
         Me.mnuPopupStructSelection.Text = "mnuPopupStructSelection"
         '
         'mnuAddStructSelection
@@ -1786,50 +1809,50 @@ Public Class frmMain
         Me.mnuModelStructSelectionDTD.Index = 3
         Me.mnuModelStructSelectionDTD.Text = "Model DTD"
         '
-        'mnuModelStructSelectionDDL
+        'mnuModelSSDB2DDL
         '
-        Me.mnuModelStructSelectionDDL.Index = 4
-        Me.mnuModelStructSelectionDDL.Text = "Model DDL"
+        Me.mnuModelSSDB2DDL.Index = 4
+        Me.mnuModelSSDB2DDL.Text = "Model DB2 DDL"
         '
         'mnuModelStructSelectionHeader
         '
-        Me.mnuModelStructSelectionHeader.Index = 5
+        Me.mnuModelStructSelectionHeader.Index = 7
         Me.mnuModelStructSelectionHeader.Text = "Model C"
         '
         'mnuModelSSLOD
         '
-        Me.mnuModelSSLOD.Index = 6
+        Me.mnuModelSSLOD.Index = 8
         Me.mnuModelSSLOD.Text = "Oracle Load"
         '
         'mnuModelSSSQL
         '
-        Me.mnuModelSSSQL.Index = 7
+        Me.mnuModelSSSQL.Index = 9
         Me.mnuModelSSSQL.Text = "Oracle Trigger"
         '
         'mnuModelSSMSSQL
         '
-        Me.mnuModelSSMSSQL.Index = 8
+        Me.mnuModelSSMSSQL.Index = 10
         Me.mnuModelSSMSSQL.Text = "SQLServer Trigger"
         '
         'mnuModelSSDB2
         '
         Me.mnuModelSSDB2.Enabled = False
-        Me.mnuModelSSDB2.Index = 9
+        Me.mnuModelSSDB2.Index = 11
         Me.mnuModelSSDB2.Text = "DB2 Load"
         '
         'MenuItem19
         '
-        Me.MenuItem19.Index = 10
+        Me.MenuItem19.Index = 12
         Me.MenuItem19.Text = "-"
         '
         'mnuCopyStructSel
         '
-        Me.mnuCopyStructSel.Index = 11
+        Me.mnuCopyStructSel.Index = 13
         Me.mnuCopyStructSel.Text = "Copy"
         '
         'mnuPasteStructSel
         '
-        Me.mnuPasteStructSel.Index = 12
+        Me.mnuPasteStructSel.Index = 14
         Me.mnuPasteStructSel.Text = "Paste"
         '
         'SaveFileDialog1
@@ -1863,34 +1886,6 @@ Public Class frmMain
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.pnlProp.Size = New System.Drawing.Size(665, 513)
         Me.pnlProp.TabIndex = 3
-        '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SCmain.Location = New System.Drawing.Point(0, 29)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
-        Me.SCmain.SplitterDistance = 346
-        Me.SCmain.SplitterWidth = 5
-        Me.SCmain.TabIndex = 9
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
         '
         'ctMain
         '
@@ -2013,6 +2008,54 @@ Public Class frmMain
         Me.ctDs.Name = "ctDs"
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SCmain.Location = New System.Drawing.Point(0, 29)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
+        Me.SCmain.SplitterDistance = 346
+        Me.SCmain.SplitterWidth = 5
+        Me.SCmain.TabIndex = 9
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
+        '
+        'mnuModelSSSQLDDL
+        '
+        Me.mnuModelSSSQLDDL.Index = 6
+        Me.mnuModelSSSQLDDL.Text = "Model SQLServer DDL"
+        '
+        'mnuModelSSOraDDL
+        '
+        Me.mnuModelSSOraDDL.Index = 5
+        Me.mnuModelSSOraDDL.Text = "Model Oracle DDL"
+        '
+        'mnuModelDSSelSQLDDL
+        '
+        Me.mnuModelDSSelSQLDDL.Index = 12
+        Me.mnuModelDSSelSQLDDL.Text = "Model SQLServer DDL"
+        '
+        'mnuModelDSSelOraDDL
+        '
+        Me.mnuModelDSSelOraDDL.Index = 11
+        Me.mnuModelDSSelOraDDL.Text = "Model Oracle DDL"
         '
         'frmMain
         '
@@ -2338,7 +2381,7 @@ Public Class frmMain
 
     Private Sub tvExplorer_AfterExpandAfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterExpand, tvExplorer.AfterCollapse
 
-        
+
         If tvExplorer.SelectedNode IsNot Nothing Then
             Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
             Dim NodeText As String = tvExplorer.SelectedNode.Text
@@ -2738,7 +2781,7 @@ Public Class frmMain
 
                     frm1 = New frmProjOpen
                     obj = frm1.OpenProj()
-                    
+
 
                     If obj IsNot Nothing Then
                         '// set the current loaded project as the object containing 
@@ -5319,7 +5362,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '//If clicked on folder then disable del and edit options
                     mnuDelStruct.Enabled = Not bFolderClick
                     'mnuEditStruct.Enabled = Not bFolderClick
-                    mnuModelStructDDL.Enabled = Not bStructFolder
+                    mnuModelStructDB2DDL.Enabled = Not bStructFolder
+                    mnuModelOraDDL.Enabled = Not bStructFolder
+                    mnuModelSQLDDL.Enabled = Not bStructFolder
                     mnuModelStructDTD.Enabled = Not bStructFolder
                     mnuModelStructHeader.Enabled = Not bStructFolder '//8/15/05
                     mnuModelStructLOD.Enabled = Not bStructFolder
@@ -5355,6 +5400,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPop = mnuPopupStruct.CloneMenu
                 Case NODE_FO_STRUCT_SEL, NODE_STRUCT_SEL
                     '//If clicked on folder then disable del and edit options
+                    mnuModelSSDB2DDL.Enabled = Not bStructFolder
+                    mnuModelSSOraDDL.Enabled = Not bStructFolder
+                    mnuModelSSSQLDDL.Enabled = Not bStructFolder
+                    mnuModelStructSelectionDTD.Enabled = Not bStructFolder
+                    mnuModelStructSelectionHeader.Enabled = Not bStructFolder '//8/15/05
+                    mnuModelSSLOD.Enabled = Not bStructFolder
+                    mnuModelSSSQL.Enabled = Not bStructFolder
+                    mnuModelSSMSSQL.Enabled = Not bStructFolder
                     mnuDelStructSelection.Enabled = Not bFolderClick
                     'mnuEditStructSelection.Enabled = Not bFolderClick
                     mnuCopyStructSel.Enabled = Not bFolderClick
@@ -5395,13 +5448,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     'DS_IMSLE, DS_IMSLEBATCH, DS_XMLCDC, DS_TRBCDC,
                     '/// Modeling
                     mnuModDSSelC.Enabled = False
-                    mnuModDSSelDDL.Enabled = False
+                    mnuModDSSelDB2DDL.Enabled = False
+                    mnuModelDSSelOraDDL.Enabled = False
+                    mnuModelDSSelSQLDDL.Enabled = False
                     mnuModDSSelDTD.Enabled = False
                     mnuModDSSelLOD.Enabled = False
                     mnuModDSSelSQL.Enabled = False
                     mnuModDSSelMSSQL.Enabled = False
                     mnuModDSSelC.Visible = False
-                    mnuModDSSelDDL.Visible = False
+                    mnuModDSSelDB2DDL.Visible = False
+                    mnuModelDSSelOraDDL.Visible = False
+                    mnuModelDSSelSQLDDL.Visible = False
                     mnuModDSSelDTD.Visible = False
                     mnuModDSSelLOD.Visible = False
                     mnuModDSSelSQL.Visible = False
@@ -5497,13 +5554,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Case NODE_FO_SOURCEDATASTORE, NODE_SOURCEDATASTORE, NODE_FO_TARGETDATASTORE, NODE_TARGETDATASTORE
                     '/// Modeling
                     mnuModDSSelC.Enabled = False
-                    mnuModDSSelDDL.Enabled = False
+                    mnuModDSSelDB2DDL.Enabled = False
+                    mnuModelDSSelOraDDL.Enabled = False
+                    mnuModelDSSelSQLDDL.Enabled = False
                     mnuModDSSelDTD.Enabled = False
                     mnuModDSSelLOD.Enabled = False
                     mnuModDSSelSQL.Enabled = False
                     mnuModDSSelMSSQL.Enabled = False
                     mnuModDSSelC.Visible = False
-                    mnuModDSSelDDL.Visible = False
+                    mnuModDSSelDB2DDL.Visible = False
+                    mnuModelDSSelOraDDL.Visible = False
+                    mnuModelDSSelSQLDDL.Visible = False
                     mnuModDSSelDTD.Visible = False
                     mnuModDSSelLOD.Visible = False
                     mnuModDSSelSQL.Visible = False
@@ -5579,14 +5640,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuAddDS.Enabled = True
                     '/// enable Modeling
                     mnuModDSSelC.Enabled = True
-                    mnuModDSSelDDL.Enabled = True
+                    mnuModDSSelDB2DDL.Enabled = True
+                    mnuModelDSSelOraDDL.Enabled = True
+                    mnuModelDSSelSQLDDL.Enabled = True
                     mnuModDSSelDTD.Enabled = True
                     mnuModDSSelLOD.Enabled = True
                     mnuModDSSelSQL.Enabled = True
                     mnuModDSSelMSSQL.Enabled = True
                     '/// make sure modeling options are visible
                     mnuModDSSelC.Visible = True
-                    mnuModDSSelDDL.Visible = True
+                    mnuModDSSelDB2DDL.Visible = True
+                    mnuModelDSSelOraDDL.Visible = True
+                    mnuModelDSSelSQLDDL.Visible = True
                     mnuModDSSelDTD.Visible = True
                     mnuModDSSelLOD.Visible = True
                     mnuModDSSelSQL.Visible = True
@@ -5760,9 +5825,21 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Sub
 
-    Private Sub OnStructModelDDLClickCHeader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelStructDDL.Click
+    Private Sub OnStructModelDB2DDLClickCHeader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelStructDB2DDL.Click
 
-        DoModelAction("STR", "DDL")
+        DoModelAction("STR", "DB2DDL")
+
+    End Sub
+
+    Private Sub mnuModelOraDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelOraDDL.Click
+
+        DoModelAction("STR", "ORADDL")
+
+    End Sub
+
+    Private Sub mnuModelSQLDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelSQLDDL.Click
+
+        DoModelAction("STR", "SQLDDL")
 
     End Sub
 
@@ -5802,9 +5879,21 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Sub
 
-    Private Sub OnStructSelectionModelDDLClickCHeader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelStructSelectionDDL.Click
+    Private Sub OnStructSelectionModelDDLClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelSSDB2DDL.Click
         '//Generate DDL
-        DoModelAction("SEL", "DDL")
+        DoModelAction("SEL", "DB2DDL")
+
+    End Sub
+
+    Private Sub mnuModelSSOraDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelSSOraDDL.Click
+
+        DoModelAction("SEL", "ORADDL")
+
+    End Sub
+
+    Private Sub mnuModelSSSQLDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelSSSQLDDL.Click
+
+        DoModelAction("SEL", "SQLDDL")
 
     End Sub
 
@@ -5844,15 +5933,27 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Sub
 
-    Private Sub mnuModDSSelDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelDTD.Click
+    Private Sub mnuModDSSelDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelDB2DDL.Click
 
-        DoModelAction(, "DTD")
+        DoModelAction(, "DB2DDL")
 
     End Sub
 
-    Private Sub mnuModDSSelDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelDDL.Click
+    Private Sub mnuModelDSSelOraDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelDSSelOraDDL.Click
 
-        DoModelAction(, "DDL")
+        DoModelAction(, "ORADDL")
+
+    End Sub
+
+    Private Sub mnuModelDSSelSQLDDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModelDSSelSQLDDL.Click
+
+        DoModelAction(, "SQLDDL")
+
+    End Sub
+
+    Private Sub mnuModDSSelDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuModDSSelDTD.Click
+
+        DoModelAction(, "DTD")
 
     End Sub
 
@@ -8304,12 +8405,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     envobj = Nothing
                 End If
 
+                If envobj Is Nothing Then GoTo error1
+
                 envobj.LoadMe()
 
                 Select Case OutType
                     Case "DTD"
                         strSaveDir = envobj.LocalDTDDir
-                    Case "DDL"
+                    Case "DB2DDL", "ORADDL", "SQLDDL"
                         strSaveDir = envobj.LocalDDLDir
                     Case "H"
                         strSaveDir = envobj.LocalCDir
@@ -8333,33 +8436,52 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 NewName = InputBox("Please Name Your Model", "Model Name", "m" & obj.Text)
 
                 '//////////////////// NEW MODELER /////////////////////
-                'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
                 '//////////////////////////////////////////////////////
 
                 '//////////////////// OLD MODELER /////////////////////
-                retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
-                strSaveDir, obj.Text, obj.Project.TablePrefix)
+                'retPath = ModelScript(obj.Project.MetaConnectionString, obj.Key, NewName, InType, OutType, _
+                'strSaveDir, obj.Text, obj.Project.TablePrefix)
                 '//////////////////////////////////////////////////////
 
                 If retPath <> "" Then
                     Process.Start(retPath)
                     'Shell("notepad.exe " & Quote(retPath, """"), AppWinStyle.NormalFocus)
                 Else
-                    MsgBox("There was a problem modeling " & obj.Text, MsgBoxStyle.Information, MsgTitle)
+error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxStyle.Information, MsgTitle)
                     Log("Modeling of " & obj.Text & " was unsuccessful")
                 End If
             Else
                 Dim success As Integer = 0
                 Dim Total As Integer = 0
+                Dim folderNode As TreeNode
+                Dim inobj As INode
 
-                envobj = CType(tvExplorer.SelectedNode.Nodes(0).Tag, clsStructure).Environment
+                If tvExplorer.SelectedNode.Nodes.Count > 0 Then
+                    folderNode = tvExplorer.SelectedNode
+                    inobj = CType(folderNode.Nodes(0).Tag, INode)
+                Else
+                    Exit Try
+                End If
+
+                If InType = "STR" Then
+                    envobj = CType(inobj, clsStructure).Environment
+                ElseIf InType = "SEL" Then
+                    envobj = CType(inobj, clsStructureSelection).ObjStructure.Environment
+                ElseIf InType = "" Then
+                    envobj = CType(inobj, clsDSSelection).ObjStructure.Environment
+                Else
+                    envobj = Nothing
+                End If
+
+                If envobj Is Nothing Then Exit Try
 
                 envobj.LoadMe()
-                
+
                 Select Case OutType
                     Case "DTD"
                         strSaveDir = envobj.LocalDTDDir
-                    Case "DDL"
+                    Case "DB2DDL", "ORADDL", "SQLDDL"
                         strSaveDir = envobj.LocalDDLDir
                     Case "H"
                         strSaveDir = envobj.LocalCDir
@@ -8378,12 +8500,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     NewName = "m" & StrObj.Text
 
                     '//////////////////// NEW MODELER /////////////////////
-                    'retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
+                    retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
                     '//////////////////////////////////////////////////////
 
                     '//////////////////// OLD MODELER /////////////////////
-                    retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
-                    strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
+                    'retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
+                    'strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
                     '//////////////////////////////////////////////////////
 
                     If retPath = "" Then

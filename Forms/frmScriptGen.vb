@@ -254,7 +254,7 @@ Public Class frmScriptGen
             Me.gbPath.Enabled = True
             Me.gbStudioFiles.Enabled = True
             Me.gbParseFiles.Enabled = Parsed
-            Me.btnSQData.Enabled = Parsed
+            Me.btnSQData.Enabled = True
 
             Return True
 
@@ -544,12 +544,21 @@ Public Class frmScriptGen
             Dim Success As String
 
             '/// Success is the full path to the SQData engine Log
-            Success = RunSQData(IO.Path.Combine(txtFolderPath.Text, ObjEng.EngineName & ".PRC"))
-
-            If Success <> "" Then
-                Process.Start(Success)
-                If System.IO.File.Exists(IO.Path.Combine(txtFolderPath.Text, "Output.dat")) = True Then
-                    btnOpenOutput.Enabled = True
+            If txtFolderPath.Text.Trim = "" Then
+                Success = RunSQData(IO.Path.Combine(ObjEng.ObjSystem.Environment.LocalScriptDir, ObjEng.EngineName & ".PRC"), ObjEng)
+                If Success <> "" Then
+                    Process.Start(Success)
+                    If System.IO.File.Exists(IO.Path.Combine(ObjEng.ObjSystem.Environment.LocalScriptDir, "Output.dat")) = True Then
+                        btnOpenOutput.Enabled = True
+                    End If
+                End If
+            Else
+                Success = RunSQData(IO.Path.Combine(txtFolderPath.Text, ObjEng.EngineName & ".PRC"))
+                If Success <> "" Then
+                    Process.Start(Success)
+                    If System.IO.File.Exists(IO.Path.Combine(txtFolderPath.Text, "Output.dat")) = True Then
+                        btnOpenOutput.Enabled = True
+                    End If
                 End If
             End If
 
@@ -563,7 +572,12 @@ Public Class frmScriptGen
 
         Try
             '/// Open the output file
-            Process.Start(IO.Path.Combine(txtFolderPath.Text, "Output.dat"))
+            If txtFolderPath.Text.Trim = "" Then
+                Process.Start(IO.Path.Combine(ObjEng.ObjSystem.Environment.LocalScriptDir, "Output.dat"))
+            Else
+                Process.Start(IO.Path.Combine(txtFolderPath.Text, "Output.dat"))
+            End If
+
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnOpenOutput_Click")

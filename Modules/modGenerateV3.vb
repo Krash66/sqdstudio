@@ -9,6 +9,7 @@ Public Module modGenerateV3
     Dim ObjThis As clsEngine
     Dim ObjProc As clsTask
     Dim ObjDS As clsDatastore
+    Dim ObjSys As clsSystem
 
     Private semi As String = ";"
 
@@ -87,6 +88,7 @@ Public Module modGenerateV3
         Try
             ScriptPath = EngObj.ObjSystem.Environment.LocalScriptDir
             ObjThis = EngObj
+            ObjSys = EngObj.ObjSystem
             EngObj.LoadMe()
             EngObj.ObjSystem.LoadMe()
             If EngObj.Connection IsNot Nothing Then
@@ -297,6 +299,10 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             ScriptPath = ObjProc.Engine.ObjSystem.Environment.LocalScriptDir
 
             ObjThis = ObjProc.Engine
+            ObjThis.LoadMe()
+
+            ObjSys = ObjThis.ObjSystem
+            ObjSys.LoadMe()
 
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text
@@ -484,6 +490,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             ObjDS = DSObj
             ScriptPath = ObjDS.Engine.ObjSystem.Environment.LocalScriptDir
             ObjThis = ObjDS.Engine
+            ObjThis.LoadMe()
+
+            ObjSys = ObjThis.ObjSystem
+            ObjSys.LoadMe()
+
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text
 
@@ -3733,52 +3744,64 @@ ErrorGoTo:
                     TgtStr = CType(map.MappingTarget, clsField).FieldName
             End Select
 
-            SrcStr = SrcStr.Trim
-            TgtStr = TgtStr.Trim
-            SrcLen = SrcStr.Length
-            TgtLen = TgtStr.Length
-            TotLen = SrcLen + TgtLen
+            If ObjSys.OSType = "z/OS" Then
+                SrcStr = SrcStr.Trim
+                TgtStr = TgtStr.Trim
+                SrcLen = SrcStr.Length
+                TgtLen = TgtStr.Length
+                TotLen = SrcLen + TgtLen
 
-            If SrcLen > 33 Then
-                SrcLong = True
-            Else
-                SrcLong = False
-            End If
-            If TgtLen > 33 Then
-                TgtLong = True
-            Else
-                TgtLong = False
-            End If
+                If SrcLen > 33 Then
+                    SrcLong = True
+                Else
+                    SrcLong = False
+                End If
+                If TgtLen > 33 Then
+                    TgtLong = True
+                Else
+                    TgtLong = False
+                End If
 
-            If TgtLong = False Then
-                FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
+                If TgtLong = False Then
+                    FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
+                Else
+                    FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
+                End If
+
+                If SrcLong = False Then
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
+                Else
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,70}", " = " & SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
+                End If
+                If TotLen > 66 Then
+                    objWriteSQD.WriteLine(FORtgt)
+                    objWriteINL.WriteLine(FORtgt)
+                    objWriteTMP.WriteLine(FORtgt)
+                    AddToLineNo(rc)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(rc)
+                Else
+                    objWriteSQD.Write(FORtgt)
+                    objWriteINL.Write(FORtgt)
+                    objWriteTMP.Write(FORtgt)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(rc)
+                End If
             Else
                 FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
-            End If
-
-            If SrcLong = False Then
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
-                Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
-                End If
-            Else
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,70}", " = " & SrcStr)
-                Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
-                End If
-            End If
-            If TotLen > 66 Then
-                objWriteSQD.WriteLine(FORtgt)
-                objWriteINL.WriteLine(FORtgt)
-                objWriteTMP.WriteLine(FORtgt)
-                AddToLineNo(rc)
-                objWriteSQD.WriteLine(FORsrc)
-                objWriteINL.WriteLine(FORsrc)
-                objWriteTMP.WriteLine(FORsrc)
-                AddToLineNo(rc)
-            Else
+                FORsrc = String.Format("{0}{1}", " = ", SrcStr)
                 objWriteSQD.Write(FORtgt)
                 objWriteINL.Write(FORtgt)
                 objWriteTMP.Write(FORtgt)
@@ -3787,7 +3810,6 @@ ErrorGoTo:
                 objWriteTMP.WriteLine(FORsrc)
                 AddToLineNo(rc)
             End If
-
 
         Catch ex As Exception
             LogError(ex, "modGenerate wLUfield")
@@ -3861,7 +3883,6 @@ ErrorGoTo:
                 End If
             End If
 
-
             SrcLen = SrcStr.Length
             TgtLen = TgtStr.Length
             TotLen = SrcLen + TgtLen
@@ -3871,48 +3892,75 @@ ErrorGoTo:
             Else
                 SrcLong = False
             End If
-            If TgtLen > 33 Then
-                TgtLong = True
-            Else
-                TgtLong = False
-            End If
 
-            If TgtLong = False Then
-                FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
-            Else
-                FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
-            End If
-
-            If SrcLong = False Then
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
+            If ObjSys.OSType = "z/OS" Then
+                If TgtLen > 33 Then
+                    TgtLong = True
                 Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    TgtLong = False
                 End If
-            Else
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,70}", " = " & SrcStr)
+
+                If TgtLong = False Then
+                    FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
                 Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
                 End If
-            End If
 
-            If map.MappingDesc IsNot Nothing Then
-                If map.MappingDesc.Trim <> "" Then
-                    wComment(RC, map.MappingDesc)
+                If SrcLong = False Then
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
+                Else
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,70}", " = " & SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
                 End If
-            End If
 
-            If TotLen > 66 Then
-                objWriteSQD.WriteLine(FORtgt)
-                objWriteINL.WriteLine(FORtgt)
-                objWriteTMP.WriteLine(FORtgt)
-                AddToLineNo(RC)
-                objWriteSQD.WriteLine(FORsrc)
-                objWriteINL.WriteLine(FORsrc)
-                objWriteTMP.WriteLine(FORsrc)
-                AddToLineNo(RC)
+                If map.MappingDesc IsNot Nothing Then
+                    If map.MappingDesc.Trim <> "" Then
+                        wComment(RC, map.MappingDesc)
+                    End If
+                End If
+
+                If TotLen > 66 Then
+                    objWriteSQD.WriteLine(FORtgt)
+                    objWriteINL.WriteLine(FORtgt)
+                    objWriteTMP.WriteLine(FORtgt)
+                    AddToLineNo(RC)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(RC)
+                Else
+                    objWriteSQD.Write(FORtgt)
+                    objWriteINL.Write(FORtgt)
+                    objWriteTMP.Write(FORtgt)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(RC)
+                End If
             Else
+                If TgtLen > 40 Then
+                    TgtLong = True
+                Else
+                    TgtLong = False
+                End If
+                If TgtLong = False Then
+                    FORtgt = String.Format("{0,2}{1,-40}", Prefix, TgtStr)
+                Else
+                    FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
+                End If
+                FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                If map.MappingDesc IsNot Nothing Then
+                    If map.MappingDesc.Trim <> "" Then
+                        wComment(RC, map.MappingDesc)
+                    End If
+                End If
                 objWriteSQD.Write(FORtgt)
                 objWriteINL.Write(FORtgt)
                 objWriteTMP.Write(FORtgt)
@@ -4095,45 +4143,70 @@ ErrorGoTo:
             Else
                 SrcLong = False
             End If
-            If TgtLen > 33 Then
-                TgtLong = True
-            Else
-                TgtLong = False
-            End If
 
-            If TgtLong = False Then
-                FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
-            Else
-                FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
-            End If
-
-            If SrcLong = False Then
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
+            If ObjSys.OSType = "z/OS" Then
+                If TgtLen > 33 Then
+                    TgtLong = True
                 Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    TgtLong = False
+                End If
+
+                If TgtLong = False Then
+                    FORtgt = String.Format("{0,2}{1,-33}", Prefix, TgtStr)
+                Else
+                    FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
+                End If
+
+                If SrcLong = False Then
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,38}{1}", " = ", SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
+                Else
+                    If TotLen > 66 Then
+                        FORsrc = String.Format("{0,70}", " = " & SrcStr)
+                    Else
+                        FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    End If
+                End If
+
+                If map.MappingDesc.Trim <> "" Then
+                    wComment(rc, map.MappingDesc)
+                End If
+                If TotLen > 66 Then
+                    objWriteSQD.WriteLine(FORtgt)
+                    objWriteINL.WriteLine(FORtgt)
+                    objWriteTMP.WriteLine(FORtgt)
+                    AddToLineNo(rc)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(rc)
+                Else
+                    objWriteSQD.Write(FORtgt)
+                    objWriteINL.Write(FORtgt)
+                    objWriteTMP.Write(FORtgt)
+                    objWriteSQD.WriteLine(FORsrc)
+                    objWriteINL.WriteLine(FORsrc)
+                    objWriteTMP.WriteLine(FORsrc)
+                    AddToLineNo(rc)
                 End If
             Else
-                If TotLen > 66 Then
-                    FORsrc = String.Format("{0,70}", " = " & SrcStr)
+                If TgtLen > 40 Then
+                    TgtLong = True
                 Else
-                    FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                    TgtLong = False
                 End If
-            End If
-
-            If map.MappingDesc.Trim <> "" Then
-                wComment(rc, map.MappingDesc)
-            End If
-            If TotLen > 66 Then
-                objWriteSQD.WriteLine(FORtgt)
-                objWriteINL.WriteLine(FORtgt)
-                objWriteTMP.WriteLine(FORtgt)
-                AddToLineNo(rc)
-                objWriteSQD.WriteLine(FORsrc)
-                objWriteINL.WriteLine(FORsrc)
-                objWriteTMP.WriteLine(FORsrc)
-                AddToLineNo(rc)
-            Else
+                If TgtLong = False Then
+                    FORtgt = String.Format("{0,2}{1,-40}", Prefix, TgtStr)
+                Else
+                    FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
+                End If
+                FORsrc = String.Format("{0}{1}", " = ", SrcStr)
+                If map.MappingDesc.Trim <> "" Then
+                    wComment(rc, map.MappingDesc)
+                End If
                 objWriteSQD.Write(FORtgt)
                 objWriteINL.Write(FORtgt)
                 objWriteTMP.Write(FORtgt)
@@ -4789,7 +4862,7 @@ ErrorGoTo:
 
 #Region " Run SQData "
 
-    Function RunSQData(ByVal pathPRC As String) As String
+    Function RunSQData(ByVal pathPRC As String, Optional ByVal InEng As clsEngine = Nothing) As String
 
         '//run out exe with command line args so it produces meta data in XML format
         Try
@@ -4825,6 +4898,14 @@ ErrorGoTo:
             'fsOUT = System.IO.File.Create(PathOUT)
             'PathOUT = fsOUT.Name
             'objWriteOUT = New System.IO.StreamWriter(fsOUT)
+
+            If InEng IsNot Nothing Then
+                If InEng.EngVersion <> "" Then
+                    EnginePath = GetAppPath() & InEng.EngVersion & "\" & "sqdata.exe"
+                Else
+                    EnginePath = GetAppPath() & "sqdata.exe"
+                End If
+            End If
 
             si.WorkingDirectory = GetDirFromPath(pathPRC)
             si.FileName = EnginePath
