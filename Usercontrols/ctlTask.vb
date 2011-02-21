@@ -1777,18 +1777,7 @@ Public Class ctlTask
 
         EndLoad()
 
-        If CType(cNode.Tag, INode).Type = NODE_ENGINE Then
-            FillSourceTarget(cNode)
-        Else
-            FillSrcTgtTop(cNode)
-        End If
-
-
-        'the following if statement is to relode the source and target for the first time 
-        'If firstTime = True Then
-        '    FillSourceTarget(objThis.ObjTreeNode)
-        '    firstTime = False
-        'End If
+        FillSourceTarget(cNode)
 
         If tvSource.Nodes.Count <> 0 Then
             tvSource.CollapseAll()
@@ -1846,6 +1835,46 @@ Public Class ctlTask
 
         Try
             Dim OldName As String = ""
+            Dim result As MsgBoxResult
+
+            '//Test for Key Change in Target DS
+            For Each tgt As clsDatastore In objThis.ObjTargets
+                If tgt.IsKeyChng = "1" Then
+                    If lvMappings.Items.Count > 0 Then
+                        If CType(lvMappings.Items(0).Tag, clsMapping).SourceType <> enumMappingType.MAPPING_TYPE_FUN Then
+                            result = MsgBox("Your Target Datastore Has Key Changes." & Chr(13) & _
+                                      "Procedures using this Target require the use of " & Chr(13) & _
+                                      "'MAPBEFOREkeyChng' Template at the top of the procedure." & Chr(13) & Chr(13) & _
+                                      "Would you like to insert this Template at this time??", MsgBoxStyle.YesNo, _
+                                      "Target Datastore Has Key Changes")
+                            If result = MsgBoxResult.Yes Then
+                                '/// Create a new mapping
+                                'Dim funct As New clsSQFunction
+                                'Dim NewMap As New clsMapping
+                                'funct.SQFunctionName = GetScriptForKeyChange()
+                                'funct.SQFunctionWithInnerText = funct.SQFunctionName
+                                'NewMap.MappingSource = funct
+                                'NewMap.SourceType = enumMappingType.MAPPING_TYPE_FUN
+                                AddMapping(0)
+                                lvMappings.Refresh()
+                                Dim NewFunct As New clsSQFunction
+                                With NewFunct
+                                    .SQFunctionName = GetScriptForKeyChange()
+                                    .SQFunctionWithInnerText = .SQFunctionName
+                                End With
+                                CType(lvMappings.Items(0).Tag, clsMapping).MappingSource = NewFunct
+                                curEditType = modDeclares.enumDirection.DI_SOURCE
+                                TabControl1.SelectTab(1)
+                                AddToRecentlyUsedFunctionList(tvFunctions.Nodes.Item("MAPBEFOREkeyChng"))
+                                ShowScriptEditor(CType(lvMappings.Items(0).Tag, clsMapping))
+                                Save = False
+                                Exit Try
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+
 
             '// First Check Validity before Saving
             If ValidateNewName(txtTaskName.Text) = False Then
@@ -1918,6 +1947,7 @@ Public Class ctlTask
 
         Catch ex As Exception
             LogError(ex)
+            Save = False
         End Try
 
     End Function
@@ -3381,6 +3411,8 @@ ManualGoTo:
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK)
                         ElseIf draggedNode.Text = "CURRENTDATE" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCurrentDate)
+                        ElseIf draggedNode.Text = "MAPBEFOREkeyChng" Then
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForKeyChange)
                         Else
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, _
                             CType(draggedNode.Tag, clsSQFunction).SQFunctionWithInnerText)
@@ -3483,12 +3515,13 @@ ManualGoTo:
     Public Sub cmdSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 
         objThis.CallFromUsercontrol = True '//8/15/05
-        Save()
-        objThis.ObjTreeNode.ForeColor = Color.Black
-        If Procs.Contains(objThis.TaskName) Then
-            Procs.Remove(objThis.TaskName)
+        If Save() = True Then
+            objThis.ObjTreeNode.ForeColor = Color.Black
+            If Procs.Contains(objThis.TaskName) Then
+                Procs.Remove(objThis.TaskName)
+            End If
+            objThis.CallFromUsercontrol = False '//8/15/05
         End If
-        objThis.CallFromUsercontrol = False '//8/15/05
 
     End Sub
 
@@ -5539,6 +5572,9 @@ fallthru2:          AddMapping(objClip, CurRow)
             Case "CURRENTDATE"
                 obj.SQFunctionName = GetScriptForCurrentDate()
                 obj.SQFunctionWithInnerText = obj.SQFunctionName
+            Case "MAPBEFOREkeyChng"
+                obj.SQFunctionName = GetScriptForKeyChange()
+                obj.SQFunctionWithInnerText = obj.SQFunctionName
         End Select
 
     End Function
@@ -5837,6 +5873,40 @@ fallthru2:          AddMapping(objClip, CurRow)
 
         Catch ex As Exception
             LogError(ex, "ctlTask GetScriptForLOOK")
+            Return ""
+        End Try
+
+    End Function
+
+    'IF CDCOP(CDCIN) = 'R' DO                                              
+    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
+    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
+    '  'T_S2PACITP.INIT_DEP_TP_CD')                                  
+    'END
+    Function GetScriptForKeyChange() As String
+
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            sb.AppendLine("")
+            sb.AppendLine("--CDCIN is Source Datastore")
+            sb.AppendLine("--INDESC is the Source Description containing Key field")
+            sb.AppendLine("--OUTDESC is the Target Description containing Key field")
+            sb.AppendLine("--KFLDx are the Key fields")
+            sb.AppendLine("--'R' represents the 'Replace' Operation")
+            sb.AppendLine("")
+            sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--        Repeat as necessary")
+            sb.AppendLine("END")
+
+            GetScriptForKeyChange = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask GetScriptForKeyChange")
             Return ""
         End Try
 

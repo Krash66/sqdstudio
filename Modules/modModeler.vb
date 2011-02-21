@@ -78,12 +78,18 @@ Module modModeler
                     Case NODE_STRUCT
                         ObjStr = CType(Obj, clsStructure)
                         TableName = ObjStr.StructureName
+                        ObjStr.LoadMe()
+                        ObjStr.LoadItems()
                     Case NODE_STRUCT_SEL
                         ObjSel = CType(Obj, clsStructureSelection)
                         TableName = ObjSel.SelectionName
+                        ObjSel.LoadMe()
+                        ObjSel.LoadItems()
                     Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
                         ObjDSSel = CType(Obj, clsDSSelection)
                         TableName = ObjDSSel.SelectionName
+                        ObjDSSel.LoadMe()
+                        ObjDSSel.LoadItems()
                     Case Else
                         success = False
                         GoTo ErrorGoTo
@@ -120,9 +126,11 @@ Module modModeler
 
             If success Then
                 Return FullPathModl
+                Log("********* Modeler Finish *********")
             Else
 ErrorGoTo:      '/// on errors
                 Return ""
+                Log("********* Modeler Finish with Errors *********")
             End If
 
         Catch ex As Exception
@@ -204,7 +212,7 @@ ErrorGoTo:      '/// on errors
 
         Try
             Dim fldLen As Integer
-            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", TableName)
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
             Dim FORKey As String
             Dim NameFld As String
             Dim fldattr As String
@@ -218,10 +226,10 @@ ErrorGoTo:      '/// on errors
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & fld.FieldName
+                    NameFld = " " & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "," & fld.FieldName
+                    NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -230,9 +238,9 @@ ErrorGoTo:      '/// on errors
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
                 fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
                 Else
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}", " ", NameFld, OutAttr)
                 End If
                 objWriteOut.WriteLine(FORKey)
 nextgoto:   Next
@@ -253,7 +261,7 @@ nextgoto:   Next
 
         Try
             Dim fldLen As Integer
-            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", TableName)
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
             Dim FORKey As String
             Dim NameFld As String
             Dim fldattr As String
@@ -267,10 +275,10 @@ nextgoto:   Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & fld.FieldName
+                    NameFld = " " & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "," & fld.FieldName
+                    NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -279,9 +287,9 @@ nextgoto:   Next
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
                 fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
                 Else
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}", " ", NameFld, OutAttr)
                 End If
                 objWriteOut.WriteLine(FORKey)
 nextgoto:   Next
@@ -302,7 +310,7 @@ nextgoto:   Next
 
         Try
             Dim fldLen As Integer
-            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", TableName)
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
             Dim FORKey As String
             Dim NameFld As String
             Dim fldattr As String
@@ -316,10 +324,10 @@ nextgoto:   Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & fld.FieldName
+                    NameFld = " " & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "," & fld.FieldName
+                    NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -327,9 +335,9 @@ nextgoto:   Next
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
                 fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
                 Else
-                    FORKey = String.Format("{0,4}{1,-30}{2,-20}", " ", NameFld, OutAttr)
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}", " ", NameFld, OutAttr)
                 End If
                 objWriteOut.WriteLine(FORKey)
 nextgoto:   Next
@@ -442,7 +450,7 @@ nextgoto:   Next
                 fldLen = "(" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ");"
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
 
-                FORfld = String.Format("{0}{1,-30}{2}", "<!ELEMENT ", NameFld, " (#CDATA)>")
+                FORfld = String.Format("{0}{1,-30}{2}", "<!ELEMENT ", NameFld, " (#PCDATA)>")
 
                 objWriteOut.WriteLine(FORfld)
 nextgoto1:  Next
@@ -464,8 +472,8 @@ nextgoto1:  Next
 
         Try
             Dim fldLen As String
-            Dim FORinfile As String = String.Format("{0}{1}{2}", "INFILE ", "'" & TableName & ".dat' ", Chr(34) & "FIX 39" & Chr(34))
-            Dim FORInto As String = String.Format("{0}{1}", "INTO TABLE ", TableName)
+            Dim FORinfile As String = String.Format("{0}{1}{2}", "INFILE ", "'" & RDash(TableName) & ".dat' ", Chr(34) & "FIX 39" & Chr(34))
+            Dim FORInto As String = String.Format("{0}{1}", "INTO TABLE ", RDash(TableName))
             Dim FORfld As String
             Dim NameFld As String
             Dim fldattr As String
@@ -482,16 +490,16 @@ nextgoto1:  Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & fld.FieldName
+                    NameFld = " " & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "," & fld.FieldName
+                    NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = "(" & Pos.ToString & ":" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ")"
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
                 OutAttr = GetOutFldType(fldattr, "ORADDL", 0)
 
-                FORfld = String.Format("{0,4}{1,-30}{2,-30}{3}", " ", NameFld, "POSITION" & fldLen, OutAttr)
+                FORfld = String.Format("{0,4}{1,-36}{2,-30}{3}", " ", NameFld, "POSITION" & fldLen, OutAttr)
 
                 objWriteOut.WriteLine(FORfld)
                 Pos = Pos + fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
@@ -516,8 +524,8 @@ nextgoto:   Next
     Function objModelSQL() As Boolean
 
         Try
-            Dim FORCreateReplace As String = String.Format("{0}{1}", "CREATE OR REPLACE TRIGGER sqdaudit_", TableName)
-            Dim FORAfter As String = String.Format("{0}{1}", "AFTER INSERT OR DELETE OR UPDATE ON ", TableName)
+            Dim FORCreateReplace As String = String.Format("{0}{1}", "CREATE OR REPLACE TRIGGER sqdaudit_", RDash(TableName))
+            Dim FORAfter As String = String.Format("{0}{1}", "AFTER INSERT OR DELETE OR UPDATE ON ", RDash(TableName))
             Dim NameFld As String
             Dim first As Boolean = True
             Dim ArrayNoGroupItemCnt As Integer = 0
@@ -555,18 +563,18 @@ nextgoto:   Next
             objWriteOut.WriteLine("      ,sysdate")
             objWriteOut.WriteLine("      ,DBMS_TRANSACTION.LOCAL_TRANSACTION_ID")
             objWriteOut.WriteLine("      ,user") '
-            objWriteOut.WriteLine("      ,'" & TableName & "'")
-            objWriteOut.WriteLine("      ,'" & TableName & "'")
+            objWriteOut.WriteLine("      ,'" & RDash(TableName) & "'")
+            objWriteOut.WriteLine("      ,'" & RDash(TableName) & "'")
             objWriteOut.WriteLine("      ," & ArrayNoGroupItemCnt.ToString)
 
             For Each fld As clsField In FldArray
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = "      ,:NEW." & fld.FieldName
+                    NameFld = "      ,:NEW." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "||','||:NEW." & fld.FieldName
+                    NameFld = "||','||:NEW." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto:   Next
@@ -575,10 +583,10 @@ nextgoto:   Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto1
                 If first = True Then
-                    NameFld = "      ,:OLD." & fld.FieldName
+                    NameFld = "      ,:OLD." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "||','||:OLD." & fld.FieldName
+                    NameFld = "||','||:OLD." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto1:  Next
@@ -586,7 +594,7 @@ nextgoto1:  Next
             wBracket(OpenClose.CLOSE, False)
             wSemiLine()
 
-            objWriteOut.WriteLine("END sqdaudit_" & TableName & ";")
+            objWriteOut.WriteLine("END sqdaudit_" & RDash(TableName) & ";")
             objWriteOut.WriteLine("/")
             objWriteOut.WriteLine("COMMIT;")
 
@@ -606,8 +614,8 @@ nextgoto1:  Next
     Function objModelMSSQL() As Boolean
 
         Try
-            Dim FORCreateTrig As String = String.Format("{0}{1}", "CREATE TRIGGER sqdaudit_I_", TableName)
-            Dim FORAfter As String = String.Format("{0}{1}", "ON ", TableName)
+            Dim FORCreateTrig As String = String.Format("{0}{1}", "CREATE TRIGGER sqdaudit_I_", RDash(TableName))
+            Dim FORAfter As String = String.Format("{0}{1}", "ON ", RDash(TableName))
             Dim NameFld As String
             Dim first As Boolean = True
             Dim ArrayNoGroupItemCnt As Integer = 0
@@ -630,18 +638,18 @@ nextgoto1:  Next
             objWriteOut.WriteLine(",'I'       AS CHANGEOP")
             objWriteOut.WriteLine(",GETDATE() AS UPDATE_TSTMP")
             objWriteOut.WriteLine(",user      AS USER_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_ALIAS")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_UPDATED")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_ALIAS")
             objWriteOut.WriteLine("," & ArrayNoGroupItemCnt.ToString)
 
             For Each fld As clsField In FldArray
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = "    ,inserted." & fld.FieldName
+                    NameFld = "    ,inserted." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "+','+inserted." & fld.FieldName
+                    NameFld = "+','+inserted." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto:   Next
@@ -655,8 +663,8 @@ nextgoto:   Next
             objWriteOut.WriteLine("END")
             objWriteOut.WriteLine("go")
             objWriteOut.WriteLine("--------------------")
-            objWriteOut.WriteLine("CREATE TRIGGER sqdaudit_R_" & TableName)
-            objWriteOut.WriteLine("ON " & TableName)
+            objWriteOut.WriteLine("CREATE TRIGGER sqdaudit_R_" & RDash(TableName))
+            objWriteOut.WriteLine("ON " & RDash(TableName))
             objWriteOut.WriteLine("AFTER UPDATE")
             objWriteOut.WriteLine("AS") '
             objWriteOut.WriteLine("BEGIN")
@@ -666,18 +674,18 @@ nextgoto:   Next
             objWriteOut.WriteLine(",'R'       AS CHANGEOP")
             objWriteOut.WriteLine(",GETDATE() AS UPDATE_TSTMP")
             objWriteOut.WriteLine(",user      AS USER_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_ALIAS")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_UPDATED")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_ALIAS")
             objWriteOut.WriteLine("," & ArrayNoGroupItemCnt.ToString)
 
             For Each fld As clsField In FldArray
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto1
                 If first = True Then
-                    NameFld = "    ,inserted." & fld.FieldName
+                    NameFld = "    ,inserted." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "+','+inserted." & fld.FieldName
+                    NameFld = "+','+inserted." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto1:  Next
@@ -689,10 +697,10 @@ nextgoto1:  Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto2
                 If first = True Then
-                    NameFld = "    ,deleted." & fld.FieldName
+                    NameFld = "    ,deleted." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "+','+deleted." & fld.FieldName
+                    NameFld = "+','+deleted." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto2:  Next
@@ -707,8 +715,8 @@ nextgoto2:  Next
             objWriteOut.WriteLine("END")
             objWriteOut.WriteLine("go")
             objWriteOut.WriteLine("--------------------")
-            objWriteOut.WriteLine("CREATE TRIGGER sqdaudit_D_" & TableName)
-            objWriteOut.WriteLine("ON " & TableName)
+            objWriteOut.WriteLine("CREATE TRIGGER sqdaudit_D_" & RDash(TableName))
+            objWriteOut.WriteLine("ON " & RDash(TableName))
             objWriteOut.WriteLine("AFTER UPDATE")
             objWriteOut.WriteLine("AS") '
             objWriteOut.WriteLine("BEGIN")
@@ -718,8 +726,8 @@ nextgoto2:  Next
             objWriteOut.WriteLine(",'D'       AS CHANGEOP")
             objWriteOut.WriteLine(",GETDATE() AS UPDATE_TSTMP")
             objWriteOut.WriteLine(",user      AS USER_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_UPDATED")
-            objWriteOut.WriteLine(",'" & TableName & "' AS TABLE_ALIAS")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_UPDATED")
+            objWriteOut.WriteLine(",'" & RDash(TableName) & "' AS TABLE_ALIAS")
             objWriteOut.WriteLine("," & ArrayNoGroupItemCnt.ToString)
             objWriteOut.WriteLine(",'' AS CDC_AFTER_DATA")
 
@@ -727,10 +735,10 @@ nextgoto2:  Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto3
                 If first = True Then
-                    NameFld = "    ,deleted." & fld.FieldName
+                    NameFld = "    ,deleted." & RDash(fld.FieldName)
                     first = False
                 Else
-                    NameFld = "+','+deleted." & fld.FieldName
+                    NameFld = "+','+deleted." & RDash(fld.FieldName)
                 End If
                 objWriteOut.WriteLine(NameFld)
 nextgoto3:  Next
@@ -748,7 +756,7 @@ nextgoto3:  Next
             Return True
 
         Catch ex As Exception
-            LogError(ex, "modModeler objModelSQL(oracle Trigger)")
+            LogError(ex, "modModeler objModelSQL(MSSql Trigger)")
             Return False
         End Try
 
@@ -876,7 +884,7 @@ nextgoto3:  Next
 
                 Case "H"
                     Select Case InType
-                        Case "CHAR", "VARCHAR", "VARCHAR2", "NUMERIC", "DATE", "TIMESTAMP", "TIME", "TEXTNUM", "ZONE"
+                        Case "CHAR", "VARCHAR", "VARCHAR2", "NUMERIC", "DATE", "TIMESTAMP", "TIME", "TEXTNUM", "ZONE", "XMLCDATA"
                             GetOutFldType = "char"
                         Case "BINARY"
                             GetOutFldType = "unsigned char"
@@ -892,18 +900,24 @@ nextgoto3:  Next
 
                 Case "DB2DDL"
                     Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE"
+                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
                             GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR", "VARCHAR2"
+                        Case "VARCHAR2"
                             GetOutFldType = "VARCHAR" & OutLen
+                        Case "VARCHAR"
+                            If fldLen > 2 Then
+                                GetOutFldType = "VARCHAR(" & (fldLen - 2).ToString & ")"
+                            Else
+                                GetOutFldType = "VARCHAR" & OutLen
+                            End If
                         Case "DATE"
                             GetOutFldType = "DATE"
                         Case "TIMESTAMP"
                             GetOutFldType = "TIMESTAMP"
                         Case "TIME"
                             GetOutFldType = "TIME"
-                        Case "BINARY"
-                            GetOutFldType = "BINARY" & OutLen
+                            'Case "BINARY"
+                            '    GetOutFldType = "BINARY" & OutLen
                         Case "INTEGER"
                             GetOutFldType = "INTEGER" & OutLen
                         Case "SMALLINT"
@@ -916,7 +930,7 @@ nextgoto3:  Next
 
                 Case "ORADDL"
                     Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE"
+                        Case "CHAR", "TEXTNUM", "ZONE", "XMLCDATA"
                             GetOutFldType = "CHAR" & OutLen
                         Case "VARCHAR"
                             GetOutFldType = "VARCHAR" & OutLen
@@ -936,7 +950,7 @@ nextgoto3:  Next
 
                 Case "SQLDDL"
                     Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE"
+                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
                             GetOutFldType = "CHAR" & OutLen
                         Case "VARCHAR", "VARCHAR2"
                             GetOutFldType = "VARCHAR" & OutLen
@@ -946,8 +960,8 @@ nextgoto3:  Next
                             GetOutFldType = "DATETIME"
                         Case "INTEGER"
                             GetOutFldType = "INT"
-                        Case "BINARY"
-                            GetOutFldType = "BINARY" & OutLen
+                            'Case "BINARY"
+                            '    GetOutFldType = "BINARY" & OutLen
                         Case "DECIMAL"
                             GetOutFldType = "DECIMAL" & OutLen
                         Case "SMALLINT"
@@ -964,6 +978,12 @@ nextgoto3:  Next
             LogError(ex, "modModeler GetOutFldType")
             GetOutFldType = ""
         End Try
+
+    End Function
+
+    Function RDash(ByVal fldName As String) As String
+
+        RDash = fldName.Replace("-", "_")
 
     End Function
 

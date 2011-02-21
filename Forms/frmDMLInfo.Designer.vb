@@ -19,7 +19,6 @@ Partial Class frmDMLInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmDMLInfo))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
@@ -45,7 +44,6 @@ Partial Class frmDMLInfo
         Me.btnRefresh = New System.Windows.Forms.Button
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.btnRemoveTab = New System.Windows.Forms.Button
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.TabSelectTable.SuspendLayout()
         Me.gbChseConn.SuspendLayout()
@@ -54,12 +52,6 @@ Partial Class frmDMLInfo
         Me.gbNarrowSearch.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\ETI_Logo_Installation_Graphic\ETI-installer-right.bmp"
         '
         'Panel1
         '
@@ -358,6 +350,7 @@ Partial Class frmDMLInfo
         '
         'btnRemoveTab
         '
+        Me.btnRemoveTab.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveTab.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemoveTab.Location = New System.Drawing.Point(190, 625)
         Me.btnRemoveTab.Name = "btnRemoveTab"
@@ -384,9 +377,7 @@ Partial Class frmDMLInfo
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.TabSelectTable.ResumeLayout(False)
         Me.gbChseConn.ResumeLayout(False)

@@ -20,7 +20,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("SQData Studio GUI")> 
 <Assembly: AssemblyCompany("SQData Corporation")> 
 <Assembly: AssemblyProduct("Design Studio")> 
-<Assembly: AssemblyCopyright("Copyright ©  2010")> 
+<Assembly: AssemblyCopyright("Copyright ©  2011")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 '#End If
@@ -39,6 +39,6 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("3.3.1.9")> 
+<Assembly: AssemblyVersion("3.3.2.4")> 
 
-<Assembly: AssemblyFileVersionAttribute("3.3.1.9")> 
+<Assembly: AssemblyFileVersionAttribute("3.3.2.4")> 

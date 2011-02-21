@@ -58,6 +58,9 @@ Public Module modGenerateV3
 
     Dim ResWords As New Collection
 
+    Dim StrList As New Collection
+    Dim dbdList As New Collection
+
 #Region " Main Processes "
 
     Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False) As clsRcode
@@ -90,24 +93,27 @@ Public Module modGenerateV3
             ObjThis = EngObj
             ObjSys = EngObj.ObjSystem
             EngObj.LoadMe()
+            EngObj.LoadItems()
             EngObj.ObjSystem.LoadMe()
             If EngObj.Connection IsNot Nothing Then
                 EngObj.Connection.LoadMe()
             End If
 
-            'If EngObj.EngVersion <> "" Then
-            '    ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
-            '    EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
-            'Else
-            ParserPath = GetAppPath() & "sqdparse.exe"
-            EnginePath = GetAppPath() & "sqdata.exe"
-            'End If
+            If EngObj.EngVersion <> "" Then
+                ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
+                EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+            Else
+                ParserPath = GetAppPath() & "sqdparse.exe"
+                EnginePath = GetAppPath() & "sqdata.exe"
+            End If
 
 
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text
 
             Call PopulateResWords()
+            StrList.Clear()
+            dbdList.Clear()
 
             Log("********* Script File Creation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
@@ -1212,8 +1218,6 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Dim ds As clsDatastore
         Dim dssel As clsDSSelection
         Dim str As clsStructure
-        Dim StrList As New Collection
-        Dim dbdList As New Collection
 
         Try
             If InputDS Is Nothing Then
@@ -2463,12 +2467,19 @@ errorgoto:
             objWriteINL.WriteLine(FORdsForOf)
             objWriteTMP.WriteLine(FORdsForOf)
             AddToLineNo(rc)
+
             If ds.DatastoreType = enumDatastore.DS_DELIMITED Then
                 'wBlankLine(rc)
                 If wDSdelimited(rc, ds) = False Then
                     GoTo ErrorGoTo
                 End If
             End If
+            If ds.DatastoreType = enumDatastore.DS_BINARY Or ds.DatastoreType = enumDatastore.DS_DELIMITED Then
+                If wASCII(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+            End If
+
             objWriteSQD.WriteLine(FORds2)
             objWriteINL.WriteLine(FORds2)
             objWriteTMP.WriteLine(FORds2)
@@ -2714,7 +2725,6 @@ ErrorGoTo:
     Function wDSdelimited(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
 
         Try
-            Dim strCharCode As String
             Dim bYes As Boolean = True
 
             '/// write character delimiter
@@ -2770,21 +2780,9 @@ ErrorGoTo:
                 AddToLineNo(rc)
             End If
 
-            If ds.DsDirection = DS_DIRECTION_SOURCE Then
-                If ds.DsCharacterCode = DS_CHARACTERCODE_EBCDIC Then
-                    strCharCode = "EBCDIC"
-                Else
-                    strCharCode = "ASCII"
-                End If
-                Dim ForCC As String = String.Format("{0,12}{1}", " ", strCharCode)
-                objWriteSQD.WriteLine(ForCC)
-                objWriteINL.WriteLine(ForCC)
-                objWriteTMP.WriteLine(ForCC)
-                AddToLineNo(rc)
-            End If
 
         Catch ex As Exception
-            LogError(ex, "modGenerate wDS")
+            LogError(ex, "modGenerate wDSdelimited")
             rc.HasError = True
             rc.ErrorCount += 1
             rc.LocalErrorMsg = "Error while writing Delimited Datastore"
@@ -2796,6 +2794,48 @@ ErrorGoTo:
         End Try
 
         wDSdelimited = Not rc.HasFatal
+
+    End Function
+
+    Function wASCII(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
+
+        Try
+            Dim strCharCode As String
+
+            If ds.DsDirection = DS_DIRECTION_SOURCE And ds.Engine.ObjSystem.OSType = "z/OS" Then
+                If ds.DsCharacterCode = DS_CHARACTERCODE_ASCII Then
+                    strCharCode = "ASCII"
+                    Dim ForCC As String = String.Format("{0,12}{1}", " ", strCharCode)
+                    objWriteSQD.WriteLine(ForCC)
+                    objWriteINL.WriteLine(ForCC)
+                    objWriteTMP.WriteLine(ForCC)
+                    AddToLineNo(rc)
+                End If
+            ElseIf ds.DsDirection = DS_DIRECTION_SOURCE And ds.Engine.ObjSystem.OSType = "UNIX" Then
+                If ds.DsCharacterCode = DS_CHARACTERCODE_EBCDIC Then
+                    strCharCode = "EBCDIC"
+                    Dim ForCC As String = String.Format("{0,12}{1}", " ", strCharCode)
+                    objWriteSQD.WriteLine(ForCC)
+                    objWriteINL.WriteLine(ForCC)
+                    objWriteTMP.WriteLine(ForCC)
+                    AddToLineNo(rc)
+                End If
+            End If
+
+
+        Catch ex As Exception
+            LogError(ex, "modGenerate wASCII")
+            rc.HasError = True
+            rc.ErrorCount += 1
+            rc.LocalErrorMsg = "Error while writing Delimited Datastore"
+            rc.ReturnCode = ex.Message
+            rc.ErrorLocation = enumErrorLocation.ModGenDS
+            rc.ErrorPath = pathSQD
+            rc.ObjInode = ds
+            ErrorComment(rc)
+        End Try
+
+        wASCII = Not rc.HasFatal
 
     End Function
 
@@ -4897,7 +4937,7 @@ ErrorGoTo:
             ''// create new output file stream
             'fsOUT = System.IO.File.Create(PathOUT)
             'PathOUT = fsOUT.Name
-            'objWriteOUT = New System.IO.StreamWriter(fsOUT)
+            'objWriteOUT = New System.IO.StreamWriter(fsOUT)  
 
             If InEng IsNot Nothing Then
                 If InEng.EngVersion <> "" Then

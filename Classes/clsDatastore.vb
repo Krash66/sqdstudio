@@ -49,6 +49,7 @@ Public Class clsDatastore
 
     '// Target Only
     Private m_OperationType As String = ""
+    Private m_IsKeyChng As String = "0"
 
     '/// Delimited Only
     Private m_TextQualifier As String = ""
@@ -755,6 +756,8 @@ Public Class clsDatastore
                         Me.InValidNum = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                     Case "LOOKUP"
                         Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "ISKEYCHNG"
+                        Me.IsKeyChng = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                 End Select
             Next
 
@@ -1130,6 +1133,15 @@ Public Class clsDatastore
         End Get
         Set(ByVal value As Boolean)
             l_LookUp = value
+        End Set
+    End Property
+
+    Public Property IsKeyChng() As String
+        Get
+            Return m_IsKeyChng
+        End Get
+        Set(ByVal value As String)
+            m_IsKeyChng = value
         End Set
     End Property
 
@@ -1536,7 +1548,7 @@ Public Class clsDatastore
                 If IsAdded = True Then
                     '//Add datastore selection and its fields related to datastore
 
-                    
+
                     '//delete any previous record to prevent any possible duplicate entries
                     strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
                     " WHERE  DatastoreName= " & Me.GetQuotedText & _
@@ -1572,7 +1584,7 @@ Public Class clsDatastore
                     cmd.CommandText = strSql
                     cmd.ExecuteNonQuery()
 
-                
+
 
                     '//Now add fields of current selection in the loop
                     'selNew.LoadItems()
@@ -1804,7 +1816,7 @@ Public Class clsDatastore
 
                 If IsDeleted = True Then
                     '//Delete datastore selection and its fields related to datastore
-                    
+
                     '//First always children => delete entry from DSSELFIELDS
                     strSql = "DELETE FROM " & Me.Project.tblDSselFields & _
                     " Where  DatastoreName= " & Me.GetQuotedText & _
@@ -1833,7 +1845,7 @@ Public Class clsDatastore
                     cmd.CommandText = strSql
                     Log(strSql)
                     cmd.ExecuteNonQuery()
-                    
+
 
                     selOld.ObjSelection.ObjDSselections.Remove(selOld.Key)
 
@@ -1948,7 +1960,7 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
     Sub SetFieldExtendedAttributes(ByVal dr As System.Data.DataRow, ByRef fld As clsField)
 
         Try
-            
+
             fld.SeqNo = GetVal(dr("seqno"))
             fld.FieldDesc = GetStr(GetVal(dr("descfielddescription")))
             fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_NCHILDREN, GetVal(dr("NCHILDREN")))
@@ -2364,7 +2376,7 @@ NextSel:        '// next selection
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 23
+            For i As Integer = 0 To 24
                 Select Case i
                     Case 0
                         Attrib = "COLUMNDELIMITER"
@@ -2438,6 +2450,9 @@ NextSel:        '// next selection
                     Case 23
                         Attrib = "LOOKUP"
                         Value = Me.IsLookUp.ToString
+                    Case 24
+                        Attrib = "ISKEYCHNG"
+                        Value = Me.IsKeyChng
                         'Case 11
                         'Attrib = "ONCMMTKEY"
                         'Value = Me.IsCmmtKey

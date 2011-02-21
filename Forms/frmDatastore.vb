@@ -547,7 +547,7 @@ Public Class frmDatastore
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tvDatastoreStructures.CheckBoxes = True
         Me.tvDatastoreStructures.HideSelection = False
-        Me.tvDatastoreStructures.Location = New System.Drawing.Point(6, 14)
+        Me.tvDatastoreStructures.Location = New System.Drawing.Point(6, 13)
         Me.tvDatastoreStructures.Name = "tvDatastoreStructures"
         Me.tvDatastoreStructures.Size = New System.Drawing.Size(236, 190)
         Me.tvDatastoreStructures.TabIndex = 106
@@ -704,7 +704,7 @@ Public Class frmDatastore
         Me.gbTarget.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbTarget.Location = New System.Drawing.Point(365, 339)
         Me.gbTarget.Name = "gbTarget"
-        Me.gbTarget.Size = New System.Drawing.Size(325, 44)
+        Me.gbTarget.Size = New System.Drawing.Size(327, 44)
         Me.gbTarget.TabIndex = 141
         Me.gbTarget.TabStop = False
         Me.gbTarget.Text = "Target Properties"
@@ -997,7 +997,7 @@ Public Class frmDatastore
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, cmbOperationType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged '// modified by TK and KS 11/6/2006
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, cmbOperationType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged '// modified by TK 1/2011
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
         RaiseEvent Modified(Me, objThis)
@@ -1403,6 +1403,9 @@ Public Class frmDatastore
                 End If
             End If
 
+            tvDatastoreStructures.SelectedNode = e.Node
+            'tvDatastoreStructures_AfterSelect(sender, e)
+
         Catch ex As Exception
             LogError(ex, "frmDatastore tvDatastoreStructures_AfterCheck")
         End Try
@@ -1418,6 +1421,7 @@ Public Class frmDatastore
 
     Private Sub tvDatastoreStructures_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvDatastoreStructures.AfterSelect
 
+        If CType(tvDatastoreStructures.SelectedNode.Tag, INode).Type = NODE_FO_STRUCT Then Exit Sub
         'If CType(tvDatastoreStructures.SelectedNode.Tag, INode).Type = NODE_FO_STRUCT Then
         'cmdShowHideFieldAttr.Enabled = False
         Call cmdShowHideFieldAttr_Click()

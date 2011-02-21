@@ -1826,6 +1826,8 @@ Public Class ctlMain
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetSetImageTemplate)
                         ElseIf draggedNode.Text = "CURRENTDATE" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCurrentDate)
+                        ElseIf draggedNode.Text = "MAPBEFOREkeyChng" Then
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForKeyChange)
                         Else
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, _
                             CType(draggedNode.Tag, clsSQFunction).SQFunctionWithInnerText)
@@ -4302,6 +4304,40 @@ Public Class ctlMain
 
         Catch ex As Exception
             LogError(ex, "ctlTask GetScriptForCURRENTDATE")
+            Return ""
+        End Try
+
+    End Function
+
+    'IF CDCOP(CDCIN) = 'R' DO                                              
+    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
+    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
+    '  'T_S2PACITP.INIT_DEP_TP_CD')                                  
+    'END
+    Function GetScriptForKeyChange() As String
+
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            sb.AppendLine("--CDCIN is Source Datastore")
+            sb.AppendLine("--INDESC is the Source Description containing Key field")
+            sb.AppendLine("--OUTDESC is the Target Description containing Key field")
+            sb.AppendLine("--KFLDx are the Key fields")
+            sb.AppendLine("--'R' represents the 'Replace' Operation")
+            sb.AppendLine("")
+            sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--        Repeat as necessary")
+            sb.AppendLine("END")
+
+
+            GetScriptForKeyChange = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "ctlMain GetScriptForKeyChange")
             Return ""
         End Try
 

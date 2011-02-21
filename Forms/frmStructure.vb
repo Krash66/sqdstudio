@@ -1066,116 +1066,116 @@ doAgain:
                 End If
 
                 '//check if multiple files are selected
-                If FileNames.Count > 1 Then  '(txtStructName.Text = "")
-                    'If FileNames.Count >= 1 Then
-                    '//if yes
+                'If FileNames.Count > 1 Then  '(txtStructName.Text = "")
+                'If FileNames.Count >= 1 Then
+                '//if yes
 
-                    Dim saveName As String
+                Dim saveName As String
 
-                    For Each filename In FileNames
-                        If txtFilePath.Visible Then
-                            If gbDMLConn.Visible = False Then
-                                filepath1 = filename
-                                filepath2 = ""
-                            Else
-                                If cbConn.Text = "" Then
-                                    MsgBox("You Must choose a Connection", MsgBoxStyle.Information, MsgTitle)
-                                    Me.Cursor = Cursors.Default
-                                    DialogResult = Windows.Forms.DialogResult.Retry
-                                    Exit Try
-                                Else
-                                    filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & filename
-                                    filepath2 = ""
-                                End If
-                            End If
-                        Else
+                For Each filename In FileNames
+                    If txtFilePath.Visible Then
+                        If gbDMLConn.Visible = False Then
                             filepath1 = filename
-                            filepath2 = txtDBDFilePath.Text
-                        End If
-
-                        If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                            segname = IO.Path.GetFileNameWithoutExtension(filename)
-                            segname = Strings.UCase(segname)
-                            nd = SelectFirstMatchingNode(tvSegments, segname, , , True)
-                            If Not nd Is Nothing Then
-                                '//no matching segment found for selected Cobol file 
-                                '//so this file is skipped
-                                Dim obj As clsStructure
-                                obj = objThis.Clone(objThis.Parent)
-                                '//We found matching segment for one of the selected 
-                                '//cobol file name
-                                saveName = segname
-
-TryAgain1:                      If DoSave(obj, saveName, txtStructDesc.Text, filepath1, filepath2, True) = True Then
-                                    nd.BackColor = Color.GreenYellow
-                                    nd.EnsureVisible()
-                                    Me.Text = "Adding ... [" & IO.Path.GetFileName(filename) & "]"
-                                Else
-                                    saveName = InputBox("Please type a different name for your structure", "Change Duplicate Structure Name", saveName)
-                                    If saveName = "" Then
-                                        GoTo nextFilename
-                                    Else
-                                        GoTo TryAgain1
-                                    End If
-                                End If
-                            Else
-                                MsgBox("Could not find segment: " & segname & " in file " & _
-                                IO.Path.GetFileName(filepath2), MsgBoxStyle.OkOnly, "Missing Segment")
-                                ErrorLog("Segment: " & segname & " could not be found in " & IO.Path.GetFileName(filepath2))
-                            End If
+                            filepath2 = ""
                         Else
+                            If cbConn.Text = "" Then
+                                MsgBox("You Must choose a Connection", MsgBoxStyle.Information, MsgTitle)
+                                Me.Cursor = Cursors.Default
+                                DialogResult = Windows.Forms.DialogResult.Retry
+                                Exit Try
+                            Else
+                                filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & filename
+                                filepath2 = ""
+                            End If
+                        End If
+                    Else
+                        filepath1 = filename
+                        filepath2 = txtDBDFilePath.Text
+                    End If
+
+                    If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
+                        segname = IO.Path.GetFileNameWithoutExtension(filename)
+                        segname = Strings.UCase(segname)
+                        nd = SelectFirstMatchingNode(tvSegments, segname, , , True)
+                        If Not nd Is Nothing Then
+                            '//no matching segment found for selected Cobol file 
+                            '//so this file is skipped
                             Dim obj As clsStructure
                             obj = objThis.Clone(objThis.Parent)
-                            saveName = IO.Path.GetFileNameWithoutExtension(filename)
-                            '//We found matching segment for one of the selected cobol file name
-TryAgain2:                  If DoSave(obj, saveName, txtStructDesc.Text, filepath1, filepath2, True) = True Then
+                            '//We found matching segment for one of the selected 
+                            '//cobol file name
+                            saveName = segname
+
+TryAgain1:                  If DoSave(obj, saveName, txtStructDesc.Text, filepath1, filepath2, True) = True Then
+                                nd.BackColor = Color.GreenYellow
+                                nd.EnsureVisible()
                                 Me.Text = "Adding ... [" & IO.Path.GetFileName(filename) & "]"
                             Else
-                                saveName = InputBox("Please type a different name for your structure", "Change Duplicate Structure Name", saveName)
+                                saveName = InputBox("Please type a different name for your Description", "Change Duplicate Description Name", saveName)
                                 If saveName = "" Then
                                     GoTo nextFilename
                                 Else
-                                    GoTo TryAgain2
-                                End If
-                            End If
-                        End If
-nextFilename:       Next
-                    Me.Text = "Structure Properties"
-                    Me.Close()
-                    DialogResult = Windows.Forms.DialogResult.OK
-
-
-                Else
-                    If txtFilePath.Visible = True Then
-                        If objThis.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
-                            If gbDMLConn.Visible = False Then
-                                filepath1 = DMLFile
-                                filepath2 = ""
-                            Else
-                                If cbConn.Text = "" Then
-                                    MsgBox("You Must choose a Connection", MsgBoxStyle.Information, MsgTitle)
-                                    Me.Cursor = Cursors.Default
-                                    DialogResult = Windows.Forms.DialogResult.Retry
-                                    Exit Try
-                                Else
-                                    filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & txtFilePath.Text
-                                    filepath2 = ""
+                                    GoTo TryAgain1
                                 End If
                             End If
                         Else
-                            filepath1 = txtFilePath.Text
-                            filepath2 = ""
+                            MsgBox("Could not find segment: " & segname & " in file " & _
+                            IO.Path.GetFileName(filepath2), MsgBoxStyle.OkOnly, "Missing Segment")
+                            ErrorLog("Segment: " & segname & " could not be found in " & IO.Path.GetFileName(filepath2))
                         End If
                     Else
-                        filepath1 = txtCobolFilePath.Text
-                        filepath2 = txtDBDFilePath.Text
+                        Dim obj As clsStructure
+                        obj = objThis.Clone(objThis.Parent)
+                        saveName = IO.Path.GetFileNameWithoutExtension(filename)
+                        '//We found matching segment for one of the selected cobol file name
+TryAgain2:              If DoSave(obj, saveName, txtStructDesc.Text, filepath1, filepath2, True) = True Then
+                            Me.Text = "Adding ... [" & IO.Path.GetFileName(filename) & "]"
+                        Else
+                            saveName = InputBox("Please type a different name for your Description", "Change Duplicate Description Name", saveName)
+                            If saveName = "" Then
+                                GoTo nextFilename
+                            Else
+                                GoTo TryAgain2
+                            End If
+                        End If
                     End If
-                    If DoSave(objThis, txtStructName.Text, txtStructDesc.Text, filepath1, filepath2) = True Then
-                        DialogResult = Windows.Forms.DialogResult.OK
-                    Else
-                        DialogResult = Windows.Forms.DialogResult.Retry
-                    End If
-                End If
+nextFilename:   Next
+                Me.Text = "Description Properties"
+                Me.Close()
+                DialogResult = Windows.Forms.DialogResult.OK
+
+
+                'Else
+                '    If txtFilePath.Visible = True Then
+                '        If objThis.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
+                '            If gbDMLConn.Visible = False Then
+                '                filepath1 = DMLFile
+                '                filepath2 = ""
+                '            Else
+                '                If cbConn.Text = "" Then
+                '                    MsgBox("You Must choose a Connection", MsgBoxStyle.Information, MsgTitle)
+                '                    Me.Cursor = Cursors.Default
+                '                    DialogResult = Windows.Forms.DialogResult.Retry
+                '                    Exit Try
+                '                Else
+                '                    filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & txtFilePath.Text
+                '                    filepath2 = ""
+                '                End If
+                '            End If
+                '        Else
+                '            filepath1 = txtFilePath.Text
+                '            filepath2 = ""
+                '        End If
+                '    Else
+                '        filepath1 = txtCobolFilePath.Text
+                '        filepath2 = txtDBDFilePath.Text
+                '    End If
+                '    If DoSave(objThis, txtStructName.Text, txtStructDesc.Text, filepath1, filepath2) = True Then
+                '        DialogResult = Windows.Forms.DialogResult.OK
+                '    Else
+                '        DialogResult = Windows.Forms.DialogResult.Retry
+                '    End If
+                'End If
             Else
                 If txtFilePath.Visible = True Then
                     If objThis.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
@@ -1248,7 +1248,7 @@ nextFilename:       Next
                 If objEnv.LocalCDir <> "" Then
                     dlgOpen.InitialDirectory = objEnv.LocalCDir
                 Else
-                    dlgOpen.InitialDirectory = "" 'LocalCFolderPath
+                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalCFolderPath
                 End If
                 dlgOpen.FileName = ""
                 extString = ".h"
@@ -1257,7 +1257,7 @@ nextFilename:       Next
                 If objEnv.LocalDDLDir <> "" Then
                     dlgOpen.InitialDirectory = objEnv.LocalDDLDir
                 Else
-                    dlgOpen.InitialDirectory = "" 'LocalDDLFolderPath
+                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
                 End If
                 dlgOpen.FileName = ""
                 extString = ".ddl"
@@ -1266,7 +1266,7 @@ nextFilename:       Next
                 If objEnv.LocalDDLDir <> "" Then
                     dlgOpen.InitialDirectory = objEnv.LocalDMLDir
                 Else
-                    dlgOpen.InitialDirectory = "" 'LocalDDLFolderPath
+                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
                 End If
                 dlgOpen.FileName = ""
                 extString = ".dml"
@@ -1275,7 +1275,7 @@ nextFilename:       Next
                 If objEnv.LocalDTDDir <> "" Then
                     dlgOpen.InitialDirectory = objEnv.LocalDTDDir
                 Else
-                    dlgOpen.InitialDirectory = "" 'LocalDTDFolderPath
+                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDTDFolderPath
                 End If
                 dlgOpen.FileName = ""
                 extString = ".dtd"
@@ -1328,7 +1328,7 @@ nextFilename:       Next
         If objEnv.LocalCobolDir <> "" Then
             dlgOpen.InitialDirectory = objEnv.LocalCobolDir
         Else
-            dlgOpen.InitialDirectory = "" 'LocalCOBOLFolderPath
+            dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalCOBOLFolderPath
         End If
         dlgOpen.FileName = ""
 
@@ -1377,7 +1377,7 @@ nextFilename:       Next
             If objEnv.LocalDBDDir <> "" Then
                 dlgOpen.InitialDirectory = objEnv.LocalDBDDir
             Else
-                dlgOpen.InitialDirectory = "" 'LocalDBDFolderPath
+                dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDBDFolderPath
             End If
             dlgOpen.FileName = ""
 

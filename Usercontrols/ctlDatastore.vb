@@ -19,6 +19,7 @@ Public Class ctlDatastore
     Private Const SplitSrcNoDel As Integer = 298
     Private Const SplitTgtNoDel As Integer = 221
     Private Pnt As Point
+    Friend WithEvents cbKeyChng As System.Windows.Forms.CheckBox
 
     Private lvItem As ListViewItem
 
@@ -203,6 +204,7 @@ Public Class ctlDatastore
         Me.gbStruct = New System.Windows.Forms.GroupBox
         Me.scDS = New System.Windows.Forms.SplitContainer
         Me.gbTarget = New System.Windows.Forms.GroupBox
+        Me.cbKeyChng = New System.Windows.Forms.CheckBox
         Me.gbDel = New System.Windows.Forms.GroupBox
         Me.gbField = New System.Windows.Forms.GroupBox
         Me.SplitContainer5 = New System.Windows.Forms.SplitContainer
@@ -285,7 +287,7 @@ Public Class ctlDatastore
         Me.cmbOperationType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbOperationType.Location = New System.Drawing.Point(103, 14)
         Me.cmbOperationType.Name = "cmbOperationType"
-        Me.cmbOperationType.Size = New System.Drawing.Size(214, 21)
+        Me.cmbOperationType.Size = New System.Drawing.Size(117, 21)
         Me.cmbOperationType.TabIndex = 6
         '
         'Label16
@@ -1028,16 +1030,28 @@ Public Class ctlDatastore
         '
         'gbTarget
         '
+        Me.gbTarget.Controls.Add(Me.cbKeyChng)
         Me.gbTarget.Controls.Add(Me.cmbOperationType)
         Me.gbTarget.Controls.Add(Me.Label16)
         Me.gbTarget.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTarget.ForeColor = System.Drawing.Color.White
         Me.gbTarget.Location = New System.Drawing.Point(433, 250)
         Me.gbTarget.Name = "gbTarget"
-        Me.gbTarget.Size = New System.Drawing.Size(323, 44)
+        Me.gbTarget.Size = New System.Drawing.Size(394, 44)
         Me.gbTarget.TabIndex = 21
         Me.gbTarget.TabStop = False
         Me.gbTarget.Text = "Target Properties"
+        '
+        'cbKeyChng
+        '
+        Me.cbKeyChng.AutoSize = True
+        Me.cbKeyChng.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.cbKeyChng.Location = New System.Drawing.Point(237, 18)
+        Me.cbKeyChng.Name = "cbKeyChng"
+        Me.cbKeyChng.Size = New System.Drawing.Size(151, 17)
+        Me.cbKeyChng.TabIndex = 7
+        Me.cbKeyChng.Text = "Allow for key changes"
+        Me.cbKeyChng.UseVisualStyleBackColor = True
         '
         'gbDel
         '
@@ -1223,7 +1237,7 @@ Public Class ctlDatastore
 
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, cmbOperationType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged, txtDatastoreName.TextChanged, cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, txtRestart.TextChanged 'cmbColDelimiter.SelectedIndexChanged, cmbRowDelimiter.SelectedIndexChanged, cmbTextQualifier.SelectedIndexChanged '// modified by TK and KS 11/6/2006
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged, txtDatastoreName.TextChanged, cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, txtRestart.TextChanged, cbKeyChng.CheckedChanged, cmbOperationType.SelectedIndexChanged 'cmbColDelimiter.SelectedIndexChanged, cmbRowDelimiter.SelectedIndexChanged, cmbTextQualifier.SelectedIndexChanged '// modified by TK and KS 11/6/2006
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -1317,7 +1331,7 @@ Public Class ctlDatastore
         '//Modified by TK  12/2009
         cmbDatastoreType.Items.Clear()
         cmbDatastoreType.Items.Add(New Mylist("Binary", enumDatastore.DS_BINARY))
-        cmbDatastoreType.Items.Add(New Mylist("Text", enumDatastore.DS_TEXT))
+        'cmbDatastoreType.Items.Add(New Mylist("Text", enumDatastore.DS_TEXT))
         cmbDatastoreType.Items.Add(New Mylist("Delimited", enumDatastore.DS_DELIMITED))
         cmbDatastoreType.Items.Add(New Mylist("XML", enumDatastore.DS_XML))
         cmbDatastoreType.Items.Add(New Mylist("Relational", enumDatastore.DS_RELATIONAL))
@@ -2082,6 +2096,37 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     End Sub
 
+    Private Sub cmbOperationType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOperationType.SelectedIndexChanged
+
+        Try
+            Select Case CType(cmbOperationType.SelectedItem, Mylist).Name
+                Case "", "Insert", "Replace"
+                    cbKeyChng.Enabled = False
+                Case "Update", "Delete", "Change", "Modify"
+                    cbKeyChng.Enabled = True
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore cmbOperationType_SelectedIndexChanged")
+        End Try
+
+    End Sub
+
+    Private Sub cbKeyChng_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbKeyChng.CheckedChanged
+
+        Try
+            If cbKeyChng.Checked = True Then
+                objThis.IsKeyChng = "1"
+            Else
+                objThis.IsKeyChng = "0"
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore cbKeyChng_CheckedChanged")
+        End Try
+
+    End Sub
+
     Sub SetCharCodeCombo(ByVal DatastoreType As enumDatastore)
 
         Try
@@ -2542,6 +2587,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     End If
                 End If
             End If
+            tvDatastoreStructures.SelectedNode = e.Node
             OnChange(Me, New EventArgs)
 
 
@@ -2967,7 +3013,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         'Me.chkOrdered.Checked = IIf(objThis.IsOrdered = "1", True, False)
         Me.chkSkipChangeCheck.Checked = IIf(objThis.IsSkipChangeCheck = "1", True, False)
         'Me.chkBeforeImage.Checked = IIf(objThis.IsBeforeImage = "1", True, False) '//new by npatel on 8/10/05
-
+        Me.cbKeyChng.Checked = IIf(objThis.IsKeyChng = "1", True, False)
 
         'If SetListItemByValue(cmbColDelimiter, objThis.ColumnDelimiter) = False Then
         '    cmbColDelimiter.Text = objThis.ColumnDelimiter
@@ -3255,6 +3301,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             'objThis.IsOrdered = IIf(chkOrdered.Checked, "1", "0")
             objThis.IsSkipChangeCheck = IIf(chkSkipChangeCheck.Checked, "1", "0")
             'objThis.IsBeforeImage = IIf(chkBeforeImage.Checked, "1", "0") '// new by npatel on 8/10/05
+            objThis.IsKeyChng = IIf(cbKeyChng.Checked, "1", "0")
 
             If objThis.DatastoreType = modDeclares.enumDatastore.DS_DELIMITED Then
                 If (cmbColDelimiter.SelectedItem Is Nothing) = True Then

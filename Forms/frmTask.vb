@@ -232,7 +232,7 @@ Public Class frmTask
 
             While GoodName = False
                 GoodName = True
-                NewName = NamePrefix & Count.ToString '& "_" & Strings.Left(EngObj.Text, 9)
+                NewName = NamePrefix & Count.ToString & "_" & Strings.Left(EngObj.Text, 9)
                 If NamePrefix = "Main" Then
                     For Each TestMain As clsTask In EngObj.Mains
                         If TestMain.TaskName = NewName Then

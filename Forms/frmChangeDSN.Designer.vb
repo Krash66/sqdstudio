@@ -162,7 +162,7 @@ Partial Class frmChangeDSN
         'txtDSNname
         '
         Me.txtDSNname.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtDSNname.BackColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.txtDSNname.BackColor = System.Drawing.SystemColors.Window
         Me.txtDSNname.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDSNname.Location = New System.Drawing.Point(129, 396)
         Me.txtDSNname.Name = "txtDSNname"

@@ -2347,11 +2347,6 @@ Public Class frmMain
         IsFocusOnExplorer = True
         mnuEdit.Enabled = True
 
-        If Not (tvExplorer.SelectedNode Is Nothing) Then
-            EnableTreeActionButton(True)
-            ShowStatusMessage("Selected node : [" & CType(tvExplorer.SelectedNode.Tag, INode).Key.Replace("-", "->") & "]")
-        End If
-
         If Not objTopMost Is Nothing Then
             Dim obj As INode
             obj = tvExplorer.SelectedNode.Tag
@@ -2372,7 +2367,10 @@ Public Class frmMain
             Else
                 ShowUsercontrol(e.Node)
             End If
-
+            If Not (tvExplorer.SelectedNode Is Nothing) Then
+                EnableTreeActionButton(True)
+                ShowStatusMessage("Selected node : [" & CType(tvExplorer.SelectedNode.Tag, INode).Key.Replace("-", "->") & "]")
+            End If
         End If
 
         Me.Cursor = Cursors.Default
@@ -3209,7 +3207,7 @@ Public Class frmMain
 
                         '// build proper structure and type folder nodes as needed to 
                         '//store the new structure and put the new structure in the 
-                        '//proper place in the tree node structure
+                        '//proper place in the tree node structure 
                         If objArr IsNot Nothing Then
                             For i = 0 To objArr.Count - 1
                                 obj = objArr(i)
@@ -5153,7 +5151,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     'End Function
 
-    Function AddDSstructuresToTree(ByVal pNode As TreeNode, ByVal obj As clsDatastore, Optional ByVal MapAs As Boolean = False) As Boolean
+    Function AddDSstructuresToTree(ByRef pNode As TreeNode, ByVal obj As clsDatastore, Optional ByVal MapAs As Boolean = False) As Boolean
 
         Dim i As Integer
         Dim cnode As TreeNode
@@ -5687,7 +5685,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         mnuAddIMSLE.Enabled = True
                     End If
 
-                    mnuDelDS.Enabled = False
+                    mnuDelDS.Enabled = True
                     'mnuEditDS.Enabled = True
                     mnuCopyDS.Enabled = False
                     mnuPasteDS.Enabled = False
@@ -8296,12 +8294,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                             DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode, inodetype)
                         End If
                     End If
+                ElseIf inodetype = NODE_SOURCEDSSEL Or inodetype = NODE_TARGETDSSEL Then
+                    If MsgBox("Are you sure you want to delete selected item and sub items?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
+                        If Not (tvExplorer.SelectedNode Is Nothing) Then
+                            '// until the current node is empty .. do a recursive delete
+                            DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode.Parent, inodetype)
+                        End If
+                    End If
                 Else
                     If MsgBox("Are you sure you want to delete selected item and sub items?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
                         If Not (tvExplorer.SelectedNode Is Nothing) Then
                             '// until the current node is empty .. do a recursive delete
                             DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode, inodetype)
-
                         End If
                     End If
                 End If
@@ -8390,6 +8394,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim NewName As String
         Dim StrObj As clsStructure
         Dim envobj As clsEnvironment
+        Dim Prefix As String = "m"
 
         Try
             obj = CType(tvExplorer.SelectedNode.Tag, INode)
@@ -8412,8 +8417,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Select Case OutType
                     Case "DTD"
                         strSaveDir = envobj.LocalDTDDir
-                    Case "DB2DDL", "ORADDL", "SQLDDL"
+                    Case "DB2DDL"
                         strSaveDir = envobj.LocalDDLDir
+                        Prefix = "md"
+                    Case "ORADDL"
+                        strSaveDir = envobj.LocalDDLDir
+                        Prefix = "mo"
+                    Case "SQLDDL"
+                        strSaveDir = envobj.LocalDDLDir
+                        Prefix = "ms"
                     Case "H"
                         strSaveDir = envobj.LocalCDir
                     Case "LOD"
@@ -8433,7 +8445,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     strSaveDir = FolderBrowserDialog1.SelectedPath
                 End If
 
-                NewName = InputBox("Please Name Your Model", "Model Name", "m" & obj.Text)
+                NewName = InputBox("Please Name Your Model", "Model Name", Prefix & obj.Text)
 
                 '//////////////////// NEW MODELER /////////////////////
                 retPath = ModelStructure(obj, OutType, NewName, strSaveDir)
@@ -8481,8 +8493,15 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                 Select Case OutType
                     Case "DTD"
                         strSaveDir = envobj.LocalDTDDir
-                    Case "DB2DDL", "ORADDL", "SQLDDL"
+                    Case "DB2DDL"
                         strSaveDir = envobj.LocalDDLDir
+                        Prefix = "md"
+                    Case "ORADDL"
+                        strSaveDir = envobj.LocalDDLDir
+                        Prefix = "mo"
+                    Case "SQLDDL"
+                        strSaveDir = envobj.LocalDDLDir
+                        Prefix = "ms"
                     Case "H"
                         strSaveDir = envobj.LocalCDir
                     Case "LOD"
@@ -8497,7 +8516,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
 
                 For Each StrNode As TreeNode In tvExplorer.SelectedNode.Nodes
                     StrObj = CType(StrNode.Tag, clsStructure)
-                    NewName = "m" & StrObj.Text
+                    NewName = Prefix & StrObj.Text
 
                     '//////////////////// NEW MODELER /////////////////////
                     retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
@@ -8659,13 +8678,19 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                     If NodeType = NODE_ENGINE Then objTopMost = ctEng.EditObj(nd.Tag)
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
                     ToolBar1.Buttons(enumToolBarButtons.TB_DATASTORE).Enabled = True
+                    'tvExplorer.Refresh()
+                    nd.ExpandAll()
                     If NodeType = NODE_SOURCEDATASTORE Or NodeType = NODE_TARGETDATASTORE Then
                         ToolBar1.Buttons(enumToolBarButtons.TB_QUERY).Enabled = False
-                        'nd.ExpandAll()
+
                         If CType(nd.Tag, clsDatastore).DatastoreType = enumDatastore.DS_INCLUDE Then
                             ctInc.Refresh()
                             objTopMost = ctInc.EditObj(nd.Tag)
                         Else
+                            If CType(nd.Tag, clsDatastore).ObjSelections.Count > 0 Then
+                                tvExplorer.SelectedNode = nd.FirstNode
+                                Exit Select
+                            End If
                             ctDs.Refresh()
                             objTopMost = ctDs.EditObj(nd.Tag, nd)
                         End If
@@ -8673,7 +8698,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                 Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
                     ToolBar1.Buttons(enumToolBarButtons.TB_DATASTORE).Enabled = True
                     ToolBar1.Buttons(enumToolBarButtons.TB_QUERY).Enabled = True
-                    'nd.ExpandAll()
+                    nd.ExpandAll()
                     DSSelObj = nd.Tag
                     objTopMost = ctDs.EditObj(DSSelObj.ObjDatastore, DSSelObj.ObjDatastore.ObjTreeNode, nd)
                 Case NODE_VARIABLE
