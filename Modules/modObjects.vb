@@ -466,7 +466,11 @@ Module modObjects
             'objSel.ObjStructure.LoadItems()
             For Each fld As clsField In objSel.ObjStructure.ObjFields
                 'fld = objSel.DSSelectionFields(i)
-                If (fld.FieldName = FieldName) And (fld.Struct.StructureName = StructureName) And (fld.Struct.Environment.EnvironmentName = EnvironmentName) And (fld.Project.ProjectName = ProjectName) And (fld.ParentName = objSel.ObjStructure.StructureName) Then
+                If (fld.FieldName = FieldName) And _
+                (fld.Struct.StructureName = StructureName) And _
+                (fld.Struct.Environment.EnvironmentName = EnvironmentName) And _
+                (fld.Project.ProjectName = ProjectName) And _
+                (fld.ParentName = objSel.ObjStructure.StructureName) Then
                     Return fld.Clone(objSel)
                     Exit Function
                 End If
@@ -897,7 +901,7 @@ Module modObjects
         Try
             For i = 1 To objEng.Variables.Count
                 var = objEng.Variables(i)
-                If var.VariableName = var.VariableName And var.VariableType = objVar.VariableType Then
+                If var.VariableName = objVar.VariableName And var.VariableType = objVar.VariableType Then
                     Return objEng.Variables(i)
                     Exit Function
                 End If
@@ -916,7 +920,7 @@ Module modObjects
 
         Try
             For Each var As clsVariable In objEnv.Variables
-                If var.VariableName = var.VariableName And var.VariableType = objVar.VariableType Then
+                If var.VariableName = objVar.VariableName And var.VariableType = objVar.VariableType Then
                     Return var
                     Exit Function
                 End If

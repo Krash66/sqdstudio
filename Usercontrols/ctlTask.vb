@@ -3423,17 +3423,14 @@ ManualGoTo:
                         obj = draggedNode.Tag
                         If obj.Type = NODE_STRUCT_FLD Then
                             If CType(obj, clsField).CorrectedFieldName <> "" Then
-                                txt = GetParentDSForThisNode(draggedNode).Text & "." & _
-                                CType(obj, clsField).ParentStructureName & "." & _
-                                CType(obj, clsField).CorrectedFieldName
+                                txt = CType(obj, clsField).ParentStructureName & "." & _
+                                CType(obj, clsField).CorrectedFieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
                             ElseIf CType(obj, clsField).OrgName <> "" Then
-                                txt = GetParentDSForThisNode(draggedNode).Text & "." & _
-                                CType(obj, clsField).ParentStructureName & "." & _
-                                CType(obj, clsField).OrgName
+                                txt = CType(obj, clsField).ParentStructureName & "." & _
+                                CType(obj, clsField).OrgName 'GetParentDSForThisNode(draggedNode).Text & "." & _
                             Else
-                                txt = GetParentDSForThisNode(draggedNode).Text & "." & _
-                                CType(obj, clsField).ParentStructureName & "." & _
-                                CType(obj, clsField).FieldName
+                                txt = CType(obj, clsField).ParentStructureName & "." & _
+                                CType(obj, clsField).FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
                             End If
                         Else
                             txt = obj.Text
@@ -4259,7 +4256,7 @@ fallthru2:          AddMapping(objClip, CurRow)
 
         Dim objMap As clsMapping
         Dim obj As INode '//Added on 8/8
-        Dim objParentDS As INode '//added on 9/27/05
+        Dim objParentDS As INode '//added on 9/27/05 
         Dim msgreturn As MsgBoxResult
 
         Try

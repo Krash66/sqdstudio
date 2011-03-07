@@ -575,7 +575,7 @@ Public Class clsTask
             End If
 
             LoadDatastores(cmd)
-            LoadMappings(, cmd)
+            LoadMappings(True, cmd)
 
             Me.IsLoaded = True
 

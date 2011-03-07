@@ -259,7 +259,7 @@ Public Class ctlMain
             If SaveCurrentSelection() = False Then
                 Exit Function
             End If
-            '/// Added save as main or General Procedure
+            '/// Added save as main or General Procedure 
             If DoSetTaskType = True Then
                 If objThis.SaveTaskType() = False Then
                     Exit Function

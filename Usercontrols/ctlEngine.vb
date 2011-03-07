@@ -856,6 +856,7 @@ Public Class ctlEngine
         Try
             cmbEngVer.Items.Clear()
 
+            cmbEngVer.Items.Add(New Mylist("3.8.0", "3.8.0"))
             cmbEngVer.Items.Add(New Mylist("3.7.17", "3.7.17"))
             cmbEngVer.Items.Add(New Mylist("3.7.12", "3.7.12"))
             cmbEngVer.Items.Add(New Mylist("3.7.7", "3.7.7"))
