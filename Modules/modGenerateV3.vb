@@ -841,9 +841,10 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                         Log("return code >> " & myProcess.ExitCode.ToString & Chr(13) & "return path >> " & pathSQD)
                 End Select
 
-                objWriteRPT.Write(OutStr)
+                'Error First so Parser Header is at Top
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
+                objWriteRPT.Write(OutStr)
 
 
                 Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")
