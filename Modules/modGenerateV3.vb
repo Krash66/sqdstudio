@@ -842,9 +842,10 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 End Select
 
                 'Error First so Parser Header is at Top
+                objWriteRPT.Write(OutStr)
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
-                objWriteRPT.Write(OutStr)
+
 
 
                 Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")

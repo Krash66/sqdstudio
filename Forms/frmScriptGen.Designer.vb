@@ -504,6 +504,7 @@ Partial Class frmScriptGen
         Me.btnSQData.TabIndex = 64
         Me.btnSQData.Text = "Run SQData"
         Me.btnSQData.UseVisualStyleBackColor = True
+        Me.btnSQData.Visible = False
         '
         'btnOpenOutput
         '
@@ -514,6 +515,7 @@ Partial Class frmScriptGen
         Me.btnOpenOutput.TabIndex = 65
         Me.btnOpenOutput.Text = "Open Output Data"
         Me.btnOpenOutput.UseVisualStyleBackColor = True
+        Me.btnOpenOutput.Visible = False
         '
         'frmScriptGen
         '

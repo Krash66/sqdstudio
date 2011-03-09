@@ -514,7 +514,7 @@ doAgain:
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
             'added for RBC   3/8/11    Gives a default version
-            'objThis.EngVersion = "3.7.17"
+            objThis.EngVersion = "3.7.17"
 
 
 

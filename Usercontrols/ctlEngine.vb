@@ -629,7 +629,10 @@ Public Class ctlEngine
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
             objThis.Main = txtMain.Text
-            objThis.EngVersion = cmbEngVer.Text
+            'objThis.EngVersion = cmbEngVer.Text
+
+
+            objThis.EngVersion = "3.7.17"
 
             Dim temp As Mylist = cbConn.SelectedItem
 
@@ -856,12 +859,12 @@ Public Class ctlEngine
         Try
             cmbEngVer.Items.Clear()
 
-            cmbEngVer.Items.Add(New Mylist("3.8.0", "3.8.0"))
+            'cmbEngVer.Items.Add(New Mylist("3.8.0", "3.8.0"))
             cmbEngVer.Items.Add(New Mylist("3.7.17", "3.7.17"))
-            cmbEngVer.Items.Add(New Mylist("3.7.12", "3.7.12"))
-            cmbEngVer.Items.Add(New Mylist("3.7.7", "3.7.7"))
-            cmbEngVer.Items.Add(New Mylist("3.7.6", "3.7.6"))
-            cmbEngVer.Items.Add(New Mylist("3.6.14", "3.6.14"))
+            'cmbEngVer.Items.Add(New Mylist("3.7.12", "3.7.12"))
+            'cmbEngVer.Items.Add(New Mylist("3.7.7", "3.7.7"))
+            'cmbEngVer.Items.Add(New Mylist("3.7.6", "3.7.6"))
+            'cmbEngVer.Items.Add(New Mylist("3.6.14", "3.6.14"))
 
             If objThis.EngVersion.Trim <> "" Then
                 SetListItemByValue(cmbEngVer, objThis.EngVersion, False)
