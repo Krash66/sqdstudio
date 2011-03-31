@@ -2164,7 +2164,7 @@ Public Class frmMain
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         If Application.UserAppDataRegistry.GetValue("WinState") IsNot Nothing Then
-            Dim winStr As String = Application.CommonAppDataRegistry.GetValue("WinState")
+            Dim winStr As String = Application.UserAppDataRegistry.GetValue("WinState")
             Select Case winStr
                 Case "Maximized"
                     Me.WindowState = FormWindowState.Maximized

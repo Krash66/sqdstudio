@@ -1,0 +1,6 @@
+*** 3.3.3.0 ***
+Correction to registry read and write errors, related to User Rights Issues.
+
+*** 3.3.2.9 ***
+This revision Includes a Parser Update to version 3.7.17
+Also the exclusion of Unused Executable files.

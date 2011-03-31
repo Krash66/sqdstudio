@@ -1316,7 +1316,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
         "ProductCode" = "8:{E5EF2085-2502-4C69-B5C4-64C377EA83D4}"
-        "PackageCode" = "8:{D06E3EF3-79B8-41E9-B2AE-6AAE5AF87E36}"
+        "PackageCode" = "8:{25497BB2-B990-4A06-BA04-FAAF5A518B61}"
         "UpgradeCode" = "8:{3D23AB76-63FD-4F07-9B57-66610D351D5E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -1956,7 +1956,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\Design Studio.exe"
+            "SourcePath" = "8:..\\obj\\Release\\Design Studio.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
