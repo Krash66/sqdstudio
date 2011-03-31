@@ -2163,7 +2163,7 @@ Public Class frmMain
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        If Application.CommonAppDataRegistry.GetValue("WinState") IsNot Nothing Then
+        If Application.UserAppDataRegistry.GetValue("WinState") IsNot Nothing Then
             Dim winStr As String = Application.CommonAppDataRegistry.GetValue("WinState")
             Select Case winStr
                 Case "Maximized"
@@ -2213,7 +2213,7 @@ Public Class frmMain
     Private Sub frmMain_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
 
         '/// Save Window State
-        Application.CommonAppDataRegistry.SetValue("WinState", Me.WindowState)
+        Application.UserAppDataRegistry.SetValue("WinState", Me.WindowState)
         '//save project settings
         If Not CurLoadedProject Is Nothing Then
             CurLoadedProject.Save(True)
