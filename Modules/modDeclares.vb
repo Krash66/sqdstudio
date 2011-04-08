@@ -209,12 +209,12 @@ Public Module modDeclares
     '
     Public Const TXT_ISKEY As String = "Key field?"
     '// added 11/3/06
-    Public Const TXT_FKEY As String = "Future Use"
+    Public Const TXT_FKEY As String = "Foreign Key (COBOL w/DBD)"
     Public Const TXT_INITVAL As String = "Initialization value"
     Public Const TXT_RETYPE As String = "Re-Type Data As"
     Public Const TXT_INVALID As String = "Action for invalid value"
     Public Const TXT_EXTTYPE As String = "External data type"
-    Public Const TXT_DATEFORMAT As String = "Future Use 2"
+    Public Const TXT_DATEFORMAT As String = "Date Format"
     Public Const TXT_LABEL As String = "Label"
     Public Const TXT_IDENTVAL As String = "Record identifier value"
     Public Const TXT_NCHILDREN As String = "Number of Elements"

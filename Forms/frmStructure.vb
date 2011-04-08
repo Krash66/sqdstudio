@@ -505,6 +505,11 @@ Public Class frmStructure
         Me.Label3.TabIndex = 55
         Me.Label3.Text = "Description  Name"
         '
+        'OpenMultiFileDialog1
+        '
+        Me.OpenMultiFileDialog1.ShowReadOnly = True
+        Me.OpenMultiFileDialog1.SupportMultiDottedExtensions = True
+        '
         'frmStructure
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
@@ -1237,63 +1242,63 @@ nextFilename:   Next
         objEnv = objThis.Environment
         objEnv.LoadMe()
         If IsChangeObj = False Then
-            dlgOpen.Multiselect = True
+            OpenMultiFileDialog1.Multiselect = True
         Else
-            dlgOpen.Multiselect = False
+            OpenMultiFileDialog1.Multiselect = False
         End If
 
         Select Case objThis.StructureType
             Case modDeclares.enumStructure.STRUCT_C
                 strFilter = "C Header files (*.h)|*.h|All files (*.*)|*.*"
                 If objEnv.LocalCDir <> "" Then
-                    dlgOpen.InitialDirectory = objEnv.LocalCDir
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.LocalCDir
                 Else
-                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalCFolderPath
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalCFolderPath
                 End If
-                dlgOpen.FileName = ""
+                OpenMultiFileDialog1.FileName = ""
                 extString = ".h"
             Case modDeclares.enumStructure.STRUCT_REL_DDL
                 strFilter = "Relational DDL files (*.ddl)|*.ddl|All files (*.*)|*.*"
                 If objEnv.LocalDDLDir <> "" Then
-                    dlgOpen.InitialDirectory = objEnv.LocalDDLDir
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDDLDir
                 Else
-                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
                 End If
-                dlgOpen.FileName = ""
+                OpenMultiFileDialog1.FileName = ""
                 extString = ".ddl"
             Case modDeclares.enumStructure.STRUCT_REL_DML_FILE
                 strFilter = "Relational DML files (*.dml)|*.dml|All files (*.*)|*.*"
                 If objEnv.LocalDDLDir <> "" Then
-                    dlgOpen.InitialDirectory = objEnv.LocalDMLDir
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDMLDir
                 Else
-                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalDDLFolderPath
                 End If
-                dlgOpen.FileName = ""
+                OpenMultiFileDialog1.FileName = ""
                 extString = ".dml"
             Case modDeclares.enumStructure.STRUCT_XMLDTD
                 strFilter = "XML DTD Files (*.dtd)|*.dtd|All files (*.*)|*.*"
                 If objEnv.LocalDTDDir <> "" Then
-                    dlgOpen.InitialDirectory = objEnv.LocalDTDDir
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDTDDir
                 Else
-                    dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDTDFolderPath
+                    OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalDTDFolderPath
                 End If
-                dlgOpen.FileName = ""
+                OpenMultiFileDialog1.FileName = ""
                 extString = ".dtd"
             Case Else
                 strFilter = "All files (*.*)|*.*"
         End Select
 
-        dlgOpen.Filter = strFilter
+        OpenMultiFileDialog1.Filter = strFilter
 
         If Me.chkFTP.Checked Then
             Dim FTPClient As frmFTPClient = New frmFTPClient
-            Me.GottenFiles = FTPClient.BrowseFile(dlgOpen.InitialDirectory, extString)
+            Me.GottenFiles = FTPClient.BrowseFile(OpenMultiFileDialog1.InitialDirectory, extString)
             If (Me.GottenFiles.Count > 0) Then
-                Me.txtFilePath.Text = dlgOpen.InitialDirectory & "\" & Me.GottenFiles(1)
+                Me.txtFilePath.Text = OpenMultiFileDialog1.InitialDirectory & "\" & Me.GottenFiles(1)
             End If
         Else
-            If dlgOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                txtFilePath.Text = dlgOpen.FileName
+            If OpenMultiFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                txtFilePath.Text = OpenMultiFileDialog1.FileName
                 If txtStructName.Text.Trim = "" Then
                     txtStructName.Text = IO.Path.GetFileNameWithoutExtension(txtFilePath.Text)
                 End If
@@ -1301,7 +1306,7 @@ nextFilename:   Next
                 '// added by KS and TK 11/6/2006
                 txtFilePath.Text = ""
                 FileNames = New Collection
-                For Each filename In dlgOpen.FileNames
+                For Each filename In OpenMultiFileDialog1.FileNames
                     txtFilePath.Text = txtFilePath.Text & filename & " "
                     FileNames.Add(filename.Clone)
                 Next
@@ -1312,7 +1317,7 @@ nextFilename:   Next
             End If
         End If
 
-        dlgOpen.Multiselect = False
+        OpenMultiFileDialog1.Multiselect = False
 
     End Sub
 
@@ -1320,30 +1325,30 @@ nextFilename:   Next
 
         Dim filename As String
 
-        dlgOpen.Multiselect = True
+        OpenMultiFileDialog1.Multiselect = True
         objEnv = objThis.Environment
         objEnv.LoadMe()
-        dlgOpen.Filter = "Cobol Copybook (*.cob)|*.cob|All files (*.*)|*.*"
+        OpenMultiFileDialog1.Filter = "Cobol Copybook (*.cob)|*.cob|All files (*.*)|*.*"
 
         If objEnv.LocalCobolDir <> "" Then
-            dlgOpen.InitialDirectory = objEnv.LocalCobolDir
+            OpenMultiFileDialog1.InitialDirectory = objEnv.LocalCobolDir
         Else
-            dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalCOBOLFolderPath
+            OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalCOBOLFolderPath
         End If
-        dlgOpen.FileName = ""
+        OpenMultiFileDialog1.FileName = ""
 
         If Me.chkFTP.Checked Then
             Dim FTPClient As frmFTPClient = New frmFTPClient
-            Me.GottenFiles = FTPClient.BrowseFile(dlgOpen.InitialDirectory, ".cob")
+            Me.GottenFiles = FTPClient.BrowseFile(OpenMultiFileDialog1.InitialDirectory, ".cob")
             If (Me.GottenFiles.Count > 0) Then
-                Me.txtCobolFilePath.Text = dlgOpen.InitialDirectory & "\" & Me.GottenFiles(1)
+                Me.txtCobolFilePath.Text = OpenMultiFileDialog1.InitialDirectory & "\" & Me.GottenFiles(1)
             End If
         Else
-            If dlgOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If OpenMultiFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 txtCobolFilePath.Text = ""         'KS100906'
                 FileNames = New Collection
-                For Each filename In dlgOpen.FileNames
-                    txtCobolFilePath.Text = txtCobolFilePath.Text & dlgOpen.FileName & " " 'KS100906'
+                For Each filename In OpenMultiFileDialog1.FileNames
+                    txtCobolFilePath.Text = txtCobolFilePath.Text & OpenMultiFileDialog1.FileName & " " 'KS100906'
                     FileNames.Add(filename.Clone)
                 Next
                 If txtStructName.Text.Trim = "" And FileNames.Count <= 1 Then
@@ -1361,7 +1366,7 @@ nextFilename:   Next
             End If
         End If
 
-        dlgOpen.Multiselect = False
+        OpenMultiFileDialog1.Multiselect = False
 
     End Sub
 
@@ -1372,26 +1377,26 @@ nextFilename:   Next
         Try
             objEnv = objThis.Environment
             objEnv.LoadMe()
-            dlgOpen.Filter = "IMS DBD files (*.dbd)|*.dbd|All files (*.*)|*.*"
+            OpenMultiFileDialog1.Filter = "IMS DBD files (*.dbd)|*.dbd|All files (*.*)|*.*"
 
             If objEnv.LocalDBDDir <> "" Then
-                dlgOpen.InitialDirectory = objEnv.LocalDBDDir
+                OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDBDDir
             Else
-                dlgOpen.InitialDirectory = objEnv.DefaultStrDir 'LocalDBDFolderPath
+                OpenMultiFileDialog1.InitialDirectory = objEnv.DefaultStrDir 'LocalDBDFolderPath
             End If
-            dlgOpen.FileName = ""
+            OpenMultiFileDialog1.FileName = ""
 
             If Me.chkFTP.Checked Then
                 Dim FTPClient As frmFTPClient = New frmFTPClient
 
-                tmpGottenFiles = FTPClient.BrowseFile(dlgOpen.InitialDirectory, ".dbd")
+                tmpGottenFiles = FTPClient.BrowseFile(OpenMultiFileDialog1.InitialDirectory, ".dbd")
                 If (Me.GottenFiles.Count > 0) Then
-                    Me.txtDBDFilePath.Text = dlgOpen.InitialDirectory & "\" & tmpGottenFiles(0)
+                    Me.txtDBDFilePath.Text = OpenMultiFileDialog1.InitialDirectory & "\" & tmpGottenFiles(0)
                 End If
 
             Else
-                If dlgOpen.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    txtDBDFilePath.Text = dlgOpen.FileName
+                If OpenMultiFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                    txtDBDFilePath.Text = OpenMultiFileDialog1.FileName
 
                     If (txtCobolFilePath.Text <> "") Then
                         objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS

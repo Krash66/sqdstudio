@@ -13,6 +13,7 @@ Public Class ctlEnvironment
     Friend WithEvents gbRelDir As System.Windows.Forms.GroupBox
     Friend WithEvents txtRelDir As System.Windows.Forms.TextBox
     Friend WithEvents btnRelDir As System.Windows.Forms.Button
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 
 
     Private destination As String
@@ -132,6 +133,7 @@ Public Class ctlEnvironment
         Me.gbRelDir = New System.Windows.Forms.GroupBox
         Me.btnRelDir = New System.Windows.Forms.Button
         Me.txtRelDir = New System.Windows.Forms.TextBox
+        Me.Label4 = New System.Windows.Forms.Label
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbScrDir.SuspendLayout()
@@ -485,7 +487,7 @@ Public Class ctlEnvironment
         Me.gbScrDir.Size = New System.Drawing.Size(566, 68)
         Me.gbScrDir.TabIndex = 211
         Me.gbScrDir.TabStop = False
-        Me.gbScrDir.Text = "Local Script Directory"
+        Me.gbScrDir.Text = "Local Script/Project Directory"
         '
         'gbFTP
         '
@@ -502,6 +504,7 @@ Public Class ctlEnvironment
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Label4)
         Me.GroupBox5.Controls.Add(Me.GroupBox3)
         Me.GroupBox5.Controls.Add(Me.Label7)
         Me.GroupBox5.Controls.Add(Me.txtLocalCobolDir)
@@ -525,7 +528,7 @@ Public Class ctlEnvironment
         Me.GroupBox5.ForeColor = System.Drawing.Color.White
         Me.GroupBox5.Location = New System.Drawing.Point(3, 205)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(566, 198)
+        Me.GroupBox5.Size = New System.Drawing.Size(566, 233)
         Me.GroupBox5.TabIndex = 212
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Local Description Directories"
@@ -544,7 +547,7 @@ Public Class ctlEnvironment
         Me.GroupBox3.ForeColor = System.Drawing.Color.White
         Me.GroupBox3.Location = New System.Drawing.Point(514, 15)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(46, 177)
+        Me.GroupBox3.Size = New System.Drawing.Size(46, 179)
         Me.GroupBox3.TabIndex = 210
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "FTP"
@@ -635,6 +638,16 @@ Public Class ctlEnvironment
         Me.txtRelDir.Name = "txtRelDir"
         Me.txtRelDir.Size = New System.Drawing.Size(438, 20)
         Me.txtRelDir.TabIndex = 0
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(19, 205)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(528, 13)
+        Me.Label4.TabIndex = 214
+        Me.Label4.Text = "*** Warning: Changes here will result in Changes to the Corresponding Description" & _
+            " Paths ***"
         '
         'ctlEnvironment
         '
@@ -944,6 +957,9 @@ Public Class ctlEnvironment
             End Select
             objThis.DefaultStrDir = FBD1.SelectedPath
         End If
+
+        objThis.PathChange = True
+
     End Sub
 
 #End Region
@@ -1157,16 +1173,16 @@ Public Class ctlEnvironment
 
     End Function
 
-    Function TrunkFileName(ByVal filePath As String) As String
+    'Function TrunkFileName(ByVal filePath As String) As String
 
-        Dim i As Integer = filePath.LastIndexOf("\")
+    '    Dim i As Integer = filePath.LastIndexOf("\")
 
-        If filePath.IndexOf(".") > 0 Then
-            filePath = filePath.Substring(0, i)
-        End If
+    '    If filePath.IndexOf(".") > 0 Then
+    '        filePath = filePath.Substring(0, i)
+    '    End If
 
-        Return (filePath)
+    '    Return (filePath)
 
-    End Function
+    'End Function
 
 End Class

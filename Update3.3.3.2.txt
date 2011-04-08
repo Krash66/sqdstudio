@@ -1,0 +1,105 @@
+
+
+
+*** PREVIOUS UPDATES ***
+Updates for version 3.3.3.0 
+Correction to registry read and write errors, related to User Rights Issues.
+
+Updates for version 3.3.2.9 
+This revision Includes a Parser Update to version 3.7.17
+Also the exclusion of Unused Executable files.
+
+Updates for version 3.3.1.0  
+-- Updates to Script Generator to correct problem with Variable Target scripting
+
+Updates for version 3.3.0.9  
+--  Updates to Script Generator to correct problem with General Procedure scripting
+--  Changes to Main object tree to remove global datastores and procedures
+--  Added Numbering to folders for Sources, Targets and Procs to show number of each in folder
+--  Eleiminated some logic to support V2 metadata. Now V3 metadata will ONLY be supported
+
+Updates for version 3.3.0.8  
+--  Updates to Datastore Object, form, and control to correct problem with character code
+--  Corrected Problem with Datastore delete from top of object tree.
+
+Updates for version 3.3.0.7  
+--  Updates to Datastore Object to allow more Datastore-wide field properties.
+--  Updated Datatore Form to add more field properties.
+--  Updated Datatore Usercontrol to add more field properties.
+--  Updated Script Generator to Add new field properties.
+--  Updated how Datastore properties are stored in MetaData.
+
+Updates for version 3.3.0.6  
+--  Updates to GUI Help and Adobe Acrobat Help
+--  Updated Functions available to Procedures
+--  Added CASE Template to Function List and to Main and Mapping Procedures.
+--  Entered all Source Code into New Source Control.
+
+Updates for version 3.3.0.5  
+--  Added availability to manually edit Column, Row, and text delimiters in Datastores
+--  Completely cleaned all unused code and projects in the Design Studio Solution.
+--  Upgraded Version of Visual Studio and converted Design Studio to upgraded Development Environment.
+
+Updates for version 3.3.0.4  
+--  Updated help file 
+
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Updated how Datastores control displays restart and poll based on Access.
+
+Updates for version 3.3.0.3  
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Updated how Datastores are scripted
+--  Updated how Fields of type: GroupItem are mapped in a procedure
+
+Updates for version 3.3.0.1&2  
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Changed how Invalid Field attributes are scripted.
+
+Updates for version 3.3.0.0 
+--  Updated Datastore Screen for Delimited Datastores to "Record Delimiter" from "Row Delimiter"
+--  Updated Script Generator for Exception Datastores and Restarts
+--  Updated Main and General Procedure Screens
+
+Updates for version 3.2.9.9 
+--  Updated Parser
+
+Updates for version 3.2.9.8  
+--  Made General Procedure available as normal or Main Procedure and changed it's storage in MetaData
+--  Changed Available features and attributes of different Datastore Types.
+--  Changed and corrected Script Generator to reflect new Changes to Main and General Procedures.
+-- Incorporated New Importer, Modeler, and Parser into Build to reflect different design for Occurs clause, etc.
+
+Updates for version 3.2.9.7  
+--  Modified Menu in Main Program for adding either Mapping Procs or General Procs.
+--  Made General Procedure available as normal or Main Procedure
+--  Added ability to change procedure type of General procedures to switch between Main and General Procedure type.
+--  Modified Engine screen to allow older Main procedures to be copied and pasted into a new General Procedure.
+--  Modified Script Generator to reflect all changes.
+
+
+Updates for version 3.2.9.6  
+--  Added ability to give Out Message to individual Mappings
+--  corrected Availablity in Datastore for Restart Que
+--  Updated Datastore Matrix of options. Proper Operation types are now available
+--  Corrected internal bugs, revamped background operation for modeler and importer
+--  Made multiple upgrades to Script Generator to allow for more user options when building procedures.
+--- Modified Use of MetaData to allow for Out Message Use.
+
+
+Updates for version 3.2.9.5 and back to 1/1/10
+--  Removed Main Procedure from Engine
+--  Added New Object for Routing Procedures
+--  Added new form, User Control, for Routing Procedures
+--  Added new Templates in Procedures for Set Image, Lookup, Main, and Procedure.
+--- Modified Script Generator to work with new Routing Procedures
+-- Modified Use of MetaData for Routing Procedures
+--  Rebuilt Parsing procedure to Multi-thread Parser OutPut and better handle errors.
+
+
+*** December 09
+-- Completely rebuilt Datasores and all of there options, forms and User Controls to work with updated Parser and Scripting.
+--  Added Lookup Datastores and their Scripting Templates. 
+---  Modified Script Generator for new Syntax in Datastores and Procs

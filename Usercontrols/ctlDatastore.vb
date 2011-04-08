@@ -2620,7 +2620,8 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                      modDeclares.enumFieldAttributes.ATTR_OFFSET, _
                      modDeclares.enumFieldAttributes.ATTR_LENGTH, _
                      modDeclares.enumFieldAttributes.ATTR_SCALE, _
-                     modDeclares.enumFieldAttributes.ATTR_CANNULL
+                     modDeclares.enumFieldAttributes.ATTR_CANNULL, _
+                     modDeclares.enumFieldAttributes.ATTR_DATEFORMAT
 
                     cmbListViewCombo.Visible = False
                     txtListViewText.Visible = False
@@ -2667,6 +2668,8 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 Me.cmbListViewCombo.Bounds = ClickedItem
 
                 ShowLVCombo(lvItem)
+            ElseIf lvItem.Index = modDeclares.enumFieldAttributes.ATTR_DATEFORMAT Then
+                'Do Not Edit DateFormat
             Else
                 ' Assign calculated bounds to the TextBox.
                 Me.txtListViewText.Bounds = ClickedItem

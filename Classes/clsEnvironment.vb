@@ -15,6 +15,8 @@ Public Class clsEnvironment
     Private m_DefaultStrDir As String = ""
     'Relative base project directory
     Private m_RelDir As String = ""
+    'Have Paths Changed since last save
+    Private m_PathChange As Boolean
 
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
@@ -242,6 +244,16 @@ Public Class clsEnvironment
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.PathChange = True Then
+                For Each Str As clsStructure In Me.Structures
+                    If Str.ChangeFPath(cmd) = False Then
+                        Save = False
+                        Exit Try
+                    End If
+                Next
+                Me.PathChange = False
+            End If
 
             Save = True
             Me.IsModified = False
@@ -721,6 +733,15 @@ Public Class clsEnvironment
         End Get
         Set(ByVal value As String)
             m_RelDir = value
+        End Set
+    End Property
+
+    Public Property PathChange() As Boolean
+        Get
+            Return m_PathChange
+        End Get
+        Set(ByVal value As Boolean)
+            m_PathChange = value
         End Set
     End Property
 

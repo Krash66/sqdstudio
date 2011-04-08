@@ -1157,8 +1157,8 @@ ErrorGoTo:
 
         Dim i As Integer
         Dim ds As clsDatastore
-        Dim StrList As New Collection
-        Dim dbdList As New Collection
+        'Dim StrList As New Collection
+        'Dim dbdList As New Collection
 
         Try
 
@@ -1238,6 +1238,8 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             For j = 0 To ds.ObjSelections.Count - 1
                 dssel = CType(ds.ObjSelections(j), clsDSSelection)
                 str = dssel.ObjStructure
+                str.LoadMe()
+
                 If StrList.Contains(str.StructureName) = False Then
                     StrList.Add(str, str.StructureName)
                     '/// if IMSDBD write IMSDBname line before structures
@@ -1359,8 +1361,8 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Dim ds As clsDatastore
         Dim dssel As clsDSSelection
         Dim str As clsStructure
-        Dim StrList As New Collection
-        Dim dbdList As New Collection
+        'Dim StrList As New Collection
+        'Dim dbdList As New Collection
 
         Try
             If InputDS Is Nothing Then
@@ -1379,6 +1381,8 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             For j = 0 To ds.ObjSelections.Count - 1
                 dssel = CType(ds.ObjSelections(j), clsDSSelection)
                 str = dssel.ObjStructure
+                str.LoadMe()
+
                 If StrList.Contains(str.StructureName) = False Then
                     StrList.Add(str, str.StructureName)
                     '/// if IMSDBD write IMSDBname line before structures
@@ -2496,7 +2500,7 @@ errorgoto:
                 Else
                     commaORspace = ","
                 End If
-                selName = CType(ds.ObjSelections(i), clsDSSelection).SelectionName
+                selName = CType(ds.ObjSelections(i), clsDSSelection).ObjStructure.StructureName
                 Dim FORds4 As String = String.Format("{0,21}{1}{2}", " ", commaORspace, QuoteRes(selName))
                 objWriteSQD.WriteLine(FORds4)
                 objWriteINL.WriteLine(FORds4)
@@ -3036,7 +3040,7 @@ ErrorGoTo:
 
             Dim FORstr1 As String = String.Format("{0}{1}{2}", "DESCRIPTION ", _
             GetStrType(struct.StructureType), Quote(GetStrPath(struct, objEng)))
-            Dim FORstr2 As String = String.Format("{0}{1}", "AS ", QuoteRes(DSsel.SelectionName))
+            Dim FORstr2 As String = String.Format("{0}{1}", "AS ", QuoteRes(struct.StructureName))
             Dim PSix As String = String.Format("{0}", "/+")
             Dim PSix2 As String = String.Format("{0}", "+/")
 
@@ -3091,9 +3095,9 @@ ErrorGoTo:
 
             Dim FORstr2 As String
             If struct.StructureType = enumStructure.STRUCT_COBOL_IMS Then
-                FORstr2 = String.Format("{0,15}{1}", "AS ", QuoteRes(dssel.SelectionName))
+                FORstr2 = String.Format("{0,15}{1}", "AS ", QuoteRes(struct.StructureName))
             Else
-                FORstr2 = String.Format("{0,15}{1}{2}", "AS ", QuoteRes(dssel.SelectionName), semi)
+                FORstr2 = String.Format("{0,15}{1}{2}", "AS ", QuoteRes(struct.StructureName), semi)
             End If
 
             Dim objReadStr As System.IO.StreamReader
@@ -3165,7 +3169,7 @@ ErrorGoTo:
         Try
             Dim FORstr1 As String = String.Format("{0}{1}", "DESCRIPTION " & GetStrType(struct.StructureType), _
             Quote(GetStrPath(struct, DSsel.ObjDatastore.Engine)))
-            Dim FORstr2 As String = String.Format("{0,15}{1}", "AS ", QuoteRes(DSsel.SelectionName))
+            Dim FORstr2 As String = String.Format("{0,15}{1}", "AS ", QuoteRes(struct.StructureName))
             Dim PSix As String = String.Format("{0}", "/+")
             Dim PSix2 As String = String.Format("{0}", "+/")
             'Dim FORdml1 As String = String.Format("{0}{1}", "DESCRIPTION ", GetStrType(struct.StructureType))

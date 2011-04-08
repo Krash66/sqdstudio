@@ -133,6 +133,9 @@ Public Class ctlStructure
         Me.cmdClose = New System.Windows.Forms.Button
         Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.scStr = New System.Windows.Forms.SplitContainer
+        Me.gbProp = New System.Windows.Forms.GroupBox
+        Me.txtLength = New System.Windows.Forms.TextBox
+        Me.Label1 = New System.Windows.Forms.Label
         Me.gbConn = New System.Windows.Forms.GroupBox
         Me.gbFile = New System.Windows.Forms.GroupBox
         Me.btnView = New System.Windows.Forms.Button
@@ -148,13 +151,11 @@ Public Class ctlStructure
         Me.scFldDesc = New System.Windows.Forms.SplitContainer
         Me.gbAttr = New System.Windows.Forms.GroupBox
         Me.gbFldDesc = New System.Windows.Forms.GroupBox
-        Me.gbProp = New System.Windows.Forms.GroupBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.txtLength = New System.Windows.Forms.TextBox
         Me.ContextMenuStrip1.SuspendLayout()
         Me.scStr.Panel1.SuspendLayout()
         Me.scStr.Panel2.SuspendLayout()
         Me.scStr.SuspendLayout()
+        Me.gbProp.SuspendLayout()
         Me.gbConn.SuspendLayout()
         Me.gbFile.SuspendLayout()
         Me.gbCobol.SuspendLayout()
@@ -171,7 +172,6 @@ Public Class ctlStructure
         Me.scFldDesc.SuspendLayout()
         Me.gbAttr.SuspendLayout()
         Me.gbFldDesc.SuspendLayout()
-        Me.gbProp.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtConn
@@ -253,6 +253,7 @@ Public Class ctlStructure
         '
         'txtDBDFilePath
         '
+        Me.txtDBDFilePath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDBDFilePath.Location = New System.Drawing.Point(85, 19)
         Me.txtDBDFilePath.MaxLength = 255
         Me.txtDBDFilePath.Name = "txtDBDFilePath"
@@ -270,6 +271,7 @@ Public Class ctlStructure
         '
         'txtCobolFilePath
         '
+        Me.txtCobolFilePath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtCobolFilePath.Location = New System.Drawing.Point(85, 71)
         Me.txtCobolFilePath.MaxLength = 255
         Me.txtCobolFilePath.Name = "txtCobolFilePath"
@@ -279,7 +281,7 @@ Public Class ctlStructure
         'tvSegments
         '
         Me.tvSegments.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tvSegments.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tvSegments.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tvSegments.Location = New System.Drawing.Point(3, 16)
         Me.tvSegments.Name = "tvSegments"
         Me.tvSegments.Size = New System.Drawing.Size(228, 315)
@@ -527,6 +529,35 @@ Public Class ctlStructure
         Me.scStr.SplitterDistance = 339
         Me.scStr.TabIndex = 39
         '
+        'gbProp
+        '
+        Me.gbProp.Controls.Add(Me.txtLength)
+        Me.gbProp.Controls.Add(Me.Label1)
+        Me.gbProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbProp.ForeColor = System.Drawing.Color.White
+        Me.gbProp.Location = New System.Drawing.Point(326, 3)
+        Me.gbProp.Name = "gbProp"
+        Me.gbProp.Size = New System.Drawing.Size(137, 124)
+        Me.gbProp.TabIndex = 82
+        Me.gbProp.TabStop = False
+        Me.gbProp.Text = "Record Properties"
+        '
+        'txtLength
+        '
+        Me.txtLength.Location = New System.Drawing.Point(6, 35)
+        Me.txtLength.Name = "txtLength"
+        Me.txtLength.Size = New System.Drawing.Size(125, 20)
+        Me.txtLength.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 19)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(91, 13)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Record Length"
+        '
         'gbConn
         '
         Me.gbConn.Controls.Add(Me.lblConn)
@@ -743,35 +774,6 @@ Public Class ctlStructure
         Me.gbFldDesc.TabStop = False
         Me.gbFldDesc.Text = "Field Description"
         '
-        'gbProp
-        '
-        Me.gbProp.Controls.Add(Me.txtLength)
-        Me.gbProp.Controls.Add(Me.Label1)
-        Me.gbProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbProp.ForeColor = System.Drawing.Color.White
-        Me.gbProp.Location = New System.Drawing.Point(326, 3)
-        Me.gbProp.Name = "gbProp"
-        Me.gbProp.Size = New System.Drawing.Size(137, 124)
-        Me.gbProp.TabIndex = 82
-        Me.gbProp.TabStop = False
-        Me.gbProp.Text = "Record Properties"
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 19)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(91, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Record Length"
-        '
-        'txtLength
-        '
-        Me.txtLength.Location = New System.Drawing.Point(6, 35)
-        Me.txtLength.Name = "txtLength"
-        Me.txtLength.Size = New System.Drawing.Size(125, 20)
-        Me.txtLength.TabIndex = 1
-        '
         'ctlStructure
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -790,6 +792,8 @@ Public Class ctlStructure
         Me.scStr.Panel1.ResumeLayout(False)
         Me.scStr.Panel2.ResumeLayout(False)
         Me.scStr.ResumeLayout(False)
+        Me.gbProp.ResumeLayout(False)
+        Me.gbProp.PerformLayout()
         Me.gbConn.ResumeLayout(False)
         Me.gbConn.PerformLayout()
         Me.gbFile.ResumeLayout(False)
@@ -813,8 +817,6 @@ Public Class ctlStructure
         Me.gbAttr.ResumeLayout(False)
         Me.gbFldDesc.ResumeLayout(False)
         Me.gbFldDesc.PerformLayout()
-        Me.gbProp.ResumeLayout(False)
-        Me.gbProp.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1587,6 +1589,7 @@ Public Class ctlStructure
             IsNewObj = False
             StartLoad()
             objThis = obj '//Load the form struct object
+            objThis.LoadMe()
             objThis.LoadItems()
 
             Call UpdateFields()

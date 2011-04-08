@@ -1224,6 +1224,155 @@ Public Class clsStructure
 
     End Function
 
+    Function ChangeFPath(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
+
+        Dim cmd As Odbc.OdbcCommand
+        Dim sqlstr1 As String = ""
+        Dim sqlstr2 As String = ""
+        Dim sql As String = ""
+        Dim Attrib1 As String = "FPATH1"
+        Dim Attrib2 As String = "FPATH2"
+        'Dim Value As String = ""
+        Dim DoReplace As Boolean = False
+
+        Try
+            '/// If DML, no file path used
+            If Me.StructureType = enumStructure.STRUCT_REL_DML Or Me.StructureType = enumStructure.STRUCT_UNKNOWN Then
+                ChangeFPath = True
+                Exit Try
+            End If
+
+            '/// Init ODBC Command
+            If INcmd IsNot Nothing Then
+                cmd = INcmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
+            End If
+
+            '/// Compare Description Paths with Environment Paths
+            Select Case Me.StructureType
+                Case enumStructure.STRUCT_C
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalCDir Then
+                        sqlstr1 = Me.Environment.LocalCDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+
+                Case enumStructure.STRUCT_COBOL
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalCobolDir Then
+                        sqlstr1 = Me.Environment.LocalCobolDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+
+                Case enumStructure.STRUCT_COBOL_IMS
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalCobolDir Then
+                        sqlstr1 = Me.Environment.LocalCobolDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+                    If GetDirFromPath(Me.fPath2) <> Me.Environment.LocalDBDDir Then
+                        sqlstr2 = Me.Environment.LocalDBDDir & "\" & GetFileNameFromPath(Me.fPath2)
+                        DoReplace = True
+                    Else
+                        sqlstr2 = Me.fPath2
+                    End If
+
+                Case enumStructure.STRUCT_REL_DDL
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalDDLDir Then
+                        sqlstr1 = Me.Environment.LocalDDLDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+
+                Case enumStructure.STRUCT_REL_DML_FILE
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalDMLDir Then
+                        sqlstr1 = Me.Environment.LocalDMLDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+
+                Case enumStructure.STRUCT_XMLDTD
+                    If GetDirFromPath(Me.fPath1) <> Me.Environment.LocalDTDDir Then
+                        sqlstr1 = Me.Environment.LocalDTDDir & "\" & GetFileNameFromPath(Me.fPath1)
+                        DoReplace = True
+                    Else
+                        sqlstr1 = Me.fPath1
+                    End If
+
+                Case Else
+                    ChangeFPath = True
+                    Exit Try
+            End Select
+
+            If DoReplace = True Then
+                '/// Delete old file path(s)
+                sql = "DELETE FROM " & Me.Project.tblDescriptionsATTR & _
+                " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+                " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
+                " AND DESCRIPTIONNAME=" & Quote(Me.StructureName) & _
+                " AND DESCRIPTIONATTRB=" & Quote(Attrib1)
+
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+
+                If Me.StructureType = enumStructure.STRUCT_COBOL_IMS Then
+                    sql = "DELETE FROM " & Me.Project.tblDescriptionsATTR & _
+                    " WHERE PROJECTNAME=" & Quote(Me.Project.ProjectName) & _
+                    " AND ENVIRONMENTNAME=" & Quote(Me.Environment.EnvironmentName) & _
+                    " AND DESCRIPTIONNAME=" & Quote(Me.StructureName) & _
+                    " AND DESCRIPTIONATTRB=" & Quote(Attrib2)
+
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
+                End If
+
+                '/// Insert new File Path(s)
+                sql = "INSERT INTO " & Me.Project.tblDescriptionsATTR & _
+                "(PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONATTRB,DESCRIPTIONATTRBVALUE) " & _
+                "Values('" & FixStr(Me.Project.ProjectName) & _
+                "','" & FixStr(Me.Environment.EnvironmentName) & _
+                "','" & FixStr(Me.StructureName) & _
+                "','" & FixStr(Attrib1) & _
+                "','" & FixStr(sqlstr1) & "')"
+
+                cmd.CommandText = sql
+                Log(sql)
+                cmd.ExecuteNonQuery()
+
+                If Me.StructureType = enumStructure.STRUCT_COBOL_IMS Then
+                    sql = "INSERT INTO " & Me.Project.tblDescriptionsATTR & _
+                    "(PROJECTNAME,ENVIRONMENTNAME,DESCRIPTIONNAME,DESCRIPTIONATTRB,DESCRIPTIONATTRBVALUE) " & _
+                    "Values('" & FixStr(Me.Project.ProjectName) & _
+                    "','" & FixStr(Me.Environment.EnvironmentName) & _
+                    "','" & FixStr(Me.StructureName) & _
+                    "','" & FixStr(Attrib2) & _
+                    "','" & FixStr(sqlstr2) & "')"
+
+                    cmd.CommandText = sql
+                    Log(sql)
+                    cmd.ExecuteNonQuery()
+                End If
+                Me.IsLoaded = False
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsStructure InsertATTR")
+            Return False
+        End Try
+
+    End Function
+
 #End Region
 
     Public Sub New()
