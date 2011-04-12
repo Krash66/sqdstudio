@@ -363,7 +363,7 @@ Public Class ctlConnection
         '
         'btnTest
         '
-        Me.btnTest.ForeColor = System.Drawing.Color.Black
+        Me.btnTest.ForeColor = System.Drawing.Color.White
         Me.btnTest.Location = New System.Drawing.Point(116, 71)
         Me.btnTest.Name = "btnTest"
         Me.btnTest.Size = New System.Drawing.Size(172, 23)
@@ -467,8 +467,12 @@ Public Class ctlConnection
     Public Function Save(Optional ByVal Cascade As Boolean = False) As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             '// First Check Validity before Saving
             If ValidateNewName(txtConnectionName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -504,7 +508,14 @@ Public Class ctlConnection
             objThis.Password = txtPassword.Text
             objThis.DateFormat = txtDateformat.Text
 
-            Save = objThis.Save()
+            If objThis.Save() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
+                Exit Function
+            End If
+            Me.Cursor = Cursors.Default
+
+            Save = True
 
             cmdSave.Enabled = False
 
@@ -517,6 +528,8 @@ Public Class ctlConnection
 
         Catch ex As Exception
             LogError(ex)
+            Save = False
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -588,16 +601,26 @@ Public Class ctlConnection
 
     Public Function EditObj(ByVal obj As INode) As clsConnection
 
-        IsNewObj = False
-        StartLoad()
-        objThis = obj '//Load the form env object
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        objThis.LoadMe()
+            IsNewObj = False
+            StartLoad()
+            objThis = obj '//Load the form env object
 
-        UpdateFields()
-        EndLoad()
+            objThis.LoadMe()
 
-        EditObj = objThis
+            UpdateFields()
+            EndLoad()
+
+            EditObj = objThis
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlConn EditObj")
+            Me.Cursor = Cursors.Default
+            EditObj = Nothing
+        End Try
 
     End Function
 

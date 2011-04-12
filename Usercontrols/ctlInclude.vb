@@ -81,8 +81,10 @@ Public Class ctlInclude
 
     Public Function Save() As Boolean
         Try
+            Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
             If ValidateNewName(txtName.Text) = False Then
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             Select Case objThis.Type
@@ -115,9 +117,15 @@ Public Class ctlInclude
             End Select
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
 
             Save = True
@@ -130,7 +138,8 @@ Public Class ctlInclude
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlInclude Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -138,6 +147,7 @@ Public Class ctlInclude
     Public Function EditObj(ByVal obj As INode) As INode
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             IsNewObj = False
 
             objThis = obj '//Load the form object
@@ -166,11 +176,12 @@ Public Class ctlInclude
             End Select
 
             EndLoad()
-
+            Me.Cursor = Cursors.Default
             EditObj = objThis
 
         Catch ex As Exception
             LogError(ex, "ctlInclude EditObj")
+            Me.Cursor = Cursors.Default
             EditObj = Nothing
         End Try
 

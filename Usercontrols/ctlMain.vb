@@ -141,67 +141,76 @@ Public Class ctlMain
 
     Public Function EditObj(ByVal cNode As TreeNode, ByVal obj As INode) As clsTask
 
-        IsNewObj = False
-        StartLoad()
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        objThis = obj '//Load the form env object
+            IsNewObj = False
+            StartLoad()
 
-        'If objThis.Engine IsNot Nothing Then
-        '    cbGroupItems.Checked = objThis.Engine.MapGroupItems
-        'End If
+            objThis = obj '//Load the form env object
 
-        objThis.ObjTreeNode = cNode
+            'If objThis.Engine IsNot Nothing Then
+            '    cbGroupItems.Checked = objThis.Engine.MapGroupItems
+            'End If
 
-        SetTaskTitle(objThis.TaskType)
+            objThis.ObjTreeNode = cNode
 
-        'If objThis.TaskType = modDeclares.enumTaskType.TASK_JOIN Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
-        '    'tvTarget.Enabled = False
-        '    tvTarget.Visible = False
-        '    lblTargetCaption.Visible = False
-        'Else
-        '    lblTargetCaption.Visible = True
-        '    tvTarget.Visible = True
-        'End If
+            SetTaskTitle(objThis.TaskType)
 
-        UpdateFields()
+            'If objThis.TaskType = modDeclares.enumTaskType.TASK_JOIN Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
+            '    'tvTarget.Enabled = False
+            '    tvTarget.Visible = False
+            '    lblTargetCaption.Visible = False
+            'Else
+            '    lblTargetCaption.Visible = True
+            '    tvTarget.Visible = True
+            'End If
 
-        EditObj = objThis
+            UpdateFields()
 
-        FillMappings()
+            EditObj = objThis
 
-        EndLoad()
+            FillMappings()
 
-        If CType(cNode.Tag, INode).Type = NODE_ENGINE Then
-            FillSourceTarget(cNode)
-        Else
-            FillSrcTgtTop(cNode)
-        End If
+            EndLoad()
+
+            If CType(cNode.Tag, INode).Type = NODE_ENGINE Then
+                FillSourceTarget(cNode)
+            Else
+                FillSrcTgtTop(cNode)
+            End If
 
 
-        'the following if statement is to relode the source and target for the first time 
-        'If firstTime = True Then
-        '    FillSourceTarget(objThis.ObjTreeNode)
-        '    firstTime = False
-        'End If
+            'the following if statement is to relode the source and target for the first time 
+            'If firstTime = True Then
+            '    FillSourceTarget(objThis.ObjTreeNode)
+            '    firstTime = False
+            'End If
 
-        If tvSource.Nodes.Count <> 0 Then
-            tvSource.CollapseAll()
-            tvSource.TopNode.Expand()
-        End If
-        'If tvTarget.Nodes.Count <> 0 Then
-        '    tvTarget.CollapseAll()
-        '    tvTarget.TopNode.Expand()
-        'End If
+            If tvSource.Nodes.Count <> 0 Then
+                tvSource.CollapseAll()
+                tvSource.TopNode.Expand()
+            End If
+            'If tvTarget.Nodes.Count <> 0 Then
+            '    tvTarget.CollapseAll()
+            '    tvTarget.TopNode.Expand()
+            'End If
 
-        '/// Now get Last Mapped Fields
-        'If SetLastMapped() = True Then
-        '    HiLiteLastSrcTgtFlds(tvSource.TopNode, objThis.LastSrcFld, True, tvSource)
-        '    HiLiteLastSrcTgtFlds(tvTarget.TopNode, objThis.LastTgtFld, True, tvTarget)
-        'End If
+            '/// Now get Last Mapped Fields
+            'If SetLastMapped() = True Then
+            '    HiLiteLastSrcTgtFlds(tvSource.TopNode, objThis.LastSrcFld, True, tvSource)
+            '    HiLiteLastSrcTgtFlds(tvTarget.TopNode, objThis.LastTgtFld, True, tvTarget)
+            'End If
 
-        'Me.Refresh()
+            Me.Refresh()
+            Me.Cursor = Cursors.Default
+            Me.Visible = True
 
-        Me.Visible = True
+
+        Catch ex As Exception
+            LogError(ex, "ctlMain EditObj")
+            EditObj = Nothing
+        End Try
 
     End Function
 
@@ -241,8 +250,11 @@ Public Class ctlMain
         Try
             Dim OldName As String = ""
 
+            Me.Cursor = Cursors.WaitCursor
+
             '// First Check Validity before Saving
             If ValidateNewName(txtTaskName.Text) = False Then
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '// check to see if renamed
@@ -257,11 +269,13 @@ Public Class ctlMain
             End If
             '// save all of the task properties from form to object
             If SaveCurrentSelection() = False Then
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '/// Added save as main or General Procedure 
             If DoSetTaskType = True Then
                 If objThis.SaveTaskType() = False Then
+                    Me.Cursor = Cursors.Default
                     Exit Function
                 End If
             End If
@@ -270,12 +284,17 @@ Public Class ctlMain
             'End If
             '// add if it's new, save if not new
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
                 If objThis.Save() = False Then
+                    Me.Cursor = Cursors.Default
                     Exit Function
                 Else
                     If objThis.UpdateTaskDesc() = False Then
+                        Me.Cursor = Cursors.Default
                         Exit Function
                         'Else
                         '    If objThis.Engine Is Nothing Then
@@ -305,6 +324,7 @@ Public Class ctlMain
                     End If
                 End If
             End If
+            Me.Cursor = Cursors.Default
 
             '// raise event so main form can update itself accordingly
             Save = True
@@ -317,7 +337,8 @@ Public Class ctlMain
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlMain Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -326,7 +347,6 @@ Public Class ctlMain
     Function SaveCurrentSelection() As Boolean
 
         Try
-
             Dim objMap As New clsMapping
 
 

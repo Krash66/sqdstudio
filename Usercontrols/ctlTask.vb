@@ -412,7 +412,7 @@ Public Class ctlTask
         Me.cbGroupItems.Checked = True
         Me.cbGroupItems.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbGroupItems.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbGroupItems.Location = New System.Drawing.Point(672, 14)
+        Me.cbGroupItems.Location = New System.Drawing.Point(628, 14)
         Me.cbGroupItems.Name = "cbGroupItems"
         Me.cbGroupItems.Size = New System.Drawing.Size(192, 21)
         Me.cbGroupItems.TabIndex = 12
@@ -715,9 +715,9 @@ Public Class ctlTask
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tvFunctions.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.tvFunctions.HideSelection = False
-        Me.tvFunctions.Location = New System.Drawing.Point(2, 5)
+        Me.tvFunctions.Location = New System.Drawing.Point(3, 5)
         Me.tvFunctions.Name = "tvFunctions"
-        Me.tvFunctions.Size = New System.Drawing.Size(164, 271)
+        Me.tvFunctions.Size = New System.Drawing.Size(164, 257)
         Me.tvFunctions.TabIndex = 7
         '
         'pnlFunctionInfo
@@ -734,9 +734,9 @@ Public Class ctlTask
         Me.pnlFunctionInfo.Controls.Add(Me.Label11)
         Me.pnlFunctionInfo.Controls.Add(Me.lblFunDesc)
         Me.pnlFunctionInfo.Controls.Add(Me.lblFunName)
-        Me.pnlFunctionInfo.Location = New System.Drawing.Point(0, 277)
+        Me.pnlFunctionInfo.Location = New System.Drawing.Point(0, 262)
         Me.pnlFunctionInfo.Name = "pnlFunctionInfo"
-        Me.pnlFunctionInfo.Size = New System.Drawing.Size(169, 123)
+        Me.pnlFunctionInfo.Size = New System.Drawing.Size(169, 141)
         Me.pnlFunctionInfo.TabIndex = 1
         '
         'lblFunSyntax
@@ -799,7 +799,7 @@ Public Class ctlTask
         Me.lblFunDesc.ForeColor = System.Drawing.Color.Maroon
         Me.lblFunDesc.Location = New System.Drawing.Point(1, 68)
         Me.lblFunDesc.Name = "lblFunDesc"
-        Me.lblFunDesc.Size = New System.Drawing.Size(166, 53)
+        Me.lblFunDesc.Size = New System.Drawing.Size(166, 71)
         Me.lblFunDesc.TabIndex = 1
         Me.lblFunDesc.Text = "<none>"
         '
@@ -841,7 +841,7 @@ Public Class ctlTask
         Me.pnlSourceTarget.Controls.Add(Me.lvMappings)
         Me.pnlSourceTarget.Location = New System.Drawing.Point(4, 13)
         Me.pnlSourceTarget.Name = "pnlSourceTarget"
-        Me.pnlSourceTarget.Size = New System.Drawing.Size(500, 416)
+        Me.pnlSourceTarget.Size = New System.Drawing.Size(500, 418)
         Me.pnlSourceTarget.TabIndex = 82
         '
         'ToolBar1
@@ -1051,7 +1051,7 @@ Public Class ctlTask
         Me.lvMappings.Location = New System.Drawing.Point(0, 32)
         Me.lvMappings.Name = "lvMappings"
         Me.lvMappings.ShowItemToolTips = True
-        Me.lvMappings.Size = New System.Drawing.Size(500, 390)
+        Me.lvMappings.Size = New System.Drawing.Size(500, 387)
         Me.lvMappings.TabIndex = 5
         Me.lvMappings.UseCompatibleStateImageBehavior = False
         Me.lvMappings.View = System.Windows.Forms.View.Details
@@ -1469,7 +1469,7 @@ Public Class ctlTask
         Me.gbFldAttr.ForeColor = System.Drawing.Color.White
         Me.gbFldAttr.Location = New System.Drawing.Point(3, 505)
         Me.gbFldAttr.Name = "gbFldAttr"
-        Me.gbFldAttr.Size = New System.Drawing.Size(867, 63)
+        Me.gbFldAttr.Size = New System.Drawing.Size(824, 63)
         Me.gbFldAttr.TabIndex = 7
         Me.gbFldAttr.TabStop = False
         Me.gbFldAttr.Text = "Field Attributes"
@@ -1477,7 +1477,7 @@ Public Class ctlTask
         'txtInvalid
         '
         Me.txtInvalid.BackColor = System.Drawing.SystemColors.Window
-        Me.txtInvalid.Location = New System.Drawing.Point(58, 37)
+        Me.txtInvalid.Location = New System.Drawing.Point(57, 37)
         Me.txtInvalid.Name = "txtInvalid"
         Me.txtInvalid.ReadOnly = True
         Me.txtInvalid.Size = New System.Drawing.Size(100, 20)
@@ -1495,7 +1495,7 @@ Public Class ctlTask
         'txtExtType
         '
         Me.txtExtType.BackColor = System.Drawing.SystemColors.Window
-        Me.txtExtType.Location = New System.Drawing.Point(536, 37)
+        Me.txtExtType.Location = New System.Drawing.Point(490, 37)
         Me.txtExtType.Name = "txtExtType"
         Me.txtExtType.ReadOnly = True
         Me.txtExtType.Size = New System.Drawing.Size(119, 20)
@@ -1504,7 +1504,7 @@ Public Class ctlTask
         'lblExtType
         '
         Me.lblExtType.AutoSize = True
-        Me.lblExtType.Location = New System.Drawing.Point(410, 40)
+        Me.lblExtType.Location = New System.Drawing.Point(364, 40)
         Me.lblExtType.Name = "lblExtType"
         Me.lblExtType.Size = New System.Drawing.Size(116, 13)
         Me.lblExtType.TabIndex = 23
@@ -1513,7 +1513,7 @@ Public Class ctlTask
         'txtInitVal
         '
         Me.txtInitVal.BackColor = System.Drawing.SystemColors.Window
-        Me.txtInitVal.Location = New System.Drawing.Point(266, 37)
+        Me.txtInitVal.Location = New System.Drawing.Point(243, 37)
         Me.txtInitVal.Name = "txtInitVal"
         Me.txtInitVal.ReadOnly = True
         Me.txtInitVal.Size = New System.Drawing.Size(115, 20)
@@ -1522,7 +1522,7 @@ Public Class ctlTask
         'lblInitVal
         '
         Me.lblInitVal.AutoSize = True
-        Me.lblInitVal.Location = New System.Drawing.Point(186, 40)
+        Me.lblInitVal.Location = New System.Drawing.Point(163, 40)
         Me.lblInitVal.Name = "lblInitVal"
         Me.lblInitVal.Size = New System.Drawing.Size(74, 13)
         Me.lblInitVal.TabIndex = 21
@@ -1531,7 +1531,7 @@ Public Class ctlTask
         'txtCanNull
         '
         Me.txtCanNull.BackColor = System.Drawing.SystemColors.Window
-        Me.txtCanNull.Location = New System.Drawing.Point(752, 37)
+        Me.txtCanNull.Location = New System.Drawing.Point(708, 37)
         Me.txtCanNull.Name = "txtCanNull"
         Me.txtCanNull.ReadOnly = True
         Me.txtCanNull.Size = New System.Drawing.Size(99, 20)
@@ -1540,7 +1540,7 @@ Public Class ctlTask
         'lblNull
         '
         Me.lblNull.AutoSize = True
-        Me.lblNull.Location = New System.Drawing.Point(669, 40)
+        Me.lblNull.Location = New System.Drawing.Point(625, 40)
         Me.lblNull.Name = "lblNull"
         Me.lblNull.Size = New System.Drawing.Size(77, 13)
         Me.lblNull.TabIndex = 19
@@ -1549,7 +1549,7 @@ Public Class ctlTask
         'txtReType
         '
         Me.txtReType.BackColor = System.Drawing.SystemColors.Window
-        Me.txtReType.Location = New System.Drawing.Point(536, 13)
+        Me.txtReType.Location = New System.Drawing.Point(490, 13)
         Me.txtReType.Name = "txtReType"
         Me.txtReType.ReadOnly = True
         Me.txtReType.Size = New System.Drawing.Size(119, 20)
@@ -1558,7 +1558,7 @@ Public Class ctlTask
         'lblReType
         '
         Me.lblReType.AutoSize = True
-        Me.lblReType.Location = New System.Drawing.Point(410, 16)
+        Me.lblReType.Location = New System.Drawing.Point(364, 16)
         Me.lblReType.Name = "lblReType"
         Me.lblReType.Size = New System.Drawing.Size(120, 13)
         Me.lblReType.TabIndex = 17
@@ -1567,7 +1567,7 @@ Public Class ctlTask
         'txtDataType
         '
         Me.txtDataType.BackColor = System.Drawing.SystemColors.Window
-        Me.txtDataType.Location = New System.Drawing.Point(266, 13)
+        Me.txtDataType.Location = New System.Drawing.Point(243, 13)
         Me.txtDataType.Name = "txtDataType"
         Me.txtDataType.ReadOnly = True
         Me.txtDataType.Size = New System.Drawing.Size(115, 20)
@@ -1576,7 +1576,7 @@ Public Class ctlTask
         'lblDataType
         '
         Me.lblDataType.AutoSize = True
-        Me.lblDataType.Location = New System.Drawing.Point(186, 16)
+        Me.lblDataType.Location = New System.Drawing.Point(163, 16)
         Me.lblDataType.Name = "lblDataType"
         Me.lblDataType.Size = New System.Drawing.Size(66, 13)
         Me.lblDataType.TabIndex = 15
@@ -1747,56 +1747,66 @@ Public Class ctlTask
 
     Public Function EditObj(ByVal cNode As TreeNode, ByVal obj As INode) As clsTask
 
-        IsNewObj = False
-        StartLoad()
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        objThis = obj '//Load the form env object
+            IsNewObj = False
+            StartLoad()
 
-        If objThis.Engine IsNot Nothing Then
-            cbGroupItems.Checked = objThis.Engine.MapGroupItems
-        End If
+            objThis = obj '//Load the form env object
 
-        'objThis.ObjTreeNode = cNode
+            If objThis.Engine IsNot Nothing Then
+                cbGroupItems.Checked = objThis.Engine.MapGroupItems
+            End If
 
-        SetTaskTitle(objThis.TaskType)
+            'objThis.ObjTreeNode = cNode
 
-        If objThis.TaskType = modDeclares.enumTaskType.TASK_GEN Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
-            'tvTarget.Enabled = False
-            tvTarget.Visible = False
-            lblTargetCaption.Visible = False
-        Else
-            lblTargetCaption.Visible = True
-            tvTarget.Visible = True
-        End If
+            SetTaskTitle(objThis.TaskType)
 
-        UpdateFields()
+            If objThis.TaskType = modDeclares.enumTaskType.TASK_GEN Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
+                'tvTarget.Enabled = False
+                tvTarget.Visible = False
+                lblTargetCaption.Visible = False
+            Else
+                lblTargetCaption.Visible = True
+                tvTarget.Visible = True
+            End If
 
-        EditObj = objThis
+            UpdateFields()
 
-        FillMappings()
+            EditObj = objThis
 
-        EndLoad()
+            FillMappings()
 
-        FillSourceTarget(cNode)
+            EndLoad()
 
-        If tvSource.Nodes.Count <> 0 Then
-            tvSource.CollapseAll()
-            tvSource.TopNode.Expand()
-        End If
-        If tvTarget.Nodes.Count <> 0 Then
-            tvTarget.CollapseAll()
-            tvTarget.TopNode.Expand()
-        End If
+            FillSourceTarget(cNode)
 
-        '/// Now get Last Mapped Fields
-        'If SetLastMapped() = True Then
-        '    HiLiteLastSrcTgtFlds(tvSource.TopNode, objThis.LastSrcFld, True, tvSource)
-        '    HiLiteLastSrcTgtFlds(tvTarget.TopNode, objThis.LastTgtFld, True, tvTarget)
-        'End If
+            If tvSource.Nodes.Count <> 0 Then
+                tvSource.CollapseAll()
+                tvSource.TopNode.Expand()
+            End If
+            If tvTarget.Nodes.Count <> 0 Then
+                tvTarget.CollapseAll()
+                tvTarget.TopNode.Expand()
+            End If
 
-        'Me.Refresh()
+            '/// Now get Last Mapped Fields
+            'If SetLastMapped() = True Then
+            '    HiLiteLastSrcTgtFlds(tvSource.TopNode, objThis.LastSrcFld, True, tvSource)
+            '    HiLiteLastSrcTgtFlds(tvTarget.TopNode, objThis.LastTgtFld, True, tvTarget)
+            'End If
 
-        Me.Visible = True
+            Me.Refresh()
+            Me.Cursor = Cursors.Default
+            Me.Visible = True
+
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask EditObj")
+            Me.Cursor = Cursors.Default
+            EditObj = Nothing
+        End Try
 
     End Function
 
@@ -1837,6 +1847,7 @@ Public Class ctlTask
             Dim OldName As String = ""
             Dim result As MsgBoxResult
 
+            Me.Cursor = Cursors.WaitCursor
             '//Test for Key Change in Target DS
             For Each tgt As clsDatastore In objThis.ObjTargets
                 If tgt.IsKeyChng = "1" Then
@@ -1868,6 +1879,7 @@ Public Class ctlTask
                                 AddToRecentlyUsedFunctionList(tvFunctions.Nodes.Item("MAPBEFOREkeyChng"))
                                 ShowScriptEditor(CType(lvMappings.Items(0).Tag, clsMapping))
                                 Save = False
+                                Me.Cursor = Cursors.Default
                                 Exit Try
                             End If
                         End If
@@ -1878,6 +1890,8 @@ Public Class ctlTask
 
             '// First Check Validity before Saving
             If ValidateNewName(txtTaskName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '// check to see if renamed
@@ -1892,6 +1906,8 @@ Public Class ctlTask
             End If
             '// save all of the task properties from form to object
             If SaveCurrentSelection() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             'If SaveLastMapped() = False Then
@@ -1899,12 +1915,20 @@ Public Class ctlTask
             'End If
             '// add if it's new, save if not new
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
                 If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
                     Exit Function
                 Else
                     If objThis.UpdateTaskDesc() = False Then
+                        Save = False
+                        Me.Cursor = Cursors.Default
                         Exit Function
                         'Else
                         '    If objThis.Engine Is Nothing Then
@@ -1946,7 +1970,8 @@ Public Class ctlTask
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlTask Save")
+            Me.Cursor = Cursors.Default
             Save = False
         End Try
 
@@ -3511,14 +3536,23 @@ ManualGoTo:
 
     Public Sub cmdSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 
-        objThis.CallFromUsercontrol = True '//8/15/05
-        If Save() = True Then
-            objThis.ObjTreeNode.ForeColor = Color.Black
-            If Procs.Contains(objThis.TaskName) Then
-                Procs.Remove(objThis.TaskName)
+        Try
+            objThis.CallFromUsercontrol = True '//8/15/05
+            Me.Cursor = Cursors.WaitCursor
+
+            If Save() = True Then
+                objThis.ObjTreeNode.ForeColor = Color.Black
+                If Procs.Contains(objThis.TaskName) Then
+                    Procs.Remove(objThis.TaskName)
+                End If
+                objThis.CallFromUsercontrol = False '//8/15/05
             End If
-            objThis.CallFromUsercontrol = False '//8/15/05
-        End If
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask cmdSave_Click")
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 

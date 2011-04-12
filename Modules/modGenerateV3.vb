@@ -4617,11 +4617,20 @@ ErrorGoTo:
 
         Dim DDstr As String = ""
         Dim objSys As clsSystem = eng.ObjSystem
+        Dim dbdLib As String = ""
         Dim cobLib As String = ""
         Dim ddlLib As String = ""
         Dim dtdLib As String = ""
         Dim incLib As String = ""
         Dim descLib As String = ""
+
+        'Get DBD path on target
+        If objSys.DBDLib.Trim <> "" Then
+            dbdLib = objSys.DBDLib
+        End If
+        If eng.DBDLib.Trim <> "" Then
+            dbdLib = eng.DBDLib
+        End If
 
         'Get CopyBook path on target
         If objSys.CopybookLib.Trim <> "" Then
@@ -4671,7 +4680,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
-                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
+                            DDstr = "DD:" & QuoteRes(dbdLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
                         Else
                             DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2))
                         End If
@@ -4685,7 +4694,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" Then    'And descLib.Contains("/") = True
-                            DDstr = descLib & "/" & GetFileNameOnly(str.fPath2)
+                            DDstr = dbdLib & "/" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2.Replace("\", "/")
                         End If
@@ -4705,7 +4714,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" And descLib.Contains("\") = True Then
-                            DDstr = descLib & "\" & GetFileNameOnly(str.fPath2)
+                            DDstr = dbdLib & "\" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2
                         End If

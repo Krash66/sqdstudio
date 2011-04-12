@@ -148,13 +148,17 @@ Public Class frmScriptGen
             ScriptType = enumGenType.Eng
             ScriptDirectory = SavePath
 
+            'Me.Modal
+
 
             Endload()
+            Me.Cursor = Cursors.Default
+            Me.ShowDialog()
 
-            Me.Show()
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen OpenScripts")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -180,11 +184,12 @@ Public Class frmScriptGen
             ScriptDirectory = SavePath
 
             Endload()
-
-            Me.Show()
+            Me.Cursor = Cursors.Default
+            Me.ShowDialog()
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen OpenScripts")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -209,11 +214,12 @@ Public Class frmScriptGen
             ScriptDirectory = SavePath
 
             Endload()
-
-            Me.Show()
+            Me.Cursor = Cursors.Default
+            Me.ShowDialog()
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen OpenScripts")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -351,6 +357,7 @@ Public Class frmScriptGen
 
         Try
             RetCode = New clsRcode
+            Me.Cursor = Cursors.WaitCursor
 
             Select Case ScriptType
                 Case enumGenType.DS
@@ -365,11 +372,12 @@ Public Class frmScriptGen
             End Select
 
             FillResults(False)
-
+            Me.Cursor = Cursors.Default
             Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnGenScript_Click")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -378,6 +386,7 @@ Public Class frmScriptGen
 
         Try
             RetCode = New clsRcode
+            Me.Cursor = Cursors.WaitCursor
 
             Select Case ScriptType
                 Case enumGenType.DS
@@ -391,11 +400,13 @@ Public Class frmScriptGen
 
             End Select
             FillResults(True)
+            Me.Cursor = Cursors.Default
 
             Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParse_Click")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -404,6 +415,7 @@ Public Class frmScriptGen
 
         Try
             RetCode = New clsRcode
+            Me.Cursor = Cursors.WaitCursor
 
             Select Case ScriptType
                 Case enumGenType.DS
@@ -417,11 +429,13 @@ Public Class frmScriptGen
 
             End Select
             FillResults(True)
+            Me.Cursor = Cursors.Default
 
             Log("********* Script Parse End ***********")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParseOnly_Click")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -430,6 +444,7 @@ Public Class frmScriptGen
 
         Try
             RetCode = New clsRcode
+            Me.Cursor = Cursors.WaitCursor
 
             Select Case ScriptType
                 Case enumGenType.DS
@@ -443,11 +458,13 @@ Public Class frmScriptGen
 
             End Select
             FillResults(True)
+            Me.Cursor = Cursors.Default
 
             Log("********* Script Generation End : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParseSQD_Click")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -456,6 +473,7 @@ Public Class frmScriptGen
 
         Try
             RetCode = New clsRcode
+            Me.Cursor = Cursors.WaitCursor
 
             Select Case ScriptType
                 Case enumGenType.DS
@@ -469,11 +487,13 @@ Public Class frmScriptGen
 
             End Select
             FillResults(True)
+            Me.Cursor = Cursors.Default
 
             Log("********* Script Parse End ***********")
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnParseOnlySQD_Click")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub

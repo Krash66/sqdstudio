@@ -89,7 +89,7 @@ Public Class frmConnection
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(393, 305)
+        Me.cmdCancel.Location = New System.Drawing.Point(396, 305)
         Me.cmdCancel.TabIndex = 9
         '
         'cmdHelp
@@ -241,7 +241,7 @@ Public Class frmConnection
         'frmConnection
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(579, 344)
+        Me.ClientSize = New System.Drawing.Size(579, 351)
         Me.Controls.Add(Me.cmbODBC)
         Me.Controls.Add(Me.txtDateformat)
         Me.Controls.Add(Me.Label9)
@@ -365,6 +365,7 @@ Public Class frmConnection
         Else
             Me.DialogResult = Windows.Forms.DialogResult.Retry
         End If
+
     End Sub
 
     '//Returns new Environment object
@@ -395,6 +396,7 @@ doAgain:
     End Function
 
     Public Overrides Sub cmdOk_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+
         Try
             If ValidateNewName(txtConnectionName.Text) = False Or objThis.ValidateNewObject(txtConnectionName.Text) = False Then
                 DialogResult = Windows.Forms.DialogResult.Retry

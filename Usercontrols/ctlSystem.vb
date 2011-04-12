@@ -11,6 +11,8 @@ Public Class ctlSystem
     Friend WithEvents gbConn As System.Windows.Forms.GroupBox
     Friend WithEvents gbDesc As System.Windows.Forms.GroupBox
     Friend WithEvents gbLib As System.Windows.Forms.GroupBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
     Dim IsNewObj As Boolean
 
 
@@ -93,6 +95,8 @@ Public Class ctlSystem
         Me.gbConn = New System.Windows.Forms.GroupBox
         Me.gbDesc = New System.Windows.Forms.GroupBox
         Me.gbLib = New System.Windows.Forms.GroupBox
+        Me.txtDBDLib = New System.Windows.Forms.TextBox
+        Me.Label3 = New System.Windows.Forms.Label
         Me.GroupBox2.SuspendLayout()
         Me.gbConn.SuspendLayout()
         Me.gbDesc.SuspendLayout()
@@ -244,7 +248,7 @@ Public Class ctlSystem
         'txtCopybookLib
         '
         Me.txtCopybookLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCopybookLib.Location = New System.Drawing.Point(75, 19)
+        Me.txtCopybookLib.Location = New System.Drawing.Point(75, 50)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
         Me.txtCopybookLib.Size = New System.Drawing.Size(423, 20)
@@ -254,7 +258,7 @@ Public Class ctlSystem
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(6, 22)
+        Me.Label1.Location = New System.Drawing.Point(6, 53)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(63, 14)
         Me.Label1.TabIndex = 45
@@ -263,7 +267,7 @@ Public Class ctlSystem
         'txtIncludeLib
         '
         Me.txtIncludeLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIncludeLib.Location = New System.Drawing.Point(75, 45)
+        Me.txtIncludeLib.Location = New System.Drawing.Point(75, 76)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
         Me.txtIncludeLib.Size = New System.Drawing.Size(423, 20)
@@ -273,7 +277,7 @@ Public Class ctlSystem
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(6, 48)
+        Me.Label2.Location = New System.Drawing.Point(6, 79)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(47, 14)
         Me.Label2.TabIndex = 47
@@ -282,7 +286,7 @@ Public Class ctlSystem
         'txtDDLLib
         '
         Me.txtDDLLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDDLLib.Location = New System.Drawing.Point(75, 97)
+        Me.txtDDLLib.Location = New System.Drawing.Point(75, 128)
         Me.txtDDLLib.MaxLength = 255
         Me.txtDDLLib.Name = "txtDDLLib"
         Me.txtDDLLib.Size = New System.Drawing.Size(423, 20)
@@ -292,7 +296,7 @@ Public Class ctlSystem
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(6, 100)
+        Me.Label9.Location = New System.Drawing.Point(6, 131)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(28, 14)
         Me.Label9.TabIndex = 51
@@ -301,7 +305,7 @@ Public Class ctlSystem
         'txtDTDLib
         '
         Me.txtDTDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDTDLib.Location = New System.Drawing.Point(75, 71)
+        Me.txtDTDLib.Location = New System.Drawing.Point(75, 102)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
         Me.txtDTDLib.Size = New System.Drawing.Size(423, 20)
@@ -311,7 +315,7 @@ Public Class ctlSystem
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(6, 74)
+        Me.Label10.Location = New System.Drawing.Point(6, 105)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(28, 14)
         Me.Label10.TabIndex = 49
@@ -378,6 +382,8 @@ Public Class ctlSystem
         '
         'gbLib
         '
+        Me.gbLib.Controls.Add(Me.Label3)
+        Me.gbLib.Controls.Add(Me.txtDBDLib)
         Me.gbLib.Controls.Add(Me.txtCopybookLib)
         Me.gbLib.Controls.Add(Me.Label1)
         Me.gbLib.Controls.Add(Me.txtIncludeLib)
@@ -390,10 +396,29 @@ Public Class ctlSystem
         Me.gbLib.ForeColor = System.Drawing.Color.White
         Me.gbLib.Location = New System.Drawing.Point(3, 243)
         Me.gbLib.Name = "gbLib"
-        Me.gbLib.Size = New System.Drawing.Size(510, 128)
+        Me.gbLib.Size = New System.Drawing.Size(510, 162)
         Me.gbLib.TabIndex = 53
         Me.gbLib.TabStop = False
         Me.gbLib.Text = "Local System Libraries"
+        '
+        'txtDBDLib
+        '
+        Me.txtDBDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDBDLib.Location = New System.Drawing.Point(75, 24)
+        Me.txtDBDLib.MaxLength = 255
+        Me.txtDBDLib.Name = "txtDBDLib"
+        Me.txtDBDLib.Size = New System.Drawing.Size(423, 20)
+        Me.txtDBDLib.TabIndex = 52
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(6, 27)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(28, 14)
+        Me.Label3.TabIndex = 53
+        Me.Label3.Text = "DBD"
         '
         'ctlSystem
         '
@@ -449,8 +474,11 @@ Public Class ctlSystem
     Public Function Save(Optional ByVal Cascade As Boolean = False) As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
             If ValidateNewName(txtSystemName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             If objThis.SystemName <> txtSystemName.Text Then
@@ -466,16 +494,26 @@ Public Class ctlSystem
             objThis.Host = txtHost.Text
             objThis.QueueManager = txtQMgr.Text
             objThis.OSType = cmbOSType.Text
+            objThis.DBDLib = txtDBDLib.Text
             objThis.CopybookLib = txtCopybookLib.Text
             objThis.IncludeLib = txtIncludeLib.Text
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
+            Me.Cursor = Cursors.Default
 
             Save = True
             cmdSave.Enabled = False
@@ -487,12 +525,14 @@ Public Class ctlSystem
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlSystem Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
 
     Public Sub cmdSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+
         Save()
 
     End Sub
@@ -522,7 +562,7 @@ Public Class ctlSystem
 
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOSType.SelectedIndexChanged, txtHost.TextChanged, txtPort.TextChanged, txtQMgr.TextChanged, txtSystemDesc.TextChanged, txtSystemName.TextChanged, txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOSType.SelectedIndexChanged, txtHost.TextChanged, txtPort.TextChanged, txtQMgr.TextChanged, txtSystemDesc.TextChanged, txtSystemName.TextChanged, txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtDBDLib.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -534,18 +574,27 @@ Public Class ctlSystem
 
     Public Function EditObj(ByVal obj As INode) As clsSystem
 
-        IsNewObj = False
+        Try
+            IsNewObj = False
+            Me.Cursor = Cursors.WaitCursor
 
-        StartLoad()
+            StartLoad()
 
-        objThis = obj '//Load the form env object
-        objThis.LoadMe()
+            objThis = obj '//Load the form env object
+            objThis.LoadMe()
 
-        UpdateFields()
+            UpdateFields()
 
-        EndLoad()
+            EndLoad()
 
-        EditObj = objThis
+            EditObj = objThis
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlSystem EditObj")
+            Return Nothing
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Function
 
@@ -558,6 +607,7 @@ Public Class ctlSystem
         txtQMgr.Text = objThis.QueueManager
         cmbOSType.Text = objThis.OSType
         txtSystemDesc.Text = objThis.SystemDescription
+        txtDBDLib.Text = objThis.DBDLib
         txtCopybookLib.Text = objThis.CopybookLib
         txtIncludeLib.Text = objThis.IncludeLib
         txtDTDLib.Text = objThis.DTDLib
@@ -581,7 +631,7 @@ Public Class ctlSystem
 
     End Sub
 
-    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbOSType.KeyDown, txtCopybookLib.KeyDown, txtDDLLib.KeyDown, txtDTDLib.KeyDown, txtHost.KeyDown, txtIncludeLib.KeyDown, txtPort.KeyDown, txtQMgr.KeyDown, txtSystemDesc.KeyDown, txtSystemName.KeyDown
+    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles cmbOSType.KeyDown, txtCopybookLib.KeyDown, txtDDLLib.KeyDown, txtDTDLib.KeyDown, txtHost.KeyDown, txtIncludeLib.KeyDown, txtPort.KeyDown, txtQMgr.KeyDown, txtSystemDesc.KeyDown, txtSystemName.KeyDown, txtDBDLib.KeyDown
 
         Select Case e.KeyCode
             Case Keys.Escape

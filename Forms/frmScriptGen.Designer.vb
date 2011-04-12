@@ -528,6 +528,7 @@ Partial Class frmScriptGen
         Me.Controls.Add(Me.btnOpenOutput)
         Me.Controls.Add(Me.btnSQData)
         Me.Name = "frmScriptGen"
+        Me.ShowInTaskbar = False
         Me.Text = "SQData Studio V3"
         Me.Controls.SetChildIndex(Me.btnSQData, 0)
         Me.Controls.SetChildIndex(Me.btnOpenOutput, 0)

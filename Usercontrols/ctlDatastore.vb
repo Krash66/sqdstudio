@@ -2733,13 +2733,18 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         Try
             Dim OldName As String = ""
+            Me.Cursor = Cursors.WaitCursor
 
             If ValidateNewName(txtDatastoreName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
             If txtPhysicalSource.Text.Trim = "" Then
                 MsgBox("'Physical Name' Must not be left blank", MsgBoxStyle.OkOnly, "Missing Physical Name")
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -2756,6 +2761,8 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             End If
             '//save structure selections too 
             If SaveCurrentSelection() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -2775,10 +2782,16 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             'End If
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
                 If objThis.Save = False Then
-                    Exit Try
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
                     'Else
                     '    If objThis.Engine Is Nothing Then
                     '        For Each sys As clsSystem In objThis.Environment.Systems
@@ -2834,6 +2847,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     '    End If
                 End If
             End If
+            Me.Cursor = Cursors.Default
 
             Save = True
 
@@ -2850,6 +2864,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         Catch ex As Exception
             LogError(ex, "ctlDatastore Save()")
             Save = False
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -2895,52 +2910,62 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     Public Function EditObj(ByRef obj As clsDatastore, ByVal cNode As TreeNode, Optional ByVal nd As TreeNode = Nothing) As clsDatastore
 
-        Me.Enabled = True
-        IsNewObj = False
-        StartLoad()
-        objThis = obj '//Load the form Datastore object
-        objThis.LoadMe()
-        objThis.LoadItems(True)
-        InitControls()
-        ShowHideControls(objThis.DatastoreType)
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-        '    objThis.LoadGlobals()
-        'End If
+            Me.Enabled = True
+            IsNewObj = False
+            StartLoad()
+            objThis = obj '//Load the form Datastore object
+            objThis.LoadMe()
+            objThis.LoadItems(True)
+            InitControls()
+            ShowHideControls(objThis.DatastoreType)
 
-        'rbLU.Checked = objThis.IsLookUp
-        If objThis.IsLookUp = True Then
-            gbProp.Text = "Lookup Datastore Properties"
-        Else
-            gbProp.Text = "Datastore Properties"
-        End If
-        'rbLU.Enabled = rbLU.Checked
+            'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    objThis.LoadGlobals()
+            'End If
 
-        UpdateFields()
-
-        FillStructure(cNode, nd)
-
-        If objThis.Engine IsNot Nothing Then
-            objThis.SetIsMapped()
-        End If
-
-        HiLiteMappedNodes(tvDatastoreStructures, objThis)
-
-        If Not ActiveQueryDSlist Is Nothing Then
-            If ActiveQueryDSlist.Contains(obj) = True Then
-                Me.Enabled = False
+            'rbLU.Checked = objThis.IsLookUp
+            If objThis.IsLookUp = True Then
+                gbProp.Text = "Lookup Datastore Properties"
+            Else
+                gbProp.Text = "Datastore Properties"
             End If
-        End If
+            'rbLU.Enabled = rbLU.Checked
 
-        'If objThis.DsDirection = DS_DIRECTION_TARGET Then
-        '    If objThis.DatastoreType = enumDatastore.DS_RELATIONAL Then
-        '        KeyForRel = HasKeyForRel()
-        '    End If
-        'End If
+            UpdateFields()
 
-        EndLoad()
+            FillStructure(cNode, nd)
 
-        EditObj = objThis
+            If objThis.Engine IsNot Nothing Then
+                objThis.SetIsMapped()
+            End If
+
+            HiLiteMappedNodes(tvDatastoreStructures, objThis)
+
+            If Not ActiveQueryDSlist Is Nothing Then
+                If ActiveQueryDSlist.Contains(obj) = True Then
+                    Me.Enabled = False
+                End If
+            End If
+
+            'If objThis.DsDirection = DS_DIRECTION_TARGET Then
+            '    If objThis.DatastoreType = enumDatastore.DS_RELATIONAL Then
+            '        KeyForRel = HasKeyForRel()
+            '    End If
+            'End If
+
+            EndLoad()
+            Me.Cursor = Cursors.Default
+
+            EditObj = objThis
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore EditObj")
+            EditObj = Nothing
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Function
 

@@ -252,11 +252,16 @@ Public Class ctlVariable
     End Sub
 
     Public Function Save() As Boolean
+
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             Dim OldName As String = ""
 
             '// First Check Validity before Saving
             If ValidateNewName(txtVariableName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -276,9 +281,15 @@ Public Class ctlVariable
             objThis.VariableDescription = txtVariableDesc.Text
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
                 If objThis.Save = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
                     Exit Function
                 Else
                     If objThis.Engine Is Nothing Then
@@ -314,6 +325,7 @@ Public Class ctlVariable
 
             Save = True
             cmdSave.Enabled = False
+            Me.Cursor = Cursors.Default
 
             If objThis.IsRenamed = True Then
                 RaiseEvent Renamed(Me, objThis)
@@ -324,7 +336,8 @@ Public Class ctlVariable
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlVar Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -386,18 +399,29 @@ Public Class ctlVariable
 
     Public Function EditObj(ByVal obj As INode) As clsVariable
 
-        IsNewObj = False
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        StartLoad()
+            IsNewObj = False
 
-        objThis = obj '//Load the form env object
-        objThis.LoadMe()
+            StartLoad()
 
-        UpdateFields()
+            objThis = obj '//Load the form env object
+            objThis.LoadMe()
 
-        EditObj = objThis
+            UpdateFields()
 
-        EndLoad()
+            EditObj = objThis
+
+            EndLoad()
+
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlVariable EditObj")
+            Me.Cursor = Cursors.Default
+            Return Nothing
+        End Try
 
     End Function
 

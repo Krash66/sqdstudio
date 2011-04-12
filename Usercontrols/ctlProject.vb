@@ -341,7 +341,6 @@ Public Class ctlProject
         Me.Visible = True
         IsEventFromCode = False
 
-
     End Sub
     
     Private Sub OnChange(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtMetaDSN.TextChanged, txtProjectName.TextChanged, txtVersion.TextChanged, txtCreateDate.TextChanged, txtLastUpd.TextChanged, txtCust.TextChanged, txtMetaVer.TextChanged
@@ -406,19 +405,24 @@ Public Class ctlProject
 #End Region
 
     Public Function EditObj(ByVal obj As INode) As clsProject
-        
-        IsNewObj = False
 
-        objThis = obj
-        objThis.LoadMe()
+        Try
+            IsNewObj = False
 
-        StartLoad()
+            objThis = obj
+            objThis.LoadMe()
 
-        UpdateFields()
+            StartLoad()
 
-        EndLoad()
+            UpdateFields()
 
-        EditObj = Me.objThis
+            EndLoad()
+
+            EditObj = Me.objThis
+
+        Catch ex As Exception
+            EditObj = Nothing
+        End Try
 
     End Function
 
@@ -445,8 +449,10 @@ Public Class ctlProject
     Public Function Save() As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
             If ValidateNewName(txtProjectName.Text) = False Then
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -475,10 +481,16 @@ Public Class ctlProject
                     MsgBox("Error during project save operation", MsgBoxStyle.Critical, MsgTitle)
                 End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
+            Me.Cursor = Cursors.Default
 
             Save = True
+
             cmdSave.Enabled = False
             If objThis.IsRenamed = True Then
                 RaiseEvent Renamed(Me, objThis)
@@ -488,7 +500,9 @@ Public Class ctlProject
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlProj Save")
+            Save = False
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function

@@ -861,8 +861,11 @@ Public Class ctlStructureSelection
         Dim objfield As clsField
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
             If ValidateNewName(txtSelectionName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -882,9 +885,17 @@ Public Class ctlStructureSelection
             objThis.SelectionDescription = txtSelectionDesc.Text
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
 
             For i = 0 To objThis.ObjStructure.ObjFields.Count - 1
@@ -893,6 +904,7 @@ Public Class ctlStructureSelection
                     objfield.UpdateFieldDesc()
                 End If
             Next
+            Me.Cursor = Cursors.Default
 
             Save = True
 
@@ -905,7 +917,8 @@ Public Class ctlStructureSelection
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlSS Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -913,6 +926,8 @@ Public Class ctlStructureSelection
     Public Function EditObj(ByVal obj As INode) As clsStructureSelection
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             IsNewObj = False
             StartLoad()
             objThis = obj '//Load the form struct object
@@ -920,12 +935,14 @@ Public Class ctlStructureSelection
 
             UpdateFields()
             EndLoad()
+            Me.Cursor = Cursors.Default
 
             EditObj = objThis
 
         Catch ex As Exception
             LogError(ex, "ctlStructureSelection EditObj")
             EditObj = Nothing
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function

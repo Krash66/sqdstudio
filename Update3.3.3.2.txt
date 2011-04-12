@@ -1,5 +1,7 @@
-
-
+Updates for version 3.3.3.1 & 3.3.3.2
+-- Changes to Registry Use to correct Rights issues
+-- Changes to Environment Paths Usage, so All Description Paths reflect Environment Cahnges.
+-- Corrections to Script Generator
 
 *** PREVIOUS UPDATES ***
 Updates for version 3.3.3.0 

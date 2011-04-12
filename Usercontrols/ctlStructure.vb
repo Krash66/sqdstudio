@@ -1520,11 +1520,17 @@ Public Class ctlStructure
         Dim objfield As clsField
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             If ValidateSelection() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '// First Check Validity before Saving
             If ValidateNewName(txtStructName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             If objThis.StructureName <> txtStructName.Text Then
@@ -1553,10 +1559,18 @@ Public Class ctlStructure
                 '//Before we add new structure set structure fields
                 LoadFldArrFromXmlFile(GetOutDumpXML, objThis.ObjFields)
 
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
                 If objThis.IsRenamed = False Then
-                    objThis.Save()
+                    If objThis.Save() = False Then
+                        Save = False
+                        Me.Cursor = Cursors.Default
+                        Exit Function
+                    End If
                 End If
             End If
 
@@ -1568,6 +1582,7 @@ Public Class ctlStructure
             Next
 
             Save = True
+            Me.Cursor = Cursors.Default
 
             cmdSave.Enabled = False
             If objThis.IsRenamed = True Then
@@ -1578,7 +1593,8 @@ Public Class ctlStructure
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlStructure Save")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -1586,6 +1602,8 @@ Public Class ctlStructure
     Public Function EditObj(ByVal obj As INode) As clsStructure
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             IsNewObj = False
             StartLoad()
             objThis = obj '//Load the form struct object
@@ -1605,12 +1623,15 @@ Public Class ctlStructure
             FillRecordLength()
 
             EndLoad()
+            Me.Cursor = Cursors.Default
 
             EditObj = objThis
+            Me.Refresh()
 
         Catch ex As Exception
             LogError(ex, "ctlStructure EditObj")
             EditObj = Nothing
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function

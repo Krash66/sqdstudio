@@ -15,6 +15,7 @@ Public Class clsSystem
     Private m_IsRenamed As Boolean = False
     Private m_IsLoaded As Boolean = False
 
+    Public DBDLib As String = ""
     Public CopybookLib As String = ""
     Public IncludeLib As String = ""
     Public DTDLib As String = ""
@@ -445,6 +446,8 @@ Public Class clsSystem
 
                 Attrib = GetStr(GetVal(dr("SYSTEMATTRB")))
                 Select Case Attrib
+                    Case "DBDLIB"
+                        Me.DBDLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
                     Case "COPYBOOKLIB"
                         Me.CopybookLib = GetStr(GetVal(dr("SYSTEMATTRBVALUE")))
                     Case "DDLLIB"
@@ -609,7 +612,6 @@ Public Class clsSystem
 
 #Region "Methods"
 
-
     Function InsertATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
 
         Dim cmd As New Odbc.OdbcCommand
@@ -627,7 +629,7 @@ Public Class clsSystem
 
             cmd.Connection = cnn
 
-            For i As Integer = 0 To 7
+            For i As Integer = 0 To 8
                 Select Case i
                     Case 0
                         Attrib = "COPYBOOKLIB"
@@ -653,6 +655,9 @@ Public Class clsSystem
                     Case 7
                         Attrib = "QMGR"
                         Value = Me.QueueManager
+                    Case 8
+                        Attrib = "DBDLIB"
+                        Value = Me.DBDLib
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblSystemsATTR & _
@@ -710,7 +715,6 @@ Public Class clsSystem
 
     End Function
 
-    
 #End Region
 
     Public Sub New()

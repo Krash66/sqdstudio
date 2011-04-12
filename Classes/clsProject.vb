@@ -1289,6 +1289,7 @@ Public Class clsProject
             Application.UserAppDataRegistry.SetValue("ODBCType", Me.ODBCtype)
             Application.UserAppDataRegistry.SetValue("TablePrefix", Me.TablePrefix)
             Application.UserAppDataRegistry.SetValue("CreationDate", Me.ProjectCreationDate)
+            Application.UserAppDataRegistry.SetValue("LastUpdate", Me.ProjectLastUpdated)
             If Me.MapListPath IsNot Nothing Then
                 Application.UserAppDataRegistry.SetValue(Me.ProjectName & "MapListPath", Me.MapListPath)
             End If
@@ -1333,6 +1334,7 @@ Public Class clsProject
                 Me.ODBCtype = CInt(Application.UserAppDataRegistry.GetValue("ODBCtype").ToString)
                 Me.TablePrefix = Application.UserAppDataRegistry.GetValue("TablePrefix").ToString
                 Me.ProjectCreationDate = Application.UserAppDataRegistry.GetValue("CreationDate").ToString
+                Me.ProjectLastUpdated = Application.UserAppDataRegistry.GetValue("LastUpdate").ToString
                 If Application.UserAppDataRegistry.GetValue("MetaVer") IsNot Nothing Then
                     ver = Application.UserAppDataRegistry.GetValue("MetaVer").ToString()
                     If ver = "V2" Or ver = "0" Then

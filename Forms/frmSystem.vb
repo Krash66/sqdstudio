@@ -2,6 +2,8 @@ Public Class frmSystem
     Inherits SQDStudio.frmBlank
 
     Public objThis As New clsSystem
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
     Dim IsNewObj As Boolean
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
@@ -76,8 +78,9 @@ Public Class frmSystem
         Me.Label11 = New System.Windows.Forms.Label
         Me.txtSystemName = New System.Windows.Forms.TextBox
         Me.Label12 = New System.Windows.Forms.Label
+        Me.txtDBDLib = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox1
@@ -109,12 +112,6 @@ Public Class frmSystem
         '
         Me.Label1.Text = "System definition"
         '
-        'PictureBox1
-        '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\FormTop\sq_skyblue.jpg"
-        '
         'Label2
         '
         Me.Label2.Size = New System.Drawing.Size(438, 44)
@@ -131,7 +128,7 @@ Public Class frmSystem
         'Label9
         '
         Me.Label9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(16, 328)
+        Me.Label9.Location = New System.Drawing.Point(16, 331)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(96, 17)
         Me.Label9.TabIndex = 71
@@ -139,7 +136,7 @@ Public Class frmSystem
         '
         'txtDTDLib
         '
-        Me.txtDTDLib.Location = New System.Drawing.Point(112, 296)
+        Me.txtDTDLib.Location = New System.Drawing.Point(112, 302)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
         Me.txtDTDLib.Size = New System.Drawing.Size(384, 20)
@@ -148,7 +145,7 @@ Public Class frmSystem
         'Label10
         '
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(16, 296)
+        Me.Label10.Location = New System.Drawing.Point(16, 305)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(96, 17)
         Me.Label10.TabIndex = 69
@@ -156,7 +153,7 @@ Public Class frmSystem
         '
         'txtIncludeLib
         '
-        Me.txtIncludeLib.Location = New System.Drawing.Point(112, 264)
+        Me.txtIncludeLib.Location = New System.Drawing.Point(112, 276)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
         Me.txtIncludeLib.Size = New System.Drawing.Size(384, 20)
@@ -165,7 +162,7 @@ Public Class frmSystem
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(16, 264)
+        Me.Label3.Location = New System.Drawing.Point(16, 279)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(96, 17)
         Me.Label3.TabIndex = 67
@@ -173,7 +170,7 @@ Public Class frmSystem
         '
         'txtCopybookLib
         '
-        Me.txtCopybookLib.Location = New System.Drawing.Point(112, 232)
+        Me.txtCopybookLib.Location = New System.Drawing.Point(112, 250)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
         Me.txtCopybookLib.Size = New System.Drawing.Size(384, 20)
@@ -182,7 +179,7 @@ Public Class frmSystem
         'Label4
         '
         Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(16, 232)
+        Me.Label4.Location = New System.Drawing.Point(16, 253)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(96, 17)
         Me.Label4.TabIndex = 65
@@ -190,18 +187,18 @@ Public Class frmSystem
         '
         'txtSystemDesc
         '
-        Me.txtSystemDesc.Location = New System.Drawing.Point(112, 176)
+        Me.txtSystemDesc.Location = New System.Drawing.Point(112, 158)
         Me.txtSystemDesc.MaxLength = 1000
         Me.txtSystemDesc.Multiline = True
         Me.txtSystemDesc.Name = "txtSystemDesc"
         Me.txtSystemDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtSystemDesc.Size = New System.Drawing.Size(384, 40)
+        Me.txtSystemDesc.Size = New System.Drawing.Size(384, 60)
         Me.txtSystemDesc.TabIndex = 6
         '
         'Label8
         '
         Me.Label8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(16, 176)
+        Me.Label8.Location = New System.Drawing.Point(16, 161)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(96, 17)
         Me.Label8.TabIndex = 63
@@ -210,7 +207,7 @@ Public Class frmSystem
         'cmbOSType
         '
         Me.cmbOSType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbOSType.Location = New System.Drawing.Point(360, 80)
+        Me.cmbOSType.Location = New System.Drawing.Point(360, 79)
         Me.cmbOSType.Name = "cmbOSType"
         Me.cmbOSType.Size = New System.Drawing.Size(136, 21)
         Me.cmbOSType.TabIndex = 2
@@ -218,7 +215,7 @@ Public Class frmSystem
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(280, 80)
+        Me.Label7.Location = New System.Drawing.Point(280, 83)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(80, 20)
         Me.Label7.TabIndex = 61
@@ -226,7 +223,7 @@ Public Class frmSystem
         '
         'txtQMgr
         '
-        Me.txtQMgr.Location = New System.Drawing.Point(112, 144)
+        Me.txtQMgr.Location = New System.Drawing.Point(112, 132)
         Me.txtQMgr.MaxLength = 128
         Me.txtQMgr.Name = "txtQMgr"
         Me.txtQMgr.Size = New System.Drawing.Size(152, 20)
@@ -235,7 +232,7 @@ Public Class frmSystem
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(16, 144)
+        Me.Label5.Location = New System.Drawing.Point(16, 135)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(96, 17)
         Me.Label5.TabIndex = 59
@@ -243,7 +240,7 @@ Public Class frmSystem
         '
         'txtPort
         '
-        Me.txtPort.Location = New System.Drawing.Point(320, 112)
+        Me.txtPort.Location = New System.Drawing.Point(320, 106)
         Me.txtPort.MaxLength = 128
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(176, 20)
@@ -252,7 +249,7 @@ Public Class frmSystem
         'Label6
         '
         Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(280, 112)
+        Me.Label6.Location = New System.Drawing.Point(280, 109)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(72, 20)
         Me.Label6.TabIndex = 57
@@ -260,7 +257,7 @@ Public Class frmSystem
         '
         'txtHost
         '
-        Me.txtHost.Location = New System.Drawing.Point(112, 112)
+        Me.txtHost.Location = New System.Drawing.Point(112, 106)
         Me.txtHost.MaxLength = 128
         Me.txtHost.Name = "txtHost"
         Me.txtHost.Size = New System.Drawing.Size(152, 20)
@@ -269,7 +266,7 @@ Public Class frmSystem
         'Label11
         '
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(16, 112)
+        Me.Label11.Location = New System.Drawing.Point(16, 109)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(96, 20)
         Me.Label11.TabIndex = 55
@@ -286,16 +283,35 @@ Public Class frmSystem
         'Label12
         '
         Me.Label12.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(16, 80)
+        Me.Label12.Location = New System.Drawing.Point(16, 83)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(96, 20)
         Me.Label12.TabIndex = 53
         Me.Label12.Text = "System Name"
         '
+        'txtDBDLib
+        '
+        Me.txtDBDLib.Location = New System.Drawing.Point(112, 224)
+        Me.txtDBDLib.MaxLength = 255
+        Me.txtDBDLib.Name = "txtDBDLib"
+        Me.txtDBDLib.Size = New System.Drawing.Size(384, 20)
+        Me.txtDBDLib.TabIndex = 72
+        '
+        'Label13
+        '
+        Me.Label13.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(16, 227)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(96, 17)
+        Me.Label13.TabIndex = 73
+        Me.Label13.Text = "DBD Lib"
+        '
         'frmSystem
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.ClientSize = New System.Drawing.Size(514, 423)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.txtDBDLib)
         Me.Controls.Add(Me.txtDDLLib)
         Me.Controls.Add(Me.Label9)
         Me.Controls.Add(Me.txtDTDLib)
@@ -324,7 +340,6 @@ Public Class frmSystem
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.Label12, 0)
         Me.Controls.SetChildIndex(Me.txtSystemName, 0)
         Me.Controls.SetChildIndex(Me.Label11, 0)
@@ -345,8 +360,9 @@ Public Class frmSystem
         Me.Controls.SetChildIndex(Me.txtDTDLib, 0)
         Me.Controls.SetChildIndex(Me.Label9, 0)
         Me.Controls.SetChildIndex(Me.txtDDLLib, 0)
+        Me.Controls.SetChildIndex(Me.txtDBDLib, 0)
+        Me.Controls.SetChildIndex(Me.Label13, 0)
         Me.Panel1.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -354,7 +370,7 @@ Public Class frmSystem
 
 #End Region
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOSType.SelectedIndexChanged, txtHost.TextChanged, txtPort.TextChanged, txtQMgr.TextChanged, txtSystemDesc.TextChanged, txtSystemName.TextChanged, txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOSType.SelectedIndexChanged, txtHost.TextChanged, txtPort.TextChanged, txtQMgr.TextChanged, txtSystemDesc.TextChanged, txtSystemName.TextChanged, txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtDBDLib.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -463,6 +479,7 @@ doAgain:
             objThis.Host = txtHost.Text
             objThis.QueueManager = txtQMgr.Text
             objThis.OSType = cmbOSType.Text
+            objThis.DBDLib = txtDBDLib.Text
             objThis.CopybookLib = txtCopybookLib.Text
             objThis.IncludeLib = txtIncludeLib.Text
             objThis.DTDLib = txtDTDLib.Text

@@ -57,7 +57,7 @@ Public Class frmNewProj
                 If ValidateNewName(txtProj.Text) = True Then
                     objThis.ProjectName = txtProj.Text
                     objThis.ODBCtype = m_objthis.ODBCtype
-                    objThis.ProjectCreationDate = Now()
+                    objThis.ProjectCreationDate = Now.ToString
                     objThis.ProjectDesc = m_objthis.ProjectDesc
                     objThis.ProjectMetaDSN = m_objthis.ProjectMetaDSN
                     objThis.ProjectMetaDSNPWD = m_objthis.ProjectMetaDSNPWD

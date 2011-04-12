@@ -3,6 +3,8 @@ Public Class frmEngine
 
     Public objThis As New clsEngine
     Friend WithEvents cbForceCommit As System.Windows.Forms.CheckBox
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
 
     Dim IsNewObj As Boolean
 
@@ -55,7 +57,6 @@ Public Class frmEngine
     Friend WithEvents cbConn As System.Windows.Forms.ComboBox
     Friend WithEvents Label12 As System.Windows.Forms.Label
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEngine))
         Me.txtEngineDesc = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.txtReportFile = New System.Windows.Forms.TextBox
@@ -77,44 +78,39 @@ Public Class frmEngine
         Me.cbConn = New System.Windows.Forms.ComboBox
         Me.Label12 = New System.Windows.Forms.Label
         Me.cbForceCommit = New System.Windows.Forms.CheckBox
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.txtDBDLib = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
-        'PictureBox1
-        '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\FormTop\sq_skyblue.jpg"
-        '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(579, 68)
+        Me.Panel1.Size = New System.Drawing.Size(589, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 404)
-        Me.GroupBox1.Size = New System.Drawing.Size(581, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 419)
+        Me.GroupBox1.Size = New System.Drawing.Size(591, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(297, 427)
+        Me.cmdOk.Location = New System.Drawing.Point(307, 442)
         Me.cmdOk.TabIndex = 10
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(393, 427)
+        Me.cmdCancel.Location = New System.Drawing.Point(403, 442)
         Me.cmdCancel.TabIndex = 11
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(489, 427)
+        Me.cmdHelp.Location = New System.Drawing.Point(499, 442)
         Me.cmdHelp.TabIndex = 12
         '
         'Label1
@@ -123,7 +119,7 @@ Public Class frmEngine
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(503, 39)
+        Me.Label2.Size = New System.Drawing.Size(513, 39)
         Me.Label2.Text = "Enter a unique engine name within a system, and the engine attributes.  You can a" & _
             "lso override the directories (DDNAMEs) where structure files reside."
         '
@@ -233,7 +229,7 @@ Public Class frmEngine
         '
         'txtDTDLib
         '
-        Me.txtDTDLib.Location = New System.Drawing.Point(120, 336)
+        Me.txtDTDLib.Location = New System.Drawing.Point(120, 342)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
         Me.txtDTDLib.Size = New System.Drawing.Size(447, 20)
@@ -242,7 +238,7 @@ Public Class frmEngine
         'Label10
         '
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(24, 336)
+        Me.Label10.Location = New System.Drawing.Point(24, 345)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(96, 17)
         Me.Label10.TabIndex = 77
@@ -250,7 +246,7 @@ Public Class frmEngine
         '
         'txtIncludeLib
         '
-        Me.txtIncludeLib.Location = New System.Drawing.Point(120, 304)
+        Me.txtIncludeLib.Location = New System.Drawing.Point(120, 316)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
         Me.txtIncludeLib.Size = New System.Drawing.Size(447, 20)
@@ -259,7 +255,7 @@ Public Class frmEngine
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(24, 304)
+        Me.Label7.Location = New System.Drawing.Point(24, 319)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(96, 17)
         Me.Label7.TabIndex = 75
@@ -267,7 +263,7 @@ Public Class frmEngine
         '
         'txtCopybookLib
         '
-        Me.txtCopybookLib.Location = New System.Drawing.Point(120, 272)
+        Me.txtCopybookLib.Location = New System.Drawing.Point(120, 290)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
         Me.txtCopybookLib.Size = New System.Drawing.Size(447, 20)
@@ -276,7 +272,7 @@ Public Class frmEngine
         'Label11
         '
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(24, 272)
+        Me.Label11.Location = New System.Drawing.Point(24, 293)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(96, 17)
         Me.Label11.TabIndex = 73
@@ -313,10 +309,29 @@ Public Class frmEngine
         Me.cbForceCommit.Text = "Force Commit"
         Me.cbForceCommit.UseVisualStyleBackColor = True
         '
+        'txtDBDLib
+        '
+        Me.txtDBDLib.Location = New System.Drawing.Point(120, 264)
+        Me.txtDBDLib.MaxLength = 255
+        Me.txtDBDLib.Name = "txtDBDLib"
+        Me.txtDBDLib.Size = New System.Drawing.Size(447, 20)
+        Me.txtDBDLib.TabIndex = 83
+        '
+        'Label13
+        '
+        Me.Label13.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(24, 267)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(96, 17)
+        Me.Label13.TabIndex = 84
+        Me.Label13.Text = "DBD Lib"
+        '
         'frmEngine
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(579, 466)
+        Me.ClientSize = New System.Drawing.Size(589, 481)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.txtDBDLib)
         Me.Controls.Add(Me.cbForceCommit)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.cbConn)
@@ -346,7 +361,6 @@ Public Class frmEngine
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.Label3, 0)
         Me.Controls.SetChildIndex(Me.txtEngineName, 0)
         Me.Controls.SetChildIndex(Me.Label4, 0)
@@ -368,7 +382,8 @@ Public Class frmEngine
         Me.Controls.SetChildIndex(Me.cbConn, 0)
         Me.Controls.SetChildIndex(Me.Label12, 0)
         Me.Controls.SetChildIndex(Me.cbForceCommit, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Controls.SetChildIndex(Me.txtDBDLib, 0)
+        Me.Controls.SetChildIndex(Me.Label13, 0)
         Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -379,7 +394,7 @@ Public Class frmEngine
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, txtDBDLib.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -475,6 +490,7 @@ Public Class frmEngine
         txtEngineName.SelectAll()
         txtReportEvery.Text = 0
         txtCommitEvery.Text = 0
+        txtDBDLib.Text = objThis.ObjSystem.DBDLib
         txtCopybookLib.Text = objThis.ObjSystem.CopybookLib
         txtIncludeLib.Text = objThis.ObjSystem.IncludeLib
         txtDTDLib.Text = objThis.ObjSystem.DTDLib
@@ -509,15 +525,13 @@ doAgain:
             objThis.ReportFile = txtReportFile.Text
             objThis.ReportEvery = txtReportEvery.Text
             objThis.CommitEvery = txtCommitEvery.Text
+            objThis.DBDLib = txtDBDLib.Text
             objThis.CopybookLib = txtCopybookLib.Text
             objThis.IncludeLib = txtIncludeLib.Text
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
             'added for RBC   3/8/11    Gives a default version
             objThis.EngVersion = "3.7.17"
-
-
-
 
             Dim temp As Mylist = cbConn.SelectedItem
             'Dim answer As MsgBoxResult
@@ -609,12 +623,12 @@ doAgain:
 
         Catch ex As Exception
             DialogResult = Windows.Forms.DialogResult.Retry
-            LogError(ex)
+            LogError(ex, "frmEngine cmdOK_Click")
         End Try
 
     End Sub
 
-    Public Overrides Sub cmdHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
+    Public Overrides Sub cmdHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         ShowHelp(modHelp.HHId.H_Add_Engines)
 

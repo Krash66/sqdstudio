@@ -1199,10 +1199,12 @@ Public Class frmDatastore
 
             Me.Close()
             DialogResult = Windows.Forms.DialogResult.OK
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmDatastore cmdOK_Click")
             DialogResult = Windows.Forms.DialogResult.Retry
         End Try
+
     End Sub
 
     Private Sub cmdShowHideFieldAttr_Click()

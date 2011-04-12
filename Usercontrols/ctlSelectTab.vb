@@ -306,6 +306,7 @@ Public Class ctlSelectTab
         Dim sql As String = ""
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             dt2.Clear()
             dt2.Columns.Clear()
 
@@ -368,14 +369,18 @@ Public Class ctlSelectTab
                         End If
                     Next
                 End If
+                Me.Cursor = Cursors.Default
+
                 Return True
 
             Catch ex As Exception
                 LogError(ex, "frmChooseCol DGV1_SelectionChg")
+                Me.Cursor = Cursors.Default
                 Return False
             End Try
 
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             If ex.ToString.Contains("Oracle") = True Then
                 If ex.ToString.Contains("null password") = True Then
                     MsgBox("Password cannot be left blank", MsgBoxStyle.Information, MsgTitle)
@@ -403,10 +408,13 @@ Public Class ctlSelectTab
             Else
                 MsgBox("You have chosen an invalid ODBC source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.Information, MsgTitle)
             End If
+            Me.Cursor = Cursors.Default
 
             Return False
+
         Finally
             conn.Close()
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function

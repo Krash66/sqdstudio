@@ -301,7 +301,6 @@ Public Class frmMain
     Friend WithEvents mnuLU As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem23 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddGen As System.Windows.Forms.MenuItem
-    Friend WithEvents ProgressBar1 As System.Windows.Forms.ProgressBar
     Friend WithEvents mnuModDSSelDTD As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelDB2DDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModDSSelC As System.Windows.Forms.MenuItem
@@ -493,6 +492,8 @@ Public Class frmMain
         Me.MenuItem33 = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelDTD = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelDB2DDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelDSSelOraDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelDSSelSQLDDL = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelC = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelLOD = New System.Windows.Forms.MenuItem
         Me.mnuModDSSelSQL = New System.Windows.Forms.MenuItem
@@ -529,6 +530,8 @@ Public Class frmMain
         Me.MenuItem18 = New System.Windows.Forms.MenuItem
         Me.mnuModelStructSelectionDTD = New System.Windows.Forms.MenuItem
         Me.mnuModelSSDB2DDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelSSOraDDL = New System.Windows.Forms.MenuItem
+        Me.mnuModelSSSQLDDL = New System.Windows.Forms.MenuItem
         Me.mnuModelStructSelectionHeader = New System.Windows.Forms.MenuItem
         Me.mnuModelSSLOD = New System.Windows.Forms.MenuItem
         Me.mnuModelSSSQL = New System.Windows.Forms.MenuItem
@@ -540,6 +543,8 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.ctMain = New SQDStudio.ctlMain
         Me.ctInc = New SQDStudio.ctlInclude
         Me.ctFolder = New SQDStudio.ctlFolderNode
@@ -553,13 +558,6 @@ Public Class frmMain
         Me.ctEnv = New SQDStudio.ctlEnvironment
         Me.ctPrj = New SQDStudio.ctlProject
         Me.ctDs = New SQDStudio.ctlDatastore
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.SCmain = New System.Windows.Forms.SplitContainer
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.mnuModelSSSQLDDL = New System.Windows.Forms.MenuItem
-        Me.mnuModelSSOraDDL = New System.Windows.Forms.MenuItem
-        Me.mnuModelDSSelSQLDDL = New System.Windows.Forms.MenuItem
-        Me.mnuModelDSSelOraDDL = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -576,7 +574,7 @@ Public Class frmMain
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1016, 29)
+        Me.Panel1.Size = New System.Drawing.Size(931, 29)
         Me.Panel1.TabIndex = 2
         '
         'lblStatusMsg
@@ -591,6 +589,8 @@ Public Class frmMain
         '
         'ToolBar1
         '
+        Me.ToolBar1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ToolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.tbtnNew, Me.s1, Me.tbtnOpen, Me.tbtnSave, Me.s2, Me.tbtnCut, Me.tbtnCopy, Me.tbtnPaste, Me.tbtnDel, Me.s3, Me.tbtnScript, Me.s4, Me.tbtnEnv, Me.tbtnStructure, Me.tbtnStructSel, Me.tbtnSystem, Me.tbtnConnection, Me.tbtnEngine, Me.tbtnDS, Me.tbtnVar, Me.tbtnProc, Me.tbtnJoin, Me.tbtnLookup, Me.tbtnMain, Me.tbtHelp, Me.tbLog, Me.s5, Me.tbtnQuery, Me.s6, Me.tbMap, Me.s7, Me.tbToggle})
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolBar1.DropDownArrows = True
@@ -598,7 +598,7 @@ Public Class frmMain
         Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.ShowToolTips = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1016, 28)
+        Me.ToolBar1.Size = New System.Drawing.Size(931, 28)
         Me.ToolBar1.TabIndex = 1
         Me.ToolTip1.SetToolTip(Me.ToolBar1, "Custom Field Mapping")
         '
@@ -893,11 +893,11 @@ Public Class frmMain
         'StatusBar1
         '
         Me.StatusBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StatusBar1.Location = New System.Drawing.Point(0, 542)
+        Me.StatusBar1.Location = New System.Drawing.Point(0, 549)
         Me.StatusBar1.Name = "StatusBar1"
         Me.StatusBar1.Panels.AddRange(New System.Windows.Forms.StatusBarPanel() {Me.StatusBarPanel1})
         Me.StatusBar1.ShowPanels = True
-        Me.StatusBar1.Size = New System.Drawing.Size(1016, 24)
+        Me.StatusBar1.Size = New System.Drawing.Size(931, 24)
         Me.StatusBar1.TabIndex = 5
         '
         'StatusBarPanel1
@@ -920,7 +920,7 @@ Public Class frmMain
         Me.tvExplorer.Name = "tvExplorer"
         Me.tvExplorer.SelectedImageIndex = 7
         Me.tvExplorer.ShowNodeToolTips = True
-        Me.tvExplorer.Size = New System.Drawing.Size(346, 513)
+        Me.tvExplorer.Size = New System.Drawing.Size(317, 520)
         Me.tvExplorer.TabIndex = 2
         '
         'OpenFileDialog1
@@ -1625,6 +1625,16 @@ Public Class frmMain
         Me.mnuModDSSelDB2DDL.Index = 10
         Me.mnuModDSSelDB2DDL.Text = "Model DB2 DDL"
         '
+        'mnuModelDSSelOraDDL
+        '
+        Me.mnuModelDSSelOraDDL.Index = 11
+        Me.mnuModelDSSelOraDDL.Text = "Model Oracle DDL"
+        '
+        'mnuModelDSSelSQLDDL
+        '
+        Me.mnuModelDSSelSQLDDL.Index = 12
+        Me.mnuModelDSSelSQLDDL.Text = "Model SQLServer DDL"
+        '
         'mnuModDSSelC
         '
         Me.mnuModDSSelC.Enabled = False
@@ -1814,6 +1824,16 @@ Public Class frmMain
         Me.mnuModelSSDB2DDL.Index = 4
         Me.mnuModelSSDB2DDL.Text = "Model DB2 DDL"
         '
+        'mnuModelSSOraDDL
+        '
+        Me.mnuModelSSOraDDL.Index = 5
+        Me.mnuModelSSOraDDL.Text = "Model Oracle DDL"
+        '
+        'mnuModelSSSQLDDL
+        '
+        Me.mnuModelSSSQLDDL.Index = 6
+        Me.mnuModelSSSQLDDL.Text = "Model SQLServer DDL"
+        '
         'mnuModelStructSelectionHeader
         '
         Me.mnuModelStructSelectionHeader.Index = 7
@@ -1884,8 +1904,28 @@ Public Class frmMain
         Me.pnlProp.Location = New System.Drawing.Point(0, 0)
         Me.pnlProp.Name = "pnlProp"
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.pnlProp.Size = New System.Drawing.Size(665, 513)
+        Me.pnlProp.Size = New System.Drawing.Size(609, 520)
         Me.pnlProp.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SCmain.Location = New System.Drawing.Point(0, 29)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
+        Me.SCmain.Size = New System.Drawing.Size(931, 520)
+        Me.SCmain.SplitterDistance = 317
+        Me.SCmain.SplitterWidth = 5
+        Me.SCmain.TabIndex = 9
         '
         'ctMain
         '
@@ -2009,59 +2049,10 @@ Public Class frmMain
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
         '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SCmain.Location = New System.Drawing.Point(0, 29)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
-        Me.SCmain.SplitterDistance = 346
-        Me.SCmain.SplitterWidth = 5
-        Me.SCmain.TabIndex = 9
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
-        '
-        'mnuModelSSSQLDDL
-        '
-        Me.mnuModelSSSQLDDL.Index = 6
-        Me.mnuModelSSSQLDDL.Text = "Model SQLServer DDL"
-        '
-        'mnuModelSSOraDDL
-        '
-        Me.mnuModelSSOraDDL.Index = 5
-        Me.mnuModelSSOraDDL.Text = "Model Oracle DDL"
-        '
-        'mnuModelDSSelSQLDDL
-        '
-        Me.mnuModelDSSelSQLDDL.Index = 12
-        Me.mnuModelDSSelSQLDDL.Text = "Model SQLServer DDL"
-        '
-        'mnuModelDSSelOraDDL
-        '
-        Me.mnuModelDSSelOraDDL.Index = 11
-        Me.mnuModelDSSelOraDDL.Text = "Model Oracle DDL"
-        '
         'frmMain
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(1016, 566)
-        Me.Controls.Add(Me.ProgressBar1)
+        Me.ClientSize = New System.Drawing.Size(931, 573)
         Me.Controls.Add(Me.SCmain)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.StatusBar1)
@@ -2246,9 +2237,11 @@ Public Class frmMain
             'FillProject(CurLoadedProject, , True)
             tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
             ShowUsercontrol(tvExplorer.SelectedNode)
+            Me.Cursor = Cursors.Default
 
         Catch ex As Exception
             LogError(ex, "frmMain OnSave")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -2263,22 +2256,29 @@ Public Class frmMain
     '/// from user control event
     Private Sub OnRename(ByVal sender As System.Object, ByVal e As INode) Handles ctEnv.Renamed, ctPrj.Renamed, ctStr.Renamed, ctDs.Renamed, ctConn.Renamed, ctSys.Renamed, ctEng.Renamed, ctStrSel.Renamed, ctVar.Renamed, ctTask.Renamed, ctInc.Renamed, ctMain.Renamed
 
-        lblStatusMsg.Text = "Rename and Save Successful"
-        lblStatusMsg.Show()
-        IsRename = True
-        '// Created for Renaming by Tom Karasch
-        ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
-        FillProject(e.Project, True)
-        If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
-            e.ObjTreeNode.Text = e.Text
-        End If
-        'If PrevObjTreeNode IsNot Nothing Then
-        tvExplorer.SelectedNode = e.ObjTreeNode
-        'Else
-        'tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
-        'End If
-        ShowUsercontrol(tvExplorer.SelectedNode)
-        IsRename = False
+        Try
+            lblStatusMsg.Text = "Rename and Save Successful"
+            lblStatusMsg.Show()
+            IsRename = True
+            '// Created for Renaming by Tom Karasch
+            ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
+            FillProject(e.Project, True)
+            If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
+                e.ObjTreeNode.Text = e.Text
+            End If
+            'If PrevObjTreeNode IsNot Nothing Then
+            tvExplorer.SelectedNode = e.ObjTreeNode
+            'Else
+            'tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
+            'End If
+            ShowUsercontrol(tvExplorer.SelectedNode)
+            IsRename = False
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "frmMain OnRename")
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
@@ -2779,7 +2779,7 @@ Public Class frmMain
 
                     frm1 = New frmProjOpen
                     obj = frm1.OpenProj()
-
+                    HideAllUC()
 
                     If obj IsNot Nothing Then
                         '// set the current loaded project as the object containing 
@@ -3666,12 +3666,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim MsgClear As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             cnn = New System.Data.Odbc.OdbcConnection(obj.Project.MetaConnectionString)
             cnn.Open()
             Dim cNode As TreeNode
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
-
+            HideAllUC()
             'obj.LoadMe()
 
             '// Optional Passed Vars added By Tom Karasch for change(i.e. delete, etc...) and rename
@@ -3705,9 +3707,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 MsgClear = False
             End If
 
-            ShowUsercontrol(cNode, MsgClear)
             tvExplorer.SelectedNode = cNode
-
+            HideAllUC()
             '//Now add and process each environment 
             'If obj.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
@@ -3729,6 +3730,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objF.Parent = CType(cNode.Tag, INode)
             cNode = AddNode(cNode, objF.Type, objF)
             objF.SeqNo = cNode.Index '//store position
+            HideAllUC()
 
             For i = 0 To dt.Rows.Count - 1
                 '//Process this env
@@ -3744,10 +3746,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             cNode = cNode.Parent
 
+            ShowUsercontrol(cNode, MsgClear)
+            Me.Cursor = Cursors.Default
+
         Catch ex As Exception
             LogError(ex, "fillProject")
+            Me.Cursor = Cursors.Default
         Finally
             ShowStatusMessage("")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -6201,7 +6208,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
         'End If
 
-        'Me.Cursor = Cursors.WaitCursor
+        Me.Cursor = Cursors.WaitCursor
         '/// Get Engine Object
         obj = CType(tvExplorer.SelectedNode.Tag, clsEngine)
         obj.LoadMe()
@@ -6227,11 +6234,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
 
         Dim frm As New frmScriptGen
+
         frm.OpenFormEng(obj, strSaveDir)
 
         'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+        Me.Cursor = Cursors.Default
 
     End Sub
 
@@ -6242,6 +6250,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim dsSelobj As clsDSSelection
         Dim strSaveDir As String
 
+        Me.Cursor = Cursors.WaitCursor
         '/// Get Engine Object
         If CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_SOURCEDSSEL Or _
         CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_TARGETDSSEL Then
@@ -6274,7 +6283,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub mnuScriptProc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScriptProc.Click
@@ -6287,7 +6296,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
         'End If
 
-        'Me.Cursor = Cursors.WaitCursor
+        Me.Cursor = Cursors.WaitCursor
         '/// Get Engine Object
         obj = tvExplorer.SelectedNode.Tag
         '/// Get Environment Object
@@ -6312,7 +6321,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+        Me.Cursor = Cursors.Default
 
     End Sub
 
@@ -6702,29 +6711,33 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     Private Sub mnuCloseProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCloseProject.Click
 
-        If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
-            If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-            tvExplorer.Nodes(0).Remove()
-
-            ctFolder.Clear()
-        ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
-            If tvExplorer.SelectedNode Is Nothing Then
-                MsgBox("Please select project from treeview", MsgBoxStyle.OkOnly, MsgTitle)
-                Exit Sub
-            Else
+        Try
+            HideAllUC()
+            If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
                 If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-                GetTopLevelNode(tvExplorer.SelectedNode).Remove()
+                tvExplorer.Nodes(0).Remove()
+
+                ctFolder.Clear()
+            ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
+                If tvExplorer.SelectedNode Is Nothing Then
+                    MsgBox("Please select project from treeview", MsgBoxStyle.OkOnly, MsgTitle)
+                    Exit Sub
+                Else
+                    If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+                    GetTopLevelNode(tvExplorer.SelectedNode).Remove()
+                End If
             End If
-        End If
 
-        If Not CurLoadedProject Is Nothing Then
-            CurLoadedProject.Save()
-            CurLoadedProject.SaveToRegistry()
-            CurLoadedProject = Nothing
-        End If
-        cnn.Close()
+            If Not CurLoadedProject Is Nothing Then
+                CurLoadedProject.Save()
+                CurLoadedProject.SaveToRegistry()
+                CurLoadedProject = Nothing
+            End If
+            cnn.Close()
 
-        HideAllUC()
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuCloseProj_click")
+        End Try
 
     End Sub
 
@@ -8624,6 +8637,8 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
         Dim DSSelObj As clsDSSelection
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             If CurLoadedProject Is Nothing Then
                 CurLoadedProject = CType(nd.Tag, INode).Project
                 cnn = New Odbc.OdbcConnection(CurLoadedProject.MetaConnectionString)
@@ -8730,9 +8745,11 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                     End If
                     '//TODO
             End Select
+            Me.Cursor = Cursors.Default
 
         Catch ex As Exception
             LogError(ex, "frmMain ShowUserControl")
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub

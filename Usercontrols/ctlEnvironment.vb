@@ -69,7 +69,7 @@ Public Class ctlEnvironment
     Friend WithEvents cmdBrowseFileLocalDTD As System.Windows.Forms.Button
     Friend WithEvents cmdBrowseFileLocalScript As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents txtLocalModelDir As System.Windows.Forms.TextBox
+    Friend WithEvents txtLocalDBDDir As System.Windows.Forms.TextBox
     Friend WithEvents cmdBrowseFileLocalModel As System.Windows.Forms.Button
     Friend WithEvents cmdPutScr As System.Windows.Forms.Button
     Friend WithEvents btnBrowseFileLocalDML As System.Windows.Forms.Button
@@ -111,7 +111,7 @@ Public Class ctlEnvironment
         Me.Label1 = New System.Windows.Forms.Label
         Me.txtLocalScriptDir = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
-        Me.txtLocalModelDir = New System.Windows.Forms.TextBox
+        Me.txtLocalDBDDir = New System.Windows.Forms.TextBox
         Me.cmdBrowseFileLocalModel = New System.Windows.Forms.Button
         Me.cmdPutScr = New System.Windows.Forms.Button
         Me.btnBrowseFileLocalDML = New System.Windows.Forms.Button
@@ -122,6 +122,7 @@ Public Class ctlEnvironment
         Me.gbScrDir = New System.Windows.Forms.GroupBox
         Me.gbFTP = New System.Windows.Forms.GroupBox
         Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.Label4 = New System.Windows.Forms.Label
         Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.btnFTPdtd = New System.Windows.Forms.Button
         Me.btnFTPdbd = New System.Windows.Forms.Button
@@ -133,7 +134,6 @@ Public Class ctlEnvironment
         Me.gbRelDir = New System.Windows.Forms.GroupBox
         Me.btnRelDir = New System.Windows.Forms.Button
         Me.txtRelDir = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbScrDir.SuspendLayout()
@@ -386,15 +386,15 @@ Public Class ctlEnvironment
         Me.Label2.TabIndex = 113
         Me.Label2.Text = "DBD"
         '
-        'txtLocalModelDir
+        'txtLocalDBDDir
         '
-        Me.txtLocalModelDir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.txtLocalDBDDir.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtLocalModelDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtLocalModelDir.Location = New System.Drawing.Point(54, 58)
-        Me.txtLocalModelDir.Name = "txtLocalModelDir"
-        Me.txtLocalModelDir.Size = New System.Drawing.Size(423, 20)
-        Me.txtLocalModelDir.TabIndex = 7
+        Me.txtLocalDBDDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtLocalDBDDir.Location = New System.Drawing.Point(54, 58)
+        Me.txtLocalDBDDir.Name = "txtLocalDBDDir"
+        Me.txtLocalDBDDir.Size = New System.Drawing.Size(423, 20)
+        Me.txtLocalDBDDir.TabIndex = 7
         '
         'cmdBrowseFileLocalModel
         '
@@ -511,7 +511,7 @@ Public Class ctlEnvironment
         Me.GroupBox5.Controls.Add(Me.Label6)
         Me.GroupBox5.Controls.Add(Me.cmdBrowseFileLocalModel)
         Me.GroupBox5.Controls.Add(Me.Label9)
-        Me.GroupBox5.Controls.Add(Me.txtLocalModelDir)
+        Me.GroupBox5.Controls.Add(Me.txtLocalDBDDir)
         Me.GroupBox5.Controls.Add(Me.txtLocalDDLDir)
         Me.GroupBox5.Controls.Add(Me.Label2)
         Me.GroupBox5.Controls.Add(Me.txtLocalDMLDir)
@@ -532,6 +532,16 @@ Public Class ctlEnvironment
         Me.GroupBox5.TabIndex = 212
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Local Description Directories"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(19, 205)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(528, 13)
+        Me.Label4.TabIndex = 214
+        Me.Label4.Text = "*** Warning: Changes here will result in Changes to the Corresponding Description" & _
+            " Paths ***"
         '
         'GroupBox3
         '
@@ -639,16 +649,6 @@ Public Class ctlEnvironment
         Me.txtRelDir.Size = New System.Drawing.Size(438, 20)
         Me.txtRelDir.TabIndex = 0
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(19, 205)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(528, 13)
-        Me.Label4.TabIndex = 214
-        Me.Label4.Text = "*** Warning: Changes here will result in Changes to the Corresponding Description" & _
-            " Paths ***"
-        '
         'ctlEnvironment
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -730,7 +730,7 @@ Public Class ctlEnvironment
 
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnvironmentName.TextChanged, txtEnvironmentDesc.TextChanged, txtLocalDTDDir.TextChanged, txtLocalDDLDir.TextChanged, txtLocalCobolDir.TextChanged, txtLocalCDir.TextChanged, txtLocalScriptDir.TextChanged, txtLocalModelDir.TextChanged, txtLocalDMLDir.TextChanged, txtRelDir.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEnvironmentName.TextChanged, txtEnvironmentDesc.TextChanged, txtLocalDTDDir.TextChanged, txtLocalDDLDir.TextChanged, txtLocalCobolDir.TextChanged, txtLocalCDir.TextChanged, txtLocalScriptDir.TextChanged, txtLocalDBDDir.TextChanged, txtLocalDMLDir.TextChanged, txtRelDir.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -744,7 +744,7 @@ Public Class ctlEnvironment
         ShowHelp(modHelp.HHId.H_Environment)
     End Sub
 
-    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtEnvironmentDesc.KeyDown, txtEnvironmentName.KeyDown, txtLocalCDir.KeyDown, txtLocalCobolDir.KeyDown, txtLocalDDLDir.KeyDown, txtLocalDTDDir.KeyDown, txtLocalModelDir.KeyDown, txtLocalScriptDir.KeyDown, Me.KeyDown, btnBrowseFileLocalDML.KeyDown
+    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtEnvironmentDesc.KeyDown, txtEnvironmentName.KeyDown, txtLocalCDir.KeyDown, txtLocalCobolDir.KeyDown, txtLocalDDLDir.KeyDown, txtLocalDTDDir.KeyDown, txtLocalDBDDir.KeyDown, txtLocalScriptDir.KeyDown, Me.KeyDown, btnBrowseFileLocalDML.KeyDown
 
         Select Case e.KeyCode
             Case Keys.Escape
@@ -856,14 +856,14 @@ Public Class ctlEnvironment
                     Scriptdir = txtLocalScriptDir.Text
                 End If
             Case "cmdBrowseFileLocalModel"
-                If txtLocalModelDir.Text.Contains("%") = True Then
-                    preIDX = txtLocalModelDir.Text.IndexOf("%")
-                    pathIDX = txtLocalModelDir.Text.LastIndexOf("%")
-                    Modelpre = Strings.Mid(txtLocalModelDir.Text, preIDX + 2, pathIDX - preIDX - 1)
-                    Modeldir = Strings.Right(txtLocalModelDir.Text, txtLocalModelDir.Text.Length - pathIDX - 1)
+                If txtLocalDBDDir.Text.Contains("%") = True Then
+                    preIDX = txtLocalDBDDir.Text.IndexOf("%")
+                    pathIDX = txtLocalDBDDir.Text.LastIndexOf("%")
+                    Modelpre = Strings.Mid(txtLocalDBDDir.Text, preIDX + 2, pathIDX - preIDX - 1)
+                    Modeldir = Strings.Right(txtLocalDBDDir.Text, txtLocalDBDDir.Text.Length - pathIDX - 1)
                     Modeldir = System.Environment.GetEnvironmentVariable(Modelpre) & Modeldir
                 Else
-                    Modeldir = txtLocalModelDir.Text
+                    Modeldir = txtLocalDBDDir.Text
                 End If
             Case "btnRelDir"
                 If txtRelDir.Text.Contains("%") = True Then
@@ -949,7 +949,7 @@ Public Class ctlEnvironment
                     txtLocalScriptDir.Text = FBD1.SelectedPath
                     objThis.LocalScriptDir = FBD1.SelectedPath
                 Case "cmdBrowseFileLocalModel"
-                    txtLocalModelDir.Text = FBD1.SelectedPath
+                    txtLocalDBDDir.Text = FBD1.SelectedPath
                     objThis.LocalDBDDir = FBD1.SelectedPath
                 Case "btnRelDir"
                     txtRelDir.Text = FBD1.SelectedPath
@@ -1093,8 +1093,11 @@ Public Class ctlEnvironment
     Public Function Save() As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             '// First Check Name Validity before Saving
             If ValidateNewName(txtEnvironmentName.Text) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '// Check to see if the object has been renamed
@@ -1115,16 +1118,26 @@ Public Class ctlEnvironment
             objThis.LocalCDir = txtLocalCDir.Text
             objThis.LocalDMLDir = txtLocalDMLDir.Text
             objThis.LocalScriptDir = txtLocalScriptDir.Text
-            objThis.LocalDBDDir = txtLocalModelDir.Text
+            objThis.LocalDBDDir = txtLocalDBDDir.Text
             objThis.RelDir = txtRelDir.Text
 
             objThis.SetStructureDir()
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
+
+            Me.Cursor = Cursors.Default
 
             Save = True
             cmdSave.Enabled = False
@@ -1135,25 +1148,37 @@ Public Class ctlEnvironment
             End If
             objThis.IsRenamed = False
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlEnv Save")
+            Save = False
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
 
     Public Function EditObj(ByVal obj As INode) As clsEnvironment
 
-        IsNewObj = False
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        StartLoad()
+            IsNewObj = False
 
-        objThis = obj '//Load the form env object
-        objThis.LoadMe()
+            StartLoad()
 
-        UpdateFields()
+            objThis = obj '//Load the form env object
+            objThis.LoadMe()
 
-        EditObj = objThis
+            UpdateFields()
 
-        EndLoad()
+            EditObj = objThis
+
+            EndLoad()
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlEnvironment EditObj")
+            Me.Cursor = Cursors.Default
+            EditObj = Nothing
+        End Try
 
     End Function
 
@@ -1168,7 +1193,7 @@ Public Class ctlEnvironment
         txtLocalCDir.Text = objThis.LocalCDir
         txtLocalDMLDir.Text = objThis.LocalDMLDir
         txtLocalScriptDir.Text = objThis.LocalScriptDir
-        txtLocalModelDir.Text = objThis.LocalDBDDir
+        txtLocalDBDDir.Text = objThis.LocalDBDDir
         txtRelDir.Text = objThis.RelDir
 
     End Function

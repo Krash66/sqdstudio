@@ -10,6 +10,8 @@ Public Class ctlEngine
     Dim objThis As New clsEngine
     Friend WithEvents gbVersion As System.Windows.Forms.GroupBox
     Friend WithEvents cmbEngVer As System.Windows.Forms.ComboBox
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
 
     Dim IsNewObj As Boolean
 
@@ -107,6 +109,8 @@ Public Class ctlEngine
         Me.cbConn = New System.Windows.Forms.ComboBox
         Me.gbDesc = New System.Windows.Forms.GroupBox
         Me.gbLib = New System.Windows.Forms.GroupBox
+        Me.txtDBDLib = New System.Windows.Forms.TextBox
+        Me.Label12 = New System.Windows.Forms.Label
         Me.gbMain = New System.Windows.Forms.GroupBox
         Me.Label8 = New System.Windows.Forms.Label
         Me.btnMain = New System.Windows.Forms.Button
@@ -159,7 +163,7 @@ Public Class ctlEngine
         Me.txtDDLLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDDLLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDDLLib.Location = New System.Drawing.Point(75, 97)
+        Me.txtDDLLib.Location = New System.Drawing.Point(75, 122)
         Me.txtDDLLib.MaxLength = 255
         Me.txtDDLLib.Name = "txtDDLLib"
         Me.txtDDLLib.Size = New System.Drawing.Size(411, 20)
@@ -169,7 +173,7 @@ Public Class ctlEngine
         '
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(6, 100)
+        Me.Label9.Location = New System.Drawing.Point(6, 125)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(28, 14)
         Me.Label9.TabIndex = 97
@@ -180,7 +184,7 @@ Public Class ctlEngine
         Me.txtDTDLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDTDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDTDLib.Location = New System.Drawing.Point(75, 71)
+        Me.txtDTDLib.Location = New System.Drawing.Point(75, 96)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
         Me.txtDTDLib.Size = New System.Drawing.Size(411, 20)
@@ -190,7 +194,7 @@ Public Class ctlEngine
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(6, 74)
+        Me.Label10.Location = New System.Drawing.Point(6, 99)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(28, 14)
         Me.Label10.TabIndex = 95
@@ -201,7 +205,7 @@ Public Class ctlEngine
         Me.txtIncludeLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtIncludeLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIncludeLib.Location = New System.Drawing.Point(75, 45)
+        Me.txtIncludeLib.Location = New System.Drawing.Point(75, 70)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
         Me.txtIncludeLib.Size = New System.Drawing.Size(411, 20)
@@ -211,7 +215,7 @@ Public Class ctlEngine
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(6, 48)
+        Me.Label7.Location = New System.Drawing.Point(6, 73)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(47, 14)
         Me.Label7.TabIndex = 93
@@ -222,7 +226,7 @@ Public Class ctlEngine
         Me.txtCopybookLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtCopybookLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCopybookLib.Location = New System.Drawing.Point(75, 19)
+        Me.txtCopybookLib.Location = New System.Drawing.Point(75, 44)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
         Me.txtCopybookLib.Size = New System.Drawing.Size(411, 20)
@@ -232,7 +236,7 @@ Public Class ctlEngine
         '
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(6, 22)
+        Me.Label11.Location = New System.Drawing.Point(6, 47)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(63, 14)
         Me.Label11.TabIndex = 91
@@ -451,6 +455,8 @@ Public Class ctlEngine
         '
         'gbLib
         '
+        Me.gbLib.Controls.Add(Me.txtDBDLib)
+        Me.gbLib.Controls.Add(Me.Label12)
         Me.gbLib.Controls.Add(Me.Label11)
         Me.gbLib.Controls.Add(Me.txtCopybookLib)
         Me.gbLib.Controls.Add(Me.txtIncludeLib)
@@ -462,13 +468,34 @@ Public Class ctlEngine
         Me.gbLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbLib.ForeColor = System.Drawing.Color.White
         Me.gbLib.Location = New System.Drawing.Point(3, 241)
-        Me.gbLib.MaximumSize = New System.Drawing.Size(493, 128)
+        Me.gbLib.MaximumSize = New System.Drawing.Size(493, 500)
         Me.gbLib.MinimumSize = New System.Drawing.Size(493, 128)
         Me.gbLib.Name = "gbLib"
-        Me.gbLib.Size = New System.Drawing.Size(493, 128)
+        Me.gbLib.Size = New System.Drawing.Size(493, 150)
         Me.gbLib.TabIndex = 104
         Me.gbLib.TabStop = False
         Me.gbLib.Text = "Target System Libraries"
+        '
+        'txtDBDLib
+        '
+        Me.txtDBDLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtDBDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDBDLib.Location = New System.Drawing.Point(75, 18)
+        Me.txtDBDLib.MaxLength = 255
+        Me.txtDBDLib.Name = "txtDBDLib"
+        Me.txtDBDLib.Size = New System.Drawing.Size(411, 20)
+        Me.txtDBDLib.TabIndex = 99
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(6, 21)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(28, 14)
+        Me.Label12.TabIndex = 98
+        Me.Label12.Text = "DBD"
         '
         'gbMain
         '
@@ -480,9 +507,9 @@ Public Class ctlEngine
         Me.gbMain.Controls.Add(Me.txtMain)
         Me.gbMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMain.ForeColor = System.Drawing.Color.White
-        Me.gbMain.Location = New System.Drawing.Point(4, 438)
+        Me.gbMain.Location = New System.Drawing.Point(4, 460)
         Me.gbMain.Name = "gbMain"
-        Me.gbMain.Size = New System.Drawing.Size(674, 154)
+        Me.gbMain.Size = New System.Drawing.Size(674, 132)
         Me.gbMain.TabIndex = 105
         Me.gbMain.TabStop = False
         Me.gbMain.Text = "Main Procedure"
@@ -494,7 +521,7 @@ Public Class ctlEngine
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(27, 126)
+        Me.Label8.Location = New System.Drawing.Point(27, 104)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(567, 18)
         Me.Label8.TabIndex = 2
@@ -505,7 +532,7 @@ Public Class ctlEngine
         Me.btnMain.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnMain.Enabled = False
         Me.btnMain.ForeColor = System.Drawing.Color.Black
-        Me.btnMain.Location = New System.Drawing.Point(8, 125)
+        Me.btnMain.Location = New System.Drawing.Point(8, 103)
         Me.btnMain.Name = "btnMain"
         Me.btnMain.Size = New System.Drawing.Size(152, 23)
         Me.btnMain.TabIndex = 1
@@ -526,7 +553,7 @@ Public Class ctlEngine
         Me.txtMain.Name = "txtMain"
         Me.txtMain.ReadOnly = True
         Me.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMain.Size = New System.Drawing.Size(659, 100)
+        Me.txtMain.Size = New System.Drawing.Size(659, 78)
         Me.txtMain.TabIndex = 0
         '
         'gbVersion
@@ -534,7 +561,7 @@ Public Class ctlEngine
         Me.gbVersion.Controls.Add(Me.cmbEngVer)
         Me.gbVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbVersion.ForeColor = System.Drawing.Color.White
-        Me.gbVersion.Location = New System.Drawing.Point(3, 375)
+        Me.gbVersion.Location = New System.Drawing.Point(3, 397)
         Me.gbVersion.Name = "gbVersion"
         Me.gbVersion.Size = New System.Drawing.Size(204, 57)
         Me.gbVersion.TabIndex = 106
@@ -605,8 +632,12 @@ Public Class ctlEngine
     Public Function Save() As Boolean
 
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             '// First Check Validity before Saving
             If ValidateNewName(txtEngineName.Text, True) = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
                 Exit Function
             End If
 
@@ -624,6 +655,7 @@ Public Class ctlEngine
             objThis.ReportFile = txtReportFile.Text
             objThis.ReportEvery = txtReportEvery.Text
             objThis.CommitEvery = txtCommitEvery.Text
+            objThis.DBDLib = txtDBDLib.Text
             objThis.CopybookLib = txtCopybookLib.Text
             objThis.IncludeLib = txtIncludeLib.Text
             objThis.DTDLib = txtDTDLib.Text
@@ -660,14 +692,24 @@ Public Class ctlEngine
             End If
 
             If IsNewObj = True Then
-                If objThis.AddNew = False Then Exit Function
+                If objThis.AddNew = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    Save = False
+                    Me.Cursor = Cursors.Default
+                    Exit Function
+                End If
             End If
 
             'If objThis.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    objThis.SaveEngProps()
             'End If
+
+            Me.Cursor = Cursors.Default
 
             Save = True
             cmdSave.Enabled = False
@@ -680,6 +722,7 @@ Public Class ctlEngine
 
         Catch ex As Exception
             LogError(ex, "ctlEngine Save")
+            Me.Cursor = Cursors.Default
             Save = False
         End Try
 
@@ -722,7 +765,7 @@ Public Class ctlEngine
 
     End Sub
 
-    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCommitEvery.KeyDown, txtCopybookLib.KeyDown, txtDDLLib.KeyDown, txtDTDLib.KeyDown, txtEngineDesc.KeyDown, txtEngineName.KeyDown, txtReportEvery.KeyDown, txtReportFile.KeyDown
+    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCommitEvery.KeyDown, txtCopybookLib.KeyDown, txtDDLLib.KeyDown, txtDTDLib.KeyDown, txtEngineDesc.KeyDown, txtEngineName.KeyDown, txtReportEvery.KeyDown, txtReportFile.KeyDown, txtDBDLib.KeyDown
 
         Select Case e.KeyCode
             Case Keys.Escape
@@ -742,7 +785,7 @@ Public Class ctlEngine
         End Select
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged, cmbEngVer.SelectedIndexChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged, cmbEngVer.SelectedIndexChanged, txtDBDLib.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -754,18 +797,29 @@ Public Class ctlEngine
 
     Public Function EditObj(ByVal obj As INode) As clsEngine
 
-        IsNewObj = False
+        Try
+            Me.Cursor = Cursors.WaitCursor
 
-        StartLoad()
+            IsNewObj = False
 
-        objThis = obj '//Load the form env object
-        objThis.LoadMe()
+            StartLoad()
 
-        UpdateFields()
+            objThis = obj '//Load the form env object
+            objThis.LoadMe()
 
-        EndLoad()
+            UpdateFields()
 
-        EditObj = objThis
+            EndLoad()
+
+            EditObj = objThis
+
+            Me.Cursor = Cursors.Default
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine EditObj")
+            Me.Cursor = Cursors.Default
+            EditObj = Nothing
+        End Try
 
     End Function
 
@@ -778,6 +832,7 @@ Public Class ctlEngine
             txtCommitEvery.Text = objThis.CommitEvery
             txtReportFile.Text = objThis.ReportFile
             txtEngineDesc.Text = objThis.EngineDescription
+            txtDBDLib.Text = objThis.DBDLib
             txtCopybookLib.Text = objThis.CopybookLib
             txtIncludeLib.Text = objThis.IncludeLib
             txtDTDLib.Text = objThis.DTDLib
@@ -902,25 +957,25 @@ Public Class ctlEngine
 
     End Sub
 
-    Function insertParens() As Boolean
+    'Function insertParens() As Boolean
 
-        Try
+    '    Try
 
-        Catch ex As Exception
+    '    Catch ex As Exception
 
-        End Try
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function removeParens() As Boolean
+    'Function removeParens() As Boolean
 
-        Try
+    '    Try
 
-        Catch ex As Exception
+    '    Catch ex As Exception
 
-        End Try
+    '    End Try
 
-    End Function
+    'End Function
 
     Private Function GetMainText() As String
 

@@ -27,6 +27,7 @@ Public Class clsEngine
     Public Procs As New Collection
     Public Gens As New Collection
     Public Lookups As New Collection
+    Public DBDLib As String = ""
     Public CopybookLib As String = ""
     Public IncludeLib As String = ""
     Public DTDLib As String = ""
@@ -570,6 +571,8 @@ Public Class clsEngine
                         Me.CopybookLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "DATEFORMAT"
                         Me.DateFormat = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "DBDLIB"
+                        Me.DBDLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "DDLLIB"
                         Me.DDLLib = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "DTDLIB"
@@ -835,7 +838,7 @@ Public Class clsEngine
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 11
+            For i As Integer = 0 To 12
                 Select Case i
                     Case 0
                         Attrib = "COMMITEVERY"
@@ -877,6 +880,9 @@ Public Class clsEngine
                     Case 11
                         Attrib = "ENGVER"
                         Value = Me.EngVersion
+                    Case 12
+                        Attrib = "DBDLIB"
+                        Value = Me.DBDLib
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblEnginesATTR & _
