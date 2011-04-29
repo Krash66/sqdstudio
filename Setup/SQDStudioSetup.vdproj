@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0CA571B10CFA466381D2532FDEDB5A31"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_14D55E14A85F4664A53D398484BD2C46"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -437,6 +443,26 @@
             {
             "SourcePath" = "8:..\\bin\\supporting files\\projectattr.sql"
             "TargetName" = "8:projectattr.sql"
+            "Tag" = "8:"
+            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0CA571B10CFA466381D2532FDEDB5A31"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\SQDmeta.mdf"
+            "TargetName" = "8:SQDmeta.mdf"
             "Tag" = "8:"
             "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
             "Condition" = "8:"
@@ -1315,19 +1341,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
-        "ProductCode" = "8:{E3BF2254-A741-45EF-8FCC-0CB616259C99}"
-        "PackageCode" = "8:{4217F576-AFD5-4580-A5E1-CCED85856154}"
+        "ProductCode" = "8:{8F2870B6-C50F-46DA-8C59-86430747D9A9}"
+        "PackageCode" = "8:{549C58D1-23DC-4FB2-A3D1-A21A0E782810}"
         "UpgradeCode" = "8:{3D23AB76-63FD-4F07-9B57-66610D351D5E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.3.3300"
+        "ProductVersion" = "8:3.3.3400"
         "Manufacturer" = "8:SQData"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
         "Title" = "8:SQDStudio Setup"
-        "Subject" = "8:Studio version 3.3.3.3"
+        "Subject" = "8:Studio version 3.3.3.4"
         "ARPCONTACT" = "8:SQData"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
@@ -1956,7 +1982,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\Design Studio.exe"
+            "SourcePath" = "8:..\\obj\\Release\\Design Studio.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"

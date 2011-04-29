@@ -718,9 +718,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
                             Chr(13) & "return path >> " & pathSQD)
                 End Select
 
-                objWriteRPT.Write(OutStr)
+
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
+                objWriteRPT.Write(OutStr)
+
 
                 Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")
                 Log("*** Parser Report file saved at : " & pathRPT)
@@ -842,10 +844,10 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 End Select
 
                 'Error First so Parser Header is at Top
-                objWriteRPT.Write(OutStr)
+
                 objWriteRPT.Write(ErrStr)
                 objWriteERR.Write(ErrStr)
-
+                objWriteRPT.Write(OutStr)
 
 
                 Log("*** Parser Return Code = " & myProcess.ExitCode & " *********")
@@ -1157,9 +1159,7 @@ ErrorGoTo:
 
         Dim i As Integer
         Dim ds As clsDatastore
-        'Dim StrList As New Collection
-        'Dim dbdList As New Collection
-
+       
         Try
 
             '/// First Sources
@@ -1361,8 +1361,6 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         Dim ds As clsDatastore
         Dim dssel As clsDSSelection
         Dim str As clsStructure
-        'Dim StrList As New Collection
-        'Dim dbdList As New Collection
 
         Try
             If InputDS Is Nothing Then
@@ -1381,8 +1379,6 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             For j = 0 To ds.ObjSelections.Count - 1
                 dssel = CType(ds.ObjSelections(j), clsDSSelection)
                 str = dssel.ObjStructure
-                str.LoadMe()
-
                 If StrList.Contains(str.StructureName) = False Then
                     StrList.Add(str, str.StructureName)
                     '/// if IMSDBD write IMSDBname line before structures
@@ -4617,20 +4613,11 @@ ErrorGoTo:
 
         Dim DDstr As String = ""
         Dim objSys As clsSystem = eng.ObjSystem
-        Dim dbdLib As String = ""
         Dim cobLib As String = ""
         Dim ddlLib As String = ""
         Dim dtdLib As String = ""
         Dim incLib As String = ""
         Dim descLib As String = ""
-
-        'Get DBD path on target
-        If objSys.DBDLib.Trim <> "" Then
-            dbdLib = objSys.DBDLib
-        End If
-        If eng.DBDLib.Trim <> "" Then
-            dbdLib = eng.DBDLib
-        End If
 
         'Get CopyBook path on target
         If objSys.CopybookLib.Trim <> "" Then
@@ -4680,7 +4667,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
-                            DDstr = "DD:" & QuoteRes(dbdLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
+                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
                         Else
                             DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2))
                         End If
@@ -4694,7 +4681,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" Then    'And descLib.Contains("/") = True
-                            DDstr = dbdLib & "/" & GetFileNameOnly(str.fPath2)
+                            DDstr = descLib & "/" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2.Replace("\", "/")
                         End If
@@ -4714,7 +4701,7 @@ ErrorGoTo:
                         End If
                     Else
                         If descLib.Trim <> "" And descLib.Contains("\") = True Then
-                            DDstr = dbdLib & "\" & GetFileNameOnly(str.fPath2)
+                            DDstr = descLib & "\" & GetFileNameOnly(str.fPath2)
                         Else
                             DDstr = str.fPath2
                         End If

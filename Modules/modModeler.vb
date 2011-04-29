@@ -23,6 +23,9 @@ Module modModeler
     Dim OutPath As String = ""
     Dim NameModl As String = ""
     Dim TableName As String = ""
+    Dim SchemaName As String = ""
+    Dim idx As Integer
+    Dim Len As Integer
     Dim OutType As String = ""
     Dim FileExt As String = ""
     Dim FullPathModl As String = ""
@@ -56,6 +59,7 @@ Module modModeler
             OutType = TypeToModl
             FileExt = getFileExt()
             OutPath = ModPath
+            SchemaName = ""
 
             ObjSel = Nothing
             ObjStr = Nothing
@@ -80,11 +84,23 @@ Module modModeler
                         TableName = ObjStr.StructureName
                         ObjStr.LoadMe()
                         ObjStr.LoadItems()
+                        If ObjStr.StructureType = enumStructure.STRUCT_REL_DML Then
+                            idx = ObjStr.fPath1.LastIndexOf(".")
+                            Len = ObjStr.fPath1.Length
+                            SchemaName = Strings.Left(ObjStr.fPath1, idx + 1)
+                            TableName = Strings.Right(ObjStr.fPath1, Len - (idx + 1))
+                        End If
                     Case NODE_STRUCT_SEL
                         ObjSel = CType(Obj, clsStructureSelection)
-                        TableName = ObjSel.SelectionName
+                        TableName = ObjSel.ObjStructure.StructureName
                         ObjSel.LoadMe()
                         ObjSel.LoadItems()
+                        If ObjSel.ObjStructure.StructureType = enumStructure.STRUCT_REL_DML Then
+                            idx = ObjSel.ObjStructure.fPath1.LastIndexOf(".")
+                            Len = ObjSel.ObjStructure.fPath1.Length
+                            SchemaName = Strings.Left(ObjSel.ObjStructure.fPath1, idx + 1)
+                            TableName = Strings.Right(ObjSel.ObjStructure.fPath1, Len - (idx + 1))
+                        End If
                     Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
                         ObjDSSel = CType(Obj, clsDSSelection)
                         TableName = ObjDSSel.SelectionName
@@ -118,6 +134,8 @@ Module modModeler
                         success = objModelSQL()
                     Case "MSSQL"
                         success = objModelMSSQL()
+                    Case "DB2"
+                        success = objModelDB2Trig()
                     Case Else
                         success = False
                         GoTo ErrorGoTo
@@ -764,6 +782,135 @@ nextgoto3:  Next
 
 #End Region
 
+#Region "DB2MQ Trigger"
+
+    Function objModelDB2Trig() As Boolean
+
+        Try
+            If SchemaName = "" Then
+                SchemaName = "xxxxxxxx."
+                objWriteOut.WriteLine("**** NOTE: Before Use, replace 'xxxxxxxx' with")
+                objWriteOut.WriteLine("****       Schema Name or Qualifier")
+                wBlankLine()
+            End If
+            Dim FORDropTrigIns As String = String.Format("{0}{1}", "    DROP TRIGGER " & SchemaName, RDash(TableName) & "_PAD_INS;")
+            Dim FORCreateTrigIns As String = String.Format("{0}{1}", "    CREATE TRIGGER " & SchemaName, RDash(TableName) & "_PAD_INS")
+            Dim FORDropTrigUPD As String = String.Format("{0}{1}", "    DROP TRIGGER " & SchemaName, RDash(TableName) & "_PAD_UPD;")
+            Dim FORCreateTrigUPD As String = String.Format("{0}{1}", "    CREATE TRIGGER " & SchemaName, RDash(TableName) & "_PAD_UPD")
+            Dim FORDropTrigDEL As String = String.Format("{0}{1}", "    DROP TRIGGER " & SchemaName, RDash(TableName) & "_PAD_DEL;")
+            Dim FORCreateTrigDEL As String = String.Format("{0}{1}", "    CREATE TRIGGER " & SchemaName, RDash(TableName) & "_PAD_DEL")
+            Dim FORAfterINS As String = String.Format("{0}{1}", "        AFTER INSERT ON " & SchemaName, RDash(TableName) & "_PAD_TBL")
+            Dim FORAfterUPD As String = String.Format("{0}{1}", "        AFTER UPDATE ON " & SchemaName, RDash(TableName) & "_PAD_TBL")
+            Dim FORAfterDEL As String = String.Format("{0}{1}", "        AFTER DELETE ON " & SchemaName, RDash(TableName) & "_PAD_TBL")
+            Dim FORRefNEW As String = String.Format("{0}", "        REFERENCING NEW AS N")
+            Dim FORRefOLD As String = String.Format("{0}", "        REFERENCING OLD AS D")
+            Dim FORForEach As String = String.Format("{0}", "        FOR EACH ROW MODE DB2SQL")
+            Dim FORValues As String = String.Format("{0}", "        VALUES DB2MQ.MQSEND")
+            Dim FORBody1 As String = String.Format("{0}", "            CHAR(CURRENT TIMESTAMP)")
+            Dim FORBodyComma As String = String.Format("{0}", "          ||','")
+            Dim FORBody2 As String = String.Format("{0}", "          ||SUBSTR(USER,1,8)")
+            Dim FORBody3 As String = String.Format("{0}", "          ||'" & RDash(TableName) & "DB'")
+            Dim FORBody4 As String = String.Format("{0}", "          ||'" & RDash(TableName) & "_PAD_TBL'")
+            Dim FORBodyA As String = String.Format("{0}", "          ||'A'")
+            Dim FORBodyB As String = String.Format("{0}", "          ||'B'")
+            Dim FORBodyI As String = String.Format("{0}", "          ||'I'")
+            Dim FORBodyU As String = String.Format("{0}", "          ||'U'")
+            Dim FORBodyD As String = String.Format("{0}", "          ||'D'")
+            Dim FORBodyOpen As String = String.Format("{0}", "      (")
+            Dim FORBodyClose As String = String.Format("{0}", "      );")
+
+            '/// Insert
+            objWriteOut.WriteLine(FORDropTrigIns)
+            objWriteOut.WriteLine(FORCreateTrigIns)
+            objWriteOut.WriteLine(FORAfterINS)
+            objWriteOut.WriteLine(FORRefNEW)
+            objWriteOut.WriteLine(FORForEach)
+            objWriteOut.WriteLine(FORValues)
+            objWriteOut.WriteLine(FORBodyOpen)
+            objWriteOut.WriteLine(FORBody1)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody2)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody3)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody4)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyA)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyI)
+            For Each fld As clsField In FldArray
+                Dim FORBodyNdot As String = String.Format("{0}", "          ||'N." & fld.FieldName & "'")
+                objWriteOut.WriteLine(FORBodyComma)
+                objWriteOut.WriteLine(FORBodyNdot)
+            Next
+            objWriteOut.WriteLine(FORBodyClose)
+            wBlankLine()
+
+            '/// Update
+            objWriteOut.WriteLine(FORDropTrigUPD)
+            objWriteOut.WriteLine(FORCreateTrigUPD)
+            objWriteOut.WriteLine(FORAfterUPD)
+            objWriteOut.WriteLine(FORRefNEW)
+            objWriteOut.WriteLine(FORForEach)
+            objWriteOut.WriteLine(FORValues)
+            objWriteOut.WriteLine(FORBodyOpen)
+            objWriteOut.WriteLine(FORBody1)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody2)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody3)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody4)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyA)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyU)
+            For Each fld As clsField In FldArray
+                Dim FORBodyNdot As String = String.Format("{0}", "          ||'N." & fld.FieldName & "'")
+                objWriteOut.WriteLine(FORBodyComma)
+                objWriteOut.WriteLine(FORBodyNdot)
+            Next
+            objWriteOut.WriteLine(FORBodyClose)
+            wBlankLine()
+
+            '///Delete
+            objWriteOut.WriteLine(FORDropTrigDEL)
+            objWriteOut.WriteLine(FORCreateTrigDEL)
+            objWriteOut.WriteLine(FORAfterDEL)
+            objWriteOut.WriteLine(FORRefOLD)
+            objWriteOut.WriteLine(FORForEach)
+            objWriteOut.WriteLine(FORValues)
+            objWriteOut.WriteLine(FORBodyOpen)
+            objWriteOut.WriteLine(FORBody1)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody2)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody3)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBody4)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyB)
+            objWriteOut.WriteLine(FORBodyComma)
+            objWriteOut.WriteLine(FORBodyD)
+            For Each fld As clsField In FldArray
+                Dim FORBodyNdot As String = String.Format("{0}", "          ||'N." & fld.FieldName & "'")
+                objWriteOut.WriteLine(FORBodyComma)
+                objWriteOut.WriteLine(FORBodyNdot)
+            Next
+            objWriteOut.WriteLine(FORBodyClose)
+            wBlankLine()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modModeler objModelMQ(DB2MQ Trigger)")
+            Return False
+        End Try
+
+    End Function
+
+#End Region
+
 #End Region
 
 #Region "Helper Functions and subs"
@@ -860,6 +1007,8 @@ nextgoto3:  Next
                     getFileExt = ".sql"
                 Case "MSSQL"
                     getFileExt = ".sql"
+                Case "DB2"
+                    getFileExt = ".TRG"
                 Case Else
                     getFileExt = ""
             End Select

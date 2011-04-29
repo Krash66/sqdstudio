@@ -916,9 +916,6 @@ Public Class ctlStructure
         lblConn.Visible = bIsDML
         txtConn.Visible = bIsDML
         btnView.Enabled = Not bIsDML
-        If StructType = enumStructure.STRUCT_REL_DML Then
-            cmdBrowseFile.Enabled = False
-        End If
 
         '//Dont allow changing field once object is created coz it might conflict other place
         If IsNewObj = False Then
@@ -929,6 +926,10 @@ Public Class ctlStructure
             txtCobolFilePath.Enabled = True
             txtDBDFilePath.Enabled = True
             chkAddDBD.Enabled = True
+        End If
+
+        If StructType = enumStructure.STRUCT_REL_DML Then
+            cmdBrowseFile.Enabled = False
         End If
 
         If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL And IsNewObj = True Then
@@ -1520,17 +1521,11 @@ Public Class ctlStructure
         Dim objfield As clsField
 
         Try
-            Me.Cursor = Cursors.WaitCursor
-
             If ValidateSelection() = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             '// First Check Validity before Saving
             If ValidateNewName(txtStructName.Text) = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
                 Exit Function
             End If
             If objThis.StructureName <> txtStructName.Text Then
@@ -1559,18 +1554,10 @@ Public Class ctlStructure
                 '//Before we add new structure set structure fields
                 LoadFldArrFromXmlFile(GetOutDumpXML, objThis.ObjFields)
 
-                If objThis.AddNew = False Then
-                    Save = False
-                    Me.Cursor = Cursors.Default
-                    Exit Function
-                End If
+                If objThis.AddNew = False Then Exit Function
             Else
                 If objThis.IsRenamed = False Then
-                    If objThis.Save() = False Then
-                        Save = False
-                        Me.Cursor = Cursors.Default
-                        Exit Function
-                    End If
+                    objThis.Save()
                 End If
             End If
 
@@ -1582,7 +1569,6 @@ Public Class ctlStructure
             Next
 
             Save = True
-            Me.Cursor = Cursors.Default
 
             cmdSave.Enabled = False
             If objThis.IsRenamed = True Then
@@ -1593,8 +1579,7 @@ Public Class ctlStructure
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex, "ctlStructure Save")
-            Me.Cursor = Cursors.Default
+            LogError(ex)
         End Try
 
     End Function
@@ -1602,8 +1587,6 @@ Public Class ctlStructure
     Public Function EditObj(ByVal obj As INode) As clsStructure
 
         Try
-            Me.Cursor = Cursors.WaitCursor
-
             IsNewObj = False
             StartLoad()
             objThis = obj '//Load the form struct object
@@ -1623,15 +1606,12 @@ Public Class ctlStructure
             FillRecordLength()
 
             EndLoad()
-            Me.Cursor = Cursors.Default
 
             EditObj = objThis
-            Me.Refresh()
 
         Catch ex As Exception
             LogError(ex, "ctlStructure EditObj")
             EditObj = Nothing
-            Me.Cursor = Cursors.Default
         End Try
 
     End Function
