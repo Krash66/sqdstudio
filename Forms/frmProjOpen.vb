@@ -102,6 +102,8 @@ Public Class frmProjOpen
                 m_objthis.LoginReq = True
                 frmL = New frmODBCLogin
                 Ulogin = frmL.getLogin()
+                Me.Refresh()
+                Me.Cursor = Cursors.WaitCursor
                 If Ulogin IsNot Nothing Then
                     If Ulogin.LoggedInChange = True Then
                         m_objthis.ProjectMetaDSNUID = Ulogin.UID
@@ -116,6 +118,7 @@ Public Class frmProjOpen
                     End If
                 End If
             Else
+                Me.Cursor = Cursors.WaitCursor
                 m_objthis.ProjectMetaDSNUID = ""
                 m_objthis.ProjectMetaDSNPWD = ""
                 m_objthis.LoginReq = False
@@ -134,7 +137,7 @@ Public Class frmProjOpen
             '// open new form to pick a project
             frmP = New frmChangeProj
             ProjectDBdata = frmP.ChangeProject(ProjectDBdata)
-
+            Me.Cursor = Cursors.WaitCursor
             If ProjectDBdata IsNot Nothing Then
                 DoLogin = False
                 If ProjectDBdata.ProjectName <> m_objthis.ProjectName Then
@@ -157,10 +160,11 @@ Public Class frmProjOpen
                 txtProj.Text = "No Project Selected"
                 txtProjDate.Text = "No Project Selected"
             End If
-
+            Me.Cursor = Cursors.Default
             cmdOk.Focus()
 
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             LogError(ex, "frmProjOpen btnProjClick")
             DialogResult = Windows.Forms.DialogResult.Retry
         End Try
@@ -186,6 +190,8 @@ Public Class frmProjOpen
                 m_objthis.LoginReq = True
                 frmL = New frmODBCLogin
                 Ulogin = frmL.getLogin()
+                Me.Refresh()
+                Me.Cursor = Cursors.WaitCursor
                 If Ulogin IsNot Nothing Then
                     m_objthis.ProjectMetaDSNUID = Ulogin.UID
                     m_objthis.ProjectMetaDSNPWD = Ulogin.PWD
@@ -232,8 +238,10 @@ Public Class frmProjOpen
             Else
                 DialogResult = Windows.Forms.DialogResult.Retry
             End If
+            Me.Cursor = Cursors.Default
 
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             LogError(ex, "frmProjOpen cmdOKclick")
             DialogResult = Windows.Forms.DialogResult.Retry
         End Try
@@ -407,18 +415,45 @@ doAgain:
 
         dt.Clear()
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             cnn.Open()
+
             Dim sql As String = "select * from " & m_objthis.tblProjects
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
-            'Log(sql)
+            Log(sql)
             If Not da.Fill(dt) > 0 Then
             End If
 
+            If dt.Columns.Count = 4 Then
+                m_objthis.ProjectMetaVersion = enumMetaVersion.V2
+                Me.Cursor = Cursors.Default
+                MsgBox("You are attempting to use a version of Metadata that is no longer supported by Design Studio. Please use a Version 3 Metadata format", MsgBoxStyle.OkOnly, "Incorrect Metadata Version")
+                Return False
+            Else
+                m_objthis.ProjectMetaVersion = enumMetaVersion.V3
+            End If
+            Me.Cursor = Cursors.Default
             Return True
 
-        Catch ex As Exception
-            MsgBox("You have entered an incorrect Table Schema or an incorrect Username and Password.", MsgBoxStyle.Information, MsgTitle)
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmProjOpen ValidateDatabase")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
             Return False
+
+        Catch ex As Exception
+            LogError(ex, "frmProjOpen ValidateDatabase")
+            Me.Cursor = Cursors.Default
+            MsgBox("A Windows exception error occured: " & Chr(13) & _
+                   ex.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
+
         Finally
             cnn.Close()
         End Try

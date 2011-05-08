@@ -106,6 +106,7 @@ Public Class frmDMLInfo
         dt.Columns.Clear()
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             cnn.Open()
 
             Select Case TableObj.DSNtype
@@ -261,19 +262,35 @@ Public Class frmDMLInfo
                 dgvTables.Enabled = True
                 dgvTables.Show()
                 dgvTables.ClearSelection()
+                Me.Cursor = Cursors.Default
                 MsgBox("There are no tables in your Selection" & (Chr(13)) & "Please enter a different Schema and/or Partial Table Name", MsgBoxStyle.OkOnly, MsgTitle)
                 dgvTables.Enabled = False
             Else
                 dgvTables.DataSource = dt
                 dgvTables.Visible = True
                 dgvTables.Enabled = True
+                Me.Cursor = Cursors.Default
                 dgvTables.Show()
                 dgvTables.ClearSelection()
             End If
-
+            Me.Cursor = Cursors.Default
             Return True
 
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmDMLinfo Load_Table")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+
+            TableObj.DoLogin = True
+            ActivateTab(TabSelectTable)
+
+            Return False
+
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             LogError(ex, "frmDMLinfo Load_Table")
             If ex.ToString.Contains("Oracle") = True Then
                 If ex.ToString.Contains("null password") = True Then
@@ -300,7 +317,10 @@ Public Class frmDMLInfo
                     MsgBox("You have chosen an invalid ODBC source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.OkOnly, MsgTitle)
                 End If
             Else
-                MsgBox("You have chosen an invalid ODBC source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.OkOnly, MsgTitle)
+                MsgBox("A Windows exception error occured: " & Chr(13) & _
+                   ex.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
             End If
 
             TableObj.DoLogin = True
@@ -401,6 +421,7 @@ doAgain:
     Private Sub cmdOk_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOk.Click
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             If TableObj.Connection Is Nothing Then
                 TableObj.Connection = CType(cbConn.SelectedItem, Mylist).ItemData
                 Call CheckSelectedConn()
@@ -414,14 +435,17 @@ doAgain:
             Next
 
             If TabControl1.TabPages.Count > 1 Then
+                Me.Cursor = Cursors.Default
                 DialogResult = Windows.Forms.DialogResult.Retry
                 MsgBox("There was a problem creating structures for the Tables in the Tabs remaining" & Chr(13) & "Please check these selections and try again", MsgBoxStyle.OkOnly, MsgTitle)
             Else
+                Me.Cursor = Cursors.Default
                 Me.Close()
                 DialogResult = Windows.Forms.DialogResult.OK
             End If
 
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             LogError(ex, "frmDMLinfo cmdOK_click")
         End Try
 
@@ -456,6 +480,7 @@ doAgain:
     Private Sub btnNext_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNext.Click
 
         Try
+            Me.Cursor = Cursors.WaitCursor
             Dim i As Integer
             PageArray = New Collection
             For Each page As TabPage In TabControl1.TabPages
@@ -496,8 +521,10 @@ doAgain:
                     ActivateTab(TabControl1.TabPages(i))
                 Next
             End If
+            Me.Cursor = Cursors.Default
 
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
             LogError(ex, "frmDMLinfo btnNext_Click")
         End Try
 

@@ -5,7 +5,7 @@
    CREATE TABLESPACE TSMETA01
 	DATAFILE 'TSMETA01.DAT' 
 	SIZE 2M;
-----
+  --
   --   /****** Object:  Table  CONNECTIONS  ******/
    CREATE TABLE CONNECTIONS
       (

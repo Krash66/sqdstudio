@@ -29,6 +29,8 @@ Public Class frmNewProj
                 m_objthis.LoginReq = True
                 frmL = New frmODBCLogin
                 Ulogin = frmL.getLogin()
+                Me.Refresh()
+                Me.Cursor = Cursors.WaitCursor
                 If Ulogin IsNot Nothing Then
                     If Ulogin.LoggedInChange = True Then
                         m_objthis.ProjectMetaDSNUID = Ulogin.UID
@@ -43,6 +45,7 @@ Public Class frmNewProj
                     End If
                 End If
             Else
+                Me.Cursor = Cursors.WaitCursor
                 m_objthis.ProjectMetaDSNUID = ""
                 m_objthis.ProjectMetaDSNPWD = ""
                 m_objthis.LoginReq = False
@@ -77,24 +80,28 @@ Public Class frmNewProj
                         If objThis.AddNew() = False Then
                             DialogResult = Windows.Forms.DialogResult.Retry
                             cnn.Close()
+                            Me.Cursor = Cursors.Default
                             Exit Sub
                         End If
                     Else
                         DialogResult = Windows.Forms.DialogResult.Retry
                         cnn.Close()
+                        Me.Cursor = Cursors.Default
                         Exit Sub
                     End If
                 Else
                     DialogResult = Windows.Forms.DialogResult.Retry
                     cnn.Close()
+                    Me.Cursor = Cursors.Default
                     Exit Sub
                 End If
             Else
                 DialogResult = Windows.Forms.DialogResult.Retry
                 cnn.Close()
+                Me.Cursor = Cursors.Default
                 Exit Sub
             End If
-
+            Me.Cursor = Cursors.Default
             cnn.Close()
             Me.Close()
             DialogResult = Windows.Forms.DialogResult.OK
@@ -102,6 +109,8 @@ Public Class frmNewProj
         Catch ex As Exception
             LogError(ex, "frmNewProj cmdOKclick")
             DialogResult = Windows.Forms.DialogResult.Retry
+            cnn.Close()
+            Me.Cursor = Cursors.Default
         End Try
 
     End Sub
@@ -231,24 +240,47 @@ Public Class frmNewProj
 
         dt.Clear()
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             cnn.Open()
+
             Dim sql As String = "select * from " & m_objthis.tblProjects
+
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
             Log(sql)
+
             If Not da.Fill(dt) > 0 Then
             End If
+
             If dt.Columns.Count = 4 Then
                 m_objthis.ProjectMetaVersion = enumMetaVersion.V2
+                Me.Cursor = Cursors.Default
+                MsgBox("You are attempting to use a version of Metadata that is no longer supported by Design Studio. Please use a Version 3 Metadata format", MsgBoxStyle.OkOnly, "Incorrect Metadata Version")
+                Return False
             Else
                 m_objthis.ProjectMetaVersion = enumMetaVersion.V3
             End If
-
+            Me.Cursor = Cursors.Default
             Return True
 
-        Catch ex As Exception
-            MsgBox("You have chosen an invalid SQMetaData source," & Chr(13) & _
-            "entered an incorrect Table Schema or an incorrect Username and Password.", MsgBoxStyle.Information, MsgTitle)
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmNewProj ValidateDatabase")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
             Return False
+
+        Catch ex As Exception
+            Me.Cursor = Cursors.Default
+            LogError(ex, "frmNewProj ValidateDatabase")
+            MsgBox("A Windows exception error occured: " & Chr(13) & _
+                   ex.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
+
         Finally
             cnn.Close()
         End Try

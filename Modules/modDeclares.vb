@@ -35,6 +35,7 @@ Public Module modDeclares
     Public EnableLogging As Boolean = True
     Public TraceFile As String
     Public errorTrace As String
+    Public ODBCTrace As String
     ' These two for rename
     Public NameOfNodeBefore As String
     'Public PrevObjTreeNode As TreeNode
@@ -450,8 +451,16 @@ Public Module modDeclares
         clsLogging.ErrorEvent(sMsg, AddNewLine)
     End Function
 
+    Public Function ODBCErrorLog(ByVal sMsg As String, Optional ByVal AddNewLine As Boolean = True) As Boolean
+        clsLogging.ODBCEvent(sMsg, AddNewLine)
+    End Function
+
     Public Function LogError(ByVal ex As Exception, Optional ByVal p1 As String = "", Optional ByVal p2 As String = "", Optional ByVal ThrowError As Boolean = False, Optional ByVal displayMSG As Boolean = False) As Boolean
         clsLogging.LogError(ex, p1, p2, ThrowError, displayMSG)
+    End Function
+
+    Public Function LogODBCError(ByVal ex As Exception, Optional ByVal p1 As String = "", Optional ByVal p2 As String = "", Optional ByVal ThrowError As Boolean = False, Optional ByVal displayMSG As Boolean = False) As Boolean
+        clsLogging.LogODBCerror(ex, p1, p2, ThrowError, displayMSG)
     End Function
 
     Public Function LoadGlobalValues(Optional ByVal ClearLogOnStartUp As Boolean = True) As Boolean
@@ -466,9 +475,13 @@ Public Module modDeclares
             If errorTrace Is Nothing Then
                 errorTrace = "ErrorTrc.log"
             End If
+            If ODBCTrace Is Nothing Then
+                ODBCTrace = "ODBCErrLog.log"
+            End If
             If ClearLogOnStartUp = True Then
                 System.IO.File.Delete(GetAppTemp() & "\" & TraceFile)  '
                 System.IO.File.Delete(GetAppTemp() & "\" & errorTrace)   '& "\"
+                System.IO.File.Delete(GetAppTemp() & "\" & ODBCTrace)
                 'System.IO.File.Delete(GetAppPath() & "*.log")
             End If
             EnableLogging = True

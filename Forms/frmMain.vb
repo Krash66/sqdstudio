@@ -5338,15 +5338,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End If
 
             If cNode.Parent IsNot Nothing Then
-                If CType(cNode.Parent.Tag, INode).Text.Contains("DDL") = True Or _
+                If cNode.Parent.Parent IsNot Nothing Then
+                    If CType(cNode.Parent.Tag, INode).Text.Contains("DDL") = True Or _
                 CType(cNode.Parent.Parent.Tag, INode).Text.Contains("DDL") = True Or _
                 CType(cNode.Tag, INode).Text.Contains("DDL") = True Or _
                 CType(cNode.Parent.Tag, INode).Text.Contains("DML") = True Or _
                 CType(cNode.Parent.Parent.Tag, INode).Text.Contains("DML") = True Or _
                 CType(cNode.Tag, INode).Text.Contains("DML") = True Then
-                    bDDL = True
-                Else
-                    bDDL = False
+                        bDDL = True
+                    Else
+                        bDDL = False
+                    End If
                 End If
             End If
 
@@ -5728,6 +5730,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPasteTask.Enabled = bAllowPaste
                     mnuDelAllTask.Enabled = bFolderClick
                     mnuChangeTask.Enabled = Not bFolderClick
+                    mnuScriptProc.Enabled = Not bFolderClick
 
                     Select Case obj.Type
                         Case NODE_FO_JOIN

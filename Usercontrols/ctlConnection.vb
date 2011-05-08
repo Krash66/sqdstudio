@@ -363,7 +363,7 @@ Public Class ctlConnection
         '
         'btnTest
         '
-        Me.btnTest.ForeColor = System.Drawing.Color.White
+        Me.btnTest.ForeColor = System.Drawing.Color.Black
         Me.btnTest.Location = New System.Drawing.Point(116, 71)
         Me.btnTest.Name = "btnTest"
         Me.btnTest.Size = New System.Drawing.Size(172, 23)

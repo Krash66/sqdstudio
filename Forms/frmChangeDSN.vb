@@ -41,7 +41,7 @@ Public Class frmChangeDSN
                 Me.Close()
                 DialogResult = Windows.Forms.DialogResult.OK
             Else
-                MsgBox("You have chosen a Datasource that is not defined," & Chr(13) & "Please select a different Datasource.", MsgBoxStyle.Information, MsgTitle)
+                MsgBox("You have chosen a Datasource that is not designed for SQData," & Chr(13) & "Please select a different Datasource.", MsgBoxStyle.Information, MsgTitle)
                 DialogResult = Windows.Forms.DialogResult.Retry
             End If
 

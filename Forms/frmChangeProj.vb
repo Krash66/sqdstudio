@@ -10,6 +10,8 @@ Public Class frmChangeProj
     Private SecATTR As String = ""
     Private MetaVer As enumMetaVersion
 
+    Public Event ShowErrorLog(ByVal sender As System.Object, ByVal e As Object)
+
     Private Sub DataGridView2_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles DataGridView2.CellMouseClick
 
         Dim rowNum As Integer = 0
@@ -60,7 +62,10 @@ Public Class frmChangeProj
 
         ObjThis = TempObj
         txtDSN.Text = ObjThis.ProjectDSN
-        Load_Table()
+        If Load_Table() = False Then
+            Return Nothing
+            Me.Close()
+        End If
         DataGridView2.ClearSelection()
         DataGridView2.Focus()
 
@@ -88,6 +93,8 @@ doAgain:
         
         dt.Clear()
         Try
+            Me.Cursor = Cursors.WaitCursor
+
             cnn.Open()
 
             Dim sql As String = "select * from " & ObjThis.ProjectTableName
@@ -102,6 +109,7 @@ doAgain:
                 DataGridView2.ClearSelection()
 
                 cmdOk.Enabled = True
+                Me.Cursor = Cursors.Default
                 MsgBox("The source you have chosen contains no projects" & (Chr(13)) & "Please cancel and select a different ODBC Source, or" & (Chr(13)) & "Go to main program to create a new Project", MsgBoxStyle.Information, MsgTitle)
                 DataGridView2.Enabled = False
             Else
@@ -121,14 +129,27 @@ doAgain:
                     Projdesc = DataGridView2.Item(1, 0).Value.ToString
                     SecATTR = DataGridView2.Item(2, 0).Value.ToString
                 End If
-                
+
                 txtProj.Text = ProjName
+                Me.Cursor = Cursors.Default
                 cmdOk.Enabled = True
             End If
 
+            Return True
             'ToolStripProgressBar1.Enabled = False
 
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmChangeProj Load_Table")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
+
         Catch ex As Exception
+            Me.Cursor = Cursors.Default
+            LogError(ex, "frmChangeProj Load_Table")
             If ex.ToString.Contains("Oracle") = True Then
                 If ex.ToString.Contains("null password") = True Then
                     MsgBox("Password cannot be left blank", MsgBoxStyle.Information, MsgTitle)
@@ -148,10 +169,12 @@ doAgain:
                     MsgBox("You have chosen an invalid MetaData source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.Information, MsgTitle)
                 End If
             Else
-                MsgBox("You have chosen an invalid MetaData source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.Information, MsgTitle)
+                MsgBox("A Windows exception error occured: " & Chr(13) & _
+                    ex.Message.ToString & Chr(13) & Chr(13) & _
+                    "For more information, see the Error Log" & Chr(13) & _
+                    "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
             End If
-            DialogResult = Windows.Forms.DialogResult.Cancel
-            Me.Close()
+            Return False
         Finally
             cnn.Close()
         End Try

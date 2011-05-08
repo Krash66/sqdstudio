@@ -379,6 +379,15 @@ Public Class ctlSelectTab
                 Return False
             End Try
 
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmNewProj ValidateDatabase")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
+
         Catch ex As Exception
             Me.Cursor = Cursors.Default
             If ex.ToString.Contains("Oracle") = True Then
@@ -406,7 +415,10 @@ Public Class ctlSelectTab
                     MsgBox("You have chosen an invalid ODBC source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.Information, MsgTitle)
                 End If
             Else
-                MsgBox("You have chosen an invalid ODBC source," & Chr(13) & "entered an incorrect Table Schema or an incorrect User name and Password.", MsgBoxStyle.Information, MsgTitle)
+                MsgBox("A Windows exception error occured: " & Chr(13) & _
+                   ex.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
             End If
             Me.Cursor = Cursors.Default
 
