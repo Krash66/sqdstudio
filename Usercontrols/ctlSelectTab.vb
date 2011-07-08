@@ -321,7 +321,7 @@ Public Class ctlSelectTab
                     sql = "select column_name, data_type, data_length, data_scale FROM user_tab_columns WHERE table_name = '" & objthis.TableName & "' order by column_id"
 
                 Case enumODBCtype.SQL_SERVER
-                    sql = "select column_name, Data_Type, character_maximum_length, numeric_scale from information_schema.columns where table_name = '" & objthis.TableName & "' order by ordinal_position"
+                    sql = "select column_name, Data_Type, character_maximum_length, numeric_scale from INFORMATION_SCHEMA.COLUMNS where table_name = '" & objthis.TableName & "' order by ordinal_position"
 
             End Select
 

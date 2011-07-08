@@ -661,6 +661,14 @@ Public Class clsDatastore
             '/// Now set DSSelection Parents based on FKey
             Return SetDSselParents()
 
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore LoadItems")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
         Catch ex As Exception
             LogError(ex, "clsDatastore LoadItems")
             Return False
@@ -765,6 +773,13 @@ Public Class clsDatastore
 
             Return True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore LoadMe")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+            Return False
         Catch ex As Exception
             LogError(ex, "clsDatastore LoadMe")
             Return False

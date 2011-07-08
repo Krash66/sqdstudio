@@ -967,7 +967,12 @@ Public Class clsTask
 
             '/// don't know why this function is "as integer"
             '/// doesn't return any value
-
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask LoadDatastores")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
         Catch ex As Exception
             LogError(ex, "clsTask LoadDatastores", sql)
         Finally
@@ -1116,7 +1121,12 @@ Public Class clsTask
 
             '/// "As Integer" not used
             '///doesn't return anything
-
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask LoadMappings")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
         Catch ex As Exception
             LogError(ex, "clsTask LoadMappings")
         Finally

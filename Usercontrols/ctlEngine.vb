@@ -921,7 +921,7 @@ Public Class ctlEngine
             'cmbEngVer.Items.Add(New Mylist("3.7.6", "3.7.6"))
             'cmbEngVer.Items.Add(New Mylist("3.6.14", "3.6.14"))
 
-            If objThis.EngVersion.Trim <> "" Then
+            If objThis.EngVersion <> "" Then
                 SetListItemByValue(cmbEngVer, objThis.EngVersion, False)
             Else
                 cmbEngVer.SelectedIndex = 0

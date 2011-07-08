@@ -20,7 +20,6 @@ Partial Class frmScriptGen
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.gbPath = New System.Windows.Forms.GroupBox
-        Me.Label8 = New System.Windows.Forms.Label
         Me.btnFTP = New System.Windows.Forms.Button
         Me.btnExpFolder = New System.Windows.Forms.Button
         Me.txtFolderPath = New System.Windows.Forms.TextBox
@@ -39,6 +38,10 @@ Partial Class frmScriptGen
         Me.lblSummary = New System.Windows.Forms.Label
         Me.lblResult = New System.Windows.Forms.Label
         Me.gbScriptOptions = New System.Windows.Forms.GroupBox
+        Me.cbMapDebug = New System.Windows.Forms.CheckBox
+        Me.cbNewSyn = New System.Windows.Forms.CheckBox
+        Me.cbOldSyn = New System.Windows.Forms.CheckBox
+        Me.Label4 = New System.Windows.Forms.Label
         Me.btnParseOnlySQD = New System.Windows.Forms.Button
         Me.btnParseSQD = New System.Windows.Forms.Button
         Me.btnParseOnly = New System.Windows.Forms.Button
@@ -105,31 +108,22 @@ Partial Class frmScriptGen
         '
         'gbPath
         '
-        Me.gbPath.Controls.Add(Me.Label8)
         Me.gbPath.Controls.Add(Me.btnFTP)
         Me.gbPath.Controls.Add(Me.btnExpFolder)
         Me.gbPath.Controls.Add(Me.txtFolderPath)
         Me.gbPath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbPath.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbPath.Location = New System.Drawing.Point(12, 376)
+        Me.gbPath.Location = New System.Drawing.Point(12, 411)
         Me.gbPath.Name = "gbPath"
-        Me.gbPath.Size = New System.Drawing.Size(616, 76)
+        Me.gbPath.Size = New System.Drawing.Size(616, 44)
         Me.gbPath.TabIndex = 59
         Me.gbPath.TabStop = False
         Me.gbPath.Text = "Scripts Directory"
         '
-        'Label8
-        '
-        Me.Label8.Location = New System.Drawing.Point(9, 20)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(202, 50)
-        Me.Label8.TabIndex = 4
-        Me.Label8.Text = "This is the Directory where your Scripts are written"
-        '
         'btnFTP
         '
         Me.btnFTP.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnFTP.Location = New System.Drawing.Point(507, 47)
+        Me.btnFTP.Location = New System.Drawing.Point(507, 16)
         Me.btnFTP.Name = "btnFTP"
         Me.btnFTP.Size = New System.Drawing.Size(103, 23)
         Me.btnFTP.TabIndex = 3
@@ -139,7 +133,7 @@ Partial Class frmScriptGen
         'btnExpFolder
         '
         Me.btnExpFolder.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnExpFolder.Location = New System.Drawing.Point(398, 47)
+        Me.btnExpFolder.Location = New System.Drawing.Point(395, 16)
         Me.btnExpFolder.Name = "btnExpFolder"
         Me.btnExpFolder.Size = New System.Drawing.Size(103, 23)
         Me.btnExpFolder.TabIndex = 2
@@ -152,10 +146,10 @@ Partial Class frmScriptGen
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFolderPath.BackColor = System.Drawing.SystemColors.Window
         Me.txtFolderPath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFolderPath.Location = New System.Drawing.Point(217, 21)
+        Me.txtFolderPath.Location = New System.Drawing.Point(6, 18)
         Me.txtFolderPath.Name = "txtFolderPath"
         Me.txtFolderPath.ReadOnly = True
-        Me.txtFolderPath.Size = New System.Drawing.Size(393, 20)
+        Me.txtFolderPath.Size = New System.Drawing.Size(383, 20)
         Me.txtFolderPath.TabIndex = 0
         '
         'gbStudioFiles
@@ -279,9 +273,9 @@ Partial Class frmScriptGen
         Me.gbResults.Controls.Add(Me.lblResult)
         Me.gbResults.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbResults.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbResults.Location = New System.Drawing.Point(12, 248)
+        Me.gbResults.Location = New System.Drawing.Point(12, 272)
         Me.gbResults.Name = "gbResults"
-        Me.gbResults.Size = New System.Drawing.Size(616, 122)
+        Me.gbResults.Size = New System.Drawing.Size(616, 135)
         Me.gbResults.TabIndex = 62
         Me.gbResults.TabStop = False
         Me.gbResults.Text = "Script Generation Results"
@@ -306,6 +300,10 @@ Partial Class frmScriptGen
         '
         'gbScriptOptions
         '
+        Me.gbScriptOptions.Controls.Add(Me.cbMapDebug)
+        Me.gbScriptOptions.Controls.Add(Me.cbNewSyn)
+        Me.gbScriptOptions.Controls.Add(Me.cbOldSyn)
+        Me.gbScriptOptions.Controls.Add(Me.Label4)
         Me.gbScriptOptions.Controls.Add(Me.btnParseOnlySQD)
         Me.gbScriptOptions.Controls.Add(Me.btnParseSQD)
         Me.gbScriptOptions.Controls.Add(Me.btnParseOnly)
@@ -320,10 +318,51 @@ Partial Class frmScriptGen
         Me.gbScriptOptions.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbScriptOptions.Location = New System.Drawing.Point(12, 74)
         Me.gbScriptOptions.Name = "gbScriptOptions"
-        Me.gbScriptOptions.Size = New System.Drawing.Size(616, 168)
+        Me.gbScriptOptions.Size = New System.Drawing.Size(616, 192)
         Me.gbScriptOptions.TabIndex = 63
         Me.gbScriptOptions.TabStop = False
         Me.gbScriptOptions.Text = "Script Generation Options"
+        '
+        'cbMapDebug
+        '
+        Me.cbMapDebug.AutoSize = True
+        Me.cbMapDebug.Location = New System.Drawing.Point(495, 169)
+        Me.cbMapDebug.Name = "cbMapDebug"
+        Me.cbMapDebug.Size = New System.Drawing.Size(115, 17)
+        Me.cbMapDebug.TabIndex = 17
+        Me.cbMapDebug.Text = "Mapping Debug"
+        Me.cbMapDebug.UseVisualStyleBackColor = True
+        '
+        'cbNewSyn
+        '
+        Me.cbNewSyn.AutoSize = True
+        Me.cbNewSyn.Location = New System.Drawing.Point(296, 169)
+        Me.cbNewSyn.Name = "cbNewSyn"
+        Me.cbNewSyn.Size = New System.Drawing.Size(93, 17)
+        Me.cbNewSyn.TabIndex = 16
+        Me.cbNewSyn.Text = "URL Syntax"
+        Me.cbNewSyn.UseVisualStyleBackColor = True
+        '
+        'cbOldSyn
+        '
+        Me.cbOldSyn.AutoSize = True
+        Me.cbOldSyn.Checked = True
+        Me.cbOldSyn.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.cbOldSyn.Location = New System.Drawing.Point(162, 169)
+        Me.cbOldSyn.Name = "cbOldSyn"
+        Me.cbOldSyn.Size = New System.Drawing.Size(128, 17)
+        Me.cbOldSyn.TabIndex = 15
+        Me.cbOldSyn.Text = "Traditional Syntax"
+        Me.cbOldSyn.UseVisualStyleBackColor = True
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(15, 170)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(141, 13)
+        Me.Label4.TabIndex = 14
+        Me.Label4.Text = "Datastore Script Syntax"
         '
         'btnParseOnlySQD
         '
@@ -575,7 +614,6 @@ Partial Class frmScriptGen
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents btnOpenRPT As System.Windows.Forms.Button
     Friend WithEvents btnFTP As System.Windows.Forms.Button
-    Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents gbResults As System.Windows.Forms.GroupBox
     Friend WithEvents lblResult As System.Windows.Forms.Label
     Friend WithEvents lblSummary As System.Windows.Forms.Label
@@ -598,5 +636,9 @@ Partial Class frmScriptGen
     Friend WithEvents btnParseSQD As System.Windows.Forms.Button
     Friend WithEvents btnSQData As System.Windows.Forms.Button
     Friend WithEvents btnOpenOutput As System.Windows.Forms.Button
+    Friend WithEvents cbNewSyn As System.Windows.Forms.CheckBox
+    Friend WithEvents cbOldSyn As System.Windows.Forms.CheckBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents cbMapDebug As System.Windows.Forms.CheckBox
 
 End Class

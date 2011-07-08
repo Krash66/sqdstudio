@@ -61,9 +61,12 @@ Public Module modGenerateV3
     Dim StrList As New Collection
     Dim dbdList As New Collection
 
+    Dim SynNew As Boolean
+    Private DBGMap As Boolean = False
+
 #Region " Main Processes "
 
-    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False) As clsRcode
+    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False, Optional ByVal NewSyn As Boolean = True, Optional ByVal MapDBG As Boolean = False) As clsRcode
 
         Log("********* Script Generation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
@@ -87,6 +90,8 @@ Public Module modGenerateV3
         PrintUID = UseUID
         SourceLevel = MappingLevel
         TargetLevel = TgtLevel
+        SynNew = NewSyn
+        DBGMap = MapDBG
 
         Try
             ScriptPath = EngObj.ObjSystem.Environment.LocalScriptDir
@@ -279,7 +284,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Public Function GenerateProcScriptV3(ByVal ProcObj As clsTask, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll) As clsRcode
+    Public Function GenerateProcScriptV3(ByVal ProcObj As clsTask, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal NewSyn As Boolean = True) As clsRcode
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -299,6 +304,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
         PrintUID = UseUID
         SourceLevel = MappingLevel
         TargetLevel = TgtLevel
+        SynNew = NewSyn
 
         Try
             ObjProc = ProcObj
@@ -471,7 +477,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Public Function GenerateDSScriptV3(ByVal DSObj As clsDatastore, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal SrcLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll) As clsRcode
+    Public Function GenerateDSScriptV3(ByVal DSObj As clsDatastore, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal SrcLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal NewSyn As Boolean = True) As clsRcode
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -491,6 +497,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
         PrintUID = UseUID
         SourceLevel = SrcLevel
         TargetLevel = TgtLevel
+        SynNew = NewSyn
 
         Try
             ObjDS = DSObj
@@ -2067,13 +2074,36 @@ mapTgt:                     '/// Now Map Target
                     enumMappingType.MAPPING_TYPE_LOOKUP, enumMappingType.MAPPING_TYPE_PROC, _
                     enumMappingType.MAPPING_TYPE_VAR, enumMappingType.MAPPING_TYPE_WORKVAR, _
                     enumMappingType.MAPPING_TYPE_NONE, enumMappingType.MAPPING_TYPE_CONSTANT
+
+                        '**** for debugging of Function Mappings
+                        If DBGMap = True Then
+                            Log("Mapping Source Type = " & Map.SourceType.ToString)
+                            If Map.SourceType = enumMappingType.MAPPING_TYPE_FUN Then
+                                Log("Source = " & CType(Map.MappingSource, clsSQFunction).SQFunctionWithInnerText)
+                            Else
+                                Log("Source = " & Map.MappingSource.ToString)
+                            End If
+                            Log("Mapping Target Type = " & Map.TargetType.ToString)
+                            If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+                                Log("Target = " & CType(Map.MappingTarget, clsField).FieldName)
+                            Else
+                                Log("Target = " & Map.MappingTarget.ToString)
+                            End If
+                            If rc IsNot Nothing Then
+                                Log("rc object is Good")
+                            Else
+                                Log("***** No rc object *****")
+                            End If
+                            Log("Mapping Level = " & Map.IsMapped)
+                        End If
+
                         If Map.IsMapped = "0" Then
                             If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
                                 If wMap(rc, Map, True) = False Then   ', First
                                     GoTo ErrorGoTo
                                 End If
                             ElseIf Map.TargetType = enumMappingType.MAPPING_TYPE_VAR Or _
-                        Map.TargetType = enumMappingType.MAPPING_TYPE_WORKVAR Then
+                            Map.TargetType = enumMappingType.MAPPING_TYPE_WORKVAR Then
                                 If wMapFunWTgt(rc, Map, True) = False Then   ', First
                                     GoTo ErrorGoTo
                                 End If
@@ -3235,7 +3265,7 @@ ErrorGoTo:
             Dim PSix2 As String = String.Format("{0}", "+/")
             Dim FORdml1 As String = String.Format("{0}{1}", "DESCRIPTION ", GetStrType(struct.StructureType))
             Dim FORdml2 As String = String.Format("{0,25}{1}{2}", BuildString.ToString, _
-            Quote(GetStrPath(struct, dssel.ObjDatastore.Engine)), semi)
+            GetStrPath(struct, dssel.ObjDatastore.Engine), semi)   'Quote()
 
             Select Case CalledFrom
                 Case "TMP"
@@ -4259,7 +4289,7 @@ ErrorGoTo:
             End If
 
         Catch ex As Exception
-            LogError(ex, "modGenerate wMapFun")
+            LogError(ex, "modGenerate wMapFunWTgt")
             rc.HasError = True
             rc.ErrorCount += 1
             rc.LocalErrorMsg = "Error while writing Mapping function with target field"

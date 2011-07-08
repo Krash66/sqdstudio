@@ -872,38 +872,38 @@ Public Class ctlConnection
                         If TableObj.PartSchemaName.Contains("%") Then
                             If TableObj.PartTabName <> "" Then
                                 If TableObj.PartTabName.Contains("%") Then
-                                    sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema like '" & TableObj.PartSchemaName & "' AND table_name like '" & TableObj.PartTabName & "' order by table_name"
+                                    sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema like '" & TableObj.PartSchemaName & "' AND table_name like '" & TableObj.PartTabName & "' order by table_name"
                                 Else
-                                    sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema like '" & TableObj.PartSchemaName & "' AND table_name= '" & TableObj.PartTabName & "' order by table_name"
+                                    sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema like '" & TableObj.PartSchemaName & "' AND table_name= '" & TableObj.PartTabName & "' order by table_name"
                                 End If
                             Else
-                                sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema like '" & TableObj.PartSchemaName & "' order by table_name"
+                                sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema like '" & TableObj.PartSchemaName & "' order by table_name"
                             End If
                         Else
                             If TableObj.PartTabName <> "" Then
                                 If TableObj.PartTabName.Contains("%") Then
-                                    sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema= '" & TableObj.PartSchemaName & "' AND table_name like '" & TableObj.PartTabName & "' order by table_name"
+                                    sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema= '" & TableObj.PartSchemaName & "' AND table_name like '" & TableObj.PartTabName & "' order by table_name"
                                 Else
-                                    sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema= '" & TableObj.PartSchemaName & "' AND table_name= '" & TableObj.PartTabName & "' order by table_name"
+                                    sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema= '" & TableObj.PartSchemaName & "' AND table_name= '" & TableObj.PartTabName & "' order by table_name"
                                 End If
                             Else
-                                sql = "select table_name, Table_Schema from information_schema.tables where Table_Schema= '" & TableObj.PartSchemaName & "' order by table_name"
+                                sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where Table_Schema= '" & TableObj.PartSchemaName & "' order by table_name"
                             End If
                         End If
                     Else
                         If TableObj.PartTabName = "" Then
-                            sql = "select table_name, Table_Schema from information_schema.tables order by table_name"
+                            sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES order by table_name"
                         Else
                             If TableObj.PartTabName.Contains("%") Then
-                                sql = "select table_name, Table_Schema from information_schema.tables where table_name like '" & TableObj.PartTabName & "' order by table_name"
+                                sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where table_name like '" & TableObj.PartTabName & "' order by table_name"
                             Else
-                                sql = "select table_name, Table_Schema from information_schema.tables where table_name= '" & TableObj.PartTabName & "' order by table_name"
+                                sql = "select table_name, Table_Schema from INFORMATION_SCHEMA.TABLES where table_name= '" & TableObj.PartTabName & "' order by table_name"
                             End If
                         End If
                     End If
 
             End Select
-
+            Log(sql)
             da = New System.Data.Odbc.OdbcDataAdapter(sql, cnn)
 
             If Not da.Fill(dt) > 0 Then
@@ -923,6 +923,18 @@ Public Class ctlConnection
             End If
 
             Return True
+
+        Catch OE As Odbc.OdbcException
+            Me.Cursor = Cursors.Default
+            LogODBCError(OE, "frmDMLinfo Load_Table")
+            MsgBox("An ODBC exception error occured: " & Chr(13) & _
+                   OE.Message.ToString & Chr(13) & Chr(13) & _
+                   "For more information, see the ODBC Error Log" & Chr(13) & _
+                   "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
+
+            TableObj.DoLogin = True
+
+            Return False
 
         Catch ex As Exception
             LogError(ex, "frmDMLinfo Load_Table")

@@ -11,6 +11,8 @@ Public Class frmScriptGen
     Private sourcelevel As enumMappingLevel
     Private targetlevel As enumMappingLevel
     Private ScriptType As enumGenType
+    Private NewSyn As Boolean = False
+    Private MapDBG As Boolean = False
 
 
     Private Sub cmdCancel_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
@@ -205,6 +207,8 @@ Public Class frmScriptGen
             Me.rbAlltgt.Checked = False
             Me.rbSelecttgt.Checked = True
             Me.rbFieldtgt.Checked = False
+            Me.cbNewSyn.Checked = True
+            Me.cbOldSyn.Checked = False
             sourcelevel = enumMappingLevel.ShowDesc
             targetlevel = enumMappingLevel.ShowDesc
 
@@ -361,13 +365,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Proc
-                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG)
 
             End Select
 
@@ -390,13 +394,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Proc
-                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG)
 
             End Select
             FillResults(True)
@@ -419,13 +423,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Proc
-                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, , NewSyn)
 
             End Select
             FillResults(True)
@@ -448,13 +452,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Proc
-                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True, NewSyn, MapDBG)
 
             End Select
             FillResults(True)
@@ -477,13 +481,13 @@ Public Class frmScriptGen
 
             Select Case ScriptType
                 Case enumGenType.DS
-                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateDSScriptV3(ObjDS, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Proc
-                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel)
+                    RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True, NewSyn)
 
             End Select
             FillResults(True)
@@ -606,4 +610,30 @@ Public Class frmScriptGen
 
     End Sub
 
+    Private Sub cbOldSyn_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbOldSyn.CheckedChanged
+
+        If Me.cbOldSyn.Checked = True Then
+            Me.cbNewSyn.Checked = False
+            NewSyn = False
+        End If
+
+    End Sub
+
+    Private Sub cbNewSyn_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbNewSyn.CheckedChanged
+
+        If Me.cbNewSyn.Checked = True Then
+            Me.cbOldSyn.Checked = False
+            NewSyn = True
+        End If
+
+    End Sub
+
+    Private Sub cbMapDebug_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMapDebug.CheckedChanged
+
+        If cbMapDebug.Checked = True Then
+            MapDBG = True
+        Else
+            MapDBG = False
+        End If
+    End Sub
 End Class
