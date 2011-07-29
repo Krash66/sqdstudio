@@ -1850,7 +1850,7 @@ doAgain:
 
 
         '//only for CDC
-        chkSkipChangeCheck.Enabled = (DatastoreType = modDeclares.enumDatastore.DS_GENERICCDC Or _
+        chkSkipChangeCheck.Enabled = (DatastoreType = modDeclares.enumDatastore.DS_UTSCDC Or _
                                   DatastoreType = modDeclares.enumDatastore.DS_VSAMCDC Or _
                                   DatastoreType = enumDatastore.DS_SUBVAR Or _
                                   DatastoreType = enumDatastore.DS_ORACLECDC Or _
@@ -1886,7 +1886,7 @@ doAgain:
                           objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
                           objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
                           cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                          objThis.DatastoreType = enumDatastore.DS_GENERICCDC
+                          objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
         lblPoll.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
@@ -1895,7 +1895,7 @@ doAgain:
                             objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
                             cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                            objThis.DatastoreType = enumDatastore.DS_GENERICCDC
+                            objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
         txtRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
@@ -1904,7 +1904,7 @@ doAgain:
                             objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
                             cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                            objThis.DatastoreType = enumDatastore.DS_GENERICCDC
+                            objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
         lblRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
@@ -1913,7 +1913,7 @@ doAgain:
                             objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
                             objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
                             cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                            objThis.DatastoreType = enumDatastore.DS_GENERICCDC
+                            objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
     End Sub
 
@@ -1929,13 +1929,14 @@ doAgain:
                     cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
                     cmbAccessMethod.SelectedIndex = 0
 
-                Case enumDatastore.DS_DB2CDC, enumDatastore.DS_GENERICCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
+                Case enumDatastore.DS_DB2CDC, enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
                 enumDatastore.DS_ORACLECDC, enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR
                     cmbAccessMethod.Items.Clear()
                     cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
                     cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
                     cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
                     cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
+                    cmbAccessMethod.Items.Add(New Mylist("SQD CDCStore", DS_ACCESSMETHOD_SQDCDC))
                     cmbAccessMethod.SelectedIndex = 0
             End Select
         Else
@@ -1968,7 +1969,7 @@ doAgain:
                 DatastoreType = enumDatastore.DS_DB2CDC Or _
                 DatastoreType = enumDatastore.DS_VSAMCDC Or _
                 DatastoreType = enumDatastore.DS_ORACLECDC Or _
-                DatastoreType = enumDatastore.DS_GENERICCDC Then
+                DatastoreType = enumDatastore.DS_UTSCDC Then
 
                 cmbCharacterCode.Items.Add(New Mylist("System", DS_CHARACTERCODE_SYSTEM))
                 cmbCharacterCode.Items.Add(New Mylist("ASCII", DS_CHARACTERCODE_ASCII))
@@ -2001,7 +2002,7 @@ doAgain:
 
         Select Case objThis.DatastoreType
 
-            Case enumDatastore.DS_DB2CDC, enumDatastore.DS_GENERICCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
+            Case enumDatastore.DS_DB2CDC, enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
             enumDatastore.DS_ORACLECDC, enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR, enumDatastore.DS_RELATIONAL, _
             enumDatastore.DS_IMSDB
                 cmbOperationType.Items.Clear()
@@ -2160,7 +2161,7 @@ doAgain:
         cmbDatastoreType.Items.Add(New Mylist("VSAMCDC", enumDatastore.DS_VSAMCDC))
         cmbDatastoreType.Items.Add(New Mylist("IBM Event", enumDatastore.DS_IBMEVENT))
         cmbDatastoreType.Items.Add(New Mylist("OracleCDC", enumDatastore.DS_ORACLECDC))
-        cmbDatastoreType.Items.Add(New Mylist("GenericCDC", enumDatastore.DS_GENERICCDC))
+        cmbDatastoreType.Items.Add(New Mylist("SQD CDC", enumDatastore.DS_UTSCDC))
         '
         'cmbDatastoreType.Items.Add(New Mylist("XML CDC", enumDatastore.DS_XMLCDC))
         'cmbDatastoreType.Items.Add(New Mylist("Trigger based CDC", enumDatastore.DS_TRBCDC))

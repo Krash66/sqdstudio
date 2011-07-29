@@ -544,9 +544,6 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.SCmain = New System.Windows.Forms.SplitContainer
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.ctMain = New SQDStudio.ctlMain
         Me.ctInc = New SQDStudio.ctlInclude
         Me.ctFolder = New SQDStudio.ctlFolderNode
@@ -560,6 +557,9 @@ Public Class frmMain
         Me.ctEnv = New SQDStudio.ctlEnvironment
         Me.ctPrj = New SQDStudio.ctlProject
         Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.SCmain = New System.Windows.Forms.SplitContainer
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1443,7 +1443,7 @@ Public Class frmMain
         'mnuAddSQDCDC
         '
         Me.mnuAddSQDCDC.Index = 15
-        Me.mnuAddSQDCDC.Text = "Generic CDC"
+        Me.mnuAddSQDCDC.Text = "SQD CDC"
         '
         'MenuItem16
         '
@@ -1904,34 +1904,6 @@ Public Class frmMain
         Me.pnlProp.Size = New System.Drawing.Size(665, 513)
         Me.pnlProp.TabIndex = 3
         '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SCmain.Location = New System.Drawing.Point(0, 29)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
-        Me.SCmain.SplitterDistance = 346
-        Me.SCmain.SplitterWidth = 5
-        Me.SCmain.TabIndex = 9
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
-        '
         'ctMain
         '
         Me.ctMain.AllowDrop = True
@@ -2053,6 +2025,34 @@ Public Class frmMain
         Me.ctDs.Name = "ctDs"
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SCmain.Location = New System.Drawing.Point(0, 29)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
+        Me.SCmain.SplitterDistance = 346
+        Me.SCmain.SplitterWidth = 5
+        Me.SCmain.TabIndex = 9
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
         '
         'frmMain
         '
@@ -3239,11 +3239,14 @@ Public Class frmMain
                                     For Each NewDMLinfo As clsDMLinfo In ObjDMLArray
                                         Dim objstr As New clsStructure
                                         '/// Create New Structure Object from DML Object Data, and read in Field Attributes
+                                        Me.Cursor = Cursors.WaitCursor
                                         objstr = MakeDMLStructure(NewDMLinfo, ObjEnv)
+                                        Me.Cursor = Cursors.Default
                                         '/// Validate the new Structure and add it to the project
                                         If objstr IsNot Nothing Then
 tryAgain:                                   If objstr.ValidateNewObject() = False Then
-                                                objstr.StructureName = InputBox("Enter different Description Name ", "Duplicate Description Name", objstr.Text)
+                                                objstr.StructureName = InputBox("Enter different Description Name ", _
+                                                                                "Duplicate Description Name", objstr.Text)
                                                 If objstr.StructureName <> "" Then
                                                     GoTo tryAgain
                                                 End If
@@ -6131,7 +6134,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     End Sub
 
     Private Sub mnuAddSQDCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddSQDCDC.Click
-        DoDatastoreAction(modDeclares.enumAction.ACTION_NEW, modDeclares.enumDatastore.DS_GENERICCDC)
+        DoDatastoreAction(modDeclares.enumAction.ACTION_NEW, modDeclares.enumDatastore.DS_UTSCDC)
     End Sub
 
     'Private Sub mnuAddIMSLE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddIMSLE.Click
@@ -8902,7 +8905,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                     Case "Oracle CDC"
                         dsType = modDeclares.enumDatastore.DS_ORACLECDC
                     Case "Generic CDC"
-                        dsType = modDeclares.enumDatastore.DS_GENERICCDC
+                        dsType = modDeclares.enumDatastore.DS_UTSCDC
                     Case "IBM Event"
                         dsType = modDeclares.enumDatastore.DS_IBMEVENT
                         'Case "IMS LE Batch"

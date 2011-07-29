@@ -171,6 +171,7 @@ Public Module modDeclares
     Public Const DS_ACCESSMETHOD_IP As String = "I"
     Public Const DS_ACCESSMETHOD_MQSERIES As String = "M"
     Public Const DS_ACCESSMETHOD_VSAM As String = "V"
+    Public Const DS_ACCESSMETHOD_SQDCDC As String = "S"
 
     Public Const DS_CHARACTERCODE_EBCDIC As String = "E"
     Public Const DS_CHARACTERCODE_ASCII As String = "A"
@@ -340,7 +341,7 @@ Public Module modDeclares
         'DS_TRBCDC = 15
         'V3 additions
         DS_ORACLECDC = 16
-        DS_GENERICCDC = 17
+        DS_UTSCDC = 17
 
         'DS_IMSLEBATCH = 19
         DS_SUBVAR = 20

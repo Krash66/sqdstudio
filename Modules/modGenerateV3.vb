@@ -2075,28 +2075,7 @@ mapTgt:                     '/// Now Map Target
                     enumMappingType.MAPPING_TYPE_VAR, enumMappingType.MAPPING_TYPE_WORKVAR, _
                     enumMappingType.MAPPING_TYPE_NONE, enumMappingType.MAPPING_TYPE_CONSTANT
 
-                        '**** for debugging of Function Mappings
-                        If DBGMap = True Then
-                            Log("Mapping Source Type = " & Map.SourceType.ToString)
-                            If Map.SourceType = enumMappingType.MAPPING_TYPE_FUN Then
-                                Log("Source = " & CType(Map.MappingSource, clsSQFunction).SQFunctionWithInnerText)
-                            Else
-                                Log("Source = " & Map.MappingSource.ToString)
-                            End If
-                            Log("Mapping Target Type = " & Map.TargetType.ToString)
-                            If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-                                Log("Target = " & CType(Map.MappingTarget, clsField).FieldName)
-                            Else
-                                Log("Target = " & Map.MappingTarget.ToString)
-                            End If
-                            If rc IsNot Nothing Then
-                                Log("rc object is Good")
-                            Else
-                                Log("***** No rc object *****")
-                            End If
-                            Log("Mapping Level = " & Map.IsMapped)
-                        End If
-
+                        
                         If Map.IsMapped = "0" Then
                             If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
                                 If wMap(rc, Map, True) = False Then   ', First
@@ -2119,7 +2098,16 @@ mapTgt:                     '/// Now Map Target
                                 End If
                             Else
                                 '/// map function with target
-                                If wMapFunWTgt(rc, Map) = False Then   ', First
+                                '**** for debugging of Function Mappings
+                                If DBGMap = True Then
+                                    If Map IsNot Nothing Then
+                                        Log("map obj exists")
+                                    Else
+                                        Log("*** map does not exist ***")
+                                    End If
+                                End If
+
+                                If wMapFunWTgt(rc, Map, False) = False Then   ', First
                                     GoTo ErrorGoTo
                                 End If
                             End If
@@ -2448,41 +2436,87 @@ errorgoto:
             Dim DSname As String = ds.DsPhysicalSource
             Dim i As Integer
 
-            Select Case ds.DsAccessMethod
-                Case DS_ACCESSMETHOD_FILE
-                    DSname = ds.DsPhysicalSource
-                Case DS_ACCESSMETHOD_IP
-                    DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
-                Case DS_ACCESSMETHOD_MQSERIES
-                    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                    Strings.Left(DSname, 3) = "dD:" Then
-                        DSname = ds.DsPhysicalSource
-                    Else
-                        If MQstr.Trim = "" Then
-                            DSname = ds.DsPhysicalSource & "@MQS"
-                        Else
-                            DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
-                        End If
-                    End If
-                Case DS_ACCESSMETHOD_VSAM
-                    DSname = ds.DsPhysicalSource
-                Case Else
-                    DSname = ds.DsPhysicalSource
-            End Select
 
-            If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                    DSname = DSname
-                Else
-                    DSname = "'" & DSname & "'"
+            If SynNew = False Then
+                '*******OLD SYNTAX *******
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        DSname = ds.DsPhysicalSource
+                    Case DS_ACCESSMETHOD_IP
+                        DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                        Strings.Left(DSname, 3) = "dD:" Then
+                            DSname = ds.DsPhysicalSource
+                        Else
+                            If MQstr.Trim = "" Then
+                                DSname = ds.DsPhysicalSource & "@MQS"
+                            Else
+                                DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                            End If
+                        End If
+                    Case DS_ACCESSMETHOD_SQDCDC
+                        DSname = "CDC:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                    Case DS_ACCESSMETHOD_VSAM
+                        DSname = ds.DsPhysicalSource
+                    Case Else
+                        DSname = ds.DsPhysicalSource
+                End Select
+
+                If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                        DSname = DSname
+                    Else
+                        DSname = "'" & DSname & "'"
+                    End If
                 End If
+            Else
+                '*********New Syntax ************
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        DSname = "FILE:///" & ds.DsPhysicalSource '& "/" & ds.DatastoreName
+                    Case DS_ACCESSMETHOD_IP
+                        DSname = "TCPIP:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName & ":" & TCPport.Trim
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                        Strings.Left(DSname, 3) = "dD:" Then
+                            DSname = ds.DsPhysicalSource
+                        Else
+                            If MQstr.Trim = "" Then
+                                DSname = ds.DsPhysicalSource & "@MQS"
+                            Else
+                                DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                            End If
+                        End If
+                    Case DS_ACCESSMETHOD_SQDCDC
+                        DSname = "CDC:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                    Case DS_ACCESSMETHOD_VSAM
+                        DSname = ds.DsPhysicalSource
+                    Case Else
+                        DSname = ds.DsPhysicalSource
+                End Select
+
+                If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                        DSname = DSname
+                    Else
+                        DSname = "'" & DSname & "'"
+                    End If
+                End If
+
             End If
 
-
             '/// define formatted strings
-            Dim FORds1 As String = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
-            Dim FORdsForOf As String = String.Format("{0}{1}", " OF ", GetDStype(ds.DatastoreType))
+            Dim FORds1 As String
+            If SynNew = True Then
+                FORds1 = String.Format("{0}", "DATASTORE " & QuoteRes(DSname))
+            Else
+                FORds1 = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
+            End If
+
+            Dim FORdsForOf As String = String.Format("{0,12}{1}{2}", " ", "OF ", GetDStype(ds.DatastoreType))
             Dim FORds2 As String = String.Format("{0,12}{1}{2}", " ", "AS ", QuoteRes(ds.DatastoreName))
             Dim FORds3 As String = String.Format("{0,12}{1}", " ", "DESCRIBED BY")
 
@@ -2491,9 +2525,9 @@ errorgoto:
                 wComment(rc, "")
             End If
 
-            objWriteSQD.Write(FORds1)
-            objWriteINL.Write(FORds1)
-            objWriteTMP.Write(FORds1)
+            objWriteSQD.WriteLine(FORds1)
+            objWriteINL.WriteLine(FORds1)
+            objWriteTMP.WriteLine(FORds1)
             'AddToLineNo(rc)
             objWriteSQD.WriteLine(FORdsForOf)
             objWriteINL.WriteLine(FORdsForOf)
@@ -3259,7 +3293,7 @@ ErrorGoTo:
                     BuildString.Append(", ")
                 End If
             Next
-            BuildString.AppendLine(" FROM ")
+            BuildString.Append(" FROM ")
 
             Dim PSix As String = String.Format("{0}", "/+")
             Dim PSix2 As String = String.Format("{0}", "+/")
@@ -4154,13 +4188,36 @@ ErrorGoTo:
             Dim Prefix As String = "  "
             Dim SrcStr As String = ""
             Dim TgtStr As String = ""
-            Dim FORtgt As String
-            Dim FORsrc As String
-            Dim SrcLen As Integer
-            Dim TgtLen As Integer
-            Dim TotLen As Integer
+            Dim FORtgt As String = ""
+            Dim FORsrc As String = ""
+            Dim SrcLen As Integer = 0
+            Dim TgtLen As Integer = 0
+            Dim TotLen As Integer = 0
             Dim SrcLong As Boolean
             Dim TgtLong As Boolean
+
+            '**** for debugging of Function Mappings
+            If DBGMap = True Then
+                Log("Mapping Source Type = " & map.SourceType.ToString)
+                If map.SourceType = enumMappingType.MAPPING_TYPE_FUN Then
+                    Log("Source = " & CType(map.MappingSource, clsSQFunction).SQFunctionWithInnerText)
+                Else
+                    Log("Source = " & map.MappingSource.ToString)
+                End If
+                Log("Mapping Target Type = " & map.TargetType.ToString)
+                If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+                    Log("Target = " & CType(map.MappingTarget, clsField).FieldName)
+                Else
+                    Log("Target = " & map.MappingTarget.ToString)
+                End If
+                If rc IsNot Nothing Then
+                    Log("rc object is Good")
+                Else
+                    Log("***** No rc object *****")
+                End If
+                Log("Mapping Level = " & map.IsMapped)
+                Log("No Src = " & NoSrc.ToString)
+            End If
 
             Select Case map.TargetType
                 Case enumMappingType.MAPPING_TYPE_CONSTANT
@@ -4182,6 +4239,10 @@ ErrorGoTo:
                             TgtStr = CType(map.MappingTarget, clsField).FieldName
                     End Select
             End Select
+            If DBGMap = True Then
+                Log("TgtStr = " & TgtStr)
+            End If
+
 
             If NoSrc = True Then
                 SrcStr = "*** No Source Present ***"
@@ -4203,6 +4264,9 @@ ErrorGoTo:
                     Case enumMappingType.MAPPING_TYPE_WORKVAR
                         SrcStr = CType(map.MappingSource, clsVariable).VariableName
                 End Select
+            End If
+            If DBGMap = True Then
+                Log("SrcStr = " & SrcStr)
             End If
 
 
@@ -4243,9 +4307,12 @@ ErrorGoTo:
                     End If
                 End If
 
-                If map.MappingDesc.Trim <> "" Then
-                    wComment(rc, map.MappingDesc)
+                If map.MappingDesc IsNot Nothing Then
+                    If map.MappingDesc <> "" Then
+                        wComment(rc, map.MappingDesc)
+                    End If
                 End If
+                
                 If TotLen > 66 Then
                     objWriteSQD.WriteLine(FORtgt)
                     objWriteINL.WriteLine(FORtgt)
@@ -4276,8 +4343,14 @@ ErrorGoTo:
                     FORtgt = String.Format("{0,2}{1}", Prefix, TgtStr)
                 End If
                 FORsrc = String.Format("{0}{1}", " = ", SrcStr)
-                If map.MappingDesc.Trim <> "" Then
-                    wComment(rc, map.MappingDesc)
+
+                If map.MappingDesc IsNot Nothing Then
+                    If DBGMap = True Then
+                        Log("MapDesc = " & map.MappingDesc)
+                    End If
+                    If map.MappingDesc <> "" Then
+                        wComment(rc, map.MappingDesc)
+                    End If
                 End If
                 objWriteSQD.Write(FORtgt)
                 objWriteINL.Write(FORtgt)
@@ -4824,8 +4897,8 @@ ErrorGoTo:
                 retStr = "IBMEVENT"
                 'Case enumDatastore.DS_TRBCDC
                 '    retStr = "TRBCDC"
-            Case enumDatastore.DS_GENERICCDC
-                retStr = "SQDCDC"
+            Case enumDatastore.DS_UTSCDC
+                retStr = "UTSCDC"
             Case enumDatastore.DS_ORACLECDC
                 retStr = "ORACLECDC"
                 'Case enumDatastore.DS_IMSLEBATCH

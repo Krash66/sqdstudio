@@ -104,6 +104,7 @@ Public Class frmTask
         '
         'txtTaskName
         '
+        Me.txtTaskName.ImeMode = System.Windows.Forms.ImeMode.[On]
         Me.txtTaskName.Location = New System.Drawing.Point(104, 88)
         Me.txtTaskName.MaxLength = 20
         Me.txtTaskName.Name = "txtTaskName"

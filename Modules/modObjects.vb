@@ -1054,6 +1054,10 @@ Module modObjects
 
             '/// Initialize new Object properties
             Objthis.StructureName = ObjDML.Schema.Trim & "_" & ObjDML.TableName.Trim
+            '/// truncate Structure names to 20 characters so they will fit in Metadata
+            If Objthis.StructureName.Length > 20 Then
+                Objthis.StructureName = Strings.Left(Objthis.StructureName, 20)
+            End If
             Objthis.StructureType = enumStructure.STRUCT_REL_DML
             Objthis.StructureDescription = ""
             Objthis.Environment = Env

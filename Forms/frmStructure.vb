@@ -1022,7 +1022,10 @@ doAgain:
                     FileNames = Me.GottenFiles
                 Else
                     If FileNames Is Nothing Then
-                        If Not (objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Or objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS) Then
+                        '/// All but COBOL and IMS
+                        If Not (objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Or _
+                                objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS) Then
+                            '/// DML files
                             If objThis.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
                                 If gbDMLConn.Visible = False Then
                                     FileNames = New Collection
@@ -1045,6 +1048,7 @@ doAgain:
                                         Exit Try
                                     End If
                                 End If
+                                '/// All others excluding COBOL IMS
                             Else
                                 If txtFilePath.Text <> "" Then
                                     FileNames = New Collection
@@ -1098,10 +1102,20 @@ doAgain:
                         filepath2 = txtDBDFilePath.Text
                     End If
 
+                    '/// COBOL IMS files
                     If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                        segname = IO.Path.GetFileNameWithoutExtension(filename)
-                        segname = Strings.UCase(segname)
-                        nd = SelectFirstMatchingNode(tvSegments, segname, , , True)
+                        '/// Let user choose Segment in tree in case of COBOL filename different than segment name
+                        If tvSegments.SelectedNode Is Nothing Then
+                            segname = IO.Path.GetFileNameWithoutExtension(filename)
+                            segname = Strings.UCase(segname)
+                            nd = SelectFirstMatchingNode(tvSegments, segname, , , True)
+                        Else
+                            nd = tvSegments.SelectedNode
+                            segname = nd.Text
+                        End If
+                        
+
+
                         If Not nd Is Nothing Then
                             '//no matching segment found for selected Cobol file 
                             '//so this file is skipped
@@ -1109,7 +1123,8 @@ doAgain:
                             obj = objThis.Clone(objThis.Parent)
                             '//We found matching segment for one of the selected 
                             '//cobol file name
-                            saveName = segname
+                            'saveName = segname
+                            saveName = IO.Path.GetFileNameWithoutExtension(filename)
 
 TryAgain1:                  If DoSave(obj, saveName, txtStructDesc.Text, filepath1, filepath2, True) = True Then
                                 nd.BackColor = Color.GreenYellow
@@ -1125,7 +1140,7 @@ TryAgain1:                  If DoSave(obj, saveName, txtStructDesc.Text, filepat
                             End If
                         Else
                             MsgBox("Could not find segment: " & segname & " in file " & _
-                            IO.Path.GetFileName(filepath2), MsgBoxStyle.OkOnly, "Missing Segment")
+                            IO.Path.GetFileName(filepath2) & Chr(13) & "Please add this Description individually, and choose a segment for it.", MsgBoxStyle.OkOnly, "Missing Segment")
                             ErrorLog("Segment: " & segname & " could not be found in " & IO.Path.GetFileName(filepath2))
                         End If
                     Else
@@ -1144,6 +1159,7 @@ TryAgain2:              If DoSave(obj, saveName, txtStructDesc.Text, filepath1, 
                             End If
                         End If
                     End If
+                    tvSegments.SelectedNode = Nothing
 nextFilename:   Next
                 Me.Text = "Description Properties"
                 Me.Close()

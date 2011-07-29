@@ -87,7 +87,7 @@ Module modModeler
                         If ObjStr.StructureType = enumStructure.STRUCT_REL_DML Then
                             idx = ObjStr.fPath1.LastIndexOf(".")
                             Len = ObjStr.fPath1.Length
-                            SchemaName = Strings.Left(ObjStr.fPath1, idx + 1)
+                            SchemaName = Strings.Left(ObjStr.fPath1, idx)
                             TableName = Strings.Right(ObjStr.fPath1, Len - (idx + 1))
                         End If
                     Case NODE_STRUCT_SEL
@@ -98,7 +98,7 @@ Module modModeler
                         If ObjSel.ObjStructure.StructureType = enumStructure.STRUCT_REL_DML Then
                             idx = ObjSel.ObjStructure.fPath1.LastIndexOf(".")
                             Len = ObjSel.ObjStructure.fPath1.Length
-                            SchemaName = Strings.Left(ObjSel.ObjStructure.fPath1, idx + 1)
+                            SchemaName = Strings.Left(ObjSel.ObjStructure.fPath1, idx)
                             TableName = Strings.Right(ObjSel.ObjStructure.fPath1, Len - (idx + 1))
                         End If
                     Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
@@ -328,24 +328,31 @@ nextgoto:   Next
 
         Try
             Dim fldLen As Integer
-            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
+            Dim FORcreate As String
             Dim FORKey As String
             Dim NameFld As String
             Dim fldattr As String
             Dim OutAttr As String
             Dim first As Boolean = True
 
-            objWriteOut.WriteLine(FORcreate)
+            If SchemaName <> "" Then
+                FORcreate = String.Format("{0}{1}{2}{3}", "CREATE TABLE ", "[" & SchemaName & "]", ".", _
+                                          "[" & RDash(TableName) & "]")
+            Else
+                FORcreate = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", "[" & RDash(TableName) & "]")
+            End If
+
+            objWriteOut.Write(FORcreate)
             wBracket(OpenClose.OPEN, True)
 
             For Each fld As clsField In FldArray
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & RDash(fld.FieldName)
+                    NameFld = " " & RDash("[" & fld.FieldName & "] ")
                     first = False
                 Else
-                    NameFld = "," & RDash(fld.FieldName)
+                    NameFld = "," & RDash("[" & fld.FieldName & "] ")
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -353,15 +360,15 @@ nextgoto:   Next
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
                 fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
-                    FORKey = String.Format("{0,4}{1,-36}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                    FORKey = String.Format("{0,4}{1}", " ", NameFld & OutAttr & " NOT NULL")
                 Else
-                    FORKey = String.Format("{0,4}{1,-36}{2,-20}", " ", NameFld, OutAttr)
+                    FORKey = String.Format("{0,4}{1}", " ", NameFld & OutAttr & " NULL")
                 End If
                 objWriteOut.WriteLine(FORKey)
 nextgoto:   Next
 
             wBracket(OpenClose.CLOSE, False)
-            wSemiLine()
+            'wSemiLine()
 
             Return True
 
@@ -792,6 +799,8 @@ nextgoto3:  Next
                 objWriteOut.WriteLine("**** NOTE: Before Use, replace 'xxxxxxxx' with")
                 objWriteOut.WriteLine("****       Schema Name or Qualifier")
                 wBlankLine()
+            Else
+                SchemaName = SchemaName & "."
             End If
             Dim FORDropTrigIns As String = String.Format("{0}{1}", "    DROP TRIGGER " & SchemaName, RDash(TableName) & "_PAD_INS;")
             Dim FORCreateTrigIns As String = String.Format("{0}{1}", "    CREATE TRIGGER " & SchemaName, RDash(TableName) & "_PAD_INS")
@@ -997,7 +1006,7 @@ nextgoto3:  Next
             Select Case OutType
                 Case "DTD"
                     getFileExt = ".dtd"
-                Case "DB2DDL", "ORADDL", "SQLDDL"
+                Case "DB2DDL", "ORADDL"
                     getFileExt = ".ddl"
                 Case "H"
                     getFileExt = ".h"
@@ -1005,7 +1014,7 @@ nextgoto3:  Next
                     getFileExt = ".lod"
                 Case "SQL"
                     getFileExt = ".sql"
-                Case "MSSQL"
+                Case "MSSQL", "SQLDDL"
                     getFileExt = ".sql"
                 Case "DB2"
                     getFileExt = ".TRG"
@@ -1099,24 +1108,27 @@ nextgoto3:  Next
 
                 Case "SQLDDL"
                     Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
-                            GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR", "VARCHAR2"
-                            GetOutFldType = "VARCHAR" & OutLen
-                        Case "NUMERIC"
-                            GetOutFldType = "NUMERIC" & OutLen
-                        Case "DATE", "TIMESTAMP", "TIME"
-                            GetOutFldType = "DATETIME"
-                        Case "INTEGER"
-                            GetOutFldType = "INT"
-                            'Case "BINARY"
-                            '    GetOutFldType = "BINARY" & OutLen
-                        Case "DECIMAL"
-                            GetOutFldType = "DECIMAL" & OutLen
-                        Case "SMALLINT"
-                            GetOutFldType = "SMALLINT" & OutLen
+                        'Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
+                        '    GetOutFldType = "CHAR" & OutLen
+                        'Case "VARCHAR", "VARCHAR2"
+                        '    GetOutFldType = "VARCHAR" & OutLen
+                        'Case "NUMERIC"
+                        '    GetOutFldType = "NUMERIC" & OutLen
+                        'Case "DATE", "TIMESTAMP", "TIME"
+                        '    GetOutFldType = "DATETIME"
+                        'Case "INTEGER"
+                        '    GetOutFldType = "INT"
+                        '    'Case "BINARY"
+                        '    '    GetOutFldType = "BINARY" & OutLen
+                        'Case "DECIMAL"
+                        '    GetOutFldType = "DECIMAL" & OutLen
+                        'Case "SMALLINT"
+                        '    GetOutFldType = "SMALLINT" & OutLen
+
+                        Case "text"
+                            GetOutFldType = "[" & InType & "]"
                         Case Else
-                            GetOutFldType = InType & OutLen
+                            GetOutFldType = "[" & InType & "]" & OutLen
                     End Select
 
                 Case Else
