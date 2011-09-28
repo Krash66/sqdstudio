@@ -8416,6 +8416,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim StrObj As clsStructure
         Dim envobj As clsEnvironment
         Dim Prefix As String = "m"
+        Dim TypeIn As String = ""
 
         Try
             obj = CType(tvExplorer.SelectedNode.Tag, INode)
@@ -8493,6 +8494,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                 Dim folderNode As TreeNode
                 Dim inobj As INode
 
+
                 If tvExplorer.SelectedNode.Nodes.Count > 0 Then
                     folderNode = tvExplorer.SelectedNode
                     inobj = CType(folderNode.Nodes(0).Tag, INode)
@@ -8541,33 +8543,70 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                         strSaveDir = OutType
                 End Select
 
-                For Each StrNode As TreeNode In tvExplorer.SelectedNode.Nodes
-                    StrObj = CType(StrNode.Tag, clsStructure)
-                    NewName = Prefix & StrObj.Text
+                'Put multi-descriptions in one file?
+                Dim diaResult As MsgBoxResult
 
-                    '//////////////////// NEW MODELER /////////////////////
-                    retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
-                    '//////////////////////////////////////////////////////
+                diaResult = MsgBox("Model all as one description file?", MsgBoxStyle.YesNoCancel, "Combine Descriptions?")
 
-                    '//////////////////// OLD MODELER /////////////////////
-                    'retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
-                    'strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
-                    '//////////////////////////////////////////////////////
+                Select Case diaResult
+                    Case MsgBoxResult.Yes
+                        NewName = InputBox("Please Name Your Model", "Model Name", "model1")
 
-                    If retPath = "" Then
-                        MsgBox("There was a problem modeling " & StrObj.Text, MsgBoxStyle.Information, MsgTitle)
-                        Log("Modeling of " & StrObj.StructureName & " was unsuccessful")
-                    Else
-                        success += 1
-                    End If
-                    Total += 1
-                Next
-                If MsgBox("You Successfully created " & success & " models, out of " & Total & " attempted." & Chr(13) & "New Models were written to directory:" & Chr(13) & strSaveDir & Chr(13) & "See the log for a list of Failures" & Chr(13) & "Would you like to go to the directory of your Models?", MsgBoxStyle.OkCancel, "Structure Modelling") = MsgBoxResult.Ok Then
-                    'Shell(strSaveDir)
-                    Process.Start(strSaveDir)
-                End If
+                        Dim StrCol As New Collection
+                        StrCol.Clear()
+                        For Each StrNode As TreeNode In tvExplorer.SelectedNode.Nodes
+                            StrObj = CType(StrNode.Tag, clsStructure)
+                            StrCol.Add(StrObj)
+                            If StrCol.Count = 1 Then
+                                TypeIn = StrObj.Type
+                            End If
+                        Next
+
+                        retPath = ModelStructures(StrCol, OutType, NewName, strSaveDir, TypeIn)
+
+                        If retPath <> "" Then
+                            If MsgBox("Would you like to see your modeled Description?", MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
+                                Process.Start(retPath)
+                                'Shell("notepad.exe " & Quote(retPath, """"), AppWinStyle.NormalFocus)
+                            End If
+                        Else
+                            MsgBox("There was a problem modeling " & Chr(13) & NewName & Chr(13) & "see the log for errors", MsgBoxStyle.Information, MsgTitle)
+                            Log("Modeling of " & NewName & " was unsuccessful")
+                        End If
+
+                    Case MsgBoxResult.No
+                        For Each StrNode As TreeNode In tvExplorer.SelectedNode.Nodes
+                            StrObj = CType(StrNode.Tag, clsStructure)
+                            NewName = Prefix & StrObj.Text
+
+                            '//////////////////// NEW MODELER /////////////////////
+                            retPath = ModelStructure(StrObj, OutType, NewName, strSaveDir)
+                            '//////////////////////////////////////////////////////
+
+                            '//////////////////// OLD MODELER /////////////////////
+                            'retPath = ModelScript(StrObj.Project.MetaConnectionString, StrObj.Key, NewName, InType, OutType, _
+                            'strSaveDir, StrObj.Text, StrObj.Project.TablePrefix)
+                            '//////////////////////////////////////////////////////
+
+                            If retPath = "" Then
+                                MsgBox("There was a problem modeling " & StrObj.Text, MsgBoxStyle.Information, MsgTitle)
+                                Log("Modeling of " & StrObj.StructureName & " was unsuccessful")
+                            Else
+                                success += 1
+                            End If
+                            Total += 1
+                        Next
+                        If MsgBox("You Successfully created " & success & " models, out of " & Total & " attempted." & Chr(13) & "New Models were written to directory:" & Chr(13) & strSaveDir & Chr(13) & "See the log for a list of Failures" & Chr(13) & "Would you like to go to the directory of your Models?", MsgBoxStyle.OkCancel, "Structure Modelling") = MsgBoxResult.Ok Then
+                            'Shell(strSaveDir)
+                            Process.Start(strSaveDir)
+                        End If
+
+                    Case MsgBoxResult.Cancel
+                        Exit Try
+
+                End Select
             End If
-
+           
         Catch ex As Exception
             LogError(ex, "frmMain DoModelAction")
         End Try

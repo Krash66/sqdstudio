@@ -83,12 +83,14 @@ Public Class ctlInclude
         Try
             Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
-            If ValidateNewName(txtName.Text) = False Then
-                Me.Cursor = Cursors.Default
-                Exit Function
-            End If
+            
             Select Case objThis.Type
                 Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE
+                    If ValidateNewName128(txtName.Text) = False Then
+                        Me.Cursor = Cursors.Default
+                        Save = False
+                        Exit Function
+                    End If
                     If CType(objThis, clsDatastore).DatastoreName <> txtName.Text Then
                         objThis.IsRenamed = RenameDatastore(objThis, txtName.Text)
                     End If
@@ -102,6 +104,11 @@ Public Class ctlInclude
                     CType(objThis, clsDatastore).DatastoreName = Me.txtName.Text
 
                 Case NODE_PROC
+                    If ValidateNewName(txtName.Text) = False Then
+                        Me.Cursor = Cursors.Default
+                        Save = False
+                        Exit Function
+                    End If
                     If CType(objThis, clsTask).TaskName <> txtName.Text Then
                         objThis.IsRenamed = RenameTask(objThis, txtName.Text)
                     End If

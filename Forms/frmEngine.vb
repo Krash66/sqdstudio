@@ -5,6 +5,8 @@ Public Class frmEngine
     Friend WithEvents cbForceCommit As System.Windows.Forms.CheckBox
     Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents gbLib As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
 
     Dim IsNewObj As Boolean
 
@@ -80,7 +82,10 @@ Public Class frmEngine
         Me.cbForceCommit = New System.Windows.Forms.CheckBox
         Me.txtDBDLib = New System.Windows.Forms.TextBox
         Me.Label13 = New System.Windows.Forms.Label
+        Me.gbLib = New System.Windows.Forms.GroupBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
         Me.Panel1.SuspendLayout()
+        Me.gbLib.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -89,28 +94,28 @@ Public Class frmEngine
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 419)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 475)
         Me.GroupBox1.Size = New System.Drawing.Size(591, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(307, 442)
+        Me.cmdOk.Location = New System.Drawing.Point(307, 498)
         Me.cmdOk.TabIndex = 10
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(403, 442)
+        Me.cmdCancel.Location = New System.Drawing.Point(403, 498)
         Me.cmdCancel.TabIndex = 11
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(499, 442)
+        Me.cmdHelp.Location = New System.Drawing.Point(499, 498)
         Me.cmdHelp.TabIndex = 12
         '
         'Label1
@@ -125,7 +130,7 @@ Public Class frmEngine
         '
         'txtEngineDesc
         '
-        Me.txtEngineDesc.Location = New System.Drawing.Point(120, 205)
+        Me.txtEngineDesc.Location = New System.Drawing.Point(120, 152)
         Me.txtEngineDesc.MaxLength = 1000
         Me.txtEngineDesc.Multiline = True
         Me.txtEngineDesc.Name = "txtEngineDesc"
@@ -136,7 +141,7 @@ Public Class frmEngine
         'Label8
         '
         Me.Label8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(24, 205)
+        Me.Label8.Location = New System.Drawing.Point(12, 155)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(96, 17)
         Me.Label8.TabIndex = 38
@@ -144,7 +149,7 @@ Public Class frmEngine
         '
         'txtReportFile
         '
-        Me.txtReportFile.Location = New System.Drawing.Point(120, 164)
+        Me.txtReportFile.Location = New System.Drawing.Point(120, 126)
         Me.txtReportFile.MaxLength = 255
         Me.txtReportFile.Name = "txtReportFile"
         Me.txtReportFile.Size = New System.Drawing.Size(447, 20)
@@ -153,7 +158,7 @@ Public Class frmEngine
         'Label5
         '
         Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(24, 167)
+        Me.Label5.Location = New System.Drawing.Point(12, 129)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(96, 17)
         Me.Label5.TabIndex = 34
@@ -161,7 +166,7 @@ Public Class frmEngine
         '
         'txtCommitEvery
         '
-        Me.txtCommitEvery.Location = New System.Drawing.Point(393, 125)
+        Me.txtCommitEvery.Location = New System.Drawing.Point(380, 100)
         Me.txtCommitEvery.MaxLength = 255
         Me.txtCommitEvery.Name = "txtCommitEvery"
         Me.txtCommitEvery.Size = New System.Drawing.Size(64, 20)
@@ -170,7 +175,7 @@ Public Class frmEngine
         'Label6
         '
         Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(299, 128)
+        Me.Label6.Location = New System.Drawing.Point(286, 103)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(88, 20)
         Me.Label6.TabIndex = 32
@@ -178,7 +183,7 @@ Public Class frmEngine
         '
         'txtReportEvery
         '
-        Me.txtReportEvery.Location = New System.Drawing.Point(120, 125)
+        Me.txtReportEvery.Location = New System.Drawing.Point(120, 100)
         Me.txtReportEvery.MaxLength = 255
         Me.txtReportEvery.Name = "txtReportEvery"
         Me.txtReportEvery.Size = New System.Drawing.Size(66, 20)
@@ -187,7 +192,7 @@ Public Class frmEngine
         'Label4
         '
         Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(24, 128)
+        Me.Label4.Location = New System.Drawing.Point(12, 103)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(96, 20)
         Me.Label4.TabIndex = 30
@@ -195,7 +200,7 @@ Public Class frmEngine
         '
         'txtEngineName
         '
-        Me.txtEngineName.Location = New System.Drawing.Point(120, 85)
+        Me.txtEngineName.Location = New System.Drawing.Point(120, 74)
         Me.txtEngineName.MaxLength = 255
         Me.txtEngineName.Name = "txtEngineName"
         Me.txtEngineName.Size = New System.Drawing.Size(176, 20)
@@ -204,7 +209,7 @@ Public Class frmEngine
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(24, 88)
+        Me.Label3.Location = New System.Drawing.Point(12, 77)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(96, 20)
         Me.Label3.TabIndex = 28
@@ -212,7 +217,8 @@ Public Class frmEngine
         '
         'txtDDLLib
         '
-        Me.txtDDLLib.Location = New System.Drawing.Point(120, 368)
+        Me.txtDDLLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDDLLib.Location = New System.Drawing.Point(105, 123)
         Me.txtDDLLib.MaxLength = 255
         Me.txtDDLLib.Name = "txtDDLLib"
         Me.txtDDLLib.Size = New System.Drawing.Size(447, 20)
@@ -221,7 +227,7 @@ Public Class frmEngine
         'Label9
         '
         Me.Label9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(24, 368)
+        Me.Label9.Location = New System.Drawing.Point(9, 126)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(96, 17)
         Me.Label9.TabIndex = 79
@@ -229,7 +235,8 @@ Public Class frmEngine
         '
         'txtDTDLib
         '
-        Me.txtDTDLib.Location = New System.Drawing.Point(120, 342)
+        Me.txtDTDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDTDLib.Location = New System.Drawing.Point(105, 97)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
         Me.txtDTDLib.Size = New System.Drawing.Size(447, 20)
@@ -238,7 +245,7 @@ Public Class frmEngine
         'Label10
         '
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(24, 345)
+        Me.Label10.Location = New System.Drawing.Point(9, 100)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(96, 17)
         Me.Label10.TabIndex = 77
@@ -246,7 +253,8 @@ Public Class frmEngine
         '
         'txtIncludeLib
         '
-        Me.txtIncludeLib.Location = New System.Drawing.Point(120, 316)
+        Me.txtIncludeLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtIncludeLib.Location = New System.Drawing.Point(105, 71)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
         Me.txtIncludeLib.Size = New System.Drawing.Size(447, 20)
@@ -255,7 +263,7 @@ Public Class frmEngine
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(24, 319)
+        Me.Label7.Location = New System.Drawing.Point(9, 74)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(96, 17)
         Me.Label7.TabIndex = 75
@@ -263,7 +271,8 @@ Public Class frmEngine
         '
         'txtCopybookLib
         '
-        Me.txtCopybookLib.Location = New System.Drawing.Point(120, 290)
+        Me.txtCopybookLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCopybookLib.Location = New System.Drawing.Point(105, 45)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
         Me.txtCopybookLib.Size = New System.Drawing.Size(447, 20)
@@ -272,7 +281,7 @@ Public Class frmEngine
         'Label11
         '
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(24, 293)
+        Me.Label11.Location = New System.Drawing.Point(9, 48)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(96, 17)
         Me.Label11.TabIndex = 73
@@ -282,7 +291,7 @@ Public Class frmEngine
         '
         Me.cbConn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbConn.FormattingEnabled = True
-        Me.cbConn.Location = New System.Drawing.Point(409, 84)
+        Me.cbConn.Location = New System.Drawing.Point(409, 74)
         Me.cbConn.Name = "cbConn"
         Me.cbConn.Size = New System.Drawing.Size(158, 21)
         Me.cbConn.TabIndex = 80
@@ -291,7 +300,7 @@ Public Class frmEngine
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(315, 88)
+        Me.Label12.Location = New System.Drawing.Point(316, 77)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(71, 13)
         Me.Label12.TabIndex = 81
@@ -302,7 +311,7 @@ Public Class frmEngine
         Me.cbForceCommit.AutoSize = True
         Me.cbForceCommit.CheckAlign = System.Drawing.ContentAlignment.BottomRight
         Me.cbForceCommit.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbForceCommit.Location = New System.Drawing.Point(465, 127)
+        Me.cbForceCommit.Location = New System.Drawing.Point(465, 102)
         Me.cbForceCommit.Name = "cbForceCommit"
         Me.cbForceCommit.Size = New System.Drawing.Size(102, 17)
         Me.cbForceCommit.TabIndex = 82
@@ -311,7 +320,8 @@ Public Class frmEngine
         '
         'txtDBDLib
         '
-        Me.txtDBDLib.Location = New System.Drawing.Point(120, 264)
+        Me.txtDBDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDBDLib.Location = New System.Drawing.Point(105, 19)
         Me.txtDBDLib.MaxLength = 255
         Me.txtDBDLib.Name = "txtDBDLib"
         Me.txtDBDLib.Size = New System.Drawing.Size(447, 20)
@@ -320,29 +330,52 @@ Public Class frmEngine
         'Label13
         '
         Me.Label13.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(24, 267)
+        Me.Label13.Location = New System.Drawing.Point(9, 22)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(96, 17)
         Me.Label13.TabIndex = 84
         Me.Label13.Text = "DBD Lib"
         '
+        'gbLib
+        '
+        Me.gbLib.Controls.Add(Me.txtDBDLib)
+        Me.gbLib.Controls.Add(Me.Label13)
+        Me.gbLib.Controls.Add(Me.txtCopybookLib)
+        Me.gbLib.Controls.Add(Me.Label11)
+        Me.gbLib.Controls.Add(Me.Label9)
+        Me.gbLib.Controls.Add(Me.txtDDLLib)
+        Me.gbLib.Controls.Add(Me.txtIncludeLib)
+        Me.gbLib.Controls.Add(Me.Label7)
+        Me.gbLib.Controls.Add(Me.Label10)
+        Me.gbLib.Controls.Add(Me.txtDTDLib)
+        Me.gbLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbLib.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbLib.Location = New System.Drawing.Point(15, 209)
+        Me.gbLib.Name = "gbLib"
+        Me.gbLib.Size = New System.Drawing.Size(562, 153)
+        Me.gbLib.TabIndex = 85
+        Me.gbLib.TabStop = False
+        Me.gbLib.Text = "Target System Libraries"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Location = New System.Drawing.Point(15, 368)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(562, 100)
+        Me.GroupBox2.TabIndex = 86
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "GroupBox2"
+        Me.GroupBox2.Visible = False
+        '
         'frmEngine
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(589, 481)
-        Me.Controls.Add(Me.Label13)
-        Me.Controls.Add(Me.txtDBDLib)
+        Me.ClientSize = New System.Drawing.Size(589, 537)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.gbLib)
         Me.Controls.Add(Me.cbForceCommit)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.cbConn)
-        Me.Controls.Add(Me.txtDDLLib)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.txtDTDLib)
-        Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.txtIncludeLib)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.txtCopybookLib)
-        Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtEngineDesc)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.txtReportFile)
@@ -371,20 +404,14 @@ Public Class frmEngine
         Me.Controls.SetChildIndex(Me.txtReportFile, 0)
         Me.Controls.SetChildIndex(Me.Label8, 0)
         Me.Controls.SetChildIndex(Me.txtEngineDesc, 0)
-        Me.Controls.SetChildIndex(Me.Label11, 0)
-        Me.Controls.SetChildIndex(Me.txtCopybookLib, 0)
-        Me.Controls.SetChildIndex(Me.Label7, 0)
-        Me.Controls.SetChildIndex(Me.txtIncludeLib, 0)
-        Me.Controls.SetChildIndex(Me.Label10, 0)
-        Me.Controls.SetChildIndex(Me.txtDTDLib, 0)
-        Me.Controls.SetChildIndex(Me.Label9, 0)
-        Me.Controls.SetChildIndex(Me.txtDDLLib, 0)
         Me.Controls.SetChildIndex(Me.cbConn, 0)
         Me.Controls.SetChildIndex(Me.Label12, 0)
         Me.Controls.SetChildIndex(Me.cbForceCommit, 0)
-        Me.Controls.SetChildIndex(Me.txtDBDLib, 0)
-        Me.Controls.SetChildIndex(Me.Label13, 0)
+        Me.Controls.SetChildIndex(Me.gbLib, 0)
+        Me.Controls.SetChildIndex(Me.GroupBox2, 0)
         Me.Panel1.ResumeLayout(False)
+        Me.gbLib.ResumeLayout(False)
+        Me.gbLib.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

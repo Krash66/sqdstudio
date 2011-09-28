@@ -412,7 +412,7 @@ doAgain:
     Public Overrides Sub cmdOk_Click(ByVal sender As Object, ByVal e As System.EventArgs)
 
         Try
-            If objThis.ValidateNewObject(txtSelectionName.Text) = False Or ValidateNewName(txtSelectionName.Text) = False Then
+            If objThis.ValidateNewObject(txtSelectionName.Text) = False Or ValidateNewName128(txtSelectionName.Text) = False Then
                 DialogResult = Windows.Forms.DialogResult.Retry
                 Exit Sub
             End If

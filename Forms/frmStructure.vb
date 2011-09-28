@@ -1274,7 +1274,7 @@ nextFilename:   Next
                 OpenMultiFileDialog1.FileName = ""
                 extString = ".h"
             Case modDeclares.enumStructure.STRUCT_REL_DDL
-                strFilter = "Relational DDL files (*.ddl)|*.ddl|All files (*.*)|*.*"
+                strFilter = "Relational DDL files (*.ddl)|*.ddl|SQLserver SQL files (*.sql)|*.sql|All files (*.*)|*.*"
                 If objEnv.LocalDDLDir <> "" Then
                     OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDDLDir
                 Else
@@ -1616,7 +1616,7 @@ nextFilename:   Next
                     DialogResult = Windows.Forms.DialogResult.OK
                 End If
             Else
-                If ValidateSelection(fPath1, Skip_Name_Validation) = False Or objThis.ValidateNewObject(strStrctureName) = False Or ValidateNewName(strStrctureName) = False Then
+                If ValidateSelection(fPath1, Skip_Name_Validation) = False Or objThis.ValidateNewObject(strStrctureName) = False Or ValidateNewName128(strStrctureName) = False Then
                     DialogResult = Windows.Forms.DialogResult.Retry
                     Return False
                     Exit Function

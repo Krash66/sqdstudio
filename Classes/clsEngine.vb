@@ -32,6 +32,10 @@ Public Class clsEngine
     Public IncludeLib As String = ""
     Public DTDLib As String = ""
     Public DDLLib As String = ""
+    '/// for windows Systems
+    Public EXEdir As String = ""
+    Public BATdir As String = ""
+    Public CDCdir As String = ""
 
 
     '/// File writing for Non-Metadata Property values
@@ -118,6 +122,9 @@ Public Class clsEngine
             obj.IsModified = Me.IsModified
             obj.Parent = NewParent 'Me.Parent
             obj.Connection = Me.Connection
+            obj.EXEdir = Me.EXEdir
+            obj.BATdir = Me.BATdir
+            obj.CDCdir = Me.CDCdir
 
             If Cascade = True Then
                 Dim NewSrc As clsDatastore
@@ -589,6 +596,12 @@ Public Class clsEngine
                         Me.Main = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "ENGVER"
                         Me.EngVersion = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "EXEDIR"
+                        Me.EXEdir = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "BATDIR"
+                        Me.BATdir = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "CDCDIR"
+                        Me.CDCdir = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                 End Select
             Next
 
@@ -883,6 +896,15 @@ Public Class clsEngine
                     Case 12
                         Attrib = "DBDLIB"
                         Value = Me.DBDLib
+                    Case 13
+                        Attrib = "EXEDIR"
+                        Value = Me.EXEdir
+                    Case 14
+                        Attrib = "BATDIR"
+                        Value = Me.BATdir
+                    Case 15
+                        Attrib = "CDCDIR"
+                        Value = Me.CDCdir
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblEnginesATTR & _

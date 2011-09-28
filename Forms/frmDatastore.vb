@@ -1149,7 +1149,7 @@ Public Class frmDatastore
                 DialogResult = Windows.Forms.DialogResult.OK
             End If
 
-            If objThis.ValidateNewObject(txtDatastoreName.Text) = False Or ValidateNewName(txtDatastoreName.Text) = False Then
+            If objThis.ValidateNewObject(txtDatastoreName.Text) = False Or ValidateNewName128(txtDatastoreName.Text) = False Then
                 DialogResult = Windows.Forms.DialogResult.Retry
                 Exit Sub
             End If

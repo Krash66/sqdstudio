@@ -336,7 +336,7 @@ Module modRename
 
         'PrevObjTreeNode = struct.ObjTreeNode
 
-        If ValidateNewName(NewName) = False Then
+        If ValidateNewName128(NewName) = False Then
             RenameStructure = False
             Exit Function
         End If
@@ -402,7 +402,7 @@ Module modRename
 
         'PrevObjTreeNode = StrSel.ObjTreeNode
 
-        If ValidateNewName(NewName) = False Then
+        If ValidateNewName128(NewName) = False Then
             RenameStructureSelection = False
             Exit Function
         End If
@@ -519,7 +519,7 @@ Module modRename
 
         'PrevObjTreeNode = DS.ObjTreeNode
 
-        If ValidateNewName(NewName) = False Then
+        If ValidateNewName128(NewName) = False Then
             RenameDatastore = False
             Exit Function
         End If
@@ -2631,9 +2631,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
         Try
             NewName = NewName.Trim
-            If loopRange > 20 Then
+            If loopRange > 50 Then
                 ValidateNewName = False
-                MsgBox("Name cannot be more than 20 characters," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
+                MsgBox("Name cannot be more than 50 characters," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
                 Exit Function
             End If
 
@@ -2682,6 +2682,58 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
+    Function ValidateNewName128(ByVal NewName As String) As Boolean
+
+        Dim Letter As Char  '// character of new name presently being analized
+        Dim i As Integer   '// loop counter
+        Dim loopRange As Integer = Len(NewName.Trim)  '// length of new name
+        Dim asciiInt As Integer     '// the ascii code for the character being analized
+        Dim FirstLetterFlag As Boolean = True  '// determines if the character is the first letter in the new name
+
+        Try
+            NewName = NewName.Trim
+            If loopRange > 128 Then
+                ValidateNewName128 = False
+                MsgBox("Name cannot be more than 128 characters," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
+                Exit Function
+            End If
+
+            If NewName = "" Then
+                ValidateNewName128 = False
+                MsgBox("Name cannot be left blank," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
+                Exit Function
+            End If
+
+            
+            'loopRange = Len(NewName)
+            For i = 1 To loopRange
+                Letter = Left(NewName, 1)
+                asciiInt = Asc(Letter)
+                If FirstLetterFlag = True Then
+                    If Not ((asciiInt >= 97 And asciiInt <= 122) Or (asciiInt >= 64 And asciiInt <= 90) Or (asciiInt = 38)) Then
+                        ValidateNewName128 = False
+                        MsgBox("Name must start with an alphabetic character, &, or @." & Chr(13) & "New name will not be saved", MsgBoxStyle.Information, "Invalid Name")
+                        Exit Function
+                    End If
+                Else
+                    If Not ((asciiInt >= 97 And asciiInt <= 122) Or (asciiInt >= 64 And asciiInt <= 90) Or (asciiInt >= 48 And asciiInt <= 57) Or (asciiInt = 38) Or (asciiInt = 35) Or (asciiInt = 45) Or (asciiInt = 95)) Then
+                        ValidateNewName128 = False
+                        MsgBox("Name must only consist of alpha-numeric characters, &, @, -, _, or #." & Chr(13) & "New Name will not be saved", MsgBoxStyle.Information, "Invalid Name")
+                        Exit Function
+                    End If
+                End If
+                NewName = Right(NewName, Len(NewName) - 1)
+                FirstLetterFlag = False
+            Next
+
+            ValidateNewName128 = True
+
+        Catch ex As Exception
+            LogError(ex, "modRename ValidateNewName128")
+            Return False
+        End Try
+
+    End Function
     'done
     '/// updates 'Foreign Key' field in DSSELFIELDS Table
     Function EditFkey(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean

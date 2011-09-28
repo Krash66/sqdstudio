@@ -2432,9 +2432,16 @@ errorgoto:
             Dim commaORspace As String = " "
             Dim selName As String = ""
             Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
-            Dim TCPport As String = ds.DsPort
+            Dim TCPport As String = ds.DsPort.Trim
+            If TCPport = "" Then
+                TCPport = ObjSys.Port.Trim
+            End If
             Dim DSname As String = ds.DsPhysicalSource
             Dim i As Integer
+            Dim AccessHost As String = ObjSys.Host.Trim
+            If AccessHost = "" Then
+                AccessHost = "localhost"
+            End If
 
 
             If SynNew = False Then
@@ -2477,22 +2484,22 @@ errorgoto:
                     Case DS_ACCESSMETHOD_FILE
                         DSname = "FILE:///" & ds.DsPhysicalSource '& "/" & ds.DatastoreName
                     Case DS_ACCESSMETHOD_IP
-                        DSname = "TCPIP:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName & ":" & TCPport.Trim
+                        DSname = "TCPIP://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_MQSERIES
                         If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
                         Strings.Left(DSname, 3) = "dD:" Then
                             DSname = ds.DsPhysicalSource
                         Else
                             If MQstr.Trim = "" Then
-                                DSname = ds.DsPhysicalSource & "@MQS"
+                                DSname = "MQS://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
                             Else
-                                DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                                DSname = "MQS://" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        DSname = "CDC:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        DSname = "CDC://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
-                        DSname = ds.DsPhysicalSource
+                        DSname = "VSAM://" & AccessHost & "/" & ds.DsPhysicalSource
                     Case Else
                         DSname = ds.DsPhysicalSource
                 End Select
@@ -2511,7 +2518,7 @@ errorgoto:
             '/// define formatted strings
             Dim FORds1 As String
             If SynNew = True Then
-                FORds1 = String.Format("{0}", "DATASTORE " & QuoteRes(DSname))
+                FORds1 = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
             Else
                 FORds1 = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
             End If

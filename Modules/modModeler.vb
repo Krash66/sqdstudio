@@ -161,6 +161,91 @@ ErrorGoTo:      '/// on errors
 
     End Function
 
+    Function ModelStructures(ByVal Col As Collection, ByVal TypeToModl As String, ByVal ModName As String, ByVal ModPath As String, ByVal typeIn As String) As String
+
+        Try
+            Log("********* Modeler Start *********")
+            '/// set module-wide variables
+            InType = typeIn
+            NameModl = ModName
+            OutType = TypeToModl
+            FileExt = getFileExt()
+            OutPath = ModPath
+            SchemaName = ""
+
+            '/// create new, complete model path
+            If Strings.Right(OutPath, 1) <> "\" Then
+                FullPathModl = OutPath & "\" & NameModl & FileExt
+            Else
+                FullPathModl = OutPath & NameModl & FileExt
+            End If
+
+            '/// create new model file
+            success = CreateFile()
+
+            For Each ObjStr In Col
+                TableName = ObjStr.StructureName
+                ObjStr.LoadMe()
+                ObjStr.LoadItems()
+                If ObjStr.StructureType = enumStructure.STRUCT_REL_DML Then
+                    idx = ObjStr.fPath1.LastIndexOf(".")
+                    Len = ObjStr.fPath1.Length
+                    SchemaName = Strings.Left(ObjStr.fPath1, idx)
+                    TableName = Strings.Right(ObjStr.fPath1, Len - (idx + 1))
+                End If
+                If success Then
+                    success = PopulateFldArrayFromObject()
+                End If
+                If success Then
+                    Select Case OutType
+                        Case "DB2DDL"
+                            success = objModelDB2DDL()
+                        Case "ORADDL"
+                            success = objModelORADDL()
+                        Case "SQLDDL"
+                            success = objModelSQLDDL()
+                        Case "H"
+                            success = objModelC()
+                        Case "DTD"
+                            success = objModelDTD()
+                        Case "LOD"
+                            success = objModelLOD()
+                        Case "SQL"
+                            success = objModelSQL()
+                        Case "MSSQL"
+                            success = objModelMSSQL()
+                        Case "DB2"
+                            success = objModelDB2Trig()
+                        Case Else
+                            success = False
+                            GoTo NextStr
+                    End Select
+                End If
+                wBlankLine()
+                wBlankLine()
+NextStr:
+            Next
+
+
+            If success Then
+                Return FullPathModl
+                Log("********* Modeler Finish *********")
+            Else
+ErrorGoTo2:     '/// on errors
+                Return ""
+                Log("********* Modeler Finish with Errors *********")
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "modModeler ModelStructures")
+            Return ""
+        Finally
+            objWriteOut.Close()
+            fsOut.Close()
+        End Try
+
+    End Function
+
 #End Region
 
 #Region "Create Output Files"
@@ -470,7 +555,7 @@ nextgoto:   Next
             For Each fld As clsField In FldArray
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto1
-                
+
                 NameFld = fld.FieldName
                 fldLen = "(" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ");"
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -642,6 +727,7 @@ nextgoto1:  Next
             Dim FORCreateTrig As String = String.Format("{0}{1}", "CREATE TRIGGER sqdaudit_I_", RDash(TableName))
             Dim FORAfter As String = String.Format("{0}{1}", "ON ", RDash(TableName))
             Dim NameFld As String
+            Dim firstFld As String = ""
             Dim first As Boolean = True
             Dim ArrayNoGroupItemCnt As Integer = 0
 
@@ -682,9 +768,9 @@ nextgoto:   Next
 
             objWriteOut.WriteLine(" AS CDC_AFTER_DATA")
             objWriteOut.WriteLine(",'' AS CDC_BEFORE_DATA")
-            objWriteOut.WriteLine(");")
+            'objWriteOut.WriteLine(");")
             objWriteOut.WriteLine("FROM inserted")
-            objWriteOut.WriteLine(";")
+            'objWriteOut.WriteLine(";")
             objWriteOut.WriteLine("END")
             objWriteOut.WriteLine("go")
             objWriteOut.WriteLine("--------------------")
@@ -708,6 +794,7 @@ nextgoto:   Next
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto1
                 If first = True Then
                     NameFld = "    ,inserted." & RDash(fld.FieldName)
+                    firstFld = fld.FieldName
                     first = False
                 Else
                     NameFld = "+','+inserted." & RDash(fld.FieldName)
@@ -732,10 +819,10 @@ nextgoto2:  Next
             first = True
 
             objWriteOut.WriteLine(" AS CDC_BEFORE_DATA")
-            wBracket(OpenClose.CLOSE, False)
-            wSemiLine()
+            'wBracket(OpenClose.CLOSE, False)
+            'wSemiLine()
             objWriteOut.WriteLine("FROM inserted")
-            objWriteOut.WriteLine("INNER JOIN deleted on")
+            objWriteOut.WriteLine("INNER JOIN deleted on deleted." & firstFld & "= inserted." & firstFld)
             wSemiLine()
             objWriteOut.WriteLine("END")
             objWriteOut.WriteLine("go")
@@ -770,8 +857,8 @@ nextgoto3:  Next
             first = True
 
             objWriteOut.WriteLine(" AS CDC_BEFORE_DATA")
-            wBracket(OpenClose.CLOSE, False)
-            wSemiLine()
+            'wBracket(OpenClose.CLOSE, False)
+            'wSemiLine()
             objWriteOut.WriteLine("FROM deleted")
             wSemiLine()
             objWriteOut.WriteLine("END")

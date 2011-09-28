@@ -863,7 +863,7 @@ Public Class ctlStructureSelection
         Try
             Me.Cursor = Cursors.WaitCursor
             '// First Check Validity before Saving
-            If ValidateNewName(txtSelectionName.Text) = False Then
+            If ValidateNewName128(txtSelectionName.Text) = False Then
                 Save = False
                 Me.Cursor = Cursors.Default
                 Exit Function

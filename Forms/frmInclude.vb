@@ -101,10 +101,18 @@ doAgain:
     Private Sub cmdOk_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOk.Click
 
         Try
-            If objThis.ValidateNewObject(txtName.Text) = False Or ValidateNewName(txtName.Text) = False Then
-                DialogResult = Windows.Forms.DialogResult.Retry
-                Exit Sub
+            If type = NODE_PROC Then
+                If objThis.ValidateNewObject(txtName.Text) = False Or ValidateNewName(txtName.Text) = False Then
+                    DialogResult = Windows.Forms.DialogResult.Retry
+                    Exit Sub
+                End If
+            Else
+                If objThis.ValidateNewObject(txtName.Text) = False Or ValidateNewName128(txtName.Text) = False Then
+                    DialogResult = Windows.Forms.DialogResult.Retry
+                    Exit Sub
+                End If
             End If
+            
 
             Select Case type
                 Case NODE_SOURCEDATASTORE

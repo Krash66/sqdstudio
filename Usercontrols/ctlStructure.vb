@@ -1525,7 +1525,7 @@ Public Class ctlStructure
                 Exit Function
             End If
             '// First Check Validity before Saving
-            If ValidateNewName(txtStructName.Text) = False Then
+            If ValidateNewName128(txtStructName.Text) = False Then
                 Exit Function
             End If
             If objThis.StructureName <> txtStructName.Text Then
