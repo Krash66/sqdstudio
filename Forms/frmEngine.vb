@@ -2,13 +2,8 @@ Public Class frmEngine
     Inherits SQDStudio.frmBlank
 
     Public objThis As New clsEngine
-    Friend WithEvents cbForceCommit As System.Windows.Forms.CheckBox
-    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
-    Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents gbLib As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
-
     Dim IsNewObj As Boolean
+    Dim DefaultDir As String
 
 #Region " Windows Form Designer generated code "
 
@@ -58,6 +53,21 @@ Public Class frmEngine
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents cbConn As System.Windows.Forms.ComboBox
     Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents cbForceCommit As System.Windows.Forms.CheckBox
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents gbLib As System.Windows.Forms.GroupBox
+    Friend WithEvents gbWin As System.Windows.Forms.GroupBox
+    Friend WithEvents txtBAT As System.Windows.Forms.TextBox
+    Friend WithEvents txtEXE As System.Windows.Forms.TextBox
+    Friend WithEvents txtCDC As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents btnBAT As System.Windows.Forms.Button
+    Friend WithEvents btnEXE As System.Windows.Forms.Button
+    Friend WithEvents btnCDC As System.Windows.Forms.Button
+    Friend WithEvents fbdWIN As System.Windows.Forms.FolderBrowserDialog
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.txtEngineDesc = New System.Windows.Forms.TextBox
         Me.Label8 = New System.Windows.Forms.Label
@@ -83,9 +93,20 @@ Public Class frmEngine
         Me.txtDBDLib = New System.Windows.Forms.TextBox
         Me.Label13 = New System.Windows.Forms.Label
         Me.gbLib = New System.Windows.Forms.GroupBox
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.gbWin = New System.Windows.Forms.GroupBox
+        Me.btnBAT = New System.Windows.Forms.Button
+        Me.btnEXE = New System.Windows.Forms.Button
+        Me.btnCDC = New System.Windows.Forms.Button
+        Me.txtBAT = New System.Windows.Forms.TextBox
+        Me.txtEXE = New System.Windows.Forms.TextBox
+        Me.txtCDC = New System.Windows.Forms.TextBox
+        Me.Label16 = New System.Windows.Forms.Label
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.fbdWIN = New System.Windows.Forms.FolderBrowserDialog
         Me.Panel1.SuspendLayout()
         Me.gbLib.SuspendLayout()
+        Me.gbWin.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -357,21 +378,106 @@ Public Class frmEngine
         Me.gbLib.TabStop = False
         Me.gbLib.Text = "Target System Libraries"
         '
-        'GroupBox2
+        'gbWin
         '
-        Me.GroupBox2.Location = New System.Drawing.Point(15, 368)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(562, 100)
-        Me.GroupBox2.TabIndex = 86
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "GroupBox2"
-        Me.GroupBox2.Visible = False
+        Me.gbWin.Controls.Add(Me.btnBAT)
+        Me.gbWin.Controls.Add(Me.btnEXE)
+        Me.gbWin.Controls.Add(Me.btnCDC)
+        Me.gbWin.Controls.Add(Me.txtBAT)
+        Me.gbWin.Controls.Add(Me.txtEXE)
+        Me.gbWin.Controls.Add(Me.txtCDC)
+        Me.gbWin.Controls.Add(Me.Label16)
+        Me.gbWin.Controls.Add(Me.Label15)
+        Me.gbWin.Controls.Add(Me.Label14)
+        Me.gbWin.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbWin.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbWin.Location = New System.Drawing.Point(15, 368)
+        Me.gbWin.Name = "gbWin"
+        Me.gbWin.Size = New System.Drawing.Size(562, 100)
+        Me.gbWin.TabIndex = 86
+        Me.gbWin.TabStop = False
+        Me.gbWin.Text = "Windows System SQData Paths"
+        '
+        'btnBAT
+        '
+        Me.btnBAT.Location = New System.Drawing.Point(524, 69)
+        Me.btnBAT.Name = "btnBAT"
+        Me.btnBAT.Size = New System.Drawing.Size(27, 23)
+        Me.btnBAT.TabIndex = 8
+        Me.btnBAT.Text = "..."
+        Me.btnBAT.UseVisualStyleBackColor = True
+        '
+        'btnEXE
+        '
+        Me.btnEXE.Location = New System.Drawing.Point(524, 42)
+        Me.btnEXE.Name = "btnEXE"
+        Me.btnEXE.Size = New System.Drawing.Size(27, 23)
+        Me.btnEXE.TabIndex = 7
+        Me.btnEXE.Text = "..."
+        Me.btnEXE.UseVisualStyleBackColor = True
+        '
+        'btnCDC
+        '
+        Me.btnCDC.Location = New System.Drawing.Point(524, 15)
+        Me.btnCDC.Name = "btnCDC"
+        Me.btnCDC.Size = New System.Drawing.Size(27, 23)
+        Me.btnCDC.TabIndex = 6
+        Me.btnCDC.Text = "..."
+        Me.btnCDC.UseVisualStyleBackColor = True
+        '
+        'txtBAT
+        '
+        Me.txtBAT.Location = New System.Drawing.Point(114, 71)
+        Me.txtBAT.Name = "txtBAT"
+        Me.txtBAT.Size = New System.Drawing.Size(404, 20)
+        Me.txtBAT.TabIndex = 5
+        '
+        'txtEXE
+        '
+        Me.txtEXE.Location = New System.Drawing.Point(114, 44)
+        Me.txtEXE.Name = "txtEXE"
+        Me.txtEXE.Size = New System.Drawing.Size(404, 20)
+        Me.txtEXE.TabIndex = 4
+        '
+        'txtCDC
+        '
+        Me.txtCDC.Location = New System.Drawing.Point(114, 17)
+        Me.txtCDC.Name = "txtCDC"
+        Me.txtCDC.Size = New System.Drawing.Size(404, 20)
+        Me.txtCDC.TabIndex = 3
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(9, 74)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(70, 13)
+        Me.Label16.TabIndex = 2
+        Me.Label16.Text = "Batch Files"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(9, 47)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(99, 13)
+        Me.Label15.TabIndex = 1
+        Me.Label15.Text = "SQData Bin/exe"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(9, 20)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(60, 13)
+        Me.Label14.TabIndex = 0
+        Me.Label14.Text = "CDCstore"
         '
         'frmEngine
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.ClientSize = New System.Drawing.Size(589, 537)
-        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.gbWin)
         Me.Controls.Add(Me.gbLib)
         Me.Controls.Add(Me.cbForceCommit)
         Me.Controls.Add(Me.Label12)
@@ -408,10 +514,12 @@ Public Class frmEngine
         Me.Controls.SetChildIndex(Me.Label12, 0)
         Me.Controls.SetChildIndex(Me.cbForceCommit, 0)
         Me.Controls.SetChildIndex(Me.gbLib, 0)
-        Me.Controls.SetChildIndex(Me.GroupBox2, 0)
+        Me.Controls.SetChildIndex(Me.gbWin, 0)
         Me.Panel1.ResumeLayout(False)
         Me.gbLib.ResumeLayout(False)
         Me.gbLib.PerformLayout()
+        Me.gbWin.ResumeLayout(False)
+        Me.gbWin.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -421,7 +529,7 @@ Public Class frmEngine
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, txtDBDLib.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, txtDBDLib.TextChanged, txtCDC.TextChanged, txtEXE.TextChanged, txtBAT.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -522,6 +630,10 @@ Public Class frmEngine
         txtIncludeLib.Text = objThis.ObjSystem.IncludeLib
         txtDTDLib.Text = objThis.ObjSystem.DTDLib
         txtDDLLib.Text = objThis.ObjSystem.DDLLib
+        'added for Batch file creation
+        txtEXE.Text = objThis.EXEdir
+        txtCDC.Text = objThis.CDCdir
+        txtBAT.Text = objThis.BATdir
 
         txtEngineName.Focus()
 
@@ -557,6 +669,11 @@ doAgain:
             objThis.IncludeLib = txtIncludeLib.Text
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
+            'added for Windows paths
+            objThis.EXEdir = txtEXE.Text
+            objThis.CDCdir = txtCDC.Text
+            objThis.BATdir = txtBAT.Text
+
             'added for RBC   3/8/11    Gives a default version
             objThis.EngVersion = "3.7.17"
 
@@ -572,8 +689,8 @@ doAgain:
                 objThis.Connection = Nothing
                 'End If
             Else
-            '/// a valid connection was chosen
-            objThis.Connection = CType(temp.ItemData, clsConnection)
+                '/// a valid connection was chosen
+                objThis.Connection = CType(temp.ItemData, clsConnection)
             End If
 
             'If temp Is Nothing Then
@@ -683,6 +800,87 @@ doAgain:
         End If
         objThis.IsModified = True
         RaiseEvent Modified(Me, objThis)
+
+    End Sub
+
+    'Private Sub txtCDC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCDC.TextChanged
+
+    'End Sub
+
+    'Private Sub txtEXE_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEXE.TextChanged
+
+    'End Sub
+
+    'Private Sub txtBAT_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBAT.TextChanged
+
+    'End Sub
+
+    Private Sub btnCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCDC.Click
+
+        Try
+            Dim cdcDir As String = txtCDC.Text.Trim
+
+            If cdcDir = "" Then
+                fbdwin.SelectedPath = DefaultDir
+            Else
+                fbdWIN.SelectedPath = cdcDir
+            End If
+
+            If fbdWIN.ShowDialog() = DialogResult.OK Then
+                txtCDC.Text = fbdWIN.SelectedPath
+                objThis.CDCdir = fbdWIN.SelectedPath
+                DefaultDir = fbdWIN.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmEngine btnCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnEXE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEXE.Click
+
+        Try
+            Dim exeDir As String = txtEXE.Text.Trim
+
+            If exeDir = "" Then
+                fbdWIN.SelectedPath = DefaultDir
+            Else
+                fbdWIN.SelectedPath = exeDir
+            End If
+
+            If fbdWIN.ShowDialog() = DialogResult.OK Then
+                txtEXE.Text = fbdWIN.SelectedPath
+                objThis.EXEdir = fbdWIN.SelectedPath
+                DefaultDir = fbdWIN.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmEngine btnEXE_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnBAT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBAT.Click
+
+        Try
+            Dim batDir As String = txtBAT.Text.Trim
+
+            If batDir = "" Then
+                fbdWIN.SelectedPath = DefaultDir
+            Else
+                fbdWIN.SelectedPath = batDir
+            End If
+
+            If fbdWIN.ShowDialog() = DialogResult.OK Then
+                txtBAT.Text = fbdWIN.SelectedPath
+                objThis.BATdir = fbdWIN.SelectedPath
+                DefaultDir = fbdWIN.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmEngine btnBAT_Click")
+        End Try
 
     End Sub
 

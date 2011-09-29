@@ -38,13 +38,12 @@ Partial Class frmScriptGen
         Me.lblSummary = New System.Windows.Forms.Label
         Me.lblResult = New System.Windows.Forms.Label
         Me.gbScriptOptions = New System.Windows.Forms.GroupBox
+        Me.cbUseEXEpath = New System.Windows.Forms.CheckBox
+        Me.cbBATdir = New System.Windows.Forms.CheckBox
         Me.cbMapDebug = New System.Windows.Forms.CheckBox
         Me.cbNewSyn = New System.Windows.Forms.CheckBox
         Me.cbOldSyn = New System.Windows.Forms.CheckBox
         Me.Label4 = New System.Windows.Forms.Label
-        Me.btnParseOnlySQD = New System.Windows.Forms.Button
-        Me.btnParseSQD = New System.Windows.Forms.Button
-        Me.btnParseOnly = New System.Windows.Forms.Button
         Me.gbTarget = New System.Windows.Forms.GroupBox
         Me.rbAlltgt = New System.Windows.Forms.RadioButton
         Me.rbFieldtgt = New System.Windows.Forms.RadioButton
@@ -55,11 +54,16 @@ Partial Class frmScriptGen
         Me.rbSelectsrc = New System.Windows.Forms.RadioButton
         Me.Label9 = New System.Windows.Forms.Label
         Me.cbUID = New System.Windows.Forms.CheckBox
-        Me.btnParse = New System.Windows.Forms.Button
         Me.cbDebugSrcData = New System.Windows.Forms.CheckBox
+        Me.btnParseOnlySQD = New System.Windows.Forms.Button
+        Me.btnParseOnly = New System.Windows.Forms.Button
         Me.btnGenScript = New System.Windows.Forms.Button
+        Me.btnParse = New System.Windows.Forms.Button
+        Me.btnParseSQD = New System.Windows.Forms.Button
         Me.btnSQData = New System.Windows.Forms.Button
         Me.btnOpenOutput = New System.Windows.Forms.Button
+        Me.gbCMDprompt = New System.Windows.Forms.GroupBox
+        Me.btnCMD = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.gbPath.SuspendLayout()
         Me.gbStudioFiles.SuspendLayout()
@@ -68,34 +72,35 @@ Partial Class frmScriptGen
         Me.gbScriptOptions.SuspendLayout()
         Me.gbTarget.SuspendLayout()
         Me.gbSource.SuspendLayout()
+        Me.gbCMDprompt.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(638, 68)
+        Me.Panel1.Size = New System.Drawing.Size(640, 68)
         '
         'GroupBox1
         '
         Me.GroupBox1.Location = New System.Drawing.Point(1, 606)
-        Me.GroupBox1.Size = New System.Drawing.Size(640, 7)
+        Me.GroupBox1.Size = New System.Drawing.Size(642, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(356, 629)
+        Me.cmdOk.Location = New System.Drawing.Point(358, 629)
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(452, 629)
+        Me.cmdCancel.Location = New System.Drawing.Point(454, 629)
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(548, 629)
+        Me.cmdHelp.Location = New System.Drawing.Point(550, 629)
         '
         'Label1
         '
@@ -103,7 +108,7 @@ Partial Class frmScriptGen
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(562, 39)
+        Me.Label2.Size = New System.Drawing.Size(564, 39)
         Me.Label2.Text = "Choose to View, Save or Transfer each different type of generated script file."
         '
         'gbPath
@@ -171,18 +176,18 @@ Partial Class frmScriptGen
         '
         'btnOpenINL
         '
-        Me.btnOpenINL.Location = New System.Drawing.Point(507, 47)
+        Me.btnOpenINL.Location = New System.Drawing.Point(526, 47)
         Me.btnOpenINL.Name = "btnOpenINL"
-        Me.btnOpenINL.Size = New System.Drawing.Size(103, 23)
+        Me.btnOpenINL.Size = New System.Drawing.Size(84, 23)
         Me.btnOpenINL.TabIndex = 8
         Me.btnOpenINL.Text = "Open INL"
         Me.btnOpenINL.UseVisualStyleBackColor = True
         '
         'btnOpenSQD
         '
-        Me.btnOpenSQD.Location = New System.Drawing.Point(507, 17)
+        Me.btnOpenSQD.Location = New System.Drawing.Point(526, 17)
         Me.btnOpenSQD.Name = "btnOpenSQD"
-        Me.btnOpenSQD.Size = New System.Drawing.Size(103, 23)
+        Me.btnOpenSQD.Size = New System.Drawing.Size(84, 23)
         Me.btnOpenSQD.TabIndex = 6
         Me.btnOpenSQD.Text = "Open SQD"
         Me.btnOpenSQD.UseVisualStyleBackColor = True
@@ -190,19 +195,19 @@ Partial Class frmScriptGen
         'txtINL
         '
         Me.txtINL.BackColor = System.Drawing.SystemColors.Window
-        Me.txtINL.Location = New System.Drawing.Point(217, 49)
+        Me.txtINL.Location = New System.Drawing.Point(144, 49)
         Me.txtINL.Name = "txtINL"
         Me.txtINL.ReadOnly = True
-        Me.txtINL.Size = New System.Drawing.Size(284, 20)
+        Me.txtINL.Size = New System.Drawing.Size(376, 20)
         Me.txtINL.TabIndex = 5
         '
         'txtSQD
         '
         Me.txtSQD.BackColor = System.Drawing.SystemColors.Window
-        Me.txtSQD.Location = New System.Drawing.Point(217, 19)
+        Me.txtSQD.Location = New System.Drawing.Point(144, 19)
         Me.txtSQD.Name = "txtSQD"
         Me.txtSQD.ReadOnly = True
-        Me.txtSQD.Size = New System.Drawing.Size(284, 20)
+        Me.txtSQD.Size = New System.Drawing.Size(376, 20)
         Me.txtSQD.TabIndex = 3
         '
         'Label5
@@ -233,7 +238,7 @@ Partial Class frmScriptGen
         Me.gbParseFiles.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbParseFiles.Location = New System.Drawing.Point(12, 546)
         Me.gbParseFiles.Name = "gbParseFiles"
-        Me.gbParseFiles.Size = New System.Drawing.Size(616, 54)
+        Me.gbParseFiles.Size = New System.Drawing.Size(492, 54)
         Me.gbParseFiles.TabIndex = 61
         Me.gbParseFiles.TabStop = False
         Me.gbParseFiles.Text = "Parser Generated File"
@@ -241,9 +246,9 @@ Partial Class frmScriptGen
         'btnOpenRPT
         '
         Me.btnOpenRPT.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.btnOpenRPT.Location = New System.Drawing.Point(507, 18)
+        Me.btnOpenRPT.Location = New System.Drawing.Point(402, 18)
         Me.btnOpenRPT.Name = "btnOpenRPT"
-        Me.btnOpenRPT.Size = New System.Drawing.Size(103, 23)
+        Me.btnOpenRPT.Size = New System.Drawing.Size(80, 23)
         Me.btnOpenRPT.TabIndex = 5
         Me.btnOpenRPT.Text = "Open RPT"
         Me.btnOpenRPT.UseVisualStyleBackColor = True
@@ -251,7 +256,7 @@ Partial Class frmScriptGen
         'txtRPT
         '
         Me.txtRPT.BackColor = System.Drawing.SystemColors.Window
-        Me.txtRPT.Location = New System.Drawing.Point(217, 20)
+        Me.txtRPT.Location = New System.Drawing.Point(112, 20)
         Me.txtRPT.Name = "txtRPT"
         Me.txtRPT.ReadOnly = True
         Me.txtRPT.Size = New System.Drawing.Size(284, 20)
@@ -263,9 +268,9 @@ Partial Class frmScriptGen
         Me.Label6.ForeColor = System.Drawing.SystemColors.ControlText
         Me.Label6.Location = New System.Drawing.Point(6, 23)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(140, 13)
+        Me.Label6.Size = New System.Drawing.Size(100, 13)
         Me.Label6.TabIndex = 0
-        Me.Label6.Text = "Parser Report File (.rpt)"
+        Me.Label6.Text = "Report File (.rpt)"
         '
         'gbResults
         '
@@ -273,9 +278,9 @@ Partial Class frmScriptGen
         Me.gbResults.Controls.Add(Me.lblResult)
         Me.gbResults.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbResults.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbResults.Location = New System.Drawing.Point(12, 272)
+        Me.gbResults.Location = New System.Drawing.Point(12, 277)
         Me.gbResults.Name = "gbResults"
-        Me.gbResults.Size = New System.Drawing.Size(616, 135)
+        Me.gbResults.Size = New System.Drawing.Size(616, 130)
         Me.gbResults.TabIndex = 62
         Me.gbResults.TabStop = False
         Me.gbResults.Text = "Script Generation Results"
@@ -300,33 +305,55 @@ Partial Class frmScriptGen
         '
         'gbScriptOptions
         '
+        Me.gbScriptOptions.Controls.Add(Me.cbUseEXEpath)
+        Me.gbScriptOptions.Controls.Add(Me.cbBATdir)
         Me.gbScriptOptions.Controls.Add(Me.cbMapDebug)
         Me.gbScriptOptions.Controls.Add(Me.cbNewSyn)
         Me.gbScriptOptions.Controls.Add(Me.cbOldSyn)
         Me.gbScriptOptions.Controls.Add(Me.Label4)
-        Me.gbScriptOptions.Controls.Add(Me.btnParseOnlySQD)
-        Me.gbScriptOptions.Controls.Add(Me.btnParseSQD)
-        Me.gbScriptOptions.Controls.Add(Me.btnParseOnly)
         Me.gbScriptOptions.Controls.Add(Me.gbTarget)
         Me.gbScriptOptions.Controls.Add(Me.gbSource)
         Me.gbScriptOptions.Controls.Add(Me.Label9)
         Me.gbScriptOptions.Controls.Add(Me.cbUID)
-        Me.gbScriptOptions.Controls.Add(Me.btnParse)
         Me.gbScriptOptions.Controls.Add(Me.cbDebugSrcData)
+        Me.gbScriptOptions.Controls.Add(Me.btnParseOnlySQD)
+        Me.gbScriptOptions.Controls.Add(Me.btnParseOnly)
         Me.gbScriptOptions.Controls.Add(Me.btnGenScript)
+        Me.gbScriptOptions.Controls.Add(Me.btnParse)
+        Me.gbScriptOptions.Controls.Add(Me.btnParseSQD)
         Me.gbScriptOptions.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScriptOptions.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbScriptOptions.Location = New System.Drawing.Point(12, 74)
         Me.gbScriptOptions.Name = "gbScriptOptions"
-        Me.gbScriptOptions.Size = New System.Drawing.Size(616, 192)
+        Me.gbScriptOptions.Size = New System.Drawing.Size(616, 197)
         Me.gbScriptOptions.TabIndex = 63
         Me.gbScriptOptions.TabStop = False
         Me.gbScriptOptions.Text = "Script Generation Options"
         '
+        'cbUseEXEpath
+        '
+        Me.cbUseEXEpath.AutoSize = True
+        Me.cbUseEXEpath.Location = New System.Drawing.Point(309, 50)
+        Me.cbUseEXEpath.Name = "cbUseEXEpath"
+        Me.cbUseEXEpath.Size = New System.Drawing.Size(154, 17)
+        Me.cbUseEXEpath.TabIndex = 19
+        Me.cbUseEXEpath.Text = "Use Engine EXE paths"
+        Me.cbUseEXEpath.UseVisualStyleBackColor = True
+        '
+        'cbBATdir
+        '
+        Me.cbBATdir.AutoSize = True
+        Me.cbBATdir.Location = New System.Drawing.Point(309, 31)
+        Me.cbBATdir.Name = "cbBATdir"
+        Me.cbBATdir.Size = New System.Drawing.Size(124, 17)
+        Me.cbBATdir.TabIndex = 18
+        Me.cbBATdir.Text = "Make Batch Files"
+        Me.cbBATdir.UseVisualStyleBackColor = True
+        '
         'cbMapDebug
         '
         Me.cbMapDebug.AutoSize = True
-        Me.cbMapDebug.Location = New System.Drawing.Point(495, 169)
+        Me.cbMapDebug.Location = New System.Drawing.Point(309, 12)
         Me.cbMapDebug.Name = "cbMapDebug"
         Me.cbMapDebug.Size = New System.Drawing.Size(115, 17)
         Me.cbMapDebug.TabIndex = 17
@@ -336,7 +363,7 @@ Partial Class frmScriptGen
         'cbNewSyn
         '
         Me.cbNewSyn.AutoSize = True
-        Me.cbNewSyn.Location = New System.Drawing.Point(296, 169)
+        Me.cbNewSyn.Location = New System.Drawing.Point(469, 50)
         Me.cbNewSyn.Name = "cbNewSyn"
         Me.cbNewSyn.Size = New System.Drawing.Size(93, 17)
         Me.cbNewSyn.TabIndex = 16
@@ -348,7 +375,7 @@ Partial Class frmScriptGen
         Me.cbOldSyn.AutoSize = True
         Me.cbOldSyn.Checked = True
         Me.cbOldSyn.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.cbOldSyn.Location = New System.Drawing.Point(162, 169)
+        Me.cbOldSyn.Location = New System.Drawing.Point(469, 32)
         Me.cbOldSyn.Name = "cbOldSyn"
         Me.cbOldSyn.Size = New System.Drawing.Size(128, 17)
         Me.cbOldSyn.TabIndex = 15
@@ -358,38 +385,11 @@ Partial Class frmScriptGen
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(15, 170)
+        Me.Label4.Location = New System.Drawing.Point(465, 13)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(141, 13)
         Me.Label4.TabIndex = 14
         Me.Label4.Text = "Datastore Script Syntax"
-        '
-        'btnParseOnlySQD
-        '
-        Me.btnParseOnlySQD.Location = New System.Drawing.Point(498, 44)
-        Me.btnParseOnlySQD.Name = "btnParseOnlySQD"
-        Me.btnParseOnlySQD.Size = New System.Drawing.Size(112, 23)
-        Me.btnParseOnlySQD.TabIndex = 13
-        Me.btnParseOnlySQD.Text = "Parse Only SQD"
-        Me.btnParseOnlySQD.UseVisualStyleBackColor = True
-        '
-        'btnParseSQD
-        '
-        Me.btnParseSQD.Location = New System.Drawing.Point(382, 44)
-        Me.btnParseSQD.Name = "btnParseSQD"
-        Me.btnParseSQD.Size = New System.Drawing.Size(110, 23)
-        Me.btnParseSQD.TabIndex = 12
-        Me.btnParseSQD.Text = "Gen/Parse SQD"
-        Me.btnParseSQD.UseVisualStyleBackColor = True
-        '
-        'btnParseOnly
-        '
-        Me.btnParseOnly.Location = New System.Drawing.Point(498, 14)
-        Me.btnParseOnly.Name = "btnParseOnly"
-        Me.btnParseOnly.Size = New System.Drawing.Size(112, 24)
-        Me.btnParseOnly.TabIndex = 11
-        Me.btnParseOnly.Text = "Parse Only INL"
-        Me.btnParseOnly.UseVisualStyleBackColor = True
         '
         'gbTarget
         '
@@ -504,16 +504,6 @@ Partial Class frmScriptGen
         Me.cbUID.Text = "Use Username and Password In Script"
         Me.cbUID.UseVisualStyleBackColor = True
         '
-        'btnParse
-        '
-        Me.btnParse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnParse.Location = New System.Drawing.Point(382, 13)
-        Me.btnParse.Name = "btnParse"
-        Me.btnParse.Size = New System.Drawing.Size(110, 24)
-        Me.btnParse.TabIndex = 3
-        Me.btnParse.Text = "Gen/Parse INL"
-        Me.btnParse.UseVisualStyleBackColor = True
-        '
         'cbDebugSrcData
         '
         Me.cbDebugSrcData.AutoSize = True
@@ -524,15 +514,52 @@ Partial Class frmScriptGen
         Me.cbDebugSrcData.Text = "Use Output Messages for Source in Procedures"
         Me.cbDebugSrcData.UseVisualStyleBackColor = True
         '
+        'btnParseOnlySQD
+        '
+        Me.btnParseOnlySQD.Location = New System.Drawing.Point(360, 167)
+        Me.btnParseOnlySQD.Name = "btnParseOnlySQD"
+        Me.btnParseOnlySQD.Size = New System.Drawing.Size(112, 23)
+        Me.btnParseOnlySQD.TabIndex = 13
+        Me.btnParseOnlySQD.Text = "Parse Only SQD"
+        Me.btnParseOnlySQD.UseVisualStyleBackColor = True
+        '
+        'btnParseOnly
+        '
+        Me.btnParseOnly.Location = New System.Drawing.Point(478, 167)
+        Me.btnParseOnly.Name = "btnParseOnly"
+        Me.btnParseOnly.Size = New System.Drawing.Size(112, 24)
+        Me.btnParseOnly.TabIndex = 11
+        Me.btnParseOnly.Text = "Parse Only INL"
+        Me.btnParseOnly.UseVisualStyleBackColor = True
+        '
         'btnGenScript
         '
         Me.btnGenScript.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnGenScript.Location = New System.Drawing.Point(310, 13)
+        Me.btnGenScript.Location = New System.Drawing.Point(18, 167)
         Me.btnGenScript.Name = "btnGenScript"
-        Me.btnGenScript.Size = New System.Drawing.Size(68, 54)
+        Me.btnGenScript.Size = New System.Drawing.Size(104, 24)
         Me.btnGenScript.TabIndex = 0
         Me.btnGenScript.Text = "Generate Script"
         Me.btnGenScript.UseVisualStyleBackColor = True
+        '
+        'btnParse
+        '
+        Me.btnParse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnParse.Location = New System.Drawing.Point(244, 167)
+        Me.btnParse.Name = "btnParse"
+        Me.btnParse.Size = New System.Drawing.Size(110, 24)
+        Me.btnParse.TabIndex = 3
+        Me.btnParse.Text = "Gen/Parse INL"
+        Me.btnParse.UseVisualStyleBackColor = True
+        '
+        'btnParseSQD
+        '
+        Me.btnParseSQD.Location = New System.Drawing.Point(128, 167)
+        Me.btnParseSQD.Name = "btnParseSQD"
+        Me.btnParseSQD.Size = New System.Drawing.Size(110, 23)
+        Me.btnParseSQD.TabIndex = 12
+        Me.btnParseSQD.Text = "Gen/Parse SQD"
+        Me.btnParseSQD.UseVisualStyleBackColor = True
         '
         'btnSQData
         '
@@ -556,14 +583,36 @@ Partial Class frmScriptGen
         Me.btnOpenOutput.UseVisualStyleBackColor = True
         Me.btnOpenOutput.Visible = False
         '
+        'gbCMDprompt
+        '
+        Me.gbCMDprompt.Controls.Add(Me.btnCMD)
+        Me.gbCMDprompt.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbCMDprompt.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbCMDprompt.Location = New System.Drawing.Point(510, 546)
+        Me.gbCMDprompt.Name = "gbCMDprompt"
+        Me.gbCMDprompt.Size = New System.Drawing.Size(118, 54)
+        Me.gbCMDprompt.TabIndex = 66
+        Me.gbCMDprompt.TabStop = False
+        Me.gbCMDprompt.Text = "Command prompt"
+        '
+        'btnCMD
+        '
+        Me.btnCMD.Location = New System.Drawing.Point(6, 18)
+        Me.btnCMD.Name = "btnCMD"
+        Me.btnCMD.Size = New System.Drawing.Size(106, 23)
+        Me.btnCMD.TabIndex = 0
+        Me.btnCMD.Text = "CMD at Bat Dir"
+        Me.btnCMD.UseVisualStyleBackColor = True
+        '
         'frmScriptGen
         '
-        Me.ClientSize = New System.Drawing.Size(638, 668)
+        Me.ClientSize = New System.Drawing.Size(640, 668)
         Me.Controls.Add(Me.gbScriptOptions)
         Me.Controls.Add(Me.gbStudioFiles)
         Me.Controls.Add(Me.gbPath)
         Me.Controls.Add(Me.gbResults)
         Me.Controls.Add(Me.gbParseFiles)
+        Me.Controls.Add(Me.gbCMDprompt)
         Me.Controls.Add(Me.btnOpenOutput)
         Me.Controls.Add(Me.btnSQData)
         Me.Name = "frmScriptGen"
@@ -571,6 +620,7 @@ Partial Class frmScriptGen
         Me.Text = "SQData Studio V3"
         Me.Controls.SetChildIndex(Me.btnSQData, 0)
         Me.Controls.SetChildIndex(Me.btnOpenOutput, 0)
+        Me.Controls.SetChildIndex(Me.gbCMDprompt, 0)
         Me.Controls.SetChildIndex(Me.gbParseFiles, 0)
         Me.Controls.SetChildIndex(Me.gbResults, 0)
         Me.Controls.SetChildIndex(Me.gbPath, 0)
@@ -596,6 +646,7 @@ Partial Class frmScriptGen
         Me.gbTarget.PerformLayout()
         Me.gbSource.ResumeLayout(False)
         Me.gbSource.PerformLayout()
+        Me.gbCMDprompt.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -640,5 +691,9 @@ Partial Class frmScriptGen
     Friend WithEvents cbOldSyn As System.Windows.Forms.CheckBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cbMapDebug As System.Windows.Forms.CheckBox
+    Friend WithEvents cbBATdir As System.Windows.Forms.CheckBox
+    Friend WithEvents gbCMDprompt As System.Windows.Forms.GroupBox
+    Friend WithEvents btnCMD As System.Windows.Forms.Button
+    Friend WithEvents cbUseEXEpath As System.Windows.Forms.CheckBox
 
 End Class

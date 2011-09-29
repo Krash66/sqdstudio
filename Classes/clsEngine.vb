@@ -851,7 +851,7 @@ Public Class clsEngine
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 12
+            For i As Integer = 0 To 15
                 Select Case i
                     Case 0
                         Attrib = "COMMITEVERY"

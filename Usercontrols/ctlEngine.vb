@@ -6,15 +6,9 @@ Public Class ctlEngine
     Public Event Renamed(ByVal sender As System.Object, ByVal e As INode)
     Public Event Closed(ByVal sender As System.Object, ByVal e As INode)
 
-    
     Dim objThis As New clsEngine
-    Friend WithEvents gbVersion As System.Windows.Forms.GroupBox
-    Friend WithEvents cmbEngVer As System.Windows.Forms.ComboBox
-    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-
     Dim IsNewObj As Boolean
-
+    Dim DefaultDir As String
 
 #Region " Windows Form Designer generated code "
 
@@ -78,6 +72,25 @@ Public Class ctlEngine
     Friend WithEvents btnMain As System.Windows.Forms.Button
     Friend WithEvents txtMain As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents gbVersion As System.Windows.Forms.GroupBox
+    Friend WithEvents cmbEngVer As System.Windows.Forms.ComboBox
+    Friend WithEvents txtDBDLib As System.Windows.Forms.TextBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnBAT As System.Windows.Forms.Button
+    Friend WithEvents btnEXE As System.Windows.Forms.Button
+    Friend WithEvents btnCDC As System.Windows.Forms.Button
+    Friend WithEvents txtBAT As System.Windows.Forms.TextBox
+    Friend WithEvents txtEXE As System.Windows.Forms.TextBox
+    Friend WithEvents txtCDC As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents fbdWin1 As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents btnCMDbat As System.Windows.Forms.Button
+    Friend WithEvents btnCMDexe As System.Windows.Forms.Button
+    Friend WithEvents btnCMDcdc As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cmdClose = New System.Windows.Forms.Button
@@ -117,11 +130,28 @@ Public Class ctlEngine
         Me.txtMain = New System.Windows.Forms.TextBox
         Me.gbVersion = New System.Windows.Forms.GroupBox
         Me.cmbEngVer = New System.Windows.Forms.ComboBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.btnBAT = New System.Windows.Forms.Button
+        Me.btnEXE = New System.Windows.Forms.Button
+        Me.btnCDC = New System.Windows.Forms.Button
+        Me.txtBAT = New System.Windows.Forms.TextBox
+        Me.txtEXE = New System.Windows.Forms.TextBox
+        Me.txtCDC = New System.Windows.Forms.TextBox
+        Me.Label16 = New System.Windows.Forms.Label
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.fbdWin1 = New System.Windows.Forms.FolderBrowserDialog
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.btnCMDbat = New System.Windows.Forms.Button
+        Me.btnCMDexe = New System.Windows.Forms.Button
+        Me.btnCMDcdc = New System.Windows.Forms.Button
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbLib.SuspendLayout()
         Me.gbMain.SuspendLayout()
         Me.gbVersion.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
         '
         'cmdSave
@@ -507,7 +537,7 @@ Public Class ctlEngine
         Me.gbMain.Controls.Add(Me.txtMain)
         Me.gbMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMain.ForeColor = System.Drawing.Color.White
-        Me.gbMain.Location = New System.Drawing.Point(4, 460)
+        Me.gbMain.Location = New System.Drawing.Point(405, 25)
         Me.gbMain.Name = "gbMain"
         Me.gbMain.Size = New System.Drawing.Size(674, 132)
         Me.gbMain.TabIndex = 105
@@ -561,12 +591,13 @@ Public Class ctlEngine
         Me.gbVersion.Controls.Add(Me.cmbEngVer)
         Me.gbVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbVersion.ForeColor = System.Drawing.Color.White
-        Me.gbVersion.Location = New System.Drawing.Point(3, 397)
+        Me.gbVersion.Location = New System.Drawing.Point(435, 163)
         Me.gbVersion.Name = "gbVersion"
         Me.gbVersion.Size = New System.Drawing.Size(204, 57)
         Me.gbVersion.TabIndex = 106
         Me.gbVersion.TabStop = False
         Me.gbVersion.Text = "Parser/Engine Version"
+        Me.gbVersion.Visible = False
         '
         'cmbEngVer
         '
@@ -576,9 +607,166 @@ Public Class ctlEngine
         Me.cmbEngVer.Size = New System.Drawing.Size(177, 21)
         Me.cmbEngVer.TabIndex = 0
         '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.btnBAT)
+        Me.GroupBox3.Controls.Add(Me.btnEXE)
+        Me.GroupBox3.Controls.Add(Me.btnCDC)
+        Me.GroupBox3.Controls.Add(Me.txtBAT)
+        Me.GroupBox3.Controls.Add(Me.txtEXE)
+        Me.GroupBox3.Controls.Add(Me.txtCDC)
+        Me.GroupBox3.Controls.Add(Me.Label16)
+        Me.GroupBox3.Controls.Add(Me.Label15)
+        Me.GroupBox3.Controls.Add(Me.Label14)
+        Me.GroupBox3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox3.ForeColor = System.Drawing.Color.White
+        Me.GroupBox3.Location = New System.Drawing.Point(3, 397)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(493, 100)
+        Me.GroupBox3.TabIndex = 107
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Windows System SQData Paths"
+        '
+        'btnBAT
+        '
+        Me.btnBAT.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBAT.ForeColor = System.Drawing.Color.Black
+        Me.btnBAT.Location = New System.Drawing.Point(455, 69)
+        Me.btnBAT.Name = "btnBAT"
+        Me.btnBAT.Size = New System.Drawing.Size(27, 23)
+        Me.btnBAT.TabIndex = 8
+        Me.btnBAT.Text = "..."
+        Me.btnBAT.UseVisualStyleBackColor = True
+        '
+        'btnEXE
+        '
+        Me.btnEXE.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnEXE.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEXE.ForeColor = System.Drawing.Color.Black
+        Me.btnEXE.Location = New System.Drawing.Point(455, 42)
+        Me.btnEXE.Name = "btnEXE"
+        Me.btnEXE.Size = New System.Drawing.Size(27, 23)
+        Me.btnEXE.TabIndex = 7
+        Me.btnEXE.Text = "..."
+        Me.btnEXE.UseVisualStyleBackColor = True
+        '
+        'btnCDC
+        '
+        Me.btnCDC.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnCDC.ForeColor = System.Drawing.Color.Black
+        Me.btnCDC.Location = New System.Drawing.Point(455, 15)
+        Me.btnCDC.Name = "btnCDC"
+        Me.btnCDC.Size = New System.Drawing.Size(27, 23)
+        Me.btnCDC.TabIndex = 6
+        Me.btnCDC.Text = "..."
+        Me.btnCDC.UseVisualStyleBackColor = True
+        '
+        'txtBAT
+        '
+        Me.txtBAT.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtBAT.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtBAT.Location = New System.Drawing.Point(114, 71)
+        Me.txtBAT.Name = "txtBAT"
+        Me.txtBAT.Size = New System.Drawing.Size(335, 20)
+        Me.txtBAT.TabIndex = 5
+        '
+        'txtEXE
+        '
+        Me.txtEXE.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtEXE.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtEXE.Location = New System.Drawing.Point(114, 44)
+        Me.txtEXE.Name = "txtEXE"
+        Me.txtEXE.Size = New System.Drawing.Size(335, 20)
+        Me.txtEXE.TabIndex = 4
+        '
+        'txtCDC
+        '
+        Me.txtCDC.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtCDC.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCDC.Location = New System.Drawing.Point(114, 17)
+        Me.txtCDC.Name = "txtCDC"
+        Me.txtCDC.Size = New System.Drawing.Size(335, 20)
+        Me.txtCDC.TabIndex = 3
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(9, 74)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(70, 13)
+        Me.Label16.TabIndex = 2
+        Me.Label16.Text = "Batch Files"
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(9, 47)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(99, 13)
+        Me.Label15.TabIndex = 1
+        Me.Label15.Text = "SQData Bin/exe"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(9, 20)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(60, 13)
+        Me.Label14.TabIndex = 0
+        Me.Label14.Text = "CDCstore"
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.btnCMDbat)
+        Me.GroupBox4.Controls.Add(Me.btnCMDexe)
+        Me.GroupBox4.Controls.Add(Me.btnCMDcdc)
+        Me.GroupBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox4.ForeColor = System.Drawing.Color.White
+        Me.GroupBox4.Location = New System.Drawing.Point(502, 366)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(80, 131)
+        Me.GroupBox4.TabIndex = 108
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Command Prompt At Directory"
+        '
+        'btnCMDbat
+        '
+        Me.btnCMDbat.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDbat.Location = New System.Drawing.Point(6, 100)
+        Me.btnCMDbat.Name = "btnCMDbat"
+        Me.btnCMDbat.Size = New System.Drawing.Size(68, 23)
+        Me.btnCMDbat.TabIndex = 2
+        Me.btnCMDbat.Text = "CMD"
+        Me.btnCMDbat.UseVisualStyleBackColor = True
+        '
+        'btnCMDexe
+        '
+        Me.btnCMDexe.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDexe.Location = New System.Drawing.Point(6, 73)
+        Me.btnCMDexe.Name = "btnCMDexe"
+        Me.btnCMDexe.Size = New System.Drawing.Size(68, 23)
+        Me.btnCMDexe.TabIndex = 1
+        Me.btnCMDexe.Text = "CMD"
+        Me.btnCMDexe.UseVisualStyleBackColor = True
+        '
+        'btnCMDcdc
+        '
+        Me.btnCMDcdc.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDcdc.Location = New System.Drawing.Point(6, 46)
+        Me.btnCMDcdc.Name = "btnCMDcdc"
+        Me.btnCMDcdc.Size = New System.Drawing.Size(68, 23)
+        Me.btnCMDcdc.TabIndex = 0
+        Me.btnCMDcdc.Text = "CMD"
+        Me.btnCMDcdc.UseVisualStyleBackColor = True
+        '
         'ctlEngine
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Controls.Add(Me.GroupBox4)
+        Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.gbVersion)
         Me.Controls.Add(Me.gbMain)
         Me.Controls.Add(Me.gbLib)
@@ -600,6 +788,9 @@ Public Class ctlEngine
         Me.gbMain.ResumeLayout(False)
         Me.gbMain.PerformLayout()
         Me.gbVersion.ResumeLayout(False)
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -785,7 +976,7 @@ Public Class ctlEngine
         End Select
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged, cmbEngVer.SelectedIndexChanged, txtDBDLib.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCopybookLib.TextChanged, txtDDLLib.TextChanged, txtDTDLib.TextChanged, txtIncludeLib.TextChanged, txtCommitEvery.TextChanged, txtEngineDesc.TextChanged, txtEngineName.TextChanged, txtReportEvery.TextChanged, txtReportFile.TextChanged, cbConn.SelectedIndexChanged, cbDateFormat.SelectedIndexChanged, txtMain.TextChanged, cmbEngVer.SelectedIndexChanged, txtDBDLib.TextChanged, txtCDC.TextChanged, txtEXE.TextChanged, txtBAT.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -838,6 +1029,9 @@ Public Class ctlEngine
             txtDTDLib.Text = objThis.DTDLib
             txtDDLLib.Text = objThis.DDLLib
             txtMain.Text = objThis.Main
+            txtCDC.Text = objThis.CDCdir
+            txtEXE.Text = objThis.EXEdir
+            txtBAT.Text = objThis.BATdir
 
             'If objThis.Main.Trim = "" Then
             gbMain.Visible = False
@@ -1111,5 +1305,146 @@ Public Class ctlEngine
     End Sub
 
 #End Region
+
+    'Private Sub txtCDC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCDC.TextChanged
+
+    'End Sub
+
+    'Private Sub txtEXE_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEXE.TextChanged
+
+    'End Sub
+
+    'Private Sub txtBAT_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBAT.TextChanged
+
+    'End Sub
+
+    Private Sub btnCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCDC.Click
+
+        Try
+            Dim cdcDir As String = txtCDC.Text.Trim
+
+            If cdcDir = "" Then
+                fbdWin1.SelectedPath = DefaultDir
+            Else
+                fbdWin1.SelectedPath = cdcDir
+            End If
+
+            If fbdWin1.ShowDialog() = DialogResult.OK Then
+                txtCDC.Text = fbdWin1.SelectedPath
+                objThis.CDCdir = fbdWin1.SelectedPath
+                DefaultDir = fbdWin1.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnEXE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEXE.Click
+
+        Try
+            Dim exeDir As String = txtEXE.Text.Trim
+
+            If exeDir = "" Then
+                fbdWin1.SelectedPath = DefaultDir
+            Else
+                fbdWin1.SelectedPath = exeDir
+            End If
+
+            If fbdWin1.ShowDialog() = DialogResult.OK Then
+                txtEXE.Text = fbdWin1.SelectedPath
+                objThis.EXEdir = fbdWin1.SelectedPath
+                DefaultDir = fbdWin1.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnEXE_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnBAT_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBAT.Click
+
+        Try
+            Dim batDir As String = txtBAT.Text.Trim
+
+            If batDir = "" Then
+                fbdWin1.SelectedPath = DefaultDir
+            Else
+                fbdWin1.SelectedPath = batDir
+            End If
+
+            If fbdWin1.ShowDialog() = DialogResult.OK Then
+                txtBAT.Text = fbdWin1.SelectedPath
+                objThis.BATdir = fbdWin1.SelectedPath
+                DefaultDir = fbdWin1.SelectedPath
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnBAT_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnCMDcdc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCMDcdc.Click
+
+        Try
+            Dim si As New ProcessStartInfo()
+            Dim myprocess As New System.Diagnostics.Process()
+
+            si.WindowStyle = ProcessWindowStyle.Normal
+            si.WorkingDirectory = objThis.CDCdir
+            si.UseShellExecute = False
+            si.FileName = "cmd.exe" '%system%\
+            myprocess.StartInfo = si
+
+            myprocess.Start()
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCMDcdc_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnCMDexe_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCMDexe.Click
+
+        Try
+            Dim si As New ProcessStartInfo()
+            Dim myprocess As New System.Diagnostics.Process()
+
+            si.WindowStyle = ProcessWindowStyle.Normal
+            si.WorkingDirectory = objThis.EXEdir
+            si.UseShellExecute = False
+            si.FileName = "cmd.exe" '%system%\
+            myprocess.StartInfo = si
+
+            myprocess.Start()
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCMDexe_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnCMDbat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCMDbat.Click
+
+        Try
+            Dim si As New ProcessStartInfo()
+            Dim myprocess As New System.Diagnostics.Process()
+
+            si.WindowStyle = ProcessWindowStyle.Normal
+            si.WorkingDirectory = objThis.BATdir
+            si.UseShellExecute = False
+            si.FileName = "cmd.exe" '%system%\
+            myprocess.StartInfo = si
+
+            myprocess.Start()
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCMDbat_Click")
+        End Try
+
+    End Sub
 
 End Class

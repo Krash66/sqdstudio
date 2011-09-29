@@ -13,6 +13,8 @@ Public Class frmScriptGen
     Private ScriptType As enumGenType
     Private NewSyn As Boolean = False
     Private MapDBG As Boolean = False
+    Private MakeBat As Boolean = False
+    Private UseEXEpath As Boolean = False
 
 
     Private Sub cmdCancel_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
@@ -266,6 +268,11 @@ Public Class frmScriptGen
             Me.gbParseFiles.Enabled = Parsed
             Me.btnSQData.Enabled = True
 
+            If MakeBat = True Then
+                Dim frmBat As New frmBatchFiles
+                frmBat.ShowForm(ObjEng)
+            End If
+
             Return True
 
         Catch ex As Exception
@@ -371,7 +378,7 @@ Public Class frmScriptGen
                     RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, True, debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG, UseEXEpath)
 
             End Select
 
@@ -400,7 +407,7 @@ Public Class frmScriptGen
                     RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , , NewSyn, MapDBG, UseEXEpath)
 
             End Select
             FillResults(True)
@@ -429,7 +436,7 @@ Public Class frmScriptGen
                     RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, , NewSyn)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, , NewSyn, , UseEXEpath)
 
             End Select
             FillResults(True)
@@ -458,7 +465,7 @@ Public Class frmScriptGen
                     RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True, NewSyn, MapDBG)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, , True, NewSyn, MapDBG, UseEXEpath)
 
             End Select
             FillResults(True)
@@ -487,7 +494,7 @@ Public Class frmScriptGen
                     RetCode = modGenerateV3.GenerateProcScriptV3(ObjProc, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, NewSyn)
 
                 Case enumGenType.Eng
-                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True, NewSyn)
+                    RetCode = modGenerateV3.GenerateEngScriptV3(ObjEng, ScriptDirectory, , debugSrc, ShowUID, sourcelevel, targetlevel, True, True, NewSyn, , UseEXEpath)
 
             End Select
             FillResults(True)
@@ -636,4 +643,47 @@ Public Class frmScriptGen
             MapDBG = False
         End If
     End Sub
+
+    Private Sub btnCMD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCMD.Click
+
+        Try
+            Dim si As New ProcessStartInfo()
+            Dim myprocess As New System.Diagnostics.Process()
+
+            si.WindowStyle = ProcessWindowStyle.Normal
+            si.WorkingDirectory = ObjEng.BATdir
+            si.UseShellExecute = False
+            si.FileName = "cmd.exe" '%system%\
+            myprocess.StartInfo = si
+
+            myprocess.Start()
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCMDbat_Click")
+        End Try
+
+    End Sub
+
+    Private Sub cbBATdir_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbBATdir.CheckedChanged
+
+        If Me.cbBATdir.Checked = True Then
+            gbCMDprompt.Enabled = True
+            MakeBat = True
+        Else
+            gbCMDprompt.Enabled = False
+            MakeBat = False
+        End If
+
+    End Sub
+
+    Private Sub cbUseEXEpath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbUseEXEpath.CheckedChanged
+
+        If Me.cbUseEXEpath.Checked = True Then
+            UseEXEpath = True
+        Else
+            UseEXEpath = False
+        End If
+
+    End Sub
+
 End Class

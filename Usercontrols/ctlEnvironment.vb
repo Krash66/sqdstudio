@@ -617,6 +617,9 @@ Public Class ctlEnvironment
         Me.btnFTPdml.TabIndex = 207
         Me.btnFTPdml.Text = "<-"
         '
+        'FBD1
+        '
+        '
         'gbRelDir
         '
         Me.gbRelDir.Controls.Add(Me.btnRelDir)

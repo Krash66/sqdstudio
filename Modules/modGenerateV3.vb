@@ -17,6 +17,8 @@ Public Module modGenerateV3
     '/// Parser and Engine Paths
     Dim ParserPath As String
     Dim EnginePath As String
+    Dim UseEXEpath As Boolean
+    Dim EngEXEpath As String
 
     Dim doParse As Boolean
     Dim OnlyParse As Boolean
@@ -66,7 +68,19 @@ Public Module modGenerateV3
 
 #Region " Main Processes "
 
-    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal ParseOnly As Boolean = False, Optional ByVal ParseSQD As Boolean = False, Optional ByVal NewSyn As Boolean = True, Optional ByVal MapDBG As Boolean = False) As clsRcode
+    Public Function GenerateEngScriptV3(ByVal EngObj As clsEngine, _
+                                        ByVal SavePath As String, _
+                                        Optional ByVal NoParse As Boolean = False, _
+                                        Optional ByVal debug As Boolean = False, _
+                                        Optional ByVal UseUID As Boolean = False, _
+                                        Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                        Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                        Optional ByVal ParseOnly As Boolean = False, _
+                                        Optional ByVal ParseSQD As Boolean = False, _
+                                        Optional ByVal NewSyn As Boolean = True, _
+                                        Optional ByVal MapDBG As Boolean = False, _
+                                        Optional ByVal UseEXE As Boolean = False) _
+                                        As clsRcode
 
         Log("********* Script Generation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
 
@@ -92,6 +106,8 @@ Public Module modGenerateV3
         TargetLevel = TgtLevel
         SynNew = NewSyn
         DBGMap = MapDBG
+        UseEXEpath = UseEXE
+        
 
         Try
             ScriptPath = EngObj.ObjSystem.Environment.LocalScriptDir
@@ -104,14 +120,18 @@ Public Module modGenerateV3
                 EngObj.Connection.LoadMe()
             End If
 
-            If EngObj.EngVersion <> "" Then
-                ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
-                EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+            If UseEXEpath = True Then
+                ParserPath = ObjThis.EXEdir & "\" & "sqdparse.exe"
+                EnginePath = ObjThis.EXEdir & "\" & "sqdata.exe"
             Else
-                ParserPath = GetAppPath() & "sqdparse.exe"
-                EnginePath = GetAppPath() & "sqdata.exe"
+                If EngObj.EngVersion <> "" Then
+                    ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
+                    EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+                Else
+                    ParserPath = GetAppPath() & "sqdparse.exe"
+                    EnginePath = GetAppPath() & "sqdata.exe"
+                End If
             End If
-
 
             RC.Path = ScriptPath
             RC.Name = ObjThis.Text
@@ -1166,7 +1186,7 @@ ErrorGoTo:
 
         Dim i As Integer
         Dim ds As clsDatastore
-       
+
         Try
 
             '/// First Sources
@@ -2075,7 +2095,7 @@ mapTgt:                     '/// Now Map Target
                     enumMappingType.MAPPING_TYPE_VAR, enumMappingType.MAPPING_TYPE_WORKVAR, _
                     enumMappingType.MAPPING_TYPE_NONE, enumMappingType.MAPPING_TYPE_CONSTANT
 
-                        
+
                         If Map.IsMapped = "0" Then
                             If Map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
                                 If wMap(rc, Map, True) = False Then   ', First
@@ -4319,7 +4339,7 @@ ErrorGoTo:
                         wComment(rc, map.MappingDesc)
                     End If
                 End If
-                
+
                 If TotLen > 66 Then
                     objWriteSQD.WriteLine(FORtgt)
                     objWriteINL.WriteLine(FORtgt)
