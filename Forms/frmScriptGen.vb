@@ -11,7 +11,7 @@ Public Class frmScriptGen
     Private sourcelevel As enumMappingLevel
     Private targetlevel As enumMappingLevel
     Private ScriptType As enumGenType
-    Private NewSyn As Boolean = False
+    Private NewSyn As Boolean = True
     Private MapDBG As Boolean = False
     Private MakeBat As Boolean = False
     Private UseEXEpath As Boolean = False

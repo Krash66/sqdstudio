@@ -321,7 +321,7 @@ Public Class ctlSelectTab
                     sql = "select column_name, data_type, data_length, data_scale FROM user_tab_columns WHERE table_name = '" & objthis.TableName & "' order by column_id"
 
                 Case enumODBCtype.SQL_SERVER
-                    sql = "select column_name, Data_Type, character_maximum_length, numeric_scale from INFORMATION_SCHEMA.COLUMNS where table_name = '" & objthis.TableName & "' order by ordinal_position"
+                    sql = "select column_name, Data_Type, character_maximum_length, numeric_precision, numeric_scale from INFORMATION_SCHEMA.COLUMNS where table_name = '" & objthis.TableName & "' order by ordinal_position"
 
             End Select
 
@@ -359,8 +359,18 @@ Public Class ctlSelectTab
                     For i = 0 To dgvColumns.RowCount - 1
                         column = dgvColumns.Item(0, i).Value.ToString
                         colType = dgvColumns.Item(1, i).Value.ToString
-                        colLen = dgvColumns.Item(2, i).Value.ToString
-                        colScale = dgvColumns.Item(3, i).Value.ToString
+                        If objthis.DSNtype = enumODBCtype.SQL_SERVER Then
+                            If colType = "varchar" Or colType = "char" Or colType = "nchar" Or colType = "nvarchar" _
+                            Or colType = "binary" Or colType = "varbinary" Then
+                                colLen = dgvColumns.Item(2, i).Value.ToString
+                            Else
+                                colLen = dgvColumns.Item(3, i).Value.ToString
+                            End If
+                            colScale = dgvColumns.Item(4, i).Value.ToString
+                        Else
+                            colLen = dgvColumns.Item(2, i).Value.ToString
+                            colScale = dgvColumns.Item(3, i).Value.ToString
+                        End If
 
                         If ListView1.Items.ContainsKey(column) = False Then
                             ListView1.Items.Add(column, column, 0).SubItems.Add(colType)

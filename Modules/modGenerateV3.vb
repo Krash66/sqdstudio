@@ -2459,9 +2459,9 @@ errorgoto:
             Dim DSname As String = ds.DsPhysicalSource
             Dim i As Integer
             Dim AccessHost As String = ObjSys.Host.Trim
-            If AccessHost = "" Then
-                AccessHost = "localhost"
-            End If
+            'If AccessHost = "" Then
+            '    AccessHost = "localhost"
+            'End If
 
 
             If SynNew = False Then
@@ -2504,7 +2504,7 @@ errorgoto:
                     Case DS_ACCESSMETHOD_FILE
                         DSname = "FILE:///" & ds.DsPhysicalSource '& "/" & ds.DatastoreName
                     Case DS_ACCESSMETHOD_IP
-                        DSname = "TCPIP://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & ":" & TCPport.Trim
+                        DSname = "TCP://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
                     Case DS_ACCESSMETHOD_MQSERIES
                         If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
                         Strings.Left(DSname, 3) = "dD:" Then
@@ -2513,25 +2513,25 @@ errorgoto:
                             If MQstr.Trim = "" Then
                                 DSname = "MQS://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
                             Else
-                                DSname = "MQS://" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
+                                DSname = "MQS://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        DSname = "CDC://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        DSname = "CDC://" & AccessHost & "/" & ds.DsPhysicalSource '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = "VSAM://" & AccessHost & "/" & ds.DsPhysicalSource
                     Case Else
                         DSname = ds.DsPhysicalSource
                 End Select
 
-                If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                        DSname = DSname
-                    Else
-                        DSname = "'" & DSname & "'"
-                    End If
-                End If
+                'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                '        DSname = DSname
+                '    Else
+                '        DSname = "'" & DSname & "'"
+                '    End If
+                'End If
 
             End If
 

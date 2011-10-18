@@ -8,6 +8,8 @@ Public Class ctlEngine
 
     Dim objThis As New clsEngine
     Dim IsNewObj As Boolean
+    Friend WithEvents gbCreateBat As System.Windows.Forms.GroupBox
+    Friend WithEvents btnCreateBat As System.Windows.Forms.Button
     Dim DefaultDir As String
 
 #Region " Windows Form Designer generated code "
@@ -145,6 +147,8 @@ Public Class ctlEngine
         Me.btnCMDbat = New System.Windows.Forms.Button
         Me.btnCMDexe = New System.Windows.Forms.Button
         Me.btnCMDcdc = New System.Windows.Forms.Button
+        Me.gbCreateBat = New System.Windows.Forms.GroupBox
+        Me.btnCreateBat = New System.Windows.Forms.Button
         Me.gbName.SuspendLayout()
         Me.gbDesc.SuspendLayout()
         Me.gbLib.SuspendLayout()
@@ -152,6 +156,7 @@ Public Class ctlEngine
         Me.gbVersion.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
+        Me.gbCreateBat.SuspendLayout()
         Me.SuspendLayout()
         '
         'cmdSave
@@ -630,36 +635,39 @@ Public Class ctlEngine
         'btnBAT
         '
         Me.btnBAT.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBAT.ForeColor = System.Drawing.Color.Black
+        Me.btnBAT.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnBAT.ForeColor = System.Drawing.Color.White
         Me.btnBAT.Location = New System.Drawing.Point(455, 69)
         Me.btnBAT.Name = "btnBAT"
         Me.btnBAT.Size = New System.Drawing.Size(27, 23)
         Me.btnBAT.TabIndex = 8
         Me.btnBAT.Text = "..."
-        Me.btnBAT.UseVisualStyleBackColor = True
+        Me.btnBAT.UseVisualStyleBackColor = False
         '
         'btnEXE
         '
         Me.btnEXE.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnEXE.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.btnEXE.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEXE.ForeColor = System.Drawing.Color.Black
+        Me.btnEXE.ForeColor = System.Drawing.Color.White
         Me.btnEXE.Location = New System.Drawing.Point(455, 42)
         Me.btnEXE.Name = "btnEXE"
         Me.btnEXE.Size = New System.Drawing.Size(27, 23)
         Me.btnEXE.TabIndex = 7
         Me.btnEXE.Text = "..."
-        Me.btnEXE.UseVisualStyleBackColor = True
+        Me.btnEXE.UseVisualStyleBackColor = False
         '
         'btnCDC
         '
         Me.btnCDC.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCDC.ForeColor = System.Drawing.Color.Black
+        Me.btnCDC.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnCDC.ForeColor = System.Drawing.Color.White
         Me.btnCDC.Location = New System.Drawing.Point(455, 15)
         Me.btnCDC.Name = "btnCDC"
         Me.btnCDC.Size = New System.Drawing.Size(27, 23)
         Me.btnCDC.TabIndex = 6
         Me.btnCDC.Text = "..."
-        Me.btnCDC.UseVisualStyleBackColor = True
+        Me.btnCDC.UseVisualStyleBackColor = False
         '
         'txtBAT
         '
@@ -734,37 +742,64 @@ Public Class ctlEngine
         '
         'btnCMDbat
         '
-        Me.btnCMDbat.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDbat.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnCMDbat.ForeColor = System.Drawing.Color.White
         Me.btnCMDbat.Location = New System.Drawing.Point(6, 100)
         Me.btnCMDbat.Name = "btnCMDbat"
         Me.btnCMDbat.Size = New System.Drawing.Size(68, 23)
         Me.btnCMDbat.TabIndex = 2
         Me.btnCMDbat.Text = "CMD"
-        Me.btnCMDbat.UseVisualStyleBackColor = True
+        Me.btnCMDbat.UseVisualStyleBackColor = False
         '
         'btnCMDexe
         '
-        Me.btnCMDexe.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDexe.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnCMDexe.ForeColor = System.Drawing.Color.White
         Me.btnCMDexe.Location = New System.Drawing.Point(6, 73)
         Me.btnCMDexe.Name = "btnCMDexe"
         Me.btnCMDexe.Size = New System.Drawing.Size(68, 23)
         Me.btnCMDexe.TabIndex = 1
         Me.btnCMDexe.Text = "CMD"
-        Me.btnCMDexe.UseVisualStyleBackColor = True
+        Me.btnCMDexe.UseVisualStyleBackColor = False
         '
         'btnCMDcdc
         '
-        Me.btnCMDcdc.ForeColor = System.Drawing.Color.Black
+        Me.btnCMDcdc.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnCMDcdc.ForeColor = System.Drawing.Color.White
         Me.btnCMDcdc.Location = New System.Drawing.Point(6, 46)
         Me.btnCMDcdc.Name = "btnCMDcdc"
         Me.btnCMDcdc.Size = New System.Drawing.Size(68, 23)
         Me.btnCMDcdc.TabIndex = 0
         Me.btnCMDcdc.Text = "CMD"
-        Me.btnCMDcdc.UseVisualStyleBackColor = True
+        Me.btnCMDcdc.UseVisualStyleBackColor = False
+        '
+        'gbCreateBat
+        '
+        Me.gbCreateBat.Controls.Add(Me.btnCreateBat)
+        Me.gbCreateBat.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbCreateBat.ForeColor = System.Drawing.Color.White
+        Me.gbCreateBat.Location = New System.Drawing.Point(502, 241)
+        Me.gbCreateBat.Name = "gbCreateBat"
+        Me.gbCreateBat.Size = New System.Drawing.Size(80, 119)
+        Me.gbCreateBat.TabIndex = 109
+        Me.gbCreateBat.TabStop = False
+        Me.gbCreateBat.Text = "Create Batch Files"
+        '
+        'btnCreateBat
+        '
+        Me.btnCreateBat.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.btnCreateBat.ForeColor = System.Drawing.Color.White
+        Me.btnCreateBat.Location = New System.Drawing.Point(6, 47)
+        Me.btnCreateBat.Name = "btnCreateBat"
+        Me.btnCreateBat.Size = New System.Drawing.Size(68, 66)
+        Me.btnCreateBat.TabIndex = 0
+        Me.btnCreateBat.Text = "Create Batch Files"
+        Me.btnCreateBat.UseVisualStyleBackColor = False
         '
         'ctlEngine
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Controls.Add(Me.gbCreateBat)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox3)
         Me.Controls.Add(Me.gbVersion)
@@ -791,6 +826,7 @@ Public Class ctlEngine
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
+        Me.gbCreateBat.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1443,6 +1479,18 @@ Public Class ctlEngine
 
         Catch ex As Exception
             LogError(ex, "ctlEngine btnCMDbat_Click")
+        End Try
+
+    End Sub
+
+    Private Sub btnCreateBat_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateBat.Click
+
+        Try
+            Dim frmBat As New frmBatchFiles
+            frmBat.ShowForm(objThis)
+
+        Catch ex As Exception
+            LogError(ex, "ctlEngine btnCreateBat_Click")
         End Try
 
     End Sub

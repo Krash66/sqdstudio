@@ -363,6 +363,8 @@ Partial Class frmScriptGen
         'cbNewSyn
         '
         Me.cbNewSyn.AutoSize = True
+        Me.cbNewSyn.Checked = True
+        Me.cbNewSyn.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbNewSyn.Location = New System.Drawing.Point(469, 50)
         Me.cbNewSyn.Name = "cbNewSyn"
         Me.cbNewSyn.Size = New System.Drawing.Size(93, 17)
@@ -373,8 +375,6 @@ Partial Class frmScriptGen
         'cbOldSyn
         '
         Me.cbOldSyn.AutoSize = True
-        Me.cbOldSyn.Checked = True
-        Me.cbOldSyn.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbOldSyn.Location = New System.Drawing.Point(469, 32)
         Me.cbOldSyn.Name = "cbOldSyn"
         Me.cbOldSyn.Size = New System.Drawing.Size(128, 17)

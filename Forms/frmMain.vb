@@ -8470,7 +8470,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     strSaveDir = FolderBrowserDialog1.SelectedPath
                 End If
 
-                NewName = InputBox("Please Name Your Model", "Model Name", Prefix & obj.Text)
+                NewName = InputBox("Please Name Your Model", "Model Name", obj.Text) 'Prefix & 
 
                 '//////////////////// NEW MODELER /////////////////////
                 retPath = ModelStructure(obj, OutType, NewName, strSaveDir)

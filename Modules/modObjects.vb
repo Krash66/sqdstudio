@@ -1053,7 +1053,7 @@ Module modObjects
             Dim Objthis As New clsStructure
 
             '/// Initialize new Object properties
-            Objthis.StructureName = ObjDML.Schema.Trim & "_" & ObjDML.TableName.Trim
+            Objthis.StructureName = ObjDML.TableName.Trim  'ObjDML.Schema.Trim & "_" & 
             '/// truncate Structure names to 128 characters so they will fit in Metadata
             If Objthis.StructureName.Length > 128 Then
                 Objthis.StructureName = Strings.Left(Objthis.StructureName, 128)
@@ -1078,7 +1078,7 @@ Module modObjects
                     Case enumODBCtype.ORACLE
                         sql = "SELECT DATA_TYPE, DATA_LENGTH, DATA_SCALE, NULLABLE, COLUMN_ID FROM USER_TAB_COLUMNS WHERE COLUMN_NAME ='" & col & "' AND TABLE_NAME = '" & ObjDML.TableName & "' ORDER BY COLUMN_ID"
                     Case enumODBCtype.SQL_SERVER
-                        sql = "select data_type, character_maximum_length, numeric_scale, is_nullable, ordinal_position from INFORMATION_SCHEMA.COLUMNS where column_name= '" & col & "' and table_name = '" & ObjDML.TableName & "' order by ordinal_position"
+                        sql = "select data_type, character_maximum_length, numeric_precision, numeric_scale, is_nullable, ordinal_position from INFORMATION_SCHEMA.COLUMNS where column_name= '" & col & "' and table_name = '" & ObjDML.TableName & "' order by ordinal_position"
                 End Select
 
                 cmd.CommandText = sql
@@ -1114,7 +1114,13 @@ Module modObjects
                     ElseIf ObjDML.DSNtype = enumODBCtype.SQL_SERVER Then
                         fld.FieldName = col
                         fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_DATATYPE, GetVal(dr("Data_Type"))) 'GetSQLsvrDataType(
-                        fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("character_maximum_length")))
+                        Dim dtype As String = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                        If dtype = "varchar" Or dtype = "char" Or dtype = "nchar" Or dtype = "nvarchar" _
+                            Or dtype = "binary" Or dtype = "varbinary" Then
+                            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("character_maximum_length")))
+                        Else
+                            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("numeric_precision")))
+                        End If
                         '/// SQL server puts in Nulls instead of ZEROs for length, so correct this here
                         If fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH) = Nothing Then
                             fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, 0)
