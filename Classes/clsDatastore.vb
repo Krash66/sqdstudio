@@ -178,6 +178,14 @@ Public Class clsDatastore
             'obj.IsBeforeImage = Me.IsBeforeImage '// 8/10/05 by npatel
             obj.DsUOW = Me.DsUOW
             obj.IsLookUp = Me.IsLookUp
+            'Field Props
+            obj.ExtTypeChar = Me.ExtTypeChar
+            obj.ExtTypeNum = Me.ExtTypeNum
+            obj.IfNullChar = Me.IfNullChar
+            obj.IfNullNum = Me.IfNullNum
+            obj.InValidChar = Me.InValidChar
+            obj.InValidNum = Me.InValidNum
+
 
             obj.IsModified = Me.IsModified
             obj.Parent = NewParent 'Me.Parent
