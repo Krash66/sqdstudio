@@ -2161,7 +2161,7 @@ doAgain:
         cmbDatastoreType.Items.Add(New Mylist("VSAMCDC", enumDatastore.DS_VSAMCDC))
         cmbDatastoreType.Items.Add(New Mylist("IBM Event", enumDatastore.DS_IBMEVENT))
         cmbDatastoreType.Items.Add(New Mylist("OracleCDC", enumDatastore.DS_ORACLECDC))
-        cmbDatastoreType.Items.Add(New Mylist("SQD CDC", enumDatastore.DS_UTSCDC))
+        cmbDatastoreType.Items.Add(New Mylist("UTSCDC", enumDatastore.DS_UTSCDC))
         '
         'cmbDatastoreType.Items.Add(New Mylist("XML CDC", enumDatastore.DS_XMLCDC))
         'cmbDatastoreType.Items.Add(New Mylist("Trigger based CDC", enumDatastore.DS_TRBCDC))

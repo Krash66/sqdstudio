@@ -1443,7 +1443,7 @@ Public Class frmMain
         'mnuAddSQDCDC
         '
         Me.mnuAddSQDCDC.Index = 15
-        Me.mnuAddSQDCDC.Text = "SQD CDC"
+        Me.mnuAddSQDCDC.Text = "UTSCDC"
         '
         'MenuItem16
         '
@@ -5562,6 +5562,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuQuery.Enabled = False
                     mnuAddDS.Enabled = True
                     mnuLU.Enabled = False
+                    mnuScriptDS.Enabled = Not bFolderClick
 
                     mnuAddDS.Text = "Add Datastore"
                     mnuDelDS.Text = "Delete Datastore"
@@ -5650,6 +5651,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPasteDS.Enabled = True 'bAllowPaste
                     mnuQuery.Enabled = False
                     mnuAddDS.Enabled = True
+                    mnuScriptDS.Enabled = Not bFolderClick
 
                     mnuPop = mnuPopupDS.CloneMenu
 
@@ -5714,6 +5716,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     '******* debug false --- to use set to true *********************
                     '*******************************************************
                     mnuQuery.Enabled = False
+                    mnuScriptDS.Enabled = Not bFolderClick
                     mnuPop = mnuPopupDS.CloneMenu
 
                 Case NODE_FO_VARIABLE, NODE_VARIABLE
@@ -6218,41 +6221,47 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim envObj As clsEnvironment
         Dim strSaveDir As String
 
-        'If System.IO.Directory.Exists(GetAppPath() & "Scripts") = False Then
-        '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
-        'End If
+        Try
+            'If System.IO.Directory.Exists(GetAppPath() & "Scripts") = False Then
+            '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
+            'End If
 
-        'Me.Cursor = Cursors.WaitCursor
-        '/// Get Engine Object
-        obj = CType(tvExplorer.SelectedNode.Tag, clsEngine)
-        obj.LoadMe()
-        'sysobj = obj.ObjSystem
-        'sysobj.LoadItems()
+            'Me.Cursor = Cursors.WaitCursor
+            '/// Get Engine Object
+            obj = CType(tvExplorer.SelectedNode.Tag, clsEngine)
+            obj.LoadMe()
+            'sysobj = obj.ObjSystem
+            'sysobj.LoadItems()
 
-        '/// Get Environment Object
-        envObj = obj.ObjSystem.Environment
-        envObj.LoadMe()
+            '/// Get Environment Object
+            envObj = obj.ObjSystem.Environment
+            envObj.LoadMe()
 
-        '/// Get Script Directory
-        If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
-            strSaveDir = envObj.LocalScriptDir
-        Else
-            MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
-            "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
-            Me.Cursor = Cursors.Default
-            Exit Sub
-        End If
-        '******************************* New Script Generation v3 ************************************
-        'Dim RetCode As clsRcode
-        ''/// Generate Script ... Returns a return code object
-        'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
+            '/// Get Script Directory
+            If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
+                strSaveDir = envObj.LocalScriptDir
+            Else
+                MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
+                "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
+                Me.Cursor = Cursors.Default
+                Exit Sub
+            End If
+            '******************************* New Script Generation v3 ************************************
+            'Dim RetCode As clsRcode
+            ''/// Generate Script ... Returns a return code object
+            'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
 
-        Dim frm As New frmScriptGen
-        frm.OpenFormEng(obj, strSaveDir)
+            Dim frm As New frmScriptGen
+            frm.OpenFormEng(obj, strSaveDir)
 
-        'Log("********* Script Generation End ***********")
+            'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+            'Me.Cursor = Cursors.Default
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuScriptEngine")
+        End Try
 
     End Sub
 
@@ -6263,39 +6272,46 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim dsSelobj As clsDSSelection
         Dim strSaveDir As String
 
-        '/// Get Engine Object
-        If CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_SOURCEDSSEL Or _
-        CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_TARGETDSSEL Then
-            dsSelobj = tvExplorer.SelectedNode.Tag
-            obj = dsSelobj.ObjDatastore
-        Else
-            obj = tvExplorer.SelectedNode.Tag
-        End If
+        Try
+            '/// Get Engine Object
+            If CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_SOURCEDSSEL Or _
+            CType(tvExplorer.SelectedNode.Tag, INode).Type = NODE_TARGETDSSEL Then
+                dsSelobj = tvExplorer.SelectedNode.Tag
+                obj = dsSelobj.ObjDatastore
+            Else
+                obj = tvExplorer.SelectedNode.Tag
+            End If
 
-        '/// Get Environment Object
-        envObj = obj.Engine.ObjSystem.Environment
-        envObj.LoadMe()
+            '/// Get Environment Object
+            envObj = obj.Engine.ObjSystem.Environment
+            envObj.LoadMe()
 
-        '/// Get Script Directory
-        If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
-            strSaveDir = envObj.LocalScriptDir
-        Else
-            MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
-            "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
-            Me.Cursor = Cursors.Default
-            Exit Sub
-        End If
-        '******************************* New Script Generation v3 ************************************
-        'Dim RetCode As clsRcode
-        ''/// Generate Script ... Returns a return code object
-        'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
+            '/// Get Script Directory
+            If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
+                strSaveDir = envObj.LocalScriptDir
+            Else
+                MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
+                "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
+                Me.Cursor = Cursors.Default
+                Exit Sub
+            End If
+            '******************************* New Script Generation v3 ************************************
+            'Dim RetCode As clsRcode
+            ''/// Generate Script ... Returns a return code object
+            'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
 
-        Dim frm As New frmScriptGen
-        frm.OpenFormDS(obj, strSaveDir)
+            Dim frm As New frmScriptGen
+            frm.OpenFormDS(obj, strSaveDir)
 
-        'Log("********* Script Generation End ***********")
+            'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+            'Me.Cursor = Cursors.Default
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuScripDS_click")
+        End Try
+
     End Sub
 
     Private Sub mnuScriptProc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScriptProc.Click
@@ -6304,36 +6320,42 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim envObj As clsEnvironment
         Dim strSaveDir As String
 
-        'If System.IO.Directory.Exists(GetAppPath() & "Scripts") = False Then
-        '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
-        'End If
+        Try
+            'If System.IO.Directory.Exists(GetAppPath() & "Scripts") = False Then
+            '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
+            'End If
 
-        'Me.Cursor = Cursors.WaitCursor
-        '/// Get Engine Object
-        obj = tvExplorer.SelectedNode.Tag
-        '/// Get Environment Object
-        envObj = obj.Engine.ObjSystem.Environment
-        envObj.LoadMe()
-        '/// Get Script Directory
-        If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
-            strSaveDir = envObj.LocalScriptDir
-        Else
-            MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
-            "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
-            Me.Cursor = Cursors.Default
-            Exit Sub
-        End If
-        '******************************* New Script Generation v3 ************************************
-        'Dim RetCode As clsRcode
-        ''/// Generate Script ... Returns a return code object
-        'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
+            'Me.Cursor = Cursors.WaitCursor
+            '/// Get Engine Object
+            obj = tvExplorer.SelectedNode.Tag
+            '/// Get Environment Object
+            envObj = obj.Engine.ObjSystem.Environment
+            envObj.LoadMe()
+            '/// Get Script Directory
+            If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
+                strSaveDir = envObj.LocalScriptDir
+            Else
+                MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
+                "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
+                Me.Cursor = Cursors.Default
+                Exit Sub
+            End If
+            '******************************* New Script Generation v3 ************************************
+            'Dim RetCode As clsRcode
+            ''/// Generate Script ... Returns a return code object
+            'RetCode = GenerateEngScriptV3(obj, strSaveDir, True)
 
-        Dim frm As New frmScriptGen
-        frm.OpenFormProc(obj, strSaveDir)
+            Dim frm As New frmScriptGen
+            frm.OpenFormProc(obj, strSaveDir)
 
-        'Log("********* Script Generation End ***********")
+            'Log("********* Script Generation End ***********")
 
-        'Me.Cursor = Cursors.Default
+            'Me.Cursor = Cursors.Default
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuScriptProc")
+        End Try
 
     End Sub
 
@@ -6939,6 +6961,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 conn.Open()
                 cmd.Connection = conn
 
+                lblStatusMsg.Text = "Creating Object Clone to Paste"
+                Me.Refresh()
+
                 destObj = obj.Clone(newObjParent, True, cmd)
                 conn.Close()
 
@@ -6978,9 +7003,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
 
 
+                    lblStatusMsg.Text = "Adding Cloned Object to Metadata"
+                    Me.Refresh()
 
                     If destObj.AddNew(True) = True Then '//8/15/05
                         'tran.Commit()
+
+                        lblStatusMsg.Text = "Object added to Metadata, Filling Object tree"
+                        Me.Refresh()
 
                         Select Case GetClipboardObjectType()
                             Case NODE_PROJECT
@@ -7034,7 +7064,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
                 End If
 [continue]: Next
-
+            lblStatusMsg.Text = "Complete!"
+            Me.Refresh()
             ShowUsercontrol(cNode, True)
 
         Catch ex As Exception
@@ -7648,6 +7679,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'obj.Project = CType(cNode.Tag, INode).Project
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
+            tvExplorer.Refresh()
 
         Catch ex As Exception
             LogError(ex)
@@ -8120,7 +8152,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 cNode.Text = obj.Text
                 AddDSstructuresToTree(cNode, obj, True)  'add it's DSselections under it
             End If
-
+            tvExplorer.Refresh()
 
             Return True
 
@@ -8796,6 +8828,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                     End If
                     '//TODO
             End Select
+            Me.Refresh()
 
         Catch ex As Exception
             LogError(ex, "frmMain ShowUserControl")

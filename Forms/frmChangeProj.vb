@@ -128,6 +128,7 @@ doAgain:
                     ProjName = DataGridView2.Item(0, 0).Value.ToString
                     Projdesc = DataGridView2.Item(1, 0).Value.ToString
                     SecATTR = DataGridView2.Item(2, 0).Value.ToString
+                    ProjCdate = DataGridView2.Item(3, 0).Value.ToString
                 End If
 
                 txtProj.Text = ProjName

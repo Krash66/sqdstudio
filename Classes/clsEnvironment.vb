@@ -492,7 +492,7 @@ Public Class clsEnvironment
 
         Catch ex As Exception
             LogError(ex, "clsEnv Delete", sql)
-            Return False
+            Delete = False
         End Try
 
     End Function

@@ -254,7 +254,9 @@ Public Class clsProject
 
             
             sql = "Update " & Me.Project.tblProjects & " set PROJECTNAME='" & FixStr(Me.ProjectName) & _
-            "',PROJECTDESCRIPTION='" & FixStr(Me.ProjectDesc) & "',SECURITYATTR='" & FixStr(Me.SecurityATTR) & _
+            "',PROJECTDESCRIPTION='" & FixStr(Me.ProjectDesc) & _
+            "',SECURITYATTR='" & FixStr(Me.SecurityATTR) & _
+            "',UPDATED_TIMESTAMP='" & FixStr(Now.ToString) & _
             "' where ProjectName=" & Me.GetQuotedText
 
             Me.DeleteATTR(cmd)
@@ -294,8 +296,9 @@ Public Class clsProject
                 " Values('" & FixStr(ProjectName) & "','" & FixStr(ProjectDesc) & "','" _
                 & FixStr(ProjectVersion) & "','" & FixStr(Now().ToString) & "')"
             Else
-                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR) " & _
-                "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & "')"
+                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR,CREATED_TIMESTAMP) " & _
+                "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & _
+                "','" & FixStr(Me.ProjectCreationDate) & "')"
 
                 Me.DeleteATTR(cmd)
                 Me.InsertATTR(cmd)
@@ -381,9 +384,8 @@ Public Class clsProject
         Try
             '//first delete all child objects
             If Cascade = True Then
-                Dim o As INode
-                For Each o In Me.Environments
-                    o.Delete(cmd, cnn, Cascade, False)
+                For Each env As clsEnvironment In Me.Environments
+                    env.Delete(cmd, cnn, Cascade, False)
                 Next
                 RemoveFromCollection(Me.Environments, "") '//clear collection
             End If
@@ -404,6 +406,7 @@ Public Class clsProject
 
         Catch ex As Exception
             LogError(ex, "clsProject Delete", sql)
+            Delete = False
         End Try
 
     End Function

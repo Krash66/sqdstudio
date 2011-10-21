@@ -2483,7 +2483,7 @@ errorgoto:
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        DSname = "CDC:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        DSname = "cdc:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = ds.DsPhysicalSource
                     Case Else
@@ -2502,24 +2502,24 @@ errorgoto:
                 '*********New Syntax ************
                 Select Case ds.DsAccessMethod
                     Case DS_ACCESSMETHOD_FILE
-                        DSname = "FILE:///" & ds.DsPhysicalSource '& "/" & ds.DatastoreName
+                        DSname = "file:///" & Quote(ds.DsPhysicalSource) '& "/" & ds.DatastoreName
                     Case DS_ACCESSMETHOD_IP
-                        DSname = "TCP://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
+                        DSname = "tcp://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
                     Case DS_ACCESSMETHOD_MQSERIES
                         If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
                         Strings.Left(DSname, 3) = "dD:" Then
                             DSname = ds.DsPhysicalSource
                         Else
                             If MQstr.Trim = "" Then
-                                DSname = "MQS://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
+                                DSname = "mqs://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
                             Else
-                                DSname = "MQS://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
+                                DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        DSname = "CDC://" & AccessHost & "/" & ds.DsPhysicalSource '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
-                        DSname = "VSAM://" & AccessHost & "/" & ds.DsPhysicalSource
+                        DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
                     Case Else
                         DSname = ds.DsPhysicalSource
                 End Select
@@ -2538,7 +2538,7 @@ errorgoto:
             '/// define formatted strings
             Dim FORds1 As String
             If SynNew = True Then
-                FORds1 = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
+                FORds1 = String.Format("{0}", "DATASTORE " & QuoteRes(DSname))
             Else
                 FORds1 = String.Format("{0}", "DATASTORE " & Quote(QuoteRes(DSname)))
             End If
@@ -3224,8 +3224,20 @@ ErrorGoTo:
                 '/// now read and write the structure file
                 While (objReadStr.Peek() > -1)
                     TempString = objReadStr.ReadLine
-                    objWriteINL.WriteLine(TempString)
-                    AddToLineNo(rc, False, , False)
+                    If struct.StructureType = enumStructure.STRUCT_COBOL_IMS Then
+                        objWriteINL.WriteLine(TempString)
+                    Else
+                        'added 10/19/11 for making inline file correct for subsets
+                        'no undefined dssel fields are written
+                        For Each fld As clsField In dssel.DSSelectionFields
+                            Dim fldname As String = fld.FieldName
+                            If TempString.Contains(fldname) Then
+                                objWriteINL.WriteLine(TempString)
+                                GoTo nextTempstr
+                            End If
+                        Next
+                    End If
+nextTempstr:        AddToLineNo(rc, False, , False)
                 End While
 SubstGoTo:      objWriteINL.WriteLine(PSix2)
                 AddToLineNo(rc, False, , False)
@@ -3535,7 +3547,7 @@ ErrorGoTo:
     Function wDebugHead(ByRef rc As clsRcode, ByVal proc As clsTask) As Boolean
 
         Try
-            Dim FORout As String = String.Format("{0}{1}{2}", "OUTMSG(0,'-------------------------- ", QuoteRes(proc.TaskName), _
+            Dim FORout As String = String.Format("{0}{1}{2}", "--OUTMSG(0,'-------------------------- ", QuoteRes(proc.TaskName), _
             " Beginning --------------------')")
 
             objWriteSQD.WriteLine(FORout)
@@ -3562,7 +3574,7 @@ ErrorGoTo:
 
         Try
             Dim SrcStr As String = map.SourceDataStore & "." & map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
-            Dim FORout As String = String.Format("{0}{1}{2}", "OUTMSG(0,STRING('", SrcStr & " = ',", SrcStr & "))")
+            Dim FORout As String = String.Format("{0}{1}{2}", "--OUTMSG(0,STRING('", SrcStr & " = ',", SrcStr & "))")
 
             objWriteSQD.WriteLine(FORout)
             objWriteINL.WriteLine(FORout)

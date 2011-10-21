@@ -222,7 +222,7 @@ Public Class frmAbout
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(61, 13)
         Me.Label7.TabIndex = 11
-        Me.Label7.Text = "3.4.0.200"
+        Me.Label7.Text = "3.4.0.300"
         '
         'Label6
         '
@@ -288,7 +288,7 @@ Public Class frmAbout
         Me.lblBuildDate.Name = "lblBuildDate"
         Me.lblBuildDate.Size = New System.Drawing.Size(75, 13)
         Me.lblBuildDate.TabIndex = 5
-        Me.lblBuildDate.Text = "10/18/2011"
+        Me.lblBuildDate.Text = "10/20/2011"
         '
         'Label8
         '
@@ -310,7 +310,7 @@ Public Class frmAbout
         Me.lblBuildNumber.Name = "lblBuildNumber"
         Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
         Me.lblBuildNumber.TabIndex = 3
-        Me.lblBuildNumber.Text = "3.4.0.2"
+        Me.lblBuildNumber.Text = "3.4.0.3"
         '
         'frmAbout
         '

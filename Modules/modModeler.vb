@@ -421,10 +421,10 @@ nextgoto:   Next
             Dim first As Boolean = True
 
             If SchemaName <> "" Then
-                FORcreate = String.Format("{0}{1}{2}{3}", "CREATE TABLE ", "[" & SchemaName & "]", ".", _
-                                          "[" & RDash(TableName) & "]")
+                FORcreate = String.Format("{0}{1}{2}{3}", "CREATE TABLE ", SchemaName, ".", RDash(TableName))
+                '"[" & SchemaName & "]" "[" & RDash(TableName) & "]"
             Else
-                FORcreate = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", "[" & RDash(TableName) & "]")
+                FORcreate = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))   '"[" &  & "]"
             End If
 
             objWriteOut.Write(FORcreate)
@@ -434,10 +434,10 @@ nextgoto:   Next
                 '/// skip groupitems
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
                 If first = True Then
-                    NameFld = " " & RDash("[" & fld.FieldName & "] ")
+                    NameFld = " " & RDash(fld.FieldName & "  ")   '"[" &  & "] "
                     first = False
                 Else
-                    NameFld = "," & RDash("[" & fld.FieldName & "] ")
+                    NameFld = "," & RDash(fld.FieldName & "  ")   '"[" & fld.FieldName & "] "
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
@@ -1213,9 +1213,9 @@ nextgoto3:  Next
                         '    GetOutFldType = "SMALLINT" & OutLen
 
                         Case "text"
-                            GetOutFldType = "[" & InType & "]"
+                            GetOutFldType = InType  '"[" &  & "]"
                         Case Else
-                            GetOutFldType = "[" & InType & "]" & OutLen
+                            GetOutFldType = InType & OutLen  '"[" &  & "]"
                     End Select
 
                 Case Else
