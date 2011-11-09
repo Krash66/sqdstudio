@@ -560,7 +560,7 @@ nextgoto:   Next
                 fldLen = "(" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ");"
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
 
-                FORfld = String.Format("{0}{1,-30}{2}", "<!ELEMENT ", NameFld, " (#PCDATA)>")
+                FORfld = String.Format("{0}{1,-40}{2}", "<!ELEMENT ", NameFld, " (#PCDATA)>")
 
                 objWriteOut.WriteLine(FORfld)
 nextgoto1:  Next

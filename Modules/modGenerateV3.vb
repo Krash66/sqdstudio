@@ -4911,7 +4911,7 @@ ErrorGoTo:
             Case enumDatastore.DS_DELIMITED
                 retStr = "DELIMITED"
             Case enumDatastore.DS_XML
-                retStr = "XML"
+                retStr = "XMLCDC"
             Case enumDatastore.DS_RELATIONAL
                 retStr = "RELATIONAL"
             Case enumDatastore.DS_DB2LOAD

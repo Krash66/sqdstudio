@@ -68,7 +68,7 @@
         ' Load the XML document in to the Text Window
         Try
             txtInMessage.Text = LoadTextFile(InFilePath)
-
+           
         Catch ex As Exception
             LogError(ex, "frmXMLconv LoadInText")
         End Try
@@ -365,7 +365,7 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
             Dim FORfld As String
 
             For Each name As String In Arr
-                FORfld = String.Format("{0}{1,-40}{2}", "<!ELEMENT ", name, " (#CDATA)>")
+                FORfld = String.Format("{0}{1,-40}{2}", "<!ELEMENT ", name, " (#PCDATA)>")
                 sb.AppendLine(FORfld)
             Next
 
@@ -466,4 +466,5 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
 
     End Sub
 
+    
 End Class
