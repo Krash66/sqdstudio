@@ -1118,6 +1118,10 @@ Module modObjects
                         If dtype = "varchar" Or dtype = "char" Or dtype = "nchar" Or dtype = "nvarchar" _
                             Or dtype = "binary" Or dtype = "varbinary" Then
                             fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("character_maximum_length")))
+                        ElseIf dtype = "datetime" Then
+                            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, 8)
+                        ElseIf dtype = "smalldatetime" Then
+                            fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, 4)
                         Else
                             fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_LENGTH, GetVal(dr("numeric_precision")))
                         End If

@@ -6,7 +6,9 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
-   
+    Friend WithEvents mnuXMLtoDTD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuMainXMLtoDTD As System.Windows.Forms.MenuItem
+
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -368,6 +370,7 @@ Public Class frmMain
         Me.mnuCloseProject = New System.Windows.Forms.MenuItem
         Me.mnuCloseAllProjects = New System.Windows.Forms.MenuItem
         Me.MenuItem7 = New System.Windows.Forms.MenuItem
+        Me.mnuMainXMLtoDTD = New System.Windows.Forms.MenuItem
         Me.btnBackup = New System.Windows.Forms.MenuItem
         Me.MenuItem25 = New System.Windows.Forms.MenuItem
         Me.mnuSave = New System.Windows.Forms.MenuItem
@@ -425,6 +428,7 @@ Public Class frmMain
         Me.mnuPasteStruct = New System.Windows.Forms.MenuItem
         Me.MenuItem21 = New System.Windows.Forms.MenuItem
         Me.mnuGenRepStr = New System.Windows.Forms.MenuItem
+        Me.mnuXMLtoDTD = New System.Windows.Forms.MenuItem
         Me.mnuPopupConnection = New System.Windows.Forms.MenuItem
         Me.mnuAddConn = New System.Windows.Forms.MenuItem
         Me.mnuDelConn = New System.Windows.Forms.MenuItem
@@ -937,7 +941,7 @@ Public Class frmMain
         'mnuFile
         '
         Me.mnuFile.Index = 0
-        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuNewProject, Me.mnuOpenProject, Me.MenuItem2, Me.mnuCloseProject, Me.mnuCloseAllProjects, Me.MenuItem7, Me.btnBackup, Me.MenuItem25, Me.mnuSave, Me.MenuItem10, Me.mnuExit})
+        Me.mnuFile.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuNewProject, Me.mnuOpenProject, Me.MenuItem2, Me.mnuCloseProject, Me.mnuCloseAllProjects, Me.MenuItem7, Me.mnuMainXMLtoDTD, Me.btnBackup, Me.MenuItem25, Me.mnuSave, Me.MenuItem10, Me.mnuExit})
         Me.mnuFile.Shortcut = System.Windows.Forms.Shortcut.CtrlF
         Me.mnuFile.Text = "&File"
         '
@@ -973,30 +977,35 @@ Public Class frmMain
         Me.MenuItem7.Index = 5
         Me.MenuItem7.Text = "-"
         '
+        'mnuMainXMLtoDTD
+        '
+        Me.mnuMainXMLtoDTD.Index = 6
+        Me.mnuMainXMLtoDTD.Text = "XML Message to DTD"
+        '
         'btnBackup
         '
-        Me.btnBackup.Index = 6
+        Me.btnBackup.Index = 7
         Me.btnBackup.Text = "Backup MetaData"
         '
         'MenuItem25
         '
-        Me.MenuItem25.Index = 7
+        Me.MenuItem25.Index = 8
         Me.MenuItem25.Text = "-"
         '
         'mnuSave
         '
-        Me.mnuSave.Index = 8
+        Me.mnuSave.Index = 9
         Me.mnuSave.Shortcut = System.Windows.Forms.Shortcut.CtrlS
         Me.mnuSave.Text = "Save"
         '
         'MenuItem10
         '
-        Me.MenuItem10.Index = 9
+        Me.MenuItem10.Index = 10
         Me.MenuItem10.Text = "-"
         '
         'mnuExit
         '
-        Me.mnuExit.Index = 10
+        Me.mnuExit.Index = 11
         Me.mnuExit.Text = "Exit"
         '
         'mnuEdit
@@ -1120,7 +1129,7 @@ Public Class frmMain
         'mnuPopupStruct
         '
         Me.mnuPopupStruct.Index = 2
-        Me.mnuPopupStruct.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStruct, Me.mnuAddStructSubset, Me.MenuItem13, Me.mnuModelStructDTD, Me.mnuModelStructDB2DDL, Me.mnuModelOraDDL, Me.mnuModelSQLDDL, Me.mnuModelStructHeader, Me.mnuModelStructLOD, Me.mnuModelStructSQL, Me.mnuModelStructMSSQL, Me.mnuModelStructDB2, Me.MenuItem15, Me.mnuDelStruct, Me.mnuChgStruct, Me.mnuDelAllStruct, Me.MenuItem6, Me.mnuCopyStruct, Me.mnuPasteStruct, Me.MenuItem21, Me.mnuGenRepStr})
+        Me.mnuPopupStruct.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddStruct, Me.mnuAddStructSubset, Me.MenuItem13, Me.mnuModelStructDTD, Me.mnuModelStructDB2DDL, Me.mnuModelOraDDL, Me.mnuModelSQLDDL, Me.mnuModelStructHeader, Me.mnuModelStructLOD, Me.mnuModelStructSQL, Me.mnuModelStructMSSQL, Me.mnuModelStructDB2, Me.MenuItem15, Me.mnuDelStruct, Me.mnuChgStruct, Me.mnuDelAllStruct, Me.MenuItem6, Me.mnuCopyStruct, Me.mnuPasteStruct, Me.MenuItem21, Me.mnuGenRepStr, Me.mnuXMLtoDTD})
         Me.mnuPopupStruct.Text = "mnuPopupStruct"
         '
         'mnuAddStruct
@@ -1274,6 +1283,11 @@ Public Class frmMain
         '
         Me.mnuGenRepStr.Index = 20
         Me.mnuGenRepStr.Text = "Generate Report"
+        '
+        'mnuXMLtoDTD
+        '
+        Me.mnuXMLtoDTD.Index = 21
+        Me.mnuXMLtoDTD.Text = "XML Message to DTD"
         '
         'mnuPopupConnection
         '
@@ -2067,6 +2081,7 @@ Public Class frmMain
         Me.MinimumSize = New System.Drawing.Size(800, 600)
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.Text = " "
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -9291,5 +9306,24 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
     End Sub
 
 #End Region
+
+    Private Sub mnuXMLtoDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuXMLtoDTD.Click
+
+        Dim frm As frmXMLconv
+
+        frm = New frmXMLconv
+        frm.OpenForm()
+
+    End Sub
+
+   
+    Private Sub mnuMainXMLtoDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainXMLtoDTD.Click
+
+        Dim frm As frmXMLconv
+
+        frm = New frmXMLconv
+        frm.OpenForm()
+
+    End Sub
 
 End Class

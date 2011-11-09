@@ -364,6 +364,12 @@
     <Compile Include="Forms\frmVariable.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmXMLconv.Designer.vb">
+      <DependentUpon>frmXMLconv.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmXMLconv.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\modGenerateV3.vb" />
     <Compile Include="Modules\modDatabase.vb">
       <SubType>Code</SubType>
@@ -579,6 +585,9 @@
     <EmbeddedResource Include="Forms\frmVariable.resx">
       <DependentUpon>frmVariable.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmXMLconv.resx">
+      <DependentUpon>frmXMLconv.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="licenses.licx" />
     <EmbeddedResource Include="My Project\Resources.resx">

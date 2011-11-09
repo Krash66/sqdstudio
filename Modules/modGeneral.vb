@@ -234,6 +234,9 @@ Public Module modGeneral
             sr = New System.IO.StreamReader(FilePath)
             LoadTextFile = sr.ReadToEnd()
 
+        Catch ex As Exception
+            LogError(ex)
+            Return ""
         Finally
             If Not sr Is Nothing Then sr.Close()
         End Try

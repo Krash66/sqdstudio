@@ -560,7 +560,8 @@ Public Module modXML
                         End If
                         Return ""
                     Else
-                        '//Now return output file path : <temp folder>\<fileprefix><input filename no extension>.XML
+                        '//Now return output file path : 
+                        '<temp folder>\<fileprefix><input filename no extension>.XML
                         If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
                             GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"    '& "\"
                         Else
