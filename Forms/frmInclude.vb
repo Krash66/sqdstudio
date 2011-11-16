@@ -88,7 +88,7 @@ doAgain:
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
 
-        Dim strFilter As String = "SQD Script Files (*.sqd)|*.sqd|All files (*.*)|*.*"
+        Dim strFilter As String = "SQD Script Files (*.inl)|*.inl|All files (*.*)|*.*"
 
         dlgOpen.Filter = strFilter
 

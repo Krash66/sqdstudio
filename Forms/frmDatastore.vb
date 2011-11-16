@@ -1162,7 +1162,10 @@ Public Class frmDatastore
 
 
             '//save structure selections too 
-            Call SaveCurrentSelection()
+            If SaveCurrentSelection() = False Then
+                DialogResult = Windows.Forms.DialogResult.Retry
+                Exit Sub
+            End If
 
             If objThis.DsDirection = DS_DIRECTION_TARGET Or objThis.IsLookUp = True Then
                 If objThis.DatastoreType = enumDatastore.DS_RELATIONAL Then
@@ -1194,11 +1197,14 @@ Public Class frmDatastore
                     Exit Sub
                 End If
             Else
-                objThis.Save()
+                If objThis.Save() = False Then
+                    DialogResult = Windows.Forms.DialogResult.Retry
+                    Exit Sub
+                End If
             End If
 
-            Me.Close()
             DialogResult = Windows.Forms.DialogResult.OK
+            Me.Close()
 
         Catch ex As Exception
             LogError(ex, "frmDatastore cmdOK_Click")
@@ -1592,8 +1598,6 @@ doAgain:
                 objThis.DsCharacterCode = ""
             End If
 
-
-
             '//npatel 10/7/05
             If cmbAccessMethod.Enabled = True Then
                 Dim Itm As Mylist
@@ -1722,13 +1726,11 @@ doAgain:
                 Next
             Next
             '/// once all datastore selections are saved from form, make sure all parents are set
-            objThis.SetDSselParents()
-
-            Return True
+            SaveCurrentSelection = objThis.SetDSselParents()
 
         Catch ex As Exception
             LogError(ex, "frmDatastore SaveCurrentSelection")
-            Return False
+            SaveCurrentSelection = False
         End Try
 
     End Function

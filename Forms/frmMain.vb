@@ -1888,7 +1888,6 @@ Public Class frmMain
         '
         'SaveFileDialog1
         '
-        Me.SaveFileDialog1.CreatePrompt = True
         Me.SaveFileDialog1.DefaultExt = "*.mdb"
         Me.SaveFileDialog1.Filter = "Design Studio MetaData (*.mdb)|*.mdb |All files (*.*)|*.*"
         Me.SaveFileDialog1.Title = "Save MetaData Backup"
@@ -2800,6 +2799,16 @@ Public Class frmMain
                         CurLoadedProject = obj
                         '// fill the object array with it's child treenodes
                         FillProject(obj)
+
+                        '*** prompt to backup Access Metadata ***
+                        If obj.ODBCtype = enumODBCtype.ACCESS Then
+                            If MsgBox("To ensure the least likelihood of MS Access data loss," & Chr(13) & _
+                                   "backup your Metadata often." & Chr(13) & _
+                                   "Would you like to back it up now?", _
+                                   MsgBoxStyle.YesNo, "MS Access Metadata Backup") = MsgBoxResult.Yes Then
+                                backMeta()
+                            End If
+                        End If
                     Else
                         Exit Try
                     End If
@@ -5404,7 +5413,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuModelStructMSSQL.Enabled = bDDL 'Not bStructFolder
                     mnuModelStructDB2.Enabled = bDDL 'Not bStructFolder
                     mnuAddStructSubset.Enabled = Not bFolderClick
-                    mnuCopyStruct.Enabled = Not bFolderClick
+                    mnuCopyStruct.Enabled = True 'Not bFolderClick
                     mnuPasteStruct.Enabled = bAllowPaste
                     mnuChgStruct.Enabled = Not bFolderClick
                     If obj.Text <> "Descriptions" Then
@@ -5468,12 +5477,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuDelEngine.Enabled = Not bFolderClick
                     'mnuEditEngine.Enabled = Not bFolderClick
                     mnuScriptEngine.Enabled = Not bFolderClick
-                    'mnuCopyEngine.Enabled = Not bFolderClick
+                    mnuCopyEngine.Enabled = True 'Not bFolderClick
                     mnuPasteEngine.Enabled = bAllowPaste
                     'mnuGenDebug.Enabled = Not bFolderClick
                     'mnuParseDebug.Enabled = Not bFolderClick
                     'mnuParse.Enabled = Not bFolderClick
-                    mnuEngMerge.Enabled = bEngine And bAllowPaste
+                    mnuEngMerge.Enabled = False 'bEngine And bAllowPaste
 
                     mnuPop = mnuPopupEngine.CloneMenu
                     '//TODO
@@ -5663,7 +5672,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
 
                     mnuCopyDS.Enabled = True 'Not bFolderClick
-                    mnuPasteDS.Enabled = True 'bAllowPaste
+                    mnuPasteDS.Enabled = True
                     mnuQuery.Enabled = False
                     mnuAddDS.Enabled = True
                     mnuScriptDS.Enabled = Not bFolderClick
@@ -6973,15 +6982,27 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Dim cmd As New System.Data.Odbc.OdbcCommand
                 Dim conn As New Odbc.OdbcConnection(obj.Project.MetaConnectionString)
                 Dim destObj As INode
+                Dim tran As Odbc.OdbcTransaction = Nothing
+
                 conn.Open()
                 cmd.Connection = conn
+                'tran = conn.BeginTransaction()
+                'cmd.Transaction = tran
 
                 lblStatusMsg.Text = "Creating Object Clone to Paste"
                 Me.Refresh()
 
                 destObj = obj.Clone(newObjParent, True, cmd)
+                'If destObj Is Nothing Then
+                '    tran.Rollback()
                 conn.Close()
+                '    Exit Try
+                'Else
+                '    tran.Commit()
+                '    conn.Close()
+                'End If
 
+                
                 If tvExplorer.SelectedNode.Text = "Sources" Then
                     CType(destObj, clsDatastore).DsDirection = "S"
                     'CType(destObj, clsDatastore).LoadAttr()
@@ -7021,61 +7042,84 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     lblStatusMsg.Text = "Adding Cloned Object to Metadata"
                     Me.Refresh()
 
+                    'conn.Open()
+                    'cmd.Connection = conn
+                    'tran = conn.BeginTransaction()
+                    'cmd.Transaction = tran
+
                     If destObj.AddNew(True) = True Then '//8/15/05
                         'tran.Commit()
+                        'conn.Close()
+
+                        'If destObj Is Nothing Then
+
+                        'Else
+                        '    tran.Rollback()
+                        '    conn.Close()
+                        '    Exit Try
+                        'End If
 
                         lblStatusMsg.Text = "Object added to Metadata, Filling Object tree"
                         Me.Refresh()
 
+                        Dim Success As Boolean = False
+
                         Select Case GetClipboardObjectType()
                             Case NODE_PROJECT
-                                FillProjectFromClipboard(destObj)
+                                Success = FillProjectFromClipboard(destObj)
 
                             Case NODE_ENVIRONMENT
-                                FillEnvFromClipboard(cNode, destObj)
+                                Success = FillEnvFromClipboard(cNode, destObj)
 
                             Case NODE_SYSTEM
-                                FillSysFromClipboard(cNode, destObj)
+                                Success = FillSysFromClipboard(cNode, destObj)
 
                             Case NODE_ENGINE
-                                FillEngineFromClipboard(cNode, destObj)
+                                Success = FillEngineFromClipboard(cNode, destObj)
 
                             Case NODE_CONNECTION
-                                FillConnFromClipboard(cNode, destObj)
+                                Success = FillConnFromClipboard(cNode, destObj)
 
                             Case NODE_STRUCT
-                                FillStructFromClipboard(cNode, destObj)
+                                Success = FillStructFromClipboard(cNode, destObj)
 
                             Case NODE_STRUCT_SEL
-                                FillStructSelFromClipboard(cNode, destObj)
+                                Success = FillStructSelFromClipboard(cNode, destObj)
 
                             Case NODE_SOURCEDATASTORE
-                                FillDataStoreFromClipboard(cNode, destObj)
+                                Success = FillDataStoreFromClipboard(cNode, destObj)
 
                             Case NODE_TARGETDATASTORE
-                                FillDataStoreFromClipboard(cNode, destObj)
+                                Success = FillDataStoreFromClipboard(cNode, destObj)
 
                             Case NODE_PROC
-                                FillTasksFromClipboard(cNode, destObj)
+                                Success = FillTasksFromClipboard(cNode, destObj)
 
                             Case NODE_GEN
-                                FillTasksFromClipboard(cNode, destObj)
+                                Success = FillTasksFromClipboard(cNode, destObj)
 
                             Case NODE_LOOKUP
-                                FillTasksFromClipboard(cNode, destObj)
+                                Success = FillTasksFromClipboard(cNode, destObj)
 
                             Case NODE_MAIN
-                                FillTasksFromClipboard(cNode, destObj)
+                                Success = FillTasksFromClipboard(cNode, destObj)
 
                             Case NODE_VARIABLE
-                                FillVarFromClipboard(cNode, destObj)
+                                Success = FillVarFromClipboard(cNode, destObj)
 
                             Case Else
                                 Me.Cursor = Cursors.Default
                                 Exit Sub
                         End Select
-                        'Else
-                        '    tran.Rollback()
+
+                        If Success = False Then
+                            lblStatusMsg.Text = "Filling Object Tree Failed, ReOpen Project to reflect changes"
+                            Exit Try
+                        End If
+                    Else
+                        tran.Rollback()
+                        conn.Close()
+                        Exit Try
                     End If
                 End If
 [continue]: Next
@@ -7083,105 +7127,109 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Me.Refresh()
             ShowUsercontrol(cNode, True)
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "frmMain Pasteclick")
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain Pasteclick")
         Finally
             Me.Cursor = Cursors.Default
         End Try
 
     End Sub
 
-    Function copyBackGroundFiles(ByVal ClipObj As INode, ByVal obj As clsStructure) As Boolean
+    'Function copyBackGroundFiles(ByVal ClipObj As INode, ByVal obj As clsStructure) As Boolean
 
-        Dim returnVal As Boolean = True
-        Dim oldParent As clsEnvironment
-        Dim newParent As clsEnvironment
-        Dim FileToCopy As String = ""
-        Dim NewCopy As String = ""
-        Dim DBDFileToCopy As String = ""
-        Dim DBDNewCopy As String = ""
+    '    Dim returnVal As Boolean = True
+    '    Dim oldParent As clsEnvironment
+    '    Dim newParent As clsEnvironment
+    '    Dim FileToCopy As String = ""
+    '    Dim NewCopy As String = ""
+    '    Dim DBDFileToCopy As String = ""
+    '    Dim DBDNewCopy As String = ""
 
-        oldParent = ClipObj.Parent()
-        newParent = obj.Parent()
+    '    oldParent = ClipObj.Parent()
+    '    newParent = obj.Parent()
 
-        Select Case CType(ClipObj, clsStructure).StructureType
-            Case modDeclares.enumStructure.STRUCT_C
-                FileToCopy = oldParent.LocalCDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalCDir & GetFileName(obj.fPath1)
-            Case modDeclares.enumStructure.STRUCT_COBOL
-                FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
-            Case modDeclares.enumStructure.STRUCT_REL_DDL
-                FileToCopy = oldParent.LocalDDLDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalDDLDir & GetFileName(obj.fPath1)
-            Case modDeclares.enumStructure.STRUCT_XMLDTD
-                FileToCopy = oldParent.LocalDTDDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalDTDDir & GetFileName(obj.fPath1)
-            Case modDeclares.enumStructure.STRUCT_COBOL_IMS
-                FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
-                DBDFileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath2)
-                DBDNewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath2)
-            Case modDeclares.enumStructure.STRUCT_REL_DML, enumStructure.STRUCT_REL_DML_FILE
-                FileToCopy = oldParent.LocalDMLDir & GetFileName(obj.fPath1)
-                NewCopy = newParent.LocalDMLDir & GetFileName(obj.fPath1)
-        End Select
-        Try
+    '    Select Case CType(ClipObj, clsStructure).StructureType
+    '        Case modDeclares.enumStructure.STRUCT_C
+    '            FileToCopy = oldParent.LocalCDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalCDir & GetFileName(obj.fPath1)
+    '        Case modDeclares.enumStructure.STRUCT_COBOL
+    '            FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
+    '        Case modDeclares.enumStructure.STRUCT_REL_DDL
+    '            FileToCopy = oldParent.LocalDDLDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalDDLDir & GetFileName(obj.fPath1)
+    '        Case modDeclares.enumStructure.STRUCT_XMLDTD
+    '            FileToCopy = oldParent.LocalDTDDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalDTDDir & GetFileName(obj.fPath1)
+    '        Case modDeclares.enumStructure.STRUCT_COBOL_IMS
+    '            FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
+    '            DBDFileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath2)
+    '            DBDNewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath2)
+    '        Case modDeclares.enumStructure.STRUCT_REL_DML, enumStructure.STRUCT_REL_DML_FILE
+    '            FileToCopy = oldParent.LocalDMLDir & GetFileName(obj.fPath1)
+    '            NewCopy = newParent.LocalDMLDir & GetFileName(obj.fPath1)
+    '    End Select
+    '    Try
 
-            If FileToCopy <> Nothing & NewCopy <> Nothing Then
-                If System.IO.File.Exists(NewCopy) = True Then
-                    If MsgBox(NewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
-                        System.IO.File.Delete(NewCopy)
-                        System.IO.File.Copy(FileToCopy, NewCopy)
-                    Else
-                        returnVal = False
-                        Return returnVal
-                    End If
-                Else
-                    System.IO.File.Copy(FileToCopy, NewCopy)
-                End If
-            Else
-                MsgBox("Source OR Destination path is EMPTY!!", MsgBoxStyle.Critical, MsgTitle)
-                returnVal = False
-            End If
-            If DBDFileToCopy <> Nothing & DBDNewCopy <> Nothing Then
-                If System.IO.File.Exists(DBDNewCopy) = True Then
-                    If MsgBox(DBDNewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
-                        System.IO.File.Delete(DBDNewCopy)
-                        System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
-                    Else
-                        returnVal = False
-                        Return returnVal
-                    End If
-                Else
-                    System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
-                End If
-            End If
+    '        If FileToCopy <> Nothing & NewCopy <> Nothing Then
+    '            If System.IO.File.Exists(NewCopy) = True Then
+    '                If MsgBox(NewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
+    '                    System.IO.File.Delete(NewCopy)
+    '                    System.IO.File.Copy(FileToCopy, NewCopy)
+    '                Else
+    '                    returnVal = False
+    '                    Return returnVal
+    '                End If
+    '            Else
+    '                System.IO.File.Copy(FileToCopy, NewCopy)
+    '            End If
+    '        Else
+    '            MsgBox("Source OR Destination path is EMPTY!!", MsgBoxStyle.Critical, MsgTitle)
+    '            returnVal = False
+    '        End If
+    '        If DBDFileToCopy <> Nothing & DBDNewCopy <> Nothing Then
+    '            If System.IO.File.Exists(DBDNewCopy) = True Then
+    '                If MsgBox(DBDNewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
+    '                    System.IO.File.Delete(DBDNewCopy)
+    '                    System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
+    '                Else
+    '                    returnVal = False
+    '                    Return returnVal
+    '                End If
+    '            Else
+    '                System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
+    '            End If
+    '        End If
 
-        Catch ex As Exception
-            LogError(ex)
-            returnVal = False
-        End Try
-        Return returnVal
+    '    Catch ex As Exception
+    '        LogError(ex)
+    '        returnVal = False
+    '    End Try
+    '    Return returnVal
 
-    End Function
+    'End Function
 
-    Function GetFileName(ByVal filePath As String) As String
-        Dim retFilePath As String
-        retFilePath = filePath.Substring(filePath.LastIndexOf("\"))
-        Return (retFilePath)
-    End Function
+    'Function GetFileName(ByVal filePath As String) As String
+    '    Dim retFilePath As String
+    '    retFilePath = filePath.Substring(filePath.LastIndexOf("\"))
+    '    Return (retFilePath)
+    'End Function
 
     '/obj is object being pasted. and cNode is target node underwhich object is being pasted
     'newObjParent is new parent of object being pasted. 
-    Public Function ChangeLinkedObjects(ByRef obj As INode, ByVal cNode As TreeNode, ByVal newObjParent As INode) As Boolean
-        Return HasMissingDependency(obj, cNode, newObjParent, True)
-    End Function
+
+    'Public Function ChangeLinkedObjects(ByRef obj As INode, ByVal cNode As TreeNode, ByVal newObjParent As INode) As Boolean
+    '    Return HasMissingDependency(obj, cNode, newObjParent, True)
+    'End Function
 
     '//obj is object being pasted. and cNode is target node underwhich object is being pasted
     '//newObjParent is new parent of object being pasted. 
     '//if ChangeReference=true then obj being searched for match will be get reference of 
     '//new matched object if match found. This option will only swap reference of Structure and Selection 
+
     Public Function HasMissingDependency(ByRef obj As INode, ByVal cNode As TreeNode, ByVal newObjParent As INode, Optional ByVal ChangeReference As Boolean = False) As Boolean
         Select Case obj.Type
             Case NODE_VARIABLE, NODE_CONNECTION, NODE_STRUCT
@@ -7644,20 +7692,19 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
+    'Overhauled Nov 2011
     Function FillProjectFromClipboard(ByVal obj As clsProject) As Boolean
 
-        Dim i As Integer
         Dim objClip As clsProject
         Dim foldObj As clsFolderNode
 
-        objClip = obj
-
         Try
+            objClip = obj
             Dim cNode As TreeNode
 
-            If obj.AddNew(True) = True Then
+            If objClip.AddNew(True) = True Then
                 '//Add project node
-                cNode = AddTreeNode(tvExplorer, NODE_PROJECT, obj)
+                cNode = AddTreeNode(tvExplorer, NODE_PROJECT, objClip)
                 obj.SeqNo = cNode.Index '//store position
 
                 '//Now add and process each environment 
@@ -7665,25 +7712,31 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 foldObj = New clsFolderNode("Environments", NODE_FO_ENVIRONMENT)
                 foldObj.Parent = CType(cNode.Tag, INode)
                 cNode = AddNode(cNode, foldObj.Type, foldObj)
-                obj.SeqNo = cNode.Index '//store position
+                objClip.SeqNo = cNode.Index '//store position
                 tvExplorer.Refresh()
 
-                For i = 0 To objClip.Environments.Count - 1
-                    '//Process this env
-                    FillEnvFromClipboard(cNode, objClip.Environments(i + 1))
+                For Each env As clsEnvironment In objClip.Environments
+                    If FillEnvFromClipboard(cNode, env) = False Then
+                        FillProjectFromClipboard = False
+                        Exit Try
+                    End If
                 Next
+            Else
+                FillProjectFromClipboard = False
+                Exit Try
             End If
 
+            FillProjectFromClipboard = True
 
         Catch ex As Exception
             LogError(ex, "frmMain FillProjForClipboard")
+            FillProjectFromClipboard = False
         End Try
 
     End Function
 
     Function FillEnvFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsEnvironment) As Boolean
 
-        Dim i As Integer
         '///////////////////////////////////////////////
         '//Construct object form database values and add
         '///////////////////////////////////////////////
@@ -7691,13 +7744,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.LoadMe()
 
             obj.Parent = CType(cNode.Tag, INode).Parent '//Project->[Env Folder]->Env
-            'obj.Project = CType(cNode.Tag, INode).Project
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEnvFromClipboard...addEnv")
+            FillEnvFromClipboard = False
+            Exit Function
         End Try
 
         '///////////////////////////////////////////////
@@ -7709,17 +7763,20 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objCnn As INode
             objCnn = New clsFolderNode("Connections", NODE_FO_CONNECTION)
             objCnn.Parent = CType(cNode.Tag, INode)
-            'objCnn.Project = CType(cNode.Tag, INode).Project
             cNodeCnn = AddNode(cNode, objCnn.Type, objCnn)
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Connections.Count - 1
-                '//Process this (cNode1 is root node under which we add other structures)
-                FillConnFromClipboard(cNodeCnn, obj.Connections(i + 1))
+            For Each Conn As clsConnection In obj.Connections
+                If FillConnFromClipboard(cNodeCnn, Conn) = False Then
+                    FillEnvFromClipboard = False
+                    Exit Function
+                End If
             Next
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEnvFromClipboard...addConn")
+            FillEnvFromClipboard = False
+            Exit Function
         End Try
 
         '///////////////////////////////////////////////
@@ -7731,38 +7788,21 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objStruct As INode
             objStruct = New clsFolderNode("Descriptions", NODE_FO_STRUCT)
             objStruct.Parent = CType(cNode.Tag, INode)
-            'objStruct.Project = CType(cNode.Tag, INode).Project
             cNodeStruct = AddNode(cNode, objStruct.Type, objStruct)
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Structures.Count - 1
-                '//Process this (cNode1 is root node under which we add other structures)
-                FillStructFromClipboard(cNodeStruct, obj.Structures(i + 1))
+            For Each Str As clsStructure In obj.Structures
+                If FillStructFromClipboard(cNodeStruct, Str) = False Then
+                    FillEnvFromClipboard = False
+                    Exit Function
+                End If
             Next
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEnvFromClipboard...addStructures")
+            FillEnvFromClipboard = False
+            Exit Function
         End Try
-
-        '//////////////////////////////////////////////
-        '//Now add Datastores
-        '//////////////////////////////////////////////
-        'Try
-        '    Dim cNode1 As TreeNode
-        '    Dim obj1 As INode
-
-        '    obj1 = New clsFolderNode("Datastores", NODE_FO_DATASTORE)
-        '    obj1.Parent = CType(cNode.Tag, INode)
-        '    cNode1 = AddNode(cNode.Nodes, obj1.Type, obj1)
-
-        '    For i = 0 To obj.Datastores.Count - 1
-        '        ''//Process this (cNode1 is root node under which we add other structures)
-        '        FillDSbyTypeFromClipboard(cNode1, obj.Datastores(i + 1))
-        '    Next
-
-
-        'Catch ex As Exception
-        '    LogError(ex)
-        'End Try
 
         '///////////////////////////////////////////////
         '//Now add Variables
@@ -7776,35 +7816,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNodeVar = AddNode(cNode, objVar.Type, objVar)
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Variables.Count - 1
-                ''//Process this (cNode2 is root node under which we add other systems)
-                FillVarFromClipboard(cNodeVar, obj.Variables(i + 1))
+            For Each var As clsVariable In obj.Variables
+                If FillVarFromClipboard(cNodeVar, var) = False Then
+                    FillEnvFromClipboard = False
+                    Exit Function
+                End If
             Next
 
         Catch ex As Exception
-
+            LogError(ex, "frmMain FillEnvFromClipboard...addVariables")
+            FillEnvFromClipboard = False
+            Exit Function
         End Try
-
-        '///////////////////////////////////////////////
-        '//Now add Procedures
-        '///////////////////////////////////////////////
-        'Try
-        '    Dim cNodeProc As TreeNode
-        '    Dim objProc As INode
-
-        '    '//Add Proc folder
-        '    objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
-        '    objProc.Parent = CType(cNode.Tag, INode)
-        '    cNodeProc = AddNode(cNode.Nodes, objProc.Type, objProc, False)
-
-        '    For i = 0 To obj.Procedures.Count - 1
-        '        ''//Process this (cNode is root node under which we add other nodes)
-        '        FillTasksFromClipboard(cNodeProc, obj.Procedures(i + 1))
-        '    Next
-
-        'Catch ex As Exception
-
-        'End Try
 
         '///////////////////////////////////////////////
         '//Now add systems
@@ -7815,50 +7838,56 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objSys As INode
             objSys = New clsFolderNode("Systems", NODE_FO_SYSTEM)
             objSys.Parent = CType(cNode.Tag, INode)
-            'objSys.Project = CType(cNode.Tag, INode).Project
             cNodeSys = AddNode(cNode, objSys.Type, objSys)
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Systems.Count - 1
-                '//Process this (cNode2 is root node under which we add other systems)
-                FillSysFromClipboard(cNodeSys, obj.Systems(i + 1))
+            For Each sys As clsSystem In obj.Systems
+                If FillSysFromClipboard(cNodeSys, sys) = False Then
+                    FillEnvFromClipboard = False
+                    Exit Function
+                End If
             Next
 
+            FillEnvFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEnvFromClipboard...addSystems")
+            FillEnvFromClipboard = False
         End Try
 
     End Function
 
     Function FillStructFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsStructure) As Boolean
 
-        Dim i As Integer
-
         '///////////////////////////////////////////////
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->StructFolder->Struct
             cNode = AddStructNode(obj, cNode)
             tvExplorer.Refresh()
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillStructFromClipboard")
+            FillStructFromClipboard = False
         End Try
 
         '///////////////////////////////////////////////
         '//Now add fieldselections
         '///////////////////////////////////////////////
         Try
-            For i = 0 To obj.StructureSelections.Count - 1
-                '//Process this (cNode is root node under which we add other nodes)
-                FillStructSelFromClipboard(cNode, obj.StructureSelections(i + 1))
+            For Each ss As clsStructureSelection In obj.StructureSelections
+                If FillStructSelFromClipboard(cNode, ss) = False Then
+                    FillStructFromClipboard = False
+                    Exit Try
+                End If
             Next
 
+            FillStructFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillStructFromClipboard")
+            FillStructFromClipboard = False
         End Try
 
     End Function
@@ -7866,6 +7895,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     Function FillStructSelFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsStructureSelection) As Boolean
 
         If obj.IsSystemSelection = "1" Then
+            FillStructSelFromClipboard = True
             Exit Function '//dont add this node if system selection
         End If
 
@@ -7873,17 +7903,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Parent = CType(cNode.Tag, INode)
-            'obj.Project = CType(cNode.Tag, INode).Project
-
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
+            FillStructSelFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillStructSelFromClipboard")
+            FillStructSelFromClipboard = False
         End Try
 
     End Function
@@ -7921,25 +7950,19 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     Function FillSysFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsSystem) As Boolean
 
-        Dim i As Integer
         '///////////////////////////////////////////////
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Environment = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
-            'obj.Project = CType(cNode.Tag, INode).Project
-
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillSysFromClipboard")
+            FillSysFromClipboard = False
         End Try
-
-        '//TODO : Add Engines, Connections under this system...
 
         '///////////////////////////////////////////////
         '//Now add engines
@@ -7950,37 +7973,39 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim objSys As INode
             objSys = New clsFolderNode("Engines", NODE_FO_ENGINE)
             objSys.Parent = CType(cNode.Tag, INode)
-            'objSys.Project = CType(cNode.Tag, INode).Project
             cNodeSys = AddNode(cNode, objSys.Type, objSys)
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Engines.Count - 1
-                '//Process this (cNode2 is root node under which we add other systems)
-                FillEngineFromClipboard(cNodeSys, obj.Engines(i + 1))
+            For Each eng As clsEngine In obj.Engines
+                If FillEngineFromClipboard(cNodeSys, eng) = False Then
+                    FillSysFromClipboard = False
+                    Exit Try
+                End If
             Next
 
+            FillSysFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillSysFromClipboard")
+            FillSysFromClipboard = False
         End Try
 
     End Function
 
     Function FillEngineFromClipboard(ByVal cNode As TreeNode, ByVal obj As clsEngine) As Boolean
 
-        Dim i As Integer
         '///////////////////////////////////////////////
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->SysFolder->Sys
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEngineFromClipboard...Engine")
+            FillEngineFromClipboard = False
         End Try
 
         '///////////////////////////////////////////////
@@ -7998,13 +8023,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode1.Text = "(" & obj.Sources.Count.ToString & ")" & " Sources"
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Sources.Count - 1
-                ''//Process this (cNode1 is root node under which we add other structures)
-                FillDataStoreFromClipboard(cNode1, obj.Sources(i + 1))
+            For Each src As clsDatastore In obj.Sources
+                If FillDataStoreFromClipboard(cNode1, src) = False Then
+                    FillEngineFromClipboard = False
+                    Exit Function
+                End If
             Next
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEngineFromClipboard...Sources")
+            FillEngineFromClipboard = False
         End Try
 
         '///////////////////////////////////////////////
@@ -8021,13 +8049,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNode2.Text = "(" & obj.Targets.Count.ToString & ")" & " Targets"
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Targets.Count - 1
-                ''//Process this (cNode1 is root node under which we add other structures)
-                FillDataStoreFromClipboard(cNode2, obj.Targets(i + 1))
+            For Each tgt As clsDatastore In obj.Targets
+                If FillDataStoreFromClipboard(cNode2, tgt) = False Then
+                    FillEngineFromClipboard = False
+                    Exit Function
+                End If
             Next
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEngineFromClipboard...Targets")
+            FillEngineFromClipboard = False
         End Try
 
         '///////////////////////////////////////////////
@@ -8044,24 +8075,22 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             cNodeVar.Text = "(" & obj.Variables.Count.ToString & ")" & " Variables"
             tvExplorer.Refresh()
 
-            For i = 0 To obj.Variables.Count - 1
-                ''//Process this (cNode2 is root node under which we add other systems)
-                FillVarFromClipboard(cNodeVar, obj.Variables(i + 1))
+            For Each var As clsVariable In obj.Variables
+                If FillVarFromClipboard(cNodeVar, var) = False Then
+                    FillEngineFromClipboard = False
+                    Exit Function
+                End If
             Next
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEngineFromClipboard...Variables")
+            FillEngineFromClipboard = False
         End Try
 
         '///////////////////////////////////////////////
         '//Now add tasks (main, join, lookup, proc)
         '///////////////////////////////////////////////
         Try
-            Dim cNodeProc As TreeNode
-            Dim cNodeMain As TreeNode
-            Dim objProc As INode
-            Dim objMain As INode
-
             ''//Add Join folder
             'objJoin = New clsFolderNode("Join", NODE_FO_JOIN)
             'objJoin.Parent = obj
@@ -8074,41 +8103,55 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '    FillTasksFromClipboard(cNodeJoin, obj.Lookups(i + 1))
             'Next
 
-            '//Add Proc folder
-            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
-            objProc.Parent = obj
-            cNodeProc = AddNode(cNode, objProc.Type, objProc)
-
-            cNodeProc.Text = "(" & obj.Procs.Count.ToString & ")" & " Procedures"
-            tvExplorer.Refresh()
-
-            For i = 0 To obj.Procs.Count - 1
-                FillTasksFromClipboard(cNodeProc, obj.Procs(i + 1))
-            Next
-
             'For i = 0 To obj.Joins.Count - 1
             '    FillTasksFromClipboard(cNodeJoin, obj.Joins(i + 1))
             'Next
             'For i = 0 To obj.Lookups.Count - 1
             '    FillTasksFromClipboard(cNodeJoin, obj.Lookups(i + 1))
             'Next
-            '//Add Main folder
-            objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
-            objMain.Parent = obj
-            cNodeMain = AddNode(cNode, objMain.Type, objMain)
-            tvExplorer.Refresh()
-
-            For i = 0 To obj.Mains.Count - 1
-                FillTasksFromClipboard(cNodeMain, obj.Mains(i + 1))
-            Next
 
             ''//Add Lookup folder
             'objLook = New clsFolderNode("Lookup", NODE_FO_LOOKUP)
             'objLook.Parent = obj
             'cNodeLookup = AddNode(cNode.Nodes, objLook.Type, objLook)
 
+            Dim cNodeProc As TreeNode
+            Dim cNodeMain As TreeNode
+            Dim objProc As INode
+            Dim objMain As INode
+
+            '//Add Proc folder
+            objProc = New clsFolderNode("Procedures", NODE_FO_PROC)
+            objProc.Parent = obj
+            cNodeProc = AddNode(cNode, objProc.Type, objProc)
+            cNodeProc.Text = "(" & obj.Procs.Count.ToString & ")" & " Procedures"
+            tvExplorer.Refresh()
+
+            For Each proc As clsTask In obj.Procs
+                If FillTasksFromClipboard(cNodeProc, proc) = False Then
+                    FillEngineFromClipboard = False
+                    Exit Function
+                End If
+            Next
+
+            '//Add Main folder
+            objMain = New clsFolderNode("Main Procedure(s)", NODE_FO_MAIN)
+            objMain.Parent = obj
+            cNodeMain = AddNode(cNode, objMain.Type, objMain)
+            tvExplorer.Refresh()
+
+            For Each main As clsTask In obj.Mains
+                If FillTasksFromClipboard(cNodeMain, main) = False Then
+                    FillEngineFromClipboard = False
+                    Exit Function
+                End If
+            Next
+
+            FillEngineFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillEngineFromClipboard...Tasks")
+            FillEngineFromClipboard = False
         End Try
 
     End Function
@@ -8119,15 +8162,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Env->ConnFolder->Conn
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
+            FillConnFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillConnFromClipboard")
+            FillConnFromClipboard = False
         End Try
 
     End Function
@@ -8138,7 +8182,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'If CType(cNode.Parent.Tag, INode).Type = NODE_ENGINE Then
+            'If CType(cNode.Parent.Tag, INode).Type = NODE_FO_SOURCEDATASTORE Then
+            '    obj.Parent = CType(cNode.Parent.Tag, clsEngine)
+            'End If
+            'If CType(cNode.Parent.Tag, INode).Type = NODE_SOURCEDATASTORE Then
+            '    obj.Parent = 
+            'End If
             obj.Parent = CType(cNode.Parent.Tag, clsEngine) 'Engine->Folder(source/target)->ds
             'Else
             ''If CType(cNode.Parent.Tag, INode).Type = NODE_ENVIRONMENT Then
@@ -8159,21 +8208,27 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
 
             If cmd Is Nothing Then ' save datastore so that meta is updated correctly
-                obj.Save()
+                If obj.Save() = False Then
+                    FillDataStoreFromClipboard = False
+                    Exit Try
+                End If
                 cNode.Text = obj.DsPhysicalSource
                 AddDSstructuresToTree(cNode, obj)  'add it's DSselections under it
             Else
-                obj.MapAsSave(cmd)
+                If obj.MapAsSave(cmd) = False Then
+                    FillDataStoreFromClipboard = False
+                    Exit Try
+                End If
                 cNode.Text = obj.Text
                 AddDSstructuresToTree(cNode, obj, True)  'add it's DSselections under it
             End If
             tvExplorer.Refresh()
 
-            Return True
+            FillDataStoreFromClipboard = True
 
         Catch ex As Exception
             LogError(ex, "frmMain FillDataStoreFromClipboard")
-            Return False
+            FillDataStoreFromClipboard = False
         End Try
 
     End Function
@@ -8185,16 +8240,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '///////////////////////////////////////////////
         Try
             obj.LoadMe()
-            'obj.LoadDatastores()
-            'obj.LoadMappings(True)
-
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->TaskFolder->Any Task
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
+            FillTasksFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillTasksFromClipboard")
+            FillTasksFromClipboard = False
         End Try
 
     End Function
@@ -8205,15 +8260,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Construct object form database values and add
         '///////////////////////////////////////////////
         Try
-            'obj.LoadItems()
-
             obj.Parent = CType(cNode.Parent.Tag, INode) 'Engine->VarFolder->Var
             cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store position
             tvExplorer.Refresh()
 
+            FillVarFromClipboard = True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain FillVarFromClipboard")
+            FillVarFromClipboard = False
         End Try
 
     End Function
@@ -8412,7 +8468,6 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 Exit Function
             End If
 
-
             cmd.Connection = cnn
             '//We need to put in transaction because we will add structure and 
             '//fields in two steps so if one fails rollback all
@@ -8439,16 +8494,18 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, tempnode.Text)
             Else
                 tran.Rollback()
-                Return False
-                Exit Try
             End If
 
-            Return True
+            DoRecursiveDelete = Successful
 
-        Catch ex As Exception
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "frmMain DoRecursiveDelete")
             tran.Rollback()
+            DoRecursiveDelete = False
+        Catch ex As Exception
             LogError(ex, "frmMain DoRecursiveDelete")
-            Return False
+            tran.Rollback()
+            DoRecursiveDelete = False
         End Try
 
     End Function
@@ -8991,7 +9048,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                         '    dsType = modDeclares.enumDatastore.DS_TRBCDC
                     Case "Oracle CDC"
                         dsType = modDeclares.enumDatastore.DS_ORACLECDC
-                    Case "Generic CDC"
+                    Case "UTSCDC"
                         dsType = modDeclares.enumDatastore.DS_UTSCDC
                     Case "IBM Event"
                         dsType = modDeclares.enumDatastore.DS_IBMEVENT
@@ -9137,6 +9194,10 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                 pNode.Expand()
 
                 tran.Commit()
+
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "SQL Transaction in mapAs in Main Form")
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "SQL Transaction in mapAs in Main Form")
@@ -9272,7 +9333,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
         Try
             If CurLoadedProject IsNot Nothing Then
                 If cnn IsNot Nothing Then
-                    If cnn.DataSource.Contains("ACCESS") = False Then
+                    If CurLoadedProject.ODBCtype <> enumODBCtype.ACCESS Then
                         MsgBox("This not an MSAccess Database file and can not be backed up", MsgBoxStyle.Information, "Can not backup")
                         Exit Try
                     Else
@@ -9280,9 +9341,12 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                         OpenFileDialog1.Multiselect = False
                         OpenFileDialog1.InitialDirectory = GetDirFromPath(cnn.Database)
                         OpenFileDialog1.FileName = GetFileNameOnly(cnn.Database)
+                        OpenFileDialog1.Title = "Choose Current Metadata Access File"
                         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                             SaveFileDialog1.FileName = InputBox("Please Name Your Backup", "Backup Name", "BAK_" & _
                                                                 GetFileNameOnly(OpenFileDialog1.FileName))
+                            SaveFileDialog1.Title = "Save Metadata Backup File"
+                            SaveFileDialog1.InitialDirectory = GetDirFromPath(cnn.Database)
                             If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                                 System.IO.File.Copy(OpenFileDialog1.FileName, SaveFileDialog1.FileName)
                             Else
@@ -9316,7 +9380,6 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
     End Sub
 
-   
     Private Sub mnuMainXMLtoDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainXMLtoDTD.Click
 
         Dim frm As frmXMLconv

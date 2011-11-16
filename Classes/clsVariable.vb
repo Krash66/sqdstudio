@@ -172,13 +172,15 @@ Public Class clsVariable
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
-
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
             
             If Me.Engine Is Nothing Then
                 sql = "Update " & Me.Project.tblVariables & " set VariableName=" & Me.GetQuotedText & _
@@ -204,21 +206,35 @@ Public Class clsVariable
                                 " AND ProjectName=" & Me.Project.GetQuotedText
             End If
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
-
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Save = True
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+
             Me.IsModified = False
 
+            tran.Commit()
+
+            Save = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable Save", sql)
+            tran.Rollback()
+            Save = False
         Catch ex As Exception
             LogError(ex, "clsVariable Save", sql)
-            Return False
+            tran.Rollback()
+            Save = False
         Finally
             'cnn.Close()
         End Try
@@ -232,14 +248,16 @@ Public Class clsVariable
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
-            
             '//When we add new record we need to find Unique Database Record ID.
             If Me.Engine Is Nothing Then
                 sql = "INSERT INTO " & Me.Project.tblVariables & _
@@ -261,14 +279,15 @@ Public Class clsVariable
                                 FixStr(Me.VariableDescription) & "')"
             End If
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
             '//Add Var into Env or Engines's Var collection
             If Me.Engine Is Nothing Then
                 AddToCollection(Me.Environment.Variables, Me, Me.GUID)
@@ -276,12 +295,20 @@ Public Class clsVariable
                 AddToCollection(Me.Engine.Variables, Me, Me.GUID)
             End If
 
-            AddNew = True
-            Me.IsModified = False
+            tran.Commit()
 
+            IsModified = False
+
+            AddNew = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable AddNew", sql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsVariable AddNew", sql)
-            Return False
+            tran.Rollback()
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -319,13 +346,14 @@ Public Class clsVariable
                                 FixStr(Me.VariableDescription) & "')"
             End If
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
 
             '//Add Var into Env or Engines's Var collection
             If Me.Engine Is Nothing Then
@@ -334,12 +362,15 @@ Public Class clsVariable
                 AddToCollection(Me.Engine.Variables, Me, Me.GUID)
             End If
 
+            IsModified = False
             AddNew = True
-            Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable AddNew", sql)
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsVariable AddNew", sql)
-            Return False
+            AddNew = False
         End Try
 
     End Function
@@ -350,7 +381,11 @@ Public Class clsVariable
         Dim sql As String = ""
 
         Try
-            
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+                Exit Try
+            End If
+
             If Me.Engine Is Nothing Then
                 sql = "Delete From " & Me.Project.tblVariables & _
                  " where VariableName=" & Me.GetQuotedText & _
@@ -364,9 +399,6 @@ Public Class clsVariable
                 " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
                 " AND ProjectName=" & Me.Project.GetQuotedText
             End If
-
-            Me.DeleteATTR(cmd)
-
 
             cmd.CommandText = sql
             Log(sql)
@@ -403,9 +435,12 @@ Public Class clsVariable
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable Delete", sql)
+            Delete = False
         Catch ex As Exception
             LogError(ex, "clsVariable Delete", sql)
-            Return False
+            Delete = False
         End Try
 
     End Function
@@ -464,11 +499,14 @@ Public Class clsVariable
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
             LogError(ex, "clsVariable ValidateNewObject", sql)
-            Return False
+            ValidateNewObject = False
         Finally
             'cnn.Close()
         End Try
@@ -483,6 +521,8 @@ Public Class clsVariable
 
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
+        Dim sql As String = ""
+
         Try
             If Me.IsLoaded = True Then Exit Try
 
@@ -490,7 +530,6 @@ Public Class clsVariable
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
-            Dim sql As String = ""
             'Dim strAttrs As String
             Dim Attrib As String = ""
             Dim Value As String = ""
@@ -542,11 +581,14 @@ Public Class clsVariable
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable LoadMe", sql)
+            LoadMe = False
         Catch ex As Exception
-            LogError(ex, "clsVariable LoadMe")
-            Return False
+            LogError(ex, "clsVariable LoadMe", sql)
+            LoadMe = False
         End Try
 
     End Function
@@ -699,11 +741,14 @@ Public Class clsVariable
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
             LogError(ex, "clsVariable InsertATTR")
-            Return False
+            InsertATTR = False
         End Try
 
     End Function
@@ -744,11 +789,14 @@ Public Class clsVariable
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsVariable DeleteATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
             LogError(ex, "clsVariable DeleteATTR")
-            Return False
+            DeleteATTR = False
         End Try
 
     End Function

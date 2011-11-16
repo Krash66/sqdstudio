@@ -179,14 +179,14 @@ Public Class ctlStructureSelection
         Me.txtFieldDesc.Location = New System.Drawing.Point(3, 16)
         Me.txtFieldDesc.Multiline = True
         Me.txtFieldDesc.Name = "txtFieldDesc"
-        Me.txtFieldDesc.Size = New System.Drawing.Size(479, 55)
+        Me.txtFieldDesc.Size = New System.Drawing.Size(478, 55)
         Me.txtFieldDesc.TabIndex = 34
         '
         'cmdSearch
         '
         Me.cmdSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdSearch.Location = New System.Drawing.Point(196, 19)
+        Me.cmdSearch.Location = New System.Drawing.Point(197, 19)
         Me.cmdSearch.Name = "cmdSearch"
         Me.cmdSearch.Size = New System.Drawing.Size(30, 20)
         Me.cmdSearch.TabIndex = 4
@@ -199,7 +199,7 @@ Public Class ctlStructureSelection
         Me.txtSearchField.Location = New System.Drawing.Point(6, 19)
         Me.txtSearchField.MaxLength = 128
         Me.txtSearchField.Name = "txtSearchField"
-        Me.txtSearchField.Size = New System.Drawing.Size(184, 20)
+        Me.txtSearchField.Size = New System.Drawing.Size(185, 20)
         Me.txtSearchField.TabIndex = 3
         '
         'tvFields
@@ -212,7 +212,7 @@ Public Class ctlStructureSelection
         Me.tvFields.HotTracking = True
         Me.tvFields.Location = New System.Drawing.Point(6, 16)
         Me.tvFields.Name = "tvFields"
-        Me.tvFields.Size = New System.Drawing.Size(232, 318)
+        Me.tvFields.Size = New System.Drawing.Size(233, 318)
         Me.tvFields.TabIndex = 32
         '
         'lvFieldAttrs
@@ -226,7 +226,7 @@ Public Class ctlStructureSelection
         Me.lvFieldAttrs.HideSelection = False
         Me.lvFieldAttrs.Location = New System.Drawing.Point(3, 16)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(479, 295)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(478, 295)
         Me.lvFieldAttrs.TabIndex = 33
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -371,7 +371,7 @@ Public Class ctlStructureSelection
         '
         Me.scField.Panel2.Controls.Add(Me.scFldDesc)
         Me.scField.Size = New System.Drawing.Size(733, 392)
-        Me.scField.SplitterDistance = 244
+        Me.scField.SplitterDistance = 245
         Me.scField.TabIndex = 61
         '
         'gbFields
@@ -382,7 +382,7 @@ Public Class ctlStructureSelection
         Me.gbFields.ForeColor = System.Drawing.Color.White
         Me.gbFields.Location = New System.Drawing.Point(0, 0)
         Me.gbFields.Name = "gbFields"
-        Me.gbFields.Size = New System.Drawing.Size(244, 392)
+        Me.gbFields.Size = New System.Drawing.Size(245, 392)
         Me.gbFields.TabIndex = 0
         Me.gbFields.TabStop = False
         Me.gbFields.Text = "Fields"
@@ -396,7 +396,7 @@ Public Class ctlStructureSelection
         Me.gbSearch.ForeColor = System.Drawing.Color.White
         Me.gbSearch.Location = New System.Drawing.Point(6, 340)
         Me.gbSearch.Name = "gbSearch"
-        Me.gbSearch.Size = New System.Drawing.Size(232, 46)
+        Me.gbSearch.Size = New System.Drawing.Size(233, 46)
         Me.gbSearch.TabIndex = 0
         Me.gbSearch.TabStop = False
         Me.gbSearch.Text = "Field Search"
@@ -415,7 +415,7 @@ Public Class ctlStructureSelection
         'scFldDesc.Panel2
         '
         Me.scFldDesc.Panel2.Controls.Add(Me.gbFldDesc)
-        Me.scFldDesc.Size = New System.Drawing.Size(485, 392)
+        Me.scFldDesc.Size = New System.Drawing.Size(484, 392)
         Me.scFldDesc.SplitterDistance = 314
         Me.scFldDesc.TabIndex = 0
         '
@@ -426,7 +426,7 @@ Public Class ctlStructureSelection
         Me.gbAttr.ForeColor = System.Drawing.Color.White
         Me.gbAttr.Location = New System.Drawing.Point(0, 0)
         Me.gbAttr.Name = "gbAttr"
-        Me.gbAttr.Size = New System.Drawing.Size(485, 314)
+        Me.gbAttr.Size = New System.Drawing.Size(484, 314)
         Me.gbAttr.TabIndex = 0
         Me.gbAttr.TabStop = False
         Me.gbAttr.Text = "Field Attributes"
@@ -438,7 +438,7 @@ Public Class ctlStructureSelection
         Me.gbFldDesc.ForeColor = System.Drawing.Color.White
         Me.gbFldDesc.Location = New System.Drawing.Point(0, 0)
         Me.gbFldDesc.Name = "gbFldDesc"
-        Me.gbFldDesc.Size = New System.Drawing.Size(485, 74)
+        Me.gbFldDesc.Size = New System.Drawing.Size(484, 74)
         Me.gbFldDesc.TabIndex = 1
         Me.gbFldDesc.TabStop = False
         Me.gbFldDesc.Text = "Field Description"

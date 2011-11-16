@@ -65,6 +65,8 @@ Public Module modGenerateV3
 
     Dim SynNew As Boolean
     Private DBGMap As Boolean = False
+    Private OutMsg As Boolean = False
+
 
 #Region " Main Processes "
 
@@ -106,6 +108,7 @@ Public Module modGenerateV3
         TargetLevel = TgtLevel
         SynNew = NewSyn
         DBGMap = MapDBG
+        OutMsg = debug
         UseEXEpath = UseEXE
         
 
@@ -223,7 +226,7 @@ Public Module modGenerateV3
             wComment(RC, "-------------------------------------------------------------")
             wComment(RC, "        PROCEDURE SECTION")
             wComment(RC, "-------------------------------------------------------------")
-            If prtProcedures(RC, debug) = False Then
+            If prtProcedures(RC) = False Then
                 GoTo ErrorGoTo
             End If
 
@@ -433,7 +436,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
             wComment(RC, "-------------------------------------------------------------")
             wComment(RC, "        PROCEDURE SECTION")
             wComment(RC, "-------------------------------------------------------------")
-            If PrtProcs(RC, ObjProc, debug) = False Then
+            If PrtProcs(RC, ObjProc) = False Then
                 GoTo ErrorGoTo
             End If
 
@@ -1888,7 +1891,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Function prtProcedures(ByRef rc As clsRcode, ByVal debug As Boolean) As Boolean
+    Function prtProcedures(ByRef rc As clsRcode) As Boolean
 
         Try
             For Each proc As clsTask In ObjThis.Procs
@@ -1896,7 +1899,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 'proc.LoadDatastores()
                 'proc.LoadMappings(True)
 
-                If PrtProcs(rc, proc, debug) = False Then
+                If PrtProcs(rc, proc) = False Then
                     GoTo ErrorGoTo1
                 End If
 ErrorGoTo1: Next
@@ -1908,7 +1911,7 @@ ErrorGoTo1: Next
 
                 ' IsMapped is True if it is the Main Procedure
                 If Rproc.TaskType = enumTaskType.TASK_GEN Then
-                    If PrtProcs(rc, Rproc, debug) = False Then
+                    If PrtProcs(rc, Rproc) = False Then
                         GoTo ErrorGoTo2
                     End If
                 End If
@@ -1936,7 +1939,7 @@ ErrorGoTo2: Next
 
     End Function
 
-    Function PrtProcs(ByRef rc As clsRcode, ByVal Proc As clsTask, ByVal debug As Boolean) As Boolean
+    Function PrtProcs(ByRef rc As clsRcode, ByVal Proc As clsTask) As Boolean
 
         Dim Map As clsMapping
         Dim i As Integer
@@ -1964,11 +1967,14 @@ ErrorGoTo2: Next
                 End If
             End If
 
-            '/// Print Debug OutMsg if debug script
-            If debug = True Then
+            If DBGMap = True Then
                 If wDebugHead(rc, Proc) = False Then
                     GoTo ErrorGoTo
                 End If
+            End If
+            
+            '/// Print Debug OutMsg if debug script
+            If OutMsg = True Then
                 For i = 0 To Proc.ObjMappings.Count - 1
                     Map = CType(Proc.ObjMappings(i), clsMapping)
                     If Map.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
@@ -1981,7 +1987,7 @@ ErrorGoTo2: Next
                 For Each mapping As clsMapping In Proc.ObjMappings
                     If mapping.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
                         If mapping.OutMsg = enumOutMsg.PrintOutMsg Then
-                            If wDebug(rc, mapping) = False Then
+                            If wDebug(rc, mapping, False) = False Then
                                 GoTo ErrorGoTo
                             End If
                         End If
@@ -2686,43 +2692,97 @@ ErrorGoTo:
             Dim commaORspace As String = " "
             Dim selName As String = ""
             Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
-            Dim TCPport As String = ds.DsPort
+            Dim TCPport As String = ds.DsPort.Trim
             Dim EXname As String = ds.ExceptionDatastore
+            Dim AccessHost As String = ObjSys.Host.Trim
+            If TCPport = "" Then
+                TCPport = ObjSys.Port.Trim
+            End If
+            'Dim DSEXname As String = ds.ExceptionDatastore
+            'Dim i As Integer
 
-            Select Case ds.DsAccessMethod
-                Case DS_ACCESSMETHOD_FILE
-                    If ds.ExceptionDatastore <> "" Then
-                        EXname = ds.ExceptionDatastore
-                    End If
-                Case DS_ACCESSMETHOD_IP
-                    EXname = ds.ExceptionDatastore & ":" & TCPport.Trim & "@TCP"
-                Case DS_ACCESSMETHOD_MQSERIES
-                    If Strings.Left(EXname, 3) = "DD:" Or Strings.Left(EXname, 3) = "dd:" Or Strings.Left(EXname, 3) = "Dd:" Or _
-                    Strings.Left(EXname, 3) = "dD:" Then
-                        EXname = ds.ExceptionDatastore
-                    Else
-                        If MQstr.Trim = "" Then
-                            EXname = ds.ExceptionDatastore & "@MQS"
-                        Else
-                            EXname = ds.ExceptionDatastore & "#" & MQstr.Trim & "@MQS"
-                        End If
-                    End If
-                Case DS_ACCESSMETHOD_VSAM
-                    EXname = ds.ExceptionDatastore
-                Case Else
-                    EXname = ds.ExceptionDatastore
-            End Select
-            'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-            '    If Strings.Left(EXname, 3) = "DD:" Or Strings.Left(EXname, 3) = "dd:" Or Strings.Left(EXname, 3) = "Dd:" Or _
-            '    Strings.Left(EXname, 3) = "dD:" Or EXname.Contains("@MQS") = True Then
-            '        EXname = EXname
-            '    Else
-            '        EXname = "'" & EXname & "'"
-            '    End If
+            'If AccessHost = "" Then
+            '    AccessHost = "localhost"
             'End If
 
-            Dim ForDummy As String = String.Format("{0}{1}{2}", "DATASTORE '" & QuoteRes(EXname), "' OF BINARY AS " & _
+            If SynNew = False Then
+                '*******OLD SYNTAX *******
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        If ds.ExceptionDatastore <> "" Then
+                            EXname = ds.ExceptionDatastore
+                        End If
+                    Case DS_ACCESSMETHOD_IP
+                        EXname = ds.ExceptionDatastore & ":" & TCPport.Trim & "@TCP"
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If Strings.Left(EXname, 3) = "DD:" Or Strings.Left(EXname, 3) = "dd:" Or Strings.Left(EXname, 3) = "Dd:" Or _
+                        Strings.Left(EXname, 3) = "dD:" Then
+                            EXname = ds.ExceptionDatastore
+                        Else
+                            If MQstr.Trim = "" Then
+                                EXname = ds.ExceptionDatastore & "@MQS"
+                            Else
+                                EXname = ds.ExceptionDatastore & "#" & MQstr.Trim & "@MQS"
+                            End If
+                        End If
+                    Case DS_ACCESSMETHOD_VSAM
+                        EXname = ds.ExceptionDatastore
+                    Case Else
+                        EXname = ds.ExceptionDatastore
+                End Select
+                'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                '    If Strings.Left(EXname, 3) = "DD:" Or Strings.Left(EXname, 3) = "dd:" Or Strings.Left(EXname, 3) = "Dd:" Or _
+                '    Strings.Left(EXname, 3) = "dD:" Or EXname.Contains("@MQS") = True Then
+                '        EXname = EXname
+                '    Else
+                '        EXname = "'" & EXname & "'"
+                '    End If
+                'End If
+            Else
+                '*********New Syntax ************
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        EXname = "file:///" & Quote(ds.ExceptionDatastore) '& "/" & ds.DatastoreName
+                    Case DS_ACCESSMETHOD_IP
+                        EXname = "tcp://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If Strings.Left(EXname, 3) = "DD:" Or Strings.Left(EXname, 3) = "dd:" Or Strings.Left(EXname, 3) = "Dd:" Or _
+                        Strings.Left(EXname, 3) = "dD:" Then
+                            EXname = ds.ExceptionDatastore
+                        Else
+                            If MQstr.Trim = "" Then
+                                EXname = "mqs://" & AccessHost & "/" & ds.ExceptionDatastore '& "@MQS"
+                            Else
+                                EXname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.ExceptionDatastore '& "#" & MQstr.Trim & "@MQS"
+                            End If
+                        End If
+                    Case DS_ACCESSMETHOD_SQDCDC
+                        EXname = "cdc://" & AccessHost & "/" & ds.ExceptionDatastore '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                    Case DS_ACCESSMETHOD_VSAM
+                        EXname = "vsam://" & AccessHost & "/" & ds.ExceptionDatastore
+                    Case Else
+                        EXname = ds.ExceptionDatastore
+                End Select
+
+                'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                '        EXname = EXname
+                '    Else
+                '        EXname = "'" & EXname & "'"
+                '    End If
+                'End If
+            End If
+
+
+            Dim ForDummy As String  
+            If SynNew = True Then
+                ForDummy = String.Format("{0}{1}{2}", "DATASTORE " & QuoteRes(EXname), " OF BINARY AS " & _
             QuoteRes("EX_" & ds.DatastoreName), " DESCRIBED BY DUMMY" & semi)
+            Else
+                ForDummy = String.Format("{0}{1}{2}", "DATASTORE " & Quote(QuoteRes(EXname)), " OF BINARY AS " & _
+            QuoteRes("EX_" & ds.DatastoreName), " DESCRIBED BY DUMMY" & semi)
+            End If
 
             wComment(rc, "-------------- *** Exception Datastore *** --------------")
             objWriteSQD.WriteLine(ForDummy)
@@ -3570,11 +3630,17 @@ ErrorGoTo:
 
     End Function
 
-    Function wDebug(ByRef rc As clsRcode, ByVal map As clsMapping) As Boolean
+    Function wDebug(ByRef rc As clsRcode, ByVal map As clsMapping, Optional ByVal commentOut As Boolean = True) As Boolean
 
         Try
             Dim SrcStr As String = map.SourceDataStore & "." & map.SourceParent & "." & CType(map.MappingSource, clsField).FieldName
-            Dim FORout As String = String.Format("{0}{1}{2}", "--OUTMSG(0,STRING('", SrcStr & " = ',", SrcStr & "))")
+            Dim FORout As String
+
+            If commentOut = True Then
+                FORout = String.Format("{0}{1}{2}", "--OUTMSG(0,STRING('", SrcStr & " = ',", SrcStr & "))")
+            Else
+                FORout = String.Format("{0}{1}{2}", "OUTMSG(0,STRING('", SrcStr & " = ',", SrcStr & "))")
+            End If
 
             objWriteSQD.WriteLine(FORout)
             objWriteINL.WriteLine(FORout)
@@ -3605,9 +3671,9 @@ ErrorGoTo:
 
             Select Case AttrType
                 Case "EXTTYPECHAR"
-                    Command = "EXTTYPE"
+                    Command = "IFSPACE"
                     Arg1 = ds.DatastoreName & ".ALLCHAR"
-                    Arg2 = "DT" & ds.ExtTypeChar
+                    Arg2 = ds.ExtTypeChar  '"DT" & 
 
                 Case "IFNULLCHAR"
                     Command = "IFNULL"
@@ -3620,9 +3686,9 @@ ErrorGoTo:
                     Arg2 = ds.InValidChar
 
                 Case "EXTTYPENUM"
-                    Command = "EXTTYPE"
+                    Command = "IFSPACE"
                     Arg1 = ds.DatastoreName & ".ALLNUM"
-                    Arg2 = "DT" & ds.ExtTypeNum
+                    Arg2 = ds.ExtTypeNum   '"DT" & 
 
                 Case "IFNULLNUM"
                     Command = "IFNULL"

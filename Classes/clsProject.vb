@@ -245,13 +245,16 @@ Public Class clsProject
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim sql As String = ""
         Dim cmd As New Odbc.OdbcCommand
+        Dim tran As Odbc.OdbcTransaction = Nothing
+        Dim success As Boolean = False
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
-
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
             
             sql = "Update " & Me.Project.tblProjects & " set PROJECTNAME='" & FixStr(Me.ProjectName) & _
             "',PROJECTDESCRIPTION='" & FixStr(Me.ProjectDesc) & _
@@ -259,19 +262,33 @@ Public Class clsProject
             "',UPDATED_TIMESTAMP='" & FixStr(Now.ToString) & _
             "' where ProjectName=" & Me.GetQuotedText
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Save = True
-            Me.IsModified = False
+            success = Me.DeleteATTR(cmd)
+            If success = True Then
+                success = Me.InsertATTR(cmd)
+            End If
 
+            If success = True Then
+                Me.IsModified = False
+                tran.Commit()
+            Else
+                Me.IsModified = True
+                tran.Rollback()
+            End If
+
+            Save = success
+
+        Catch OE As Odbc.OdbcException
+            tran.Rollback()
+            LogODBCError(OE, "clsProject Save", sql)
+            Save = False
         Catch ex As Exception
+            tran.Rollback()
             LogError(ex, "clsProject Save", sql)
-            Return False
+            Save = False
         Finally
             'cnn.Close()
         End Try
@@ -380,30 +397,43 @@ Public Class clsProject
     Public Function Delete(ByRef cmd As Odbc.OdbcCommand, ByRef cnn As Odbc.OdbcConnection, Optional ByVal Cascade As Boolean = True, Optional ByVal RemoveFromParentCollection As Boolean = True) As Boolean Implements INode.Delete
 
         Dim sql As String = ""
+        Dim success As Boolean = False
 
         Try
             '//first delete all child objects
             If Cascade = True Then
                 For Each env As clsEnvironment In Me.Environments
-                    env.Delete(cmd, cnn, Cascade, False)
+                    success = env.Delete(cmd, cnn, Cascade, False)
+                    If success = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Environments, "") '//clear collection
             End If
 
-            If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "DELETE  FROM " & Me.Project.tblProjects & " WHERE PROJECTNAME='" & Me.ProjectName & "'"
-            Else
-                Me.DeleteATTR(cmd)
-                sql = "DELETE  FROM " & Me.Project.tblProjects & " WHERE PROJECTNAME='" & Me.ProjectName & "'"
+            'If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "DELETE  FROM " & Me.Project.tblProjects & " WHERE PROJECTNAME='" & Me.ProjectName & "'"
+            'Else
+            success = Me.DeleteATTR(cmd)
+            If success = False Then
+                Delete = False
+                Exit Try
             End If
-            
+
+            sql = "DELETE  FROM " & Me.Project.tblProjects & " WHERE PROJECTNAME='" & Me.ProjectName & "'"
+            'End If
+
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsProject Delete", sql)
+            Delete = False
         Catch ex As Exception
             LogError(ex, "clsProject Delete", sql)
             Delete = False

@@ -6,15 +6,8 @@ Public Class ctlEnvironment
     Public Event Renamed(ByVal sender As System.Object, ByVal e As INode)
     Public Event Closed(ByVal sender As System.Object, ByVal e As INode)
 
-    
     Dim objThis As New clsEnvironment
     Dim IsNewObj As Boolean
-    Friend WithEvents FBD1 As System.Windows.Forms.FolderBrowserDialog
-    Friend WithEvents gbRelDir As System.Windows.Forms.GroupBox
-    Friend WithEvents txtRelDir As System.Windows.Forms.TextBox
-    Friend WithEvents btnRelDir As System.Windows.Forms.Button
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-
 
     Private destination As String
 
@@ -70,7 +63,7 @@ Public Class ctlEnvironment
     Friend WithEvents cmdBrowseFileLocalScript As System.Windows.Forms.Button
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txtLocalDBDDir As System.Windows.Forms.TextBox
-    Friend WithEvents cmdBrowseFileLocalModel As System.Windows.Forms.Button
+    Friend WithEvents cmdBrowseFileLocalDBD As System.Windows.Forms.Button
     Friend WithEvents cmdPutScr As System.Windows.Forms.Button
     Friend WithEvents btnBrowseFileLocalDML As System.Windows.Forms.Button
     Friend WithEvents txtLocalDMLDir As System.Windows.Forms.TextBox
@@ -87,6 +80,11 @@ Public Class ctlEnvironment
     Friend WithEvents btnFTPCobol As System.Windows.Forms.Button
     Friend WithEvents btnFTPc As System.Windows.Forms.Button
     Friend WithEvents btnFTPdml As System.Windows.Forms.Button
+    Friend WithEvents FBD1 As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents gbRelDir As System.Windows.Forms.GroupBox
+    Friend WithEvents txtRelDir As System.Windows.Forms.TextBox
+    Friend WithEvents btnRelDir As System.Windows.Forms.Button
+    Friend WithEvents Label4 As System.Windows.Forms.Label
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cmdClose = New System.Windows.Forms.Button
@@ -112,7 +110,7 @@ Public Class ctlEnvironment
         Me.txtLocalScriptDir = New System.Windows.Forms.TextBox
         Me.Label2 = New System.Windows.Forms.Label
         Me.txtLocalDBDDir = New System.Windows.Forms.TextBox
-        Me.cmdBrowseFileLocalModel = New System.Windows.Forms.Button
+        Me.cmdBrowseFileLocalDBD = New System.Windows.Forms.Button
         Me.cmdPutScr = New System.Windows.Forms.Button
         Me.btnBrowseFileLocalDML = New System.Windows.Forms.Button
         Me.txtLocalDMLDir = New System.Windows.Forms.TextBox
@@ -396,15 +394,15 @@ Public Class ctlEnvironment
         Me.txtLocalDBDDir.Size = New System.Drawing.Size(423, 20)
         Me.txtLocalDBDDir.TabIndex = 7
         '
-        'cmdBrowseFileLocalModel
+        'cmdBrowseFileLocalDBD
         '
-        Me.cmdBrowseFileLocalModel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdBrowseFileLocalModel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFileLocalModel.Location = New System.Drawing.Point(483, 59)
-        Me.cmdBrowseFileLocalModel.Name = "cmdBrowseFileLocalModel"
-        Me.cmdBrowseFileLocalModel.Size = New System.Drawing.Size(25, 21)
-        Me.cmdBrowseFileLocalModel.TabIndex = 107
-        Me.cmdBrowseFileLocalModel.Text = "..."
+        Me.cmdBrowseFileLocalDBD.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdBrowseFileLocalDBD.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdBrowseFileLocalDBD.Location = New System.Drawing.Point(483, 59)
+        Me.cmdBrowseFileLocalDBD.Name = "cmdBrowseFileLocalDBD"
+        Me.cmdBrowseFileLocalDBD.Size = New System.Drawing.Size(25, 21)
+        Me.cmdBrowseFileLocalDBD.TabIndex = 107
+        Me.cmdBrowseFileLocalDBD.Text = "..."
         '
         'cmdPutScr
         '
@@ -509,7 +507,7 @@ Public Class ctlEnvironment
         Me.GroupBox5.Controls.Add(Me.Label7)
         Me.GroupBox5.Controls.Add(Me.txtLocalCobolDir)
         Me.GroupBox5.Controls.Add(Me.Label6)
-        Me.GroupBox5.Controls.Add(Me.cmdBrowseFileLocalModel)
+        Me.GroupBox5.Controls.Add(Me.cmdBrowseFileLocalDBD)
         Me.GroupBox5.Controls.Add(Me.Label9)
         Me.GroupBox5.Controls.Add(Me.txtLocalDBDDir)
         Me.GroupBox5.Controls.Add(Me.txtLocalDDLDir)
@@ -617,9 +615,6 @@ Public Class ctlEnvironment
         Me.btnFTPdml.TabIndex = 207
         Me.btnFTPdml.Text = "<-"
         '
-        'FBD1
-        '
-        '
         'gbRelDir
         '
         Me.gbRelDir.Controls.Add(Me.btnRelDir)
@@ -706,7 +701,9 @@ Public Class ctlEnvironment
     End Sub
 
     Public Sub cmdSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.Click
-        Save()
+        If Save() = False Then
+            MsgBox("Save Failed, Please cleck the error logs and try again", MsgBoxStyle.Information)
+        End If
     End Sub
 
     Public Sub cmdClose_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdClose.Click
@@ -716,7 +713,9 @@ Public Class ctlEnvironment
             If objThis.IsModified = True Then
                 ret = MsgBox("Do you want to save change(s) made to the opened form?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, MsgTitle)
                 If ret = MsgBoxResult.Yes Then
-                    Save()
+                    If Save() = False Then
+                        Exit Try
+                    End If
                 ElseIf ret = MsgBoxResult.No Then
                     objThis.IsModified = False
                 ElseIf ret = MsgBoxResult.Cancel Then
@@ -728,7 +727,7 @@ Public Class ctlEnvironment
             RaiseEvent Closed(Me, objThis)
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlEnvironment cmdClose_click")
         End Try
 
     End Sub
@@ -758,7 +757,7 @@ Public Class ctlEnvironment
     End Sub
 
     '//new by npatel on 8/13/05
-    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, btnBrowseFileLocalDML.Click, cmdBrowseFileLocalModel.Click, btnRelDir.Click
+    Private Sub cmdBrowseLocalDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseFileLocalDTD.Click, cmdBrowseFileLocalDDL.Click, cmdBrowseFileLocalCobol.Click, cmdBrowseFileLocalC.Click, cmdBrowseFileLocalScript.Click, btnBrowseFileLocalDML.Click, cmdBrowseFileLocalDBD.Click, btnRelDir.Click
 
         Dim DefaultDir As String
         'Dim testdir As String
@@ -784,8 +783,8 @@ Public Class ctlEnvironment
         Dim Scriptdir As String = ""
         Dim Scriptpre As String = ""
         'model Dir is actually DBD dir
-        Dim Modeldir As String = ""
-        Dim Modelpre As String = ""
+        Dim DBDdir As String = ""
+        Dim DBDpre As String = ""
         'relative directory/base dir/default dir
         Dim RelDir As String = ""
         Dim RelPre As String = ""
@@ -858,15 +857,15 @@ Public Class ctlEnvironment
                 Else
                     Scriptdir = txtLocalScriptDir.Text
                 End If
-            Case "cmdBrowseFileLocalModel"
+            Case "cmdBrowseFileLocalDBD"
                 If txtLocalDBDDir.Text.Contains("%") = True Then
                     preIDX = txtLocalDBDDir.Text.IndexOf("%")
                     pathIDX = txtLocalDBDDir.Text.LastIndexOf("%")
-                    Modelpre = Strings.Mid(txtLocalDBDDir.Text, preIDX + 2, pathIDX - preIDX - 1)
-                    Modeldir = Strings.Right(txtLocalDBDDir.Text, txtLocalDBDDir.Text.Length - pathIDX - 1)
-                    Modeldir = System.Environment.GetEnvironmentVariable(Modelpre) & Modeldir
+                    DBDpre = Strings.Mid(txtLocalDBDDir.Text, preIDX + 2, pathIDX - preIDX - 1)
+                    DBDdir = Strings.Right(txtLocalDBDDir.Text, txtLocalDBDDir.Text.Length - pathIDX - 1)
+                    DBDdir = System.Environment.GetEnvironmentVariable(DBDpre) & DBDdir
                 Else
-                    Modeldir = txtLocalDBDDir.Text
+                    DBDdir = txtLocalDBDDir.Text
                 End If
             Case "btnRelDir"
                 If txtRelDir.Text.Contains("%") = True Then
@@ -917,11 +916,11 @@ Public Class ctlEnvironment
                 Else
                     FBD1.SelectedPath = Scriptdir
                 End If
-            Case "cmdBrowseFileLocalModel"
-                If Modeldir = "" Then
+            Case "cmdBrowseFileLocalDBD"
+                If DBDdir = "" Then
                     FBD1.SelectedPath = DefaultDir
                 Else
-                    FBD1.SelectedPath = Modeldir
+                    FBD1.SelectedPath = DBDdir
                 End If
             Case "btnRelDir"
                 If RelDir = "" Then
@@ -951,7 +950,7 @@ Public Class ctlEnvironment
                 Case "cmdBrowseFileLocalScript"
                     txtLocalScriptDir.Text = FBD1.SelectedPath
                     objThis.LocalScriptDir = FBD1.SelectedPath
-                Case "cmdBrowseFileLocalModel"
+                Case "cmdBrowseFileLocalDBD"
                     txtLocalDBDDir.Text = FBD1.SelectedPath
                     objThis.LocalDBDDir = FBD1.SelectedPath
                 Case "btnRelDir"
@@ -1076,12 +1075,12 @@ Public Class ctlEnvironment
 
     End Sub
 
-    Private Sub cmdPutMdl_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFTPdbd.Click
+    Private Sub btnFTPdbd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFTPdbd.Click
 
         Dim FTPClient As frmFTPClient = New frmFTPClient
         Dim destination As String
 
-        destination = FTPClient.BrowseFile(Me.txtLocalScriptDir.Text, ".ddl", modDeclares.enumCalledFrom.BY_ENVIRONMENT)
+        destination = FTPClient.BrowseFile(Me.txtLocalScriptDir.Text, ".dbd", modDeclares.enumCalledFrom.BY_ENVIRONMENT)
 
         If destination <> "" Then
             destination = GetCaseSensetivePath(destination)

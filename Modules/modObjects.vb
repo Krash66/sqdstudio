@@ -1011,6 +1011,7 @@ Module modObjects
 
     '/// Used to add any Object to a Parent Object's Collection
     Function AddToCollection(ByVal col As Collection, ByVal obj As INode, Optional ByVal key As String = "") As Boolean
+
         ' Necesary in case a duplicate key value happens to be calculated
         On Error Resume Next
         If key <> "" Then
@@ -1018,6 +1019,9 @@ Module modObjects
         Else
             col.Add(obj)
         End If
+
+        Return True
+
     End Function
 
     '//if key is not passed then all items will be removed

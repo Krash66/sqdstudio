@@ -162,12 +162,15 @@ Public Class clsConnection
         Dim sql As String = ""
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Update " & Me.Project.tblConnections & " set ConnectionName=" & Me.GetQuotedText & " , UserId='" & FixStr(Me.UserId) & "' , DBName='" & FixStr(Me.Database) & "' , Password='" & FixStr(Me.Password) & "', ConnectionType='" & FixStr(Me.ConnectionType) & "' , DateFormat='" & FixStr(Me.DateFormat) & "', Description='" & FixStr(Me.ConnectionDescription) & "' where ConnectionName=" & Me.GetQuotedText & " AND EnvironmentName=" & Me.Environment.GetQuotedText & " AND ProjectName=" & Me.Project.GetQuotedText
@@ -179,22 +182,36 @@ Public Class clsConnection
             "' where ConnectionName=" & Me.GetQuotedText & _
             " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
             " AND ProjectName=" & Me.Project.GetQuotedText
-
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
             'End If
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+
             Me.IsModified = False
+
+            tran.Commit()
 
             Save = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection Save", sql)
+            tran.Rollback()
+            Save = False
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "clsConnection Save", sql)
+            tran.Rollback()
             Save = False
         Finally
             'cnn.Close()
@@ -210,9 +227,12 @@ Public Class clsConnection
             If Cascade = True Then
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Me.DeleteATTR(cmd)
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+                Exit Try
             End If
+            'End If
 
             sql = "Delete From " & Me.Project.tblConnections & " where ConnectionName=" & Me.GetQuotedText & " AND EnvironmentName=" & Me.Environment.GetQuotedText & " AND ProjectName=" & Me.Environment.Project.GetQuotedText
 
@@ -227,8 +247,11 @@ Public Class clsConnection
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection Delete", sql)
+            Delete = False
         Catch ex As Exception
-            LogError(ex, "clsConnection Delete")
+            LogError(ex, "clsConnection Delete", sql)
             Delete = False
         End Try
 
@@ -239,13 +262,15 @@ Public Class clsConnection
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
         Dim sql As String = ""
-
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "INSERT INTO " & Me.Project.tblConnections & _
@@ -258,24 +283,35 @@ Public Class clsConnection
                         "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
                         " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
                         FixStr(ConnectionDescription) & "')"
-
-            Me.InsertATTR(cmd)
-
             'End If
-
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
             '//Add connection into systems's connection collection
-            AddToCollection(Me.Environment.Connections, Me, Me.GUID)
+            If AddToCollection(Me.Environment.Connections, Me, Me.GUID) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
 
-            AddNew = True
+            tran.Commit()
             IsModified = False
+            AddNew = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection AddNew", sql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
-            LogError(ex, "clsConnection AddNew")
+            LogError(ex, "clsConnection AddNew", sql)
+            tran.Rollback()
             AddNew = False
         Finally
             'cnn.Close()
@@ -301,22 +337,30 @@ Public Class clsConnection
                         "(ProjectName,EnvironmentName,ConnectionName,ConnectionDescription) " & _
                         " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & ",'" & _
                         FixStr(ConnectionDescription) & "')"
-
-            Me.InsertATTR(cmd)
             'End If
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
             '//Add connection into systems's connection collection
-            AddToCollection(Me.Environment.Connections, Me, Me.GUID)
+            If AddToCollection(Me.Environment.Connections, Me, Me.GUID) = False Then
+                AddNew = False
+                Exit Try
+            End If
 
-            AddNew = True
             IsModified = False
+            AddNew = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection AddNew", sql)
+            AddNew = False
         Catch ex As Exception
-            LogError(ex, "clsConnection AddNew")
+            LogError(ex, "clsConnection AddNew", sql)
             AddNew = False
         End Try
 
@@ -330,6 +374,7 @@ Public Class clsConnection
 
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
+        Dim sql As String = ""
         Try
             If Me.IsLoaded = True Then Exit Try
 
@@ -337,7 +382,6 @@ Public Class clsConnection
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
-            Dim sql As String = ""
             Dim Attrib As String = ""
             Dim Value As String = ""
 
@@ -378,11 +422,14 @@ Public Class clsConnection
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection LoadMe", sql)
+            LoadMe = False
         Catch ex As Exception
-            LogError(ex, "clsConnection LoadMe")
-            Return False
+            LogError(ex, "clsConnection LoadMe", sql)
+            LoadMe = False
         End Try
 
     End Function
@@ -439,10 +486,13 @@ Public Class clsConnection
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
-            LogError(ex, "clsConnection ValidateNewObject")
+            LogError(ex, "clsConnection ValidateNewObject", sql)
             ValidateNewObject = False
         Finally
             'cnn.Close()
@@ -577,11 +627,14 @@ Public Class clsConnection
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
-            LogError(ex, "clsConnection InsertATTR")
-            Return False
+            LogError(ex, "clsConnection InsertATTR", sql)
+            InsertATTR = False
         End Try
 
     End Function
@@ -610,15 +663,17 @@ Public Class clsConnection
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection DeleteATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
-            LogError(ex, "clsConnection DeleteATTR")
-            Return False
+            LogError(ex, "clsConnection DeleteATTR", sql)
+            DeleteATTR = False
         End Try
 
     End Function
-
 
 #End Region
 

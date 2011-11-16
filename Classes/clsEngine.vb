@@ -127,48 +127,67 @@ Public Class clsEngine
             obj.CDCdir = Me.CDCdir
 
             If Cascade = True Then
-                Dim NewSrc As clsDatastore
+
                 '//clone all sources under Engine
                 For Each src As clsDatastore In Me.Sources
+
+                    Dim NewSrc As New clsDatastore
                     NewSrc = src.Clone(obj, True, cmd)
                     NewSrc.Engine = obj
                     AddToCollection(obj.Sources, NewSrc, NewSrc.GUID)
                 Next
 
-                Dim NewTar As clsDatastore
+
                 '//clone all targets under Engine
                 For Each tar As clsDatastore In Me.Targets
+
+                    Dim NewTar As New clsDatastore
                     NewTar = tar.Clone(obj, True, cmd)
                     NewTar.Engine = obj
                     AddToCollection(obj.Targets, NewTar, NewTar.GUID)
                 Next
 
-                Dim NewVar As clsVariable
+
                 '//clone all variables under Engine
                 For Each var As clsVariable In Me.Variables
+
+                    Dim NewVar As New clsVariable
                     NewVar = var.Clone(obj, True, cmd)
                     NewVar.Engine = obj
                     AddToCollection(obj.Variables, NewVar, NewVar.GUID)
                 Next
 
-                Dim NewMan As clsTask
+
                 '//clone all main procs under Engine
                 For Each man As clsTask In Me.Mains
-                    man.LoadMe(cmd)
+                    'man.LoadMe(cmd)
 
+                    Dim NewMan As New clsTask
                     NewMan = man.Clone(obj, True, cmd)
                     NewMan.Engine = obj
                     AddToCollection(obj.Mains, NewMan, NewMan.GUID)
                 Next
 
-                Dim NewPrc As clsTask
+
                 '//clone all procs under Engine
                 For Each prc As clsTask In Me.Procs
+                    'prc.LoadMe(cmd)
+
+                    Dim NewPrc As New clsTask
                     NewPrc = prc.Clone(obj, True, cmd)
                     NewPrc.Engine = obj
                     AddToCollection(obj.Procs, NewPrc, NewPrc.GUID)
                 Next
 
+                Dim NewGen As clsTask
+                '//clone all procs under Engine
+                For Each gen As clsTask In Me.Gens
+                    'gen.LoadMe()
+
+                    NewGen = gen.Clone(obj, True, cmd)
+                    NewGen.Engine = obj
+                    AddToCollection(obj.Procs, NewGen, NewGen.GUID)
+                Next
                 'Dim NewJon As clsTask
                 ''//clone all joins under Engine
                 'For Each jon As clsTask In Me.Gens
@@ -241,12 +260,15 @@ Public Class clsEngine
         Dim sql As String = ""
         Dim cmd As New Odbc.OdbcCommand
         Dim ConnStr As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             If Me.Connection IsNot Nothing Then
                 ConnStr = Me.Connection.ConnectionName
@@ -272,8 +294,6 @@ Public Class clsEngine
             " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & _
             " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
             'End If
 
 
@@ -281,11 +301,30 @@ Public Class clsEngine
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Save = True
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+
             Me.IsModified = False
 
+            tran.Commit()
+
+            Save = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEngine Save", sql)
+            tran.Rollback()
+            Save = False
         Catch ex As Exception
             LogError(ex, "clsEngine Save", sql)
+            tran.Rollback()
             Save = False
         Finally
             'cnn.Close()
@@ -303,49 +342,73 @@ Public Class clsEngine
                 Dim i As Integer
 
                 For i = 1 To Me.Mains.Count
-                    Me.Mains(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Mains(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Mains, "") '//clear all
 
                 For i = 1 To Me.Procs.Count
-                    Me.Procs(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Procs(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
-                RemoveFromCollection(Me.Procs, "") '//clear all
+                RemoveFromCollection(Me.Procs, "") '//clear all  
 
                 For i = 1 To Me.Lookups.Count
-                    Me.Lookups(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Lookups(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Lookups, "") '//clear all
 
                 For i = 1 To Me.Variables.Count
-                    Me.Variables(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Variables(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Variables, "") '//clear all
 
                 For i = 1 To Me.Gens.Count
-                    Me.Gens(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Gens(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Gens, "") '//clear all
 
                 For i = 1 To Me.Sources.Count
-                    Me.Sources(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Sources(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Sources, "")  '//clear all
 
                 For i = 1 To Me.Targets.Count
-                    Me.Targets(i).Delete(cmd, cnn, Cascade, False)
+                    If Me.Targets(i).Delete(cmd, cnn, Cascade, False) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
 
                 RemoveFromCollection(Me.Targets, "") '//clear all
             End If
 
-            Me.DeleteATTR(cmd)
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+                Exit Try
+            End If
 
             sql = "Delete From " & Me.Project.tblEngines & " where  EngineName=" & Me.GetQuotedText & " AND SystemName=" & Me.ObjSystem.GetQuotedText & " AND EnvironmentName=" & Me.ObjSystem.Environment.GetQuotedText & " AND ProjectName=" & Me.ObjSystem.Environment.Project.GetQuotedText
 
@@ -361,8 +424,8 @@ Public Class clsEngine
             Delete = True
 
         Catch ex As Exception
-            LogError(ex, sql)
-            Return False
+            LogError(ex, "clsEngine Delete", sql)
+            Delete = False
         End Try
 
     End Function
@@ -375,12 +438,15 @@ Public Class clsEngine
         Dim cmd As New Odbc.OdbcCommand
         Dim sql As String = ""
         Dim ConnText As String
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             If Me.Connection Is Nothing Then
                 ConnText = ""
@@ -401,50 +467,95 @@ Public Class clsEngine
             Me.GetQuotedText & ",'" & _
             FixStr(Me.EngineDescription) & "')"
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
             'End If
-
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            AddToCollection(Me.ObjSystem.Engines, Me, Me.GUID)
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
 
+            If AddToCollection(Me.ObjSystem.Engines, Me, Me.GUID) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
             '//Add all child object to database if Cascade flag is true. 
             '//Generally when performing Clipboard copy/paste this flag is set so 
             '//entire copied object tree can be added to database by just calling 
             '//AddNew method of parent node
             If Cascade = True Then
                 For Each child As clsDatastore In Me.Sources
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsDatastore In Me.Targets
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsVariable In Me.Variables
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
-                For Each child As clsTask In Me.Gens
-                    child.AddNew(True)
-                Next
+                'For Each child As clsTask In Me.Gens
+                '    If child.AddNew(cmd, True) = False Then
+                '        tran.Rollback()
+                '        AddNew = False
+                '        Exit Try
+                '    End If
+                'Next
                 For Each child As clsTask In Me.Procs
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsTask In Me.Mains
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsTask In Me.Lookups
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
 
+            tran.Commit()
+            IsModified = False
             AddNew = True
-            Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEngine AddNew", sql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsEngine AddNew", sql)
+            tran.Rollback()
             AddNew = False
         Finally
             'cnn.Close()
@@ -478,13 +589,20 @@ Public Class clsEngine
             Me.GetQuotedText & ",'" & _
             FixStr(Me.EngineDescription) & "')"
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
+           
             'End If
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.DeleteATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
 
             AddToCollection(Me.ObjSystem.Engines, Me, Me.GUID)
 
@@ -494,34 +612,60 @@ Public Class clsEngine
             '//AddNew method of parent node
             If Cascade = True Then
                 For Each child As clsDatastore In Me.Sources
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsDatastore In Me.Targets
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsVariable In Me.Variables
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
-                For Each child As clsTask In Me.Gens
-                    child.AddNew(True)
-                Next
+                'For Each child As clsTask In Me.Gens
+                '    If child.AddNew(cmd, True) = False Then
+                '        AddNew = False
+                '        Exit Try
+                '    End If
+                'Next
                 For Each child As clsTask In Me.Procs
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsTask In Me.Mains
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsTask In Me.Lookups
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
 
             AddNew = True
             Me.IsModified = False
 
-        Catch ex As Exception
-            LogError(ex, sql)
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEngine AddNew", sql)
             AddNew = False
+        Catch ex As Exception
+            LogError(ex, "clsEngine AddNew", sql)
+            AddNew = False
+        Finally
+            'cnn.Close()
         End Try
 
     End Function
@@ -831,7 +975,7 @@ Public Class clsEngine
 
         Catch ex As Exception
             LogError(ex, "clsEngine findDupNames")
-            Return Nothing
+            Return False
         End Try
        
     End Function
@@ -922,11 +1066,14 @@ Public Class clsEngine
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEngine InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
-            LogError(ex, "clsEngine InsertATTR")
-            Return False
+            LogError(ex, "clsEngine InsertATTR", sql)
+            InsertATTR = False
         End Try
 
     End Function
@@ -956,11 +1103,14 @@ Public Class clsEngine
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEngine InsertATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
-            LogError(ex, "clsEngine DeleteATTR")
-            Return False
+            LogError(ex, "clsEngine DeleteATTR", sql)
+            DeleteATTR = False
         End Try
 
     End Function

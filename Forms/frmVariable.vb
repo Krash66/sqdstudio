@@ -2,6 +2,8 @@ Public Class frmVariable
     Inherits SQDStudio.frmBlank
 
     Public objThis As New clsVariable
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
 
     Dim IsNewObj As Boolean
 
@@ -35,7 +37,6 @@ Public Class frmVariable
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtVariableName As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtVariableSize As System.Windows.Forms.TextBox
@@ -44,41 +45,48 @@ Public Class frmVariable
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtVariableDesc As System.Windows.Forms.TextBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmVariable))
         Me.txtVariableDesc = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
         Me.txtVariableName = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.txtVariableSize = New System.Windows.Forms.TextBox
         Me.Label5 = New System.Windows.Forms.Label
         Me.txtInitVal = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
         Me.Panel1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
         Me.SuspendLayout()
         '
-        'PictureBox1
+        'Panel1
         '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\FormTop\sq_skyblue.jpg"
+        Me.Panel1.Size = New System.Drawing.Size(432, 68)
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 292)
+        Me.GroupBox1.Size = New System.Drawing.Size(434, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.cmdOk.Location = New System.Drawing.Point(150, 315)
         Me.cmdOk.TabIndex = 5
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.cmdCancel.Location = New System.Drawing.Point(246, 315)
         Me.cmdCancel.TabIndex = 6
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.cmdHelp.Location = New System.Drawing.Point(342, 315)
         Me.cmdHelp.TabIndex = 7
         '
         'Label1
@@ -87,111 +95,126 @@ Public Class frmVariable
         '
         'Label2
         '
-        Me.Label2.Text = "Enter a unique variable name within an engine, and its attributes."
+        Me.Label2.Size = New System.Drawing.Size(356, 39)
+        Me.Label2.Text = "Enter a unique variable name and its attributes."
         '
         'txtVariableDesc
         '
-        Me.txtVariableDesc.Location = New System.Drawing.Point(128, 208)
+        Me.txtVariableDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtVariableDesc.Location = New System.Drawing.Point(6, 19)
         Me.txtVariableDesc.MaxLength = 1000
         Me.txtVariableDesc.Multiline = True
         Me.txtVariableDesc.Name = "txtVariableDesc"
         Me.txtVariableDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtVariableDesc.Size = New System.Drawing.Size(351, 56)
+        Me.txtVariableDesc.Size = New System.Drawing.Size(391, 83)
         Me.txtVariableDesc.TabIndex = 4
-        '
-        'Label4
-        '
-        Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(16, 208)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(112, 20)
-        Me.Label4.TabIndex = 14
-        Me.Label4.Text = "Description"
         '
         'txtVariableName
         '
-        Me.txtVariableName.Location = New System.Drawing.Point(128, 88)
+        Me.txtVariableName.Location = New System.Drawing.Point(90, 19)
         Me.txtVariableName.MaxLength = 128
         Me.txtVariableName.Name = "txtVariableName"
-        Me.txtVariableName.Size = New System.Drawing.Size(351, 20)
+        Me.txtVariableName.Size = New System.Drawing.Size(319, 20)
         Me.txtVariableName.TabIndex = 1
         '
         'Label3
         '
+        Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(16, 88)
+        Me.Label3.Location = New System.Drawing.Point(6, 22)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(112, 20)
+        Me.Label3.Size = New System.Drawing.Size(38, 14)
         Me.Label3.TabIndex = 12
-        Me.Label3.Text = "Variable  Name"
+        Me.Label3.Text = "Name"
         '
         'txtVariableSize
         '
-        Me.txtVariableSize.Location = New System.Drawing.Point(128, 128)
+        Me.txtVariableSize.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtVariableSize.Location = New System.Drawing.Point(90, 45)
         Me.txtVariableSize.MaxLength = 128
         Me.txtVariableSize.Name = "txtVariableSize"
-        Me.txtVariableSize.Size = New System.Drawing.Size(351, 20)
+        Me.txtVariableSize.Size = New System.Drawing.Size(319, 20)
         Me.txtVariableSize.TabIndex = 2
         '
         'Label5
         '
+        Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(16, 128)
+        Me.Label5.Location = New System.Drawing.Point(6, 48)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(112, 20)
+        Me.Label5.Size = New System.Drawing.Size(30, 14)
         Me.Label5.TabIndex = 12
         Me.Label5.Text = "Size"
         '
         'txtInitVal
         '
-        Me.txtInitVal.Location = New System.Drawing.Point(128, 168)
+        Me.txtInitVal.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtInitVal.Location = New System.Drawing.Point(90, 71)
         Me.txtInitVal.MaxLength = 128
         Me.txtInitVal.Name = "txtInitVal"
-        Me.txtInitVal.Size = New System.Drawing.Size(351, 20)
+        Me.txtInitVal.Size = New System.Drawing.Size(319, 20)
         Me.txtInitVal.TabIndex = 3
         '
         'Label6
         '
+        Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(16, 168)
+        Me.Label6.Location = New System.Drawing.Point(6, 74)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(112, 20)
+        Me.Label6.Size = New System.Drawing.Size(70, 14)
         Me.Label6.TabIndex = 12
         Me.Label6.Text = "Initial Value"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.GroupBox3)
+        Me.GroupBox2.Controls.Add(Me.Label3)
+        Me.GroupBox2.Controls.Add(Me.txtVariableName)
+        Me.GroupBox2.Controls.Add(Me.txtVariableSize)
+        Me.GroupBox2.Controls.Add(Me.Label5)
+        Me.GroupBox2.Controls.Add(Me.txtInitVal)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 74)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(415, 213)
+        Me.GroupBox2.TabIndex = 15
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Variable Properties"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.txtVariableDesc)
+        Me.GroupBox3.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox3.Location = New System.Drawing.Point(6, 97)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(403, 108)
+        Me.GroupBox3.TabIndex = 13
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Description"
         '
         'frmVariable
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(514, 335)
-        Me.Controls.Add(Me.txtVariableDesc)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.txtVariableName)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.txtVariableSize)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.txtInitVal)
-        Me.Controls.Add(Me.Label6)
+        Me.ClientSize = New System.Drawing.Size(432, 354)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.MinimumSize = New System.Drawing.Size(440, 388)
         Me.Name = "frmVariable"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Variable Properties"
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
-        Me.Controls.SetChildIndex(Me.Label6, 0)
-        Me.Controls.SetChildIndex(Me.txtInitVal, 0)
-        Me.Controls.SetChildIndex(Me.Label5, 0)
-        Me.Controls.SetChildIndex(Me.txtVariableSize, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
-        Me.Controls.SetChildIndex(Me.Label3, 0)
-        Me.Controls.SetChildIndex(Me.txtVariableName, 0)
-        Me.Controls.SetChildIndex(Me.Label4, 0)
-        Me.Controls.SetChildIndex(Me.txtVariableDesc, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Controls.SetChildIndex(Me.GroupBox2, 0)
         Me.Panel1.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 

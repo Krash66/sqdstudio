@@ -227,23 +227,33 @@ Public Class clsEnvironment
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             sql = "Update " & Me.Project.tblEnvironments & " set Environmentname='" & FixStr(Me.EnvironmentName) & _
             "',ENVIRONMENTDESCRIPTION='" & FixStr(Me.EnvironmentDescription) & "' where Environmentname='" & _
             Me.EnvironmentName & "' and Projectname='" & Me.Project.ProjectName & "'"
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
-
-
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
 
             If Me.PathChange = True Then
                 For Each Str As clsStructure In Me.Structures
@@ -255,11 +265,19 @@ Public Class clsEnvironment
                 Me.PathChange = False
             End If
 
-            Save = True
             Me.IsModified = False
 
+            tran.Commit()
+
+            Save = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnv Save", sql)
+            tran.Rollback()
+            Save = False
         Catch ex As Exception
             LogError(ex, "clsEnv Save", sql)
+            tran.Rollback()
             Return False
         End Try
 
@@ -272,52 +290,68 @@ Public Class clsEnvironment
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEnvironments & "(" & _
-                      "ProjectName,EnvironmentName,Description," & _
-                      "LocalDTDDir,LocalDDLDir,LocalCobolDir,LocalCDir," & _
-                      "LocalScriptDir,LocalModelDir) " & _
-                      " Values(" & _
-                      Me.Project.GetQuotedText & "," & _
-                      Me.GetQuotedText & ",'" & _
-                      FixStr(EnvironmentDescription) & "','" & _
-                      FixStr(LocalDTDDir) & "','" & _
-                      FixStr(LocalDDLDir) & "','" & _
-                      FixStr(LocalCobolDir) & "','" & _
-                      FixStr(LocalCDir) & "','" & _
-                      FixStr(LocalScriptDir) & "','" & _
-                      FixStr(LocalDBDDir) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblEnvironments & "(ProjectName,Environmentname,ENVIRONMENTDESCRIPTION) Values('" & _
-                FixStr(Me.Project.ProjectName) & "','" & Me.EnvironmentName & "','" & Me.EnvironmentDescription & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblEnvironments & "(" & _
+            '          "ProjectName,EnvironmentName,Description," & _
+            '          "LocalDTDDir,LocalDDLDir,LocalCobolDir,LocalCDir," & _
+            '          "LocalScriptDir,LocalModelDir) " & _
+            '          " Values(" & _
+            '          Me.Project.GetQuotedText & "," & _
+            '          Me.GetQuotedText & ",'" & _
+            '          FixStr(EnvironmentDescription) & "','" & _
+            '          FixStr(LocalDTDDir) & "','" & _
+            '          FixStr(LocalDDLDir) & "','" & _
+            '          FixStr(LocalCobolDir) & "','" & _
+            '          FixStr(LocalCDir) & "','" & _
+            '          FixStr(LocalScriptDir) & "','" & _
+            '          FixStr(LocalDBDDir) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblEnvironments & "(ProjectName,Environmentname,ENVIRONMENTDESCRIPTION) Values('" & _
+            FixStr(Me.Project.ProjectName) & "','" & Me.EnvironmentName & "','" & Me.EnvironmentDescription & "')"
 
-                Me.InsertATTR(cmd)
-            End If
-           
+            'End If
+
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
+            tran.Commit()
             '//Add all child object to database if Cascade flag is true. 
             '//Generally when performing Clipboard copy/paste thi flag is set so 
             '//entire copied object tree can be added to database by just calling 
             '//AddNew method of parent node
             If Cascade = True Then
                 For Each child As clsConnection In Me.Connections
-                    child.AddNew(True)
+                    If child.AddNew(True) = False Then
+                        MsgBox("Connection " & child.ConnectionName & " did not copy correctly")
+                        'tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child As clsStructure In Me.Structures
                     If child.AddNew(True) = False Then
                         MsgBox("Description " & child.StructureName & " did not copy correctly")
+                        'tran.Rollback()
+                        AddNew = False
+                        Exit Try
                     End If
                 Next
                 'For Each child As clsDatastore In Me.Datastores
@@ -328,28 +362,43 @@ Public Class clsEnvironment
                 For Each child As clsVariable In Me.Variables
                     If child.AddNew(True) = False Then
                         MsgBox("Variable " & child.VariableName & " did not copy correctly")
+                        'tran.Rollback()
+                        AddNew = False
+                        Exit Try
                     End If
                 Next
-                For Each child As clsTask In Me.Procedures
-                    If child.AddNew(True) = False Then
-                        MsgBox("Procedure " & child.TaskName & " did not copy correctly")
-                    End If
-                Next
+                'For Each child As clsTask In Me.Procedures
+                '    If child.AddNew(cmd, True) = False Then
+                '        MsgBox("Procedure " & child.TaskName & " did not copy correctly")
+                '        tran.Rollback()
+                '        AddNew = False
+                '        Exit Try
+                '    End If
+                'Next
                 For Each child As clsSystem In Me.Systems
                     If child.AddNew(True) = False Then
                         MsgBox("System " & child.SystemName & " did not copy correctly")
+                        'tran.Rollback()
+                        AddNew = False
+                        Exit Try
                     End If
                 Next
             End If
 
             AddToCollection(Me.Project.Environments, Me, Me.GUID)
 
-            AddNew = True
-            Me.IsModified = False
 
+            IsModified = False
+            AddNew = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnv AddNew", sql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsEnv AddNew", sql)
-            Return False
+            tran.Rollback()
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -365,38 +414,40 @@ Public Class clsEnvironment
         Try
             Me.Text = Me.Text.Trim
             '//When we add new record we need to find Unique Database Record ID.
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblEnvironments & "(" & _
-                      "ProjectName,EnvironmentName,Description," & _
-                      "LocalDTDDir,LocalDDLDir,LocalCobolDir,LocalCDir," & _
-                      "LocalScriptDir,LocalModelDir) " & _
-                      " Values(" & _
-                      Me.Project.GetQuotedText & "," & _
-                      Me.GetQuotedText & ",'" & _
-                      FixStr(EnvironmentDescription) & "','" & _
-                      FixStr(LocalDTDDir) & "','" & _
-                      FixStr(LocalDDLDir) & "','" & _
-                      FixStr(LocalCobolDir) & "','" & _
-                      FixStr(LocalCDir) & "','" & _
-                      FixStr(LocalScriptDir) & "','" & _
-                      FixStr(LocalDBDDir) & "')"
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblEnvironments & "(" & _
+            '          "ProjectName,EnvironmentName,Description," & _
+            '          "LocalDTDDir,LocalDDLDir,LocalCobolDir,LocalCDir," & _
+            '          "LocalScriptDir,LocalModelDir) " & _
+            '          " Values(" & _
+            '          Me.Project.GetQuotedText & "," & _
+            '          Me.GetQuotedText & ",'" & _
+            '          FixStr(EnvironmentDescription) & "','" & _
+            '          FixStr(LocalDTDDir) & "','" & _
+            '          FixStr(LocalDDLDir) & "','" & _
+            '          FixStr(LocalCobolDir) & "','" & _
+            '          FixStr(LocalCDir) & "','" & _
+            '          FixStr(LocalScriptDir) & "','" & _
+            '          FixStr(LocalDBDDir) & "')"
 
-                cmd.CommandText = sql
-                Log(sql)
-                cmd.ExecuteNonQuery()
-            Else
-                sql = "INSERT INTO " & Me.Project.tblEnvironments & "(ProjectName,Environmentname,ENVIRONMENTDESCRIPTION) Values('" & _
-                FixStr(Me.Project.ProjectName) & "','" & Me.EnvironmentName & "','" & Me.EnvironmentDescription & "')"
+            '    cmd.CommandText = sql
+            '    Log(sql)
+            '    cmd.ExecuteNonQuery()
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblEnvironments & "(ProjectName,Environmentname,ENVIRONMENTDESCRIPTION) Values('" & _
+            FixStr(Me.Project.ProjectName) & "','" & Me.EnvironmentName & "','" & Me.EnvironmentDescription & "')"
 
-                cmd.CommandText = sql
-                Log(sql)
-                cmd.ExecuteNonQuery()
+            cmd.CommandText = sql
+            Log(sql)
+            cmd.ExecuteNonQuery()
 
-                Me.InsertATTR(cmd)
+            'End If
+
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
             End If
-
-
 
             '//Add all child object to database if Cascade flag is true. 
             '//Generally when performing Clipboard copy/paste thi flag is set so 
@@ -405,31 +456,49 @@ Public Class clsEnvironment
             If Cascade = True Then
                 Dim child As INode
                 For Each child In Connections
-                    child.AddNew(cmd, True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 For Each child In Structures
-                    child.AddNew(cmd, True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
                 'For Each child In Me.Datastores
                 '    child.AddNew(cmd, True)
                 'Next
                 For Each child In Me.Variables
-                    child.AddNew(cmd, True)
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
-                For Each child In Me.Procedures
-                    child.AddNew(cmd, True)
-                Next
-                For Each child In Systems
-                    child.AddNew(cmd, True)
+                'For Each child In Me.Procedures
+                '    If child.AddNew(cmd, True) = False Then
+                '        AddNew = False
+                '        Exit Try
+                '    End If
+                'Next
+                For Each child In Me.Systems
+                    If child.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
 
             AddToCollection(Me.Project.Environments, Me, Me.GUID)
 
-            AddNew = True
-
             Me.IsModified = False
 
+            AddNew = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnv AddNew", sql)
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsEnv AddNew", sql)
             Return False
@@ -447,15 +516,24 @@ Public Class clsEnvironment
             If Cascade = True Then
                 Dim o As INode
                 For Each o In Me.Connections
-                    o.Delete(cmd, cnn, Cascade)
+                    If o.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Connections, "") '//clear collection
                 For Each o In Me.Systems
-                    o.Delete(cmd, cnn, Cascade, False)
+                    If o.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Systems, "") '//clear collection
                 For Each o In Me.Structures
-                    o.Delete(cmd, cnn, Cascade, False)
+                    If o.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Structures, "") '/// clear collection
                 'For Each o In Me.Datastores
@@ -463,17 +541,26 @@ Public Class clsEnvironment
                 'Next
                 'RemoveFromCollection(Me.Datastores, "")
                 For Each o In Me.Variables
-                    o.Delete(cmd, cnn, Cascade, False)
+                    If o.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Variables, "")
                 For Each o In Me.Procedures
-                    o.Delete(cmd, cnn, Cascade, False)
+                    If o.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Procedures, "")
             End If
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-            Me.DeleteATTR(cmd)
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+                Exit Try
+            End If
             'End If
 
             sql = "Delete From " & Me.Project.tblEnvironments & " where EnvironmentName='" & FixStr(Me.EnvironmentName) & _
@@ -490,6 +577,9 @@ Public Class clsEnvironment
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnv Delete", sql)
+            Delete = False
         Catch ex As Exception
             LogError(ex, "clsEnv Delete", sql)
             Delete = False
@@ -505,6 +595,8 @@ Public Class clsEnvironment
 
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
+        Dim sql As String = ""
+
         Try
             If Me.IsLoaded = True Then Exit Try
 
@@ -512,7 +604,6 @@ Public Class clsEnvironment
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
-            Dim sql As String = ""
             Dim Attrib As String = ""
             Dim Value As String = ""
 
@@ -561,11 +652,14 @@ Public Class clsEnvironment
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnvironment LoadMe", sql)
+            LoadMe = False
         Catch ex As Exception
-            LogError(ex, "clsEnvironment LoadMe")
-            Return False
+            LogError(ex, "clsEnvironment LoadMe", sql)
+            LoadMe = False
         End Try
 
     End Function
@@ -622,11 +716,14 @@ Public Class clsEnvironment
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
             LogError(ex, "clsEnv ValidateNewObject", sql)
-            Return False
+            ValidateNewObject = False
         Finally
             'cnn.Close()
         End Try
@@ -841,11 +938,14 @@ Public Class clsEnvironment
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnvironment InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
-            LogError(ex, "clsEnvironment InsertATTR")
-            Return False
+            LogError(ex, "clsEnvironment InsertATTR", sql)
+            InsertATTR = False
         End Try
 
     End Function
@@ -874,11 +974,14 @@ Public Class clsEnvironment
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsEnvironment DeleteATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
             LogError(ex, "clsEnvironment DeleteATTR")
-            Return False
+            DeleteATTR = False
         End Try
 
     End Function

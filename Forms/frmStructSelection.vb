@@ -7,6 +7,13 @@ Public Class frmStructSelection
     Dim lastTreeviewSearchText As String
     Dim lastTreeviewSearchNode As TreeNode
     Dim colSkipNodes As New ArrayList
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox6 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
 
@@ -39,16 +46,11 @@ Public Class frmStructSelection
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    Friend WithEvents pnlFields As System.Windows.Forms.Panel
     Friend WithEvents lblFieldName As System.Windows.Forms.Label
     Friend WithEvents cmdSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearchField As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents tvFields As System.Windows.Forms.TreeView
     Friend WithEvents lvFieldAttrs As System.Windows.Forms.ListView
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents pnlSelect As System.Windows.Forms.Panel
-    Friend WithEvents lblFile As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtSelectionDesc As System.Windows.Forms.TextBox
     Friend WithEvents txtSelectionName As System.Windows.Forms.TextBox
@@ -57,104 +59,90 @@ Public Class frmStructSelection
     Friend WithEvents column1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents column2 As System.Windows.Forms.ColumnHeader
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStructSelection))
-        Me.pnlFields = New System.Windows.Forms.Panel
         Me.lblFieldName = New System.Windows.Forms.Label
         Me.cmdSearch = New System.Windows.Forms.Button
         Me.txtSearchField = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
         Me.tvFields = New System.Windows.Forms.TreeView
         Me.lvFieldAttrs = New System.Windows.Forms.ListView
         Me.column1 = New System.Windows.Forms.ColumnHeader
         Me.column2 = New System.Windows.Forms.ColumnHeader
-        Me.Label4 = New System.Windows.Forms.Label
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
-        Me.pnlSelect = New System.Windows.Forms.Panel
         Me.txtSelectionDesc = New System.Windows.Forms.TextBox
-        Me.lblFile = New System.Windows.Forms.Label
         Me.txtSelectionName = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox
+        Me.GroupBox5 = New System.Windows.Forms.GroupBox
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
         Me.Panel1.SuspendLayout()
-        Me.pnlFields.SuspendLayout()
-        Me.pnlSelect.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
+        Me.GroupBox7.SuspendLayout()
+        Me.GroupBox5.SuspendLayout()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-            "dio\images\FormTop\sq_skyblue.jpg"
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(592, 68)
+        Me.Panel1.Size = New System.Drawing.Size(561, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 433)
-        Me.GroupBox1.Size = New System.Drawing.Size(578, 10)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 512)
+        Me.GroupBox1.Size = New System.Drawing.Size(553, 10)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(322, 449)
+        Me.cmdOk.Location = New System.Drawing.Point(291, 528)
         Me.cmdOk.TabIndex = 5
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(409, 449)
+        Me.cmdCancel.Location = New System.Drawing.Point(378, 528)
         Me.cmdCancel.TabIndex = 6
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(499, 449)
+        Me.cmdHelp.Location = New System.Drawing.Point(468, 528)
         Me.cmdHelp.TabIndex = 7
         '
         'Label1
         '
-        Me.Label1.Text = "Structure Subset Properties"
+        Me.Label1.Size = New System.Drawing.Size(429, 16)
+        Me.Label1.Text = "Description Selection Properties"
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(516, 39)
-        Me.Label2.Text = "Select a Subset of your structure "
-        '
-        'pnlFields
-        '
-        Me.pnlFields.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlFields.Controls.Add(Me.lblFieldName)
-        Me.pnlFields.Controls.Add(Me.cmdSearch)
-        Me.pnlFields.Controls.Add(Me.txtSearchField)
-        Me.pnlFields.Controls.Add(Me.Label5)
-        Me.pnlFields.Controls.Add(Me.tvFields)
-        Me.pnlFields.Controls.Add(Me.lvFieldAttrs)
-        Me.pnlFields.Controls.Add(Me.Label4)
-        Me.pnlFields.Location = New System.Drawing.Point(12, 166)
-        Me.pnlFields.Name = "pnlFields"
-        Me.pnlFields.Padding = New System.Windows.Forms.Padding(5)
-        Me.pnlFields.Size = New System.Drawing.Size(568, 261)
-        Me.pnlFields.TabIndex = 34
+        Me.Label2.Size = New System.Drawing.Size(485, 39)
+        Me.Label2.Text = "Select a Subset of your Description"
         '
         'lblFieldName
         '
         Me.lblFieldName.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblFieldName.ForeColor = System.Drawing.Color.Blue
-        Me.lblFieldName.Location = New System.Drawing.Point(322, 10)
+        Me.lblFieldName.Location = New System.Drawing.Point(268, 22)
         Me.lblFieldName.Name = "lblFieldName"
-        Me.lblFieldName.Size = New System.Drawing.Size(170, 16)
+        Me.lblFieldName.Size = New System.Drawing.Size(124, 16)
         Me.lblFieldName.TabIndex = 38
         '
         'cmdSearch
         '
-        Me.cmdSearch.Location = New System.Drawing.Point(197, 7)
+        Me.cmdSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdSearch.Location = New System.Drawing.Point(133, 19)
         Me.cmdSearch.Name = "cmdSearch"
         Me.cmdSearch.Size = New System.Drawing.Size(30, 20)
         Me.cmdSearch.TabIndex = 37
@@ -162,41 +150,42 @@ Public Class frmStructSelection
         '
         'txtSearchField
         '
-        Me.txtSearchField.Location = New System.Drawing.Point(55, 7)
+        Me.txtSearchField.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearchField.Location = New System.Drawing.Point(6, 19)
         Me.txtSearchField.MaxLength = 128
         Me.txtSearchField.Name = "txtSearchField"
-        Me.txtSearchField.Size = New System.Drawing.Size(136, 20)
+        Me.txtSearchField.Size = New System.Drawing.Size(121, 20)
         Me.txtSearchField.TabIndex = 36
-        '
-        'Label5
-        '
-        Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(8, 10)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(46, 12)
-        Me.Label5.TabIndex = 35
-        Me.Label5.Text = "Search"
         '
         'tvFields
         '
-        Me.tvFields.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.tvFields.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tvFields.CheckBoxes = True
-        Me.tvFields.Location = New System.Drawing.Point(8, 32)
+        Me.tvFields.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tvFields.HideSelection = False
+        Me.tvFields.HotTracking = True
+        Me.tvFields.Location = New System.Drawing.Point(6, 19)
         Me.tvFields.Name = "tvFields"
-        Me.tvFields.Size = New System.Drawing.Size(219, 221)
+        Me.tvFields.Size = New System.Drawing.Size(169, 203)
         Me.tvFields.TabIndex = 3
         '
         'lvFieldAttrs
         '
+        Me.lvFieldAttrs.Activation = System.Windows.Forms.ItemActivation.OneClick
         Me.lvFieldAttrs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvFieldAttrs.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.column1, Me.column2})
+        Me.lvFieldAttrs.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvFieldAttrs.FullRowSelect = True
-        Me.lvFieldAttrs.Location = New System.Drawing.Point(229, 32)
+        Me.lvFieldAttrs.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
+        Me.lvFieldAttrs.HideSelection = False
+        Me.lvFieldAttrs.Location = New System.Drawing.Point(6, 16)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(331, 221)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(335, 257)
         Me.lvFieldAttrs.TabIndex = 4
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -211,97 +200,174 @@ Public Class frmStructSelection
         Me.column2.Text = "Value"
         Me.column2.Width = 150
         '
-        'Label4
-        '
-        Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(243, 10)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(81, 12)
-        Me.Label4.TabIndex = 32
-        Me.Label4.Text = "Attributes"
-        '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Value"
         Me.ColumnHeader2.Width = 140
-        '
-        'pnlSelect
-        '
-        Me.pnlSelect.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlSelect.Controls.Add(Me.txtSelectionDesc)
-        Me.pnlSelect.Controls.Add(Me.lblFile)
-        Me.pnlSelect.Controls.Add(Me.txtSelectionName)
-        Me.pnlSelect.Controls.Add(Me.Label3)
-        Me.pnlSelect.Location = New System.Drawing.Point(12, 74)
-        Me.pnlSelect.Name = "pnlSelect"
-        Me.pnlSelect.Size = New System.Drawing.Size(568, 86)
-        Me.pnlSelect.TabIndex = 35
         '
         'txtSelectionDesc
         '
         Me.txtSelectionDesc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSelectionDesc.Location = New System.Drawing.Point(109, 32)
+        Me.txtSelectionDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSelectionDesc.Location = New System.Drawing.Point(6, 19)
         Me.txtSelectionDesc.MaxLength = 1000
         Me.txtSelectionDesc.Multiline = True
         Me.txtSelectionDesc.Name = "txtSelectionDesc"
         Me.txtSelectionDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtSelectionDesc.Size = New System.Drawing.Size(383, 51)
+        Me.txtSelectionDesc.Size = New System.Drawing.Size(366, 53)
         Me.txtSelectionDesc.TabIndex = 2
-        '
-        'lblFile
-        '
-        Me.lblFile.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFile.Location = New System.Drawing.Point(8, 35)
-        Me.lblFile.Name = "lblFile"
-        Me.lblFile.Size = New System.Drawing.Size(78, 20)
-        Me.lblFile.TabIndex = 65
-        Me.lblFile.Text = "Description"
         '
         'txtSelectionName
         '
-        Me.txtSelectionName.Location = New System.Drawing.Point(109, 7)
+        Me.txtSelectionName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSelectionName.Location = New System.Drawing.Point(50, 19)
         Me.txtSelectionName.MaxLength = 128
         Me.txtSelectionName.Name = "txtSelectionName"
-        Me.txtSelectionName.Size = New System.Drawing.Size(119, 20)
+        Me.txtSelectionName.Size = New System.Drawing.Size(337, 20)
         Me.txtSelectionName.TabIndex = 1
         '
         'Label3
         '
+        Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(8, 10)
+        Me.Label3.Location = New System.Drawing.Point(6, 22)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(90, 20)
+        Me.Label3.Size = New System.Drawing.Size(38, 14)
         Me.Label3.TabIndex = 55
-        Me.Label3.Text = "Subset  Name"
+        Me.Label3.Text = "Name"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.GroupBox3)
+        Me.GroupBox2.Controls.Add(Me.Label3)
+        Me.GroupBox2.Controls.Add(Me.txtSelectionName)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox2.Location = New System.Drawing.Point(12, 74)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(393, 132)
+        Me.GroupBox2.TabIndex = 36
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Description Selection Properties"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.txtSelectionDesc)
+        Me.GroupBox3.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox3.Location = New System.Drawing.Point(9, 45)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(378, 78)
+        Me.GroupBox3.TabIndex = 56
+        Me.GroupBox3.TabStop = False
+        Me.GroupBox3.Text = "Description"
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox4.Controls.Add(Me.SplitContainer1)
+        Me.GroupBox4.Controls.Add(Me.lblFieldName)
+        Me.GroupBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox4.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox4.Location = New System.Drawing.Point(12, 212)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(544, 298)
+        Me.GroupBox4.TabIndex = 37
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Description Field Properties"
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox6.Controls.Add(Me.tvFields)
+        Me.GroupBox6.Controls.Add(Me.GroupBox7)
+        Me.GroupBox6.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox6.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(181, 279)
+        Me.GroupBox6.TabIndex = 40
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Fields"
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox7.Controls.Add(Me.txtSearchField)
+        Me.GroupBox7.Controls.Add(Me.cmdSearch)
+        Me.GroupBox7.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox7.Location = New System.Drawing.Point(6, 228)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(169, 45)
+        Me.GroupBox7.TabIndex = 0
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Field Search"
+        '
+        'GroupBox5
+        '
+        Me.GroupBox5.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox5.Controls.Add(Me.lvFieldAttrs)
+        Me.GroupBox5.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox5.Location = New System.Drawing.Point(3, 0)
+        Me.GroupBox5.Name = "GroupBox5"
+        Me.GroupBox5.Size = New System.Drawing.Size(347, 279)
+        Me.GroupBox5.TabIndex = 39
+        Me.GroupBox5.TabStop = False
+        Me.GroupBox5.Text = "Field Attributes"
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer1.Location = New System.Drawing.Point(3, 16)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.GroupBox6)
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.GroupBox5)
+        Me.SplitContainer1.Size = New System.Drawing.Size(538, 279)
+        Me.SplitContainer1.SplitterDistance = 184
+        Me.SplitContainer1.TabIndex = 39
         '
         'frmStructSelection
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(592, 485)
-        Me.Controls.Add(Me.pnlSelect)
-        Me.Controls.Add(Me.pnlFields)
-        Me.MinimumSize = New System.Drawing.Size(600, 472)
+        Me.ClientSize = New System.Drawing.Size(561, 564)
+        Me.Controls.Add(Me.GroupBox4)
+        Me.Controls.Add(Me.GroupBox2)
         Me.Name = "frmStructSelection"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Structure Subset Properties"
-        Me.Controls.SetChildIndex(Me.pnlFields, 0)
+        Me.Text = "Description Selection Properties"
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
-        Me.Controls.SetChildIndex(Me.pnlSelect, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Controls.SetChildIndex(Me.GroupBox2, 0)
+        Me.Controls.SetChildIndex(Me.GroupBox4, 0)
         Me.Panel1.ResumeLayout(False)
-        Me.pnlFields.ResumeLayout(False)
-        Me.pnlFields.PerformLayout()
-        Me.pnlSelect.ResumeLayout(False)
-        Me.pnlSelect.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox7.ResumeLayout(False)
+        Me.GroupBox7.PerformLayout()
+        Me.GroupBox5.ResumeLayout(False)
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -448,9 +514,6 @@ doAgain:
         tvFields.HideSelection = False
 
         lvFieldAttrs.SmallImageList = imgListSmall
-
-        pnlSelect.Visible = True
-        pnlFields.Visible = True
 
     End Function
 

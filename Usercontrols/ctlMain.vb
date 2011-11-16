@@ -260,6 +260,20 @@ Public Class ctlMain
             '// check to see if renamed
             If objThis.TaskName <> txtTaskName.Text Then
                 objThis.IsRenamed = RenameTask(objThis, txtTaskName.Text)
+                If objThis.IsRenamed = False And objThis.Project.ODBCtype = enumODBCtype.ACCESS Then
+                    MsgBox("Renaming of this Procedure Failed" & Chr(13) & _
+                           "Due to transactional deficiencies in MS Access" & Chr(13) & _
+                           "A manual rollback will now take place as an extra precaution", MsgBoxStyle.Information, "MS Access Rollback")
+                    If RenameTask(objThis, objThis.TaskName, txtTaskName.Text) = False Then
+                        MsgBox("Manual Rollback failed!" & Chr(13) & _
+                               "To maintain Database integrity," & Chr(13) & _
+                               "Please manually rename this item back to it's previous Name." & Chr(13) & _
+                               "This will maintain Database sychronization with Design Studio." & Chr(13) & _
+                               "", MsgBoxStyle.Information, "IMPORTANT")
+                        txtTaskName.Text = objThis.TaskName
+                        Exit Function
+                    End If
+                End If
             End If
             '// now set the task name
             If objThis.IsRenamed = False Then

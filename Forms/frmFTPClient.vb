@@ -153,7 +153,7 @@ Public Class frmFTPClient
         '
         'txtRemotePath
         '
-        Me.txtRemotePath.Location = New System.Drawing.Point(432, 91)
+        Me.txtRemotePath.Location = New System.Drawing.Point(432, 90)
         Me.txtRemotePath.Name = "txtRemotePath"
         Me.txtRemotePath.Size = New System.Drawing.Size(265, 20)
         Me.txtRemotePath.TabIndex = 5
@@ -201,7 +201,7 @@ Public Class frmFTPClient
         '
         Me.cmdCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.cmdCancel.Location = New System.Drawing.Point(600, 396)
+        Me.cmdCancel.Location = New System.Drawing.Point(622, 461)
         Me.cmdCancel.Name = "cmdCancel"
         Me.cmdCancel.Size = New System.Drawing.Size(84, 23)
         Me.cmdCancel.TabIndex = 10
@@ -210,7 +210,7 @@ Public Class frmFTPClient
         'lblRemote
         '
         Me.lblRemote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRemote.Location = New System.Drawing.Point(429, 72)
+        Me.lblRemote.Location = New System.Drawing.Point(429, 67)
         Me.lblRemote.Name = "lblRemote"
         Me.lblRemote.Size = New System.Drawing.Size(130, 16)
         Me.lblRemote.TabIndex = 13
@@ -235,7 +235,7 @@ Public Class frmFTPClient
         'cmdhelp
         '
         Me.cmdhelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdhelp.Location = New System.Drawing.Point(702, 396)
+        Me.cmdhelp.Location = New System.Drawing.Point(712, 461)
         Me.cmdhelp.Name = "cmdhelp"
         Me.cmdhelp.Size = New System.Drawing.Size(84, 23)
         Me.cmdhelp.TabIndex = 11
@@ -249,7 +249,7 @@ Public Class frmFTPClient
         Me.statusbar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.statusbar.Location = New System.Drawing.Point(6, 469)
         Me.statusbar.Name = "statusbar"
-        Me.statusbar.Size = New System.Drawing.Size(569, 18)
+        Me.statusbar.Size = New System.Drawing.Size(586, 18)
         Me.statusbar.TabIndex = 18
         Me.statusbar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -307,7 +307,7 @@ Public Class frmFTPClient
         Me.txtFTPout.Name = "txtFTPout"
         Me.txtFTPout.ReadOnly = True
         Me.txtFTPout.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtFTPout.Size = New System.Drawing.Size(569, 61)
+        Me.txtFTPout.Size = New System.Drawing.Size(586, 61)
         Me.txtFTPout.TabIndex = 24
         '
         'frmFTPClient
@@ -391,6 +391,7 @@ Public Class frmFTPClient
     End Function
 
     Private Sub cmdBrowseRemote_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBrowseRemote.Click
+
         Dim LastCursor As Cursor
 
         LastCursor = Windows.Forms.Cursor.Current
@@ -421,9 +422,11 @@ Public Class frmFTPClient
             End If
         End If
         Windows.Forms.Cursor.Current = LastCursor
+
     End Sub
 
     Private Sub lvRemote_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdDnld.Click
+
         Dim thisFile As FTPFile
         Dim LastCursor As Cursor
         Dim Item As Windows.Forms.ListViewItem
@@ -470,9 +473,11 @@ Public Class frmFTPClient
         End If
         Windows.Forms.Cursor.Current = LastCursor
         lvLocal_Update(Me.StoreDir, cmbExtension.SelectedItem)
+
     End Sub
 
     Private Sub lvLocal_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUpld.Click
+
         'Dim thisFile As FTPFile
         'Dim file As String
         Dim LastCursor As Cursor
@@ -520,9 +525,11 @@ Public Class frmFTPClient
         End If
         Windows.Forms.Cursor.Current = LastCursor
         lvRemote_Update()
+
     End Sub
 
     Private Sub lvRemote_Update(Optional ByVal NewPath As String = "")
+
         Dim Files As Collection
         Dim File As FTPFile
         Dim Item As New ListViewItem
@@ -563,6 +570,7 @@ Public Class frmFTPClient
         lvRemote.Columns.Add("Date", 100, HorizontalAlignment.Left)
 
         Windows.Forms.Cursor.Current = LastCursor
+
     End Sub
 
     Private Sub lvLocal_Update(ByVal path As String, ByVal ext As String)
@@ -605,6 +613,7 @@ Public Class frmFTPClient
     End Sub
 
     Private Sub cmdUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUp.Click
+
         Dim LastCursor As Cursor
         LastCursor = Windows.Forms.Cursor.Current
         Windows.Forms.Cursor.Current = Cursors.WaitCursor
@@ -612,9 +621,11 @@ Public Class frmFTPClient
             lvRemote_Update("..")
         End If
         Windows.Forms.Cursor.Current = LastCursor
+
     End Sub
 
     Private Sub frmFTPClient_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
         Dim LastCursor As Cursor = Windows.Forms.Cursor.Current
         Windows.Forms.Cursor.Current = Cursors.WaitCursor
         Dim ftpobj As New FTPClient
@@ -636,6 +647,8 @@ Public Class frmFTPClient
 
         If (CalledBy = modDeclares.enumCalledFrom.BY_ENVIRONMENT) Then
             Select Case FileType
+                Case ".dbd"
+                    Me.Text = "Downloading to Local DBD Directory"
                 Case ".dtd"
                     Me.Text = "Downloading to Local DTD Directory"
                 Case ".ddl"
@@ -775,4 +788,5 @@ Public Class frmFTPClient
 
     End Sub
 
+    
 End Class

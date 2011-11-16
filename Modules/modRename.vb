@@ -5,6 +5,7 @@ Module modRename
     'Modified July 2007 for Moving of connections to Environment
     'Modified August 2008
     'Modified Jan thru May 2009 for V3 and new Object Model changes
+    'Modified Nov. 2011 to correct problems with Task renaming after "General" Proc type added
 
 #Region "Main Rename Functions"
 
@@ -89,6 +90,10 @@ Module modRename
                     RenameProject = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameProject")
+                RenameProject = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameProject")
@@ -178,6 +183,10 @@ Module modRename
                     RenameEnvironment = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameEnvironment")
+                RenameEnvironment = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameEnvironment")
@@ -249,6 +258,10 @@ Module modRename
                     RenameSystem = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameSystem")
+                RenameSystem = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameSystem")
@@ -316,6 +329,10 @@ Module modRename
                     RenameEngine = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameEngine")
+                RenameEngine = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameEngine")
@@ -381,6 +398,10 @@ Module modRename
                     RenameStructure = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameStructure")
+                RenameStructure = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameStructure")
@@ -446,6 +467,10 @@ Module modRename
                     RenameStructureSelection = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameStructureSelection")
+                RenameStructureSelection = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameStructureSelection")
@@ -499,6 +524,10 @@ Module modRename
                     RenameConnection = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameConnection")
+                RenameConnection = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameConnection")
@@ -557,6 +586,10 @@ Module modRename
                     RenameDatastore = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameDatastore")
+                RenameDatastore = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameDatastore")
@@ -569,7 +602,7 @@ Module modRename
 
     End Function
 
-    Function RenameTask(ByRef Task As clsTask, ByVal NewName As String) As Boolean
+    Function RenameTask(ByRef Task As clsTask, ByVal NewName As String, Optional ByVal Oldname As String = "") As Boolean
 
         Dim success As Boolean = False
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
@@ -577,6 +610,10 @@ Module modRename
         Dim tran As Odbc.OdbcTransaction = Nothing
 
         'PrevObjTreeNode = Task.ObjTreeNode
+        Dim NameOld As String = Task.TaskName
+        If Oldname <> "" Then
+            NameOld = Oldname
+        End If
 
         If ValidateNewName(NewName) = False Then
             RenameTask = False
@@ -593,12 +630,12 @@ Module modRename
                 tran = cnn.BeginTransaction()
                 cmd.Transaction = tran
 
-                success = EditTaskDatastores(cmd, Task.TaskName, NewName, Task)
+                success = EditTaskDatastores(cmd, NameOld, NewName, Task)
                 If success = True Then
-                    success = EditTaskMappings(cmd, Task.TaskName, NewName, Task)
+                    success = EditTaskMappings(cmd, NameOld, NewName, Task)
                 End If
                 If success = True Then
-                    success = EditTasks(cmd, Task.TaskName, NewName, Task)
+                    success = EditTasks(cmd, NameOld, NewName, Task)
                 End If
                 'If success = True Then
                 '    success = EditVariables(cmd, Task.TaskName, NewName, Task)
@@ -613,6 +650,10 @@ Module modRename
                     RenameTask = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameTask")
+                RenameTask = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameTask")
@@ -664,6 +705,10 @@ Module modRename
                     RenameVariable = False
                 End If
 
+            Catch OE As Odbc.OdbcException
+                tran.Rollback()
+                LogODBCError(OE, "modRename RenameVariable")
+                RenameVariable = False
             Catch ex As Exception
                 tran.Rollback()
                 LogError(ex, "modRename RenameVariable")
@@ -679,7 +724,6 @@ Module modRename
 
 #Region "Metadata Table Updates"
 
-    'done
     Function EditConnections(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -699,7 +743,7 @@ Module modRename
                     sql = "Update " & objEnv.Project.tblConnections & " Set EnvironmentName= " & Quote(NewValue) & _
                     " WHERE ProjectName=" & Quote(objEnv.Project.ProjectName) & _
                     " AND EnvironmentName=" & Quote(OldValue)
-                   
+
                 Case NODE_CONNECTION
                     objconn = CType(obj, clsConnection)
                     sql = "Update " & objconn.Project.tblConnections & " Set ConnectionName= " & Quote(NewValue) & _
@@ -716,12 +760,15 @@ Module modRename
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            EditConnections = True
+            EditConnections = EditConnectionATTR(cmd, OldValue, NewValue, obj)
 
-            If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                EditConnections = EditConnectionATTR(cmd, OldValue, NewValue, obj)
-            End If
+            'If obj.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            '    EditConnections = EditConnectionATTR(cmd, OldValue, NewValue, obj)
+            'End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditConnections", sql)
+            EditConnections = False
         Catch ex As Exception
             LogError(ex, "modRename EditConnections", sql)
             EditConnections = False
@@ -729,7 +776,6 @@ Module modRename
 
     End Function
 
-    'done
     Function EditConnectionATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -768,6 +814,9 @@ Module modRename
 
             EditConnectionATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditConnectionATTR", sql)
+            EditConnectionATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditConnectionsATTR", sql)
             EditConnectionATTR = False
@@ -775,7 +824,6 @@ Module modRename
 
     End Function
 
-    'done
     Function EditDatastores(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -838,6 +886,9 @@ Module modRename
 
             EditDatastores = EditDatastoresATTR(cmd, OldValue, NewValue, obj)
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDatastores", sql)
+            EditDatastores = False
         Catch ex As Exception
             LogError(ex, "modRename EditDatastores", sql)
             EditDatastores = False
@@ -845,7 +896,6 @@ Module modRename
 
     End Function
 
-    'done
     Function EditDatastoresATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -909,14 +959,16 @@ Module modRename
 
             EditDatastoresATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDatastoresATTR", sql)
+            EditDatastoresATTR = False
         Catch ex As Exception
-            LogError(ex, "modRename EditDatastores", sql)
+            LogError(ex, "modRename EditDatastoresATTR", sql)
             EditDatastoresATTR = False
         End Try
 
     End Function
 
-    'done
     Function EditDSSELFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1119,6 +1171,9 @@ Module modRename
 
             EditDSSELFIELDS = EditFkey(cmd, OldValue, NewValue, obj)
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDSSELFIELDS", sql)
+            EditDSSELFIELDS = False
         Catch ex As Exception
             LogError(ex, "modRename EditDSselFields", sql)
             EditDSSELFIELDS = False
@@ -1126,7 +1181,6 @@ Module modRename
 
     End Function
 
-    'done
     Function EditDSSELECTIONS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1287,14 +1341,16 @@ Module modRename
 
             EditDSSELECTIONS = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDSSELECTIONS", sql)
+            EditDSSELECTIONS = False
         Catch ex As Exception
-            LogError(ex, "modRename EditDSselections", sql)
+            LogError(ex, "modRename EditDSSELECTIONS", sql)
             EditDSSELECTIONS = False
         End Try
 
     End Function
 
-    'done
     Function EditEngines(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1353,6 +1409,9 @@ Module modRename
 goto1:
             EditEngines = EditEnginesATTR(cmd, OldValue, NewValue, obj)
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditEngines", sql)
+            EditEngines = False
         Catch ex As Exception
             LogError(ex, "modRename EditEngines", sql)
             EditEngines = False
@@ -1360,7 +1419,6 @@ goto1:
 
     End Function
 
-    'done
     Function EditEnginesATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1404,7 +1462,6 @@ goto1:
                     " AND EngineAttrb='CONNECTIONNAME'" & _
                     " AND EngineAttrbValue=" & Quote(OldValue)
 
-
                 Case Else
                     EditEnginesATTR = False
                     Exit Function
@@ -1416,6 +1473,9 @@ goto1:
 
             EditEnginesATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditEnginesATTR", sql)
+            EditEnginesATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditEnginesATTR", sql)
             EditEnginesATTR = False
@@ -1423,7 +1483,6 @@ goto1:
 
     End Function
 
-    'done
     Function EditEnvironments(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1457,6 +1516,9 @@ goto1:
             '    EditEnvironments = 
             'End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditEnvironments", sql)
+            EditEnvironments = False
         Catch ex As Exception
             LogError(ex, "modRename EditEnvironments", sql)
             EditEnvironments = False
@@ -1464,7 +1526,6 @@ goto1:
 
     End Function
 
-    'done
     Function EditEnvironmentsATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1494,6 +1555,9 @@ goto1:
 
             EditEnvironmentsATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditEnvironmentsATTR", sql)
+            EditEnvironmentsATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditEnvironmentsATTR", sql)
             EditEnvironmentsATTR = False
@@ -1501,7 +1565,6 @@ goto1:
 
     End Function
 
-    'done
     Function EditProjects(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
         Dim sql As String = ""
 
@@ -1520,6 +1583,9 @@ goto1:
             '    EditProjects = 
             'End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditProjects", sql)
+            EditProjects = False
         Catch ex As Exception
             LogError(ex, "modRename EditProjects", sql)
             EditProjects = False
@@ -1527,7 +1593,6 @@ goto1:
 
     End Function
 
-    'done
     Function EditProjectsATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
         Dim sql As String = ""
 
@@ -1542,8 +1607,11 @@ goto1:
 
             EditProjectsATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditProjectsATTR", sql)
+            EditProjectsATTR = False
         Catch ex As Exception
-            LogError(ex, "modRename EditProjects", sql)
+            LogError(ex, "modRename EditProjectsATTR", sql)
             EditProjectsATTR = False
         End Try
 
@@ -1738,6 +1806,7 @@ goto1:
     'End Function
 
     'done
+
     Function EditDESCFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1782,21 +1851,23 @@ goto1:
 
             EditDESCFIELDS = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDESCFIELDS", sql)
+            EditDESCFIELDS = False
         Catch ex As Exception
-            LogError(ex, "modRename EditDescFields", sql)
+            LogError(ex, "modRename EditDESCFIELDS", sql)
             EditDESCFIELDS = False
         End Try
 
     End Function
 
-    'done
     Function EditDescriptions(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
         Dim objProj As clsProject
         Dim objEnv As clsEnvironment
         Dim objStr As clsStructure
-       
+
         Try
             Select Case obj.Type
                 Case NODE_PROJECT
@@ -1834,6 +1905,9 @@ goto1:
 
 editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj)
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDescriptions", sql)
+            EditDescriptions = False
         Catch ex As Exception
             LogError(ex, "modRename EditDescriptions", sql)
             EditDescriptions = False
@@ -1841,7 +1915,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditDescriptionsATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1893,6 +1966,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditDescriptionsATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDescriptionsATTR", sql)
+            EditDescriptionsATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditDescriptionsATTR", sql)
             EditDescriptionsATTR = False
@@ -1900,7 +1976,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditDESCSELFIELDS(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -1952,6 +2027,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditDESCSELFIELDS = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDESCSELFIELDS", sql)
+            EditDESCSELFIELDS = False
         Catch ex As Exception
             LogError(ex, "modRename EditDESCSELFIELDS", sql)
             EditDESCSELFIELDS = False
@@ -1959,7 +2037,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditDESCSelections(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2024,6 +2101,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditDESCSelections = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditDESCSelections", sql)
+            EditDESCSelections = False
         Catch ex As Exception
             LogError(ex, "modRename EditDESCSelections", sql)
             EditDESCSelections = False
@@ -2031,7 +2111,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditSystems(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2074,6 +2153,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             '    EditSystems = 
             'End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditSystems", sql)
+            EditSystems = False
         Catch ex As Exception
             LogError(ex, "modRename EditSystems", sql)
             EditSystems = False
@@ -2081,7 +2163,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditSystemsATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2120,6 +2201,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditSystemsATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditSystemsATTR", sql)
+            EditSystemsATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditSystemsATTR", sql)
             EditSystemsATTR = False
@@ -2127,7 +2211,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditTaskDatastores(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2197,7 +2280,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                         "' AND ProjectName='" & objTask.Project.ProjectName & _
                                         "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
                                         "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                        "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                                        "' AND EngineName= '" & objTask.Engine.EngineName & _
+                                        "' AND TASKTYPE= " & objTask.TaskType
                     'Else
                     'sql = "Update " & objTask.Project.tblTaskDS & _
                     '                    " Set TaskName= '" & NewValue & _
@@ -2217,6 +2301,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditTaskDatastores = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditTaskDatastores", sql)
+            EditTaskDatastores = False
         Catch ex As Exception
             LogError(ex, "modRename EditTaskDatastores", sql)
             EditTaskDatastores = False
@@ -2224,7 +2311,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditTaskMappings(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2282,7 +2368,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                            "' AND ProjectName='" & objTask.Project.ProjectName & _
                                            "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
                                            "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                           "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                                           "' AND EngineName= '" & objTask.Engine.EngineName & _
+                                           "' AND TASKTYPE= " & objTask.TaskType
                         'Else
                         'sql = "Update " & objTask.Project.tblTaskMap & _
                         '                   " Set TaskName= '" & NewValue & _
@@ -2382,6 +2469,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditTaskMappings = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditTaskMappings", sql)
+            EditTaskMappings = False
         Catch ex As Exception
             LogError(ex, "modRename EditTaskMappings", sql)
             EditTaskMappings = False
@@ -2389,7 +2479,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditTasks(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2440,7 +2529,8 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                         "' AND ProjectName='" & objTask.Project.ProjectName & _
                                         "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
                                         "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
-                                        "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+                                        "' AND EngineName= '" & objTask.Engine.EngineName & _
+                                        "' AND TASKTYPE= " & objTask.TaskType
                     'Else
                     'sql = "Update " & objTask.Project.tblTasks & _
                     '                    " Set TaskName= '" & NewValue & _
@@ -2460,6 +2550,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditTasks = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditTasks", sql)
+            EditTasks = False
         Catch ex As Exception
             LogError(ex, "modRename EditTasks", sql)
             EditTasks = False
@@ -2467,7 +2560,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditVariables(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2537,6 +2629,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             '    EditVariables = 
             'End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditVariables", sql)
+            EditVariables = False
         Catch ex As Exception
             LogError(ex, "modRename EditVariables", sql)
             EditVariables = False
@@ -2544,7 +2639,6 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
     End Function
 
-    'done
     Function EditVariablesATTR(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
 
         Dim sql As String = ""
@@ -2609,6 +2703,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditVariablesATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditVariablesATTR", sql)
+            EditVariablesATTR = False
         Catch ex As Exception
             LogError(ex, "modRename EditVariablesATTR", sql)
             EditVariablesATTR = False
@@ -2734,6 +2831,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
         End Try
 
     End Function
+
     'done
     '/// updates 'Foreign Key' field in DSSELFIELDS Table
     Function EditFkey(ByRef cmd As Data.Odbc.OdbcCommand, ByVal OldValue As String, ByVal NewValue As String, ByVal obj As INode) As Boolean
@@ -2907,6 +3005,9 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditFkey = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditFkey", sql)
+            EditFkey = False
         Catch ex As Exception
             LogError(ex, "modRename EditFKey", sql)
             EditFkey = False
@@ -2928,7 +3029,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
         Dim objSel As clsStructureSelection
         Dim objTask As clsTask
         Dim objVar As clsVariable
-        Dim sql As String
+        Dim sql As String = ""
         Dim MapString As String
         Dim SeqNo As String
         Dim TaskName As String
@@ -2966,6 +3067,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                                        "' AND EnvironmentName= '" & objTask.Environment.EnvironmentName & _
                                        "' AND SystemName= '" & objTask.Engine.ObjSystem.SystemName & _
                                        "' AND EngineName= '" & objTask.Engine.EngineName & "'"
+
                     'Else
                     'sql = "SELECT MAPPINGSOURCE, SEQNO, TASKNAME, ENGINENAME, SYSTEMNAME, ENVIRONMENTNAME, PROJECTNAME FROM " _
                     '                   & objTask.Project.tblTaskMap & _
@@ -3052,7 +3154,15 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
                 Select Case obj.Type
                     Case NODE_LOOKUP, NODE_GEN, NODE_PROC, NODE_MAIN
-                        NewMapSrc.Replace(OldValue, NewValue)
+                        NewMapSrc.Replace("(" & OldValue & ")", "(" & NewValue & ")")
+                        'NewMapSrc.Replace("(" & OldValue & ".", "(" & NewValue & ".")
+                        NewMapSrc.Replace("(" & OldValue & " ", "(" & NewValue & " ")
+                        NewMapSrc.Replace("(" & OldValue & ",", "(" & NewValue & ",")
+                        NewMapSrc.Replace(" " & OldValue & ")", " " & NewValue & ")")
+                        NewMapSrc.Replace(" " & OldValue & ",", " " & NewValue & ",")
+                        NewMapSrc.Replace(" " & OldValue & " ", " " & NewValue & " ")
+                        NewMapSrc.Replace("," & OldValue & ")", "," & NewValue & ")")
+                        NewMapSrc.Replace("," & OldValue & " ", "," & NewValue & " ")
 
                         '// now do UGLY replacements 
                         '// could not get regular expressions to work correctly here
@@ -3104,9 +3214,13 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 End If
             End While
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditMappingSrc", sql)
+            EditMappingSrc = False
+            Exit Function
         Catch ex As Exception
-            LogError(ex, "editmappingsrc modrename")
-            Return False
+            LogError(ex, "modRename EditMappingSrc", sql)
+            EditMappingSrc = False
             Exit Function
         Finally
             dr.Close()
@@ -3132,8 +3246,11 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             EditMappingSrc = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename EditMappingSrc", sql)
+            EditMappingSrc = False
         Catch ex As Exception
-            LogError(ex, "modRename EditMappingSource")
+            LogError(ex, "modRename EditMappingSrc", sql)
             EditMappingSrc = False
         End Try
 
@@ -3298,10 +3415,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
             SQLReplaceFile = success
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename SQLReplaceFile")
+            tran.Rollback()
+            SQLReplaceFile = False
         Catch ex As Exception
             LogError(ex, "modRename SQLReplaceFile")
             tran.Rollback()
-            Return False
+            SQLReplaceFile = False
         Finally
             'cnn.Close()
         End Try
@@ -3443,11 +3564,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            ChangeStrFieldsForReplace = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename ChangeStrFieldsForReplace")
+            ChangeStrFieldsForReplace = False
         Catch ex As Exception
             LogError(ex, "modRename ChangeStrFieldsForReplace")
-            Return False
+            ChangeStrFieldsForReplace = False
         End Try
 
     End Function
@@ -3586,11 +3710,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 Next
             Next
 
-            Return True
+            UpdateDSSelFldsForStrChng = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename UpdateDSSelFldsForStrChng")
+            UpdateDSSelFldsForStrChng = False
         Catch ex As Exception
             LogError(ex, "modRename UpdateDSSelFldsForStrChng")
-            Return False
+            UpdateDSSelFldsForStrChng = False
         End Try
 
     End Function
@@ -3670,11 +3797,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                 End If
             Next
 
-            Return success
+            UpdateMappings = success
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "modRename UpdateMappings")
+            UpdateMappings = False
         Catch ex As Exception
-            LogError(ex, "UpdateMappings modRename")
-            Return False
+            LogError(ex, "modRename UpdateMappings")
+            UpdateMappings = False
         End Try
 
     End Function

@@ -13,6 +13,11 @@ Public Class frmStructure
     Dim colSkipNodes As New ArrayList
     Dim GottenFiles As Collection
     Dim FileNames As Collection
+    Friend WithEvents gbCOBOL As System.Windows.Forms.GroupBox
+    Friend WithEvents gbDesc As System.Windows.Forms.GroupBox
+    Friend WithEvents gbName As System.Windows.Forms.GroupBox
+    Friend WithEvents gbProp As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSeg As System.Windows.Forms.GroupBox
 
     Dim DMLFile As String = ""
 
@@ -58,7 +63,6 @@ Public Class frmStructure
     Friend WithEvents txtDBDFilePath As System.Windows.Forms.TextBox
     Friend WithEvents cmdBrowseCobolFile As System.Windows.Forms.Button
     Friend WithEvents txtCobolFilePath As System.Windows.Forms.TextBox
-    Friend WithEvents lblSeg As System.Windows.Forms.Label
     Friend WithEvents lblCobolFile As System.Windows.Forms.Label
     Friend WithEvents lblDBD As System.Windows.Forms.Label
     Friend WithEvents txtStructName As System.Windows.Forms.TextBox
@@ -74,7 +78,6 @@ Public Class frmStructure
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents txtStructDesc As System.Windows.Forms.TextBox
     Friend WithEvents OpenMultiFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents chkFTP As System.Windows.Forms.CheckBox
@@ -95,63 +98,71 @@ Public Class frmStructure
         Me.ColumnHeader1 = New System.Windows.Forms.ColumnHeader
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.pnlSelect = New System.Windows.Forms.Panel
+        Me.gbProp = New System.Windows.Forms.GroupBox
         Me.gbDMLConn = New System.Windows.Forms.GroupBox
         Me.cbConn = New System.Windows.Forms.ComboBox
         Me.Label11 = New System.Windows.Forms.Label
-        Me.chkFTP = New System.Windows.Forms.CheckBox
-        Me.txtStructDesc = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.chkAddDBD = New System.Windows.Forms.CheckBox
-        Me.cmdBrowseFile = New System.Windows.Forms.Button
-        Me.txtFilePath = New System.Windows.Forms.TextBox
-        Me.lblFile = New System.Windows.Forms.Label
-        Me.cmdBrowseDBDFile = New System.Windows.Forms.Button
-        Me.txtDBDFilePath = New System.Windows.Forms.TextBox
-        Me.cmdBrowseCobolFile = New System.Windows.Forms.Button
+        Me.Label3 = New System.Windows.Forms.Label
+        Me.txtStructName = New System.Windows.Forms.TextBox
+        Me.gbCOBOL = New System.Windows.Forms.GroupBox
         Me.txtCobolFilePath = New System.Windows.Forms.TextBox
-        Me.lblSeg = New System.Windows.Forms.Label
-        Me.tvSegments = New System.Windows.Forms.TreeView
+        Me.cmdBrowseCobolFile = New System.Windows.Forms.Button
         Me.lblCobolFile = New System.Windows.Forms.Label
         Me.lblDBD = New System.Windows.Forms.Label
-        Me.txtStructName = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
+        Me.txtDBDFilePath = New System.Windows.Forms.TextBox
+        Me.chkAddDBD = New System.Windows.Forms.CheckBox
+        Me.cmdBrowseDBDFile = New System.Windows.Forms.Button
+        Me.gbName = New System.Windows.Forms.GroupBox
+        Me.lblFile = New System.Windows.Forms.Label
+        Me.txtFilePath = New System.Windows.Forms.TextBox
+        Me.Label7 = New System.Windows.Forms.Label
+        Me.cmdBrowseFile = New System.Windows.Forms.Button
+        Me.Label6 = New System.Windows.Forms.Label
+        Me.chkFTP = New System.Windows.Forms.CheckBox
+        Me.gbDesc = New System.Windows.Forms.GroupBox
+        Me.txtStructDesc = New System.Windows.Forms.TextBox
+        Me.gbSeg = New System.Windows.Forms.GroupBox
+        Me.tvSegments = New System.Windows.Forms.TreeView
         Me.OpenMultiFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.Panel1.SuspendLayout()
         Me.pnlFields.SuspendLayout()
         Me.pnlSelect.SuspendLayout()
+        Me.gbProp.SuspendLayout()
         Me.gbDMLConn.SuspendLayout()
+        Me.gbCOBOL.SuspendLayout()
+        Me.gbName.SuspendLayout()
+        Me.gbDesc.SuspendLayout()
+        Me.gbSeg.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(572, 68)
+        Me.Panel1.Size = New System.Drawing.Size(607, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 371)
-        Me.GroupBox1.Size = New System.Drawing.Size(570, 10)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 394)
+        Me.GroupBox1.Size = New System.Drawing.Size(605, 10)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(305, 389)
+        Me.cmdOk.Location = New System.Drawing.Point(340, 412)
         Me.cmdOk.TabIndex = 13
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(391, 389)
+        Me.cmdCancel.Location = New System.Drawing.Point(426, 412)
         Me.cmdCancel.TabIndex = 14
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(477, 389)
+        Me.cmdHelp.Location = New System.Drawing.Point(512, 412)
         Me.cmdHelp.TabIndex = 15
         '
         'Label1
@@ -160,14 +171,14 @@ Public Class frmStructure
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(482, 39)
+        Me.Label2.Size = New System.Drawing.Size(517, 39)
         Me.Label2.Text = "Enter a unique Description name, and specify the file containing the Description " & _
             "definition."
         '
         'cmdShowHideFieldAttr
         '
         Me.cmdShowHideFieldAttr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.cmdShowHideFieldAttr.Location = New System.Drawing.Point(51, 389)
+        Me.cmdShowHideFieldAttr.Location = New System.Drawing.Point(51, 412)
         Me.cmdShowHideFieldAttr.Name = "cmdShowHideFieldAttr"
         Me.cmdShowHideFieldAttr.Size = New System.Drawing.Size(152, 24)
         Me.cmdShowHideFieldAttr.TabIndex = 12
@@ -185,10 +196,10 @@ Public Class frmStructure
         Me.pnlFields.Controls.Add(Me.Label4)
         Me.pnlFields.Controls.Add(Me.tvFields)
         Me.pnlFields.Controls.Add(Me.lvFieldAttrs)
-        Me.pnlFields.Location = New System.Drawing.Point(39, 75)
+        Me.pnlFields.Location = New System.Drawing.Point(49, 71)
         Me.pnlFields.Name = "pnlFields"
         Me.pnlFields.Padding = New System.Windows.Forms.Padding(5)
-        Me.pnlFields.Size = New System.Drawing.Size(548, 280)
+        Me.pnlFields.Size = New System.Drawing.Size(596, 318)
         Me.pnlFields.TabIndex = 32
         '
         'lblFieldName
@@ -240,7 +251,7 @@ Public Class frmStructure
                     Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.tvFields.Location = New System.Drawing.Point(8, 32)
         Me.tvFields.Name = "tvFields"
-        Me.tvFields.Size = New System.Drawing.Size(215, 240)
+        Me.tvFields.Size = New System.Drawing.Size(215, 278)
         Me.tvFields.TabIndex = 34
         '
         'lvFieldAttrs
@@ -254,7 +265,7 @@ Public Class frmStructure
         Me.lvFieldAttrs.Location = New System.Drawing.Point(227, 32)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
         Me.lvFieldAttrs.Scrollable = CType(configurationAppSettings.GetValue("lvFieldAttrs.Scrollable", GetType(Boolean)), Boolean)
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(315, 240)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(363, 278)
         Me.lvFieldAttrs.TabIndex = 33
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -274,37 +285,42 @@ Public Class frmStructure
         Me.pnlSelect.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlSelect.Controls.Add(Me.gbDMLConn)
-        Me.pnlSelect.Controls.Add(Me.chkFTP)
-        Me.pnlSelect.Controls.Add(Me.txtStructDesc)
-        Me.pnlSelect.Controls.Add(Me.Label8)
-        Me.pnlSelect.Controls.Add(Me.Label7)
-        Me.pnlSelect.Controls.Add(Me.Label6)
-        Me.pnlSelect.Controls.Add(Me.chkAddDBD)
-        Me.pnlSelect.Controls.Add(Me.cmdBrowseFile)
-        Me.pnlSelect.Controls.Add(Me.txtFilePath)
-        Me.pnlSelect.Controls.Add(Me.lblFile)
-        Me.pnlSelect.Controls.Add(Me.cmdBrowseDBDFile)
-        Me.pnlSelect.Controls.Add(Me.txtDBDFilePath)
-        Me.pnlSelect.Controls.Add(Me.cmdBrowseCobolFile)
-        Me.pnlSelect.Controls.Add(Me.txtCobolFilePath)
-        Me.pnlSelect.Controls.Add(Me.lblSeg)
-        Me.pnlSelect.Controls.Add(Me.tvSegments)
-        Me.pnlSelect.Controls.Add(Me.lblCobolFile)
-        Me.pnlSelect.Controls.Add(Me.lblDBD)
-        Me.pnlSelect.Controls.Add(Me.txtStructName)
-        Me.pnlSelect.Controls.Add(Me.Label3)
-        Me.pnlSelect.Location = New System.Drawing.Point(12, 76)
+        Me.pnlSelect.Controls.Add(Me.gbProp)
+        Me.pnlSelect.Controls.Add(Me.gbSeg)
+        Me.pnlSelect.Location = New System.Drawing.Point(3, 74)
         Me.pnlSelect.Name = "pnlSelect"
-        Me.pnlSelect.Size = New System.Drawing.Size(548, 289)
+        Me.pnlSelect.Size = New System.Drawing.Size(596, 314)
         Me.pnlSelect.TabIndex = 33
+        '
+        'gbProp
+        '
+        Me.gbProp.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbProp.Controls.Add(Me.gbDMLConn)
+        Me.gbProp.Controls.Add(Me.Label3)
+        Me.gbProp.Controls.Add(Me.Label7)
+        Me.gbProp.Controls.Add(Me.txtStructName)
+        Me.gbProp.Controls.Add(Me.gbCOBOL)
+        Me.gbProp.Controls.Add(Me.Label6)
+        Me.gbProp.Controls.Add(Me.gbName)
+        Me.gbProp.Controls.Add(Me.chkFTP)
+        Me.gbProp.Controls.Add(Me.gbDesc)
+        Me.gbProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbProp.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbProp.Location = New System.Drawing.Point(3, 3)
+        Me.gbProp.Name = "gbProp"
+        Me.gbProp.Size = New System.Drawing.Size(414, 307)
+        Me.gbProp.TabIndex = 77
+        Me.gbProp.TabStop = False
+        Me.gbProp.Text = "Description Properties"
         '
         'gbDMLConn
         '
         Me.gbDMLConn.Controls.Add(Me.cbConn)
         Me.gbDMLConn.Controls.Add(Me.Label11)
         Me.gbDMLConn.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbDMLConn.Location = New System.Drawing.Point(11, 103)
+        Me.gbDMLConn.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbDMLConn.Location = New System.Drawing.Point(5, 125)
         Me.gbDMLConn.Name = "gbDMLConn"
         Me.gbDMLConn.Size = New System.Drawing.Size(330, 52)
         Me.gbDMLConn.TabIndex = 73
@@ -328,182 +344,242 @@ Public Class frmStructure
         Me.Label11.TabIndex = 2
         Me.Label11.Text = "Connection Name"
         '
-        'chkFTP
+        'Label3
         '
-        Me.chkFTP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFTP.Location = New System.Drawing.Point(227, 10)
-        Me.chkFTP.Name = "chkFTP"
-        Me.chkFTP.Size = New System.Drawing.Size(134, 16)
-        Me.chkFTP.TabIndex = 3
-        Me.chkFTP.Text = "Browse using FTP"
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(6, 22)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(38, 14)
+        Me.Label3.TabIndex = 55
+        Me.Label3.Text = "Name"
         '
-        'txtStructDesc
+        'txtStructName
         '
-        Me.txtStructDesc.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.txtStructDesc.Location = New System.Drawing.Point(96, 179)
-        Me.txtStructDesc.MaxLength = 255
-        Me.txtStructDesc.Multiline = True
-        Me.txtStructDesc.Name = "txtStructDesc"
-        Me.txtStructDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtStructDesc.Size = New System.Drawing.Size(245, 62)
-        Me.txtStructDesc.TabIndex = 10
+        Me.txtStructName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtStructName.Location = New System.Drawing.Point(50, 19)
+        Me.txtStructName.MaxLength = 128
+        Me.txtStructName.Name = "txtStructName"
+        Me.txtStructName.Size = New System.Drawing.Size(358, 20)
+        Me.txtStructName.TabIndex = 1
         '
-        'Label8
+        'gbCOBOL
         '
-        Me.Label8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(8, 182)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(78, 20)
-        Me.Label8.TabIndex = 72
-        Me.Label8.Text = "Description"
+        Me.gbCOBOL.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbCOBOL.Controls.Add(Me.txtCobolFilePath)
+        Me.gbCOBOL.Controls.Add(Me.cmdBrowseCobolFile)
+        Me.gbCOBOL.Controls.Add(Me.lblCobolFile)
+        Me.gbCOBOL.Controls.Add(Me.lblDBD)
+        Me.gbCOBOL.Controls.Add(Me.txtDBDFilePath)
+        Me.gbCOBOL.Controls.Add(Me.chkAddDBD)
+        Me.gbCOBOL.Controls.Add(Me.cmdBrowseDBDFile)
+        Me.gbCOBOL.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbCOBOL.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbCOBOL.Location = New System.Drawing.Point(6, 125)
+        Me.gbCOBOL.Name = "gbCOBOL"
+        Me.gbCOBOL.Size = New System.Drawing.Size(402, 95)
+        Me.gbCOBOL.TabIndex = 74
+        Me.gbCOBOL.TabStop = False
+        Me.gbCOBOL.Text = "COBOL Description Files"
+        '
+        'txtCobolFilePath
+        '
+        Me.txtCobolFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtCobolFilePath.Location = New System.Drawing.Point(85, 67)
+        Me.txtCobolFilePath.MaxLength = 255
+        Me.txtCobolFilePath.Name = "txtCobolFilePath"
+        Me.txtCobolFilePath.Size = New System.Drawing.Size(280, 20)
+        Me.txtCobolFilePath.TabIndex = 6
+        '
+        'cmdBrowseCobolFile
+        '
+        Me.cmdBrowseCobolFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdBrowseCobolFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdBrowseCobolFile.Location = New System.Drawing.Point(371, 66)
+        Me.cmdBrowseCobolFile.Name = "cmdBrowseCobolFile"
+        Me.cmdBrowseCobolFile.Size = New System.Drawing.Size(25, 21)
+        Me.cmdBrowseCobolFile.TabIndex = 7
+        Me.cmdBrowseCobolFile.Text = "..."
+        '
+        'lblCobolFile
+        '
+        Me.lblCobolFile.AutoSize = True
+        Me.lblCobolFile.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCobolFile.Location = New System.Drawing.Point(6, 70)
+        Me.lblCobolFile.Name = "lblCobolFile"
+        Me.lblCobolFile.Size = New System.Drawing.Size(26, 14)
+        Me.lblCobolFile.TabIndex = 58
+        Me.lblCobolFile.Text = "File"
+        '
+        'lblDBD
+        '
+        Me.lblDBD.AutoSize = True
+        Me.lblDBD.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDBD.Location = New System.Drawing.Point(6, 44)
+        Me.lblDBD.Name = "lblDBD"
+        Me.lblDBD.Size = New System.Drawing.Size(73, 14)
+        Me.lblDBD.TabIndex = 57
+        Me.lblDBD.Text = "IMS DBD File"
+        '
+        'txtDBDFilePath
+        '
+        Me.txtDBDFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtDBDFilePath.Location = New System.Drawing.Point(85, 41)
+        Me.txtDBDFilePath.MaxLength = 255
+        Me.txtDBDFilePath.Name = "txtDBDFilePath"
+        Me.txtDBDFilePath.Size = New System.Drawing.Size(280, 20)
+        Me.txtDBDFilePath.TabIndex = 8
+        '
+        'chkAddDBD
+        '
+        Me.chkAddDBD.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkAddDBD.Location = New System.Drawing.Point(85, 19)
+        Me.chkAddDBD.Name = "chkAddDBD"
+        Me.chkAddDBD.Size = New System.Drawing.Size(114, 16)
+        Me.chkAddDBD.TabIndex = 2
+        Me.chkAddDBD.Text = "Add DBD Fields"
+        '
+        'cmdBrowseDBDFile
+        '
+        Me.cmdBrowseDBDFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdBrowseDBDFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdBrowseDBDFile.Location = New System.Drawing.Point(371, 40)
+        Me.cmdBrowseDBDFile.Name = "cmdBrowseDBDFile"
+        Me.cmdBrowseDBDFile.Size = New System.Drawing.Size(25, 21)
+        Me.cmdBrowseDBDFile.TabIndex = 9
+        Me.cmdBrowseDBDFile.Text = "..."
+        '
+        'gbName
+        '
+        Me.gbName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbName.Controls.Add(Me.lblFile)
+        Me.gbName.Controls.Add(Me.txtFilePath)
+        Me.gbName.Controls.Add(Me.cmdBrowseFile)
+        Me.gbName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbName.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbName.Location = New System.Drawing.Point(6, 67)
+        Me.gbName.Name = "gbName"
+        Me.gbName.Size = New System.Drawing.Size(402, 51)
+        Me.gbName.TabIndex = 75
+        Me.gbName.TabStop = False
+        Me.gbName.Text = "Description File"
+        '
+        'lblFile
+        '
+        Me.lblFile.AutoSize = True
+        Me.lblFile.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFile.Location = New System.Drawing.Point(6, 22)
+        Me.lblFile.Name = "lblFile"
+        Me.lblFile.Size = New System.Drawing.Size(26, 14)
+        Me.lblFile.TabIndex = 65
+        Me.lblFile.Text = "File"
+        '
+        'txtFilePath
+        '
+        Me.txtFilePath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtFilePath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtFilePath.Location = New System.Drawing.Point(38, 19)
+        Me.txtFilePath.MaxLength = 255
+        Me.txtFilePath.Name = "txtFilePath"
+        Me.txtFilePath.Size = New System.Drawing.Size(327, 20)
+        Me.txtFilePath.TabIndex = 4
         '
         'Label7
         '
-        Me.Label7.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.Color.Maroon
-        Me.Label7.Location = New System.Drawing.Point(12, 244)
+        Me.Label7.Location = New System.Drawing.Point(48, 64)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(40, 20)
+        Me.Label7.Size = New System.Drawing.Size(38, 14)
         Me.Label7.TabIndex = 70
         Me.Label7.Text = "Note :"
         '
+        'cmdBrowseFile
+        '
+        Me.cmdBrowseFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.cmdBrowseFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmdBrowseFile.Location = New System.Drawing.Point(371, 18)
+        Me.cmdBrowseFile.Name = "cmdBrowseFile"
+        Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
+        Me.cmdBrowseFile.TabIndex = 5
+        Me.cmdBrowseFile.Text = "..."
+        '
         'Label6
         '
-        Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.Color.Blue
-        Me.Label6.Location = New System.Drawing.Point(60, 244)
+        Me.Label6.Location = New System.Drawing.Point(92, 64)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(288, 45)
         Me.Label6.TabIndex = 69
         Me.Label6.Text = "If structure represents an IMS segment, check the ""Add DBD Source"", specify the I" & _
             "MS DBD file name, and highlight a segment name in the ""Segments"" tree."
         '
-        'chkAddDBD
+        'chkFTP
         '
-        Me.chkAddDBD.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAddDBD.Location = New System.Drawing.Point(227, 30)
-        Me.chkAddDBD.Name = "chkAddDBD"
-        Me.chkAddDBD.Size = New System.Drawing.Size(114, 16)
-        Me.chkAddDBD.TabIndex = 2
-        Me.chkAddDBD.Text = "Add DBD Fields"
+        Me.chkFTP.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkFTP.Location = New System.Drawing.Point(50, 45)
+        Me.chkFTP.Name = "chkFTP"
+        Me.chkFTP.Size = New System.Drawing.Size(134, 16)
+        Me.chkFTP.TabIndex = 3
+        Me.chkFTP.Text = "Browse using FTP"
         '
-        'cmdBrowseFile
+        'gbDesc
         '
-        Me.cmdBrowseFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFile.Location = New System.Drawing.Point(316, 48)
-        Me.cmdBrowseFile.Name = "cmdBrowseFile"
-        Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
-        Me.cmdBrowseFile.TabIndex = 5
-        Me.cmdBrowseFile.Text = "..."
+        Me.gbDesc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbDesc.Controls.Add(Me.txtStructDesc)
+        Me.gbDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbDesc.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbDesc.Location = New System.Drawing.Point(6, 226)
+        Me.gbDesc.Name = "gbDesc"
+        Me.gbDesc.Size = New System.Drawing.Size(402, 75)
+        Me.gbDesc.TabIndex = 73
+        Me.gbDesc.TabStop = False
+        Me.gbDesc.Text = "Description"
         '
-        'txtFilePath
+        'txtStructDesc
         '
-        Me.txtFilePath.Location = New System.Drawing.Point(112, 48)
-        Me.txtFilePath.MaxLength = 255
-        Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.Size = New System.Drawing.Size(198, 20)
-        Me.txtFilePath.TabIndex = 4
+        Me.txtStructDesc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtStructDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtStructDesc.Location = New System.Drawing.Point(6, 19)
+        Me.txtStructDesc.MaxLength = 255
+        Me.txtStructDesc.Multiline = True
+        Me.txtStructDesc.Name = "txtStructDesc"
+        Me.txtStructDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtStructDesc.Size = New System.Drawing.Size(390, 50)
+        Me.txtStructDesc.TabIndex = 10
         '
-        'lblFile
+        'gbSeg
         '
-        Me.lblFile.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFile.Location = New System.Drawing.Point(8, 52)
-        Me.lblFile.Name = "lblFile"
-        Me.lblFile.Size = New System.Drawing.Size(80, 20)
-        Me.lblFile.TabIndex = 65
-        Me.lblFile.Text = "File"
-        '
-        'cmdBrowseDBDFile
-        '
-        Me.cmdBrowseDBDFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseDBDFile.Location = New System.Drawing.Point(316, 73)
-        Me.cmdBrowseDBDFile.Name = "cmdBrowseDBDFile"
-        Me.cmdBrowseDBDFile.Size = New System.Drawing.Size(25, 21)
-        Me.cmdBrowseDBDFile.TabIndex = 9
-        Me.cmdBrowseDBDFile.Text = "..."
-        '
-        'txtDBDFilePath
-        '
-        Me.txtDBDFilePath.Location = New System.Drawing.Point(112, 74)
-        Me.txtDBDFilePath.MaxLength = 255
-        Me.txtDBDFilePath.Name = "txtDBDFilePath"
-        Me.txtDBDFilePath.Size = New System.Drawing.Size(198, 20)
-        Me.txtDBDFilePath.TabIndex = 8
-        '
-        'cmdBrowseCobolFile
-        '
-        Me.cmdBrowseCobolFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseCobolFile.Location = New System.Drawing.Point(316, 99)
-        Me.cmdBrowseCobolFile.Name = "cmdBrowseCobolFile"
-        Me.cmdBrowseCobolFile.Size = New System.Drawing.Size(25, 21)
-        Me.cmdBrowseCobolFile.TabIndex = 7
-        Me.cmdBrowseCobolFile.Text = "..."
-        '
-        'txtCobolFilePath
-        '
-        Me.txtCobolFilePath.Location = New System.Drawing.Point(112, 100)
-        Me.txtCobolFilePath.MaxLength = 255
-        Me.txtCobolFilePath.Name = "txtCobolFilePath"
-        Me.txtCobolFilePath.Size = New System.Drawing.Size(198, 20)
-        Me.txtCobolFilePath.TabIndex = 6
-        '
-        'lblSeg
-        '
-        Me.lblSeg.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSeg.ForeColor = System.Drawing.Color.Blue
-        Me.lblSeg.Location = New System.Drawing.Point(364, 7)
-        Me.lblSeg.Name = "lblSeg"
-        Me.lblSeg.Size = New System.Drawing.Size(129, 14)
-        Me.lblSeg.TabIndex = 60
-        Me.lblSeg.Text = "Selected Segment(s)"
+        Me.gbSeg.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbSeg.Controls.Add(Me.tvSegments)
+        Me.gbSeg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbSeg.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbSeg.Location = New System.Drawing.Point(423, 3)
+        Me.gbSeg.Name = "gbSeg"
+        Me.gbSeg.Size = New System.Drawing.Size(168, 307)
+        Me.gbSeg.TabIndex = 76
+        Me.gbSeg.TabStop = False
+        Me.gbSeg.Text = "Selected Segments"
         '
         'tvSegments
         '
-        Me.tvSegments.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tvSegments.Location = New System.Drawing.Point(361, 26)
+        Me.tvSegments.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tvSegments.Location = New System.Drawing.Point(3, 16)
         Me.tvSegments.Name = "tvSegments"
-        Me.tvSegments.Size = New System.Drawing.Size(184, 260)
+        Me.tvSegments.Size = New System.Drawing.Size(162, 288)
         Me.tvSegments.TabIndex = 11
-        '
-        'lblCobolFile
-        '
-        Me.lblCobolFile.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCobolFile.Location = New System.Drawing.Point(8, 103)
-        Me.lblCobolFile.Name = "lblCobolFile"
-        Me.lblCobolFile.Size = New System.Drawing.Size(78, 20)
-        Me.lblCobolFile.TabIndex = 58
-        Me.lblCobolFile.Text = "Cobol File"
-        '
-        'lblDBD
-        '
-        Me.lblDBD.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDBD.Location = New System.Drawing.Point(8, 77)
-        Me.lblDBD.Name = "lblDBD"
-        Me.lblDBD.Size = New System.Drawing.Size(78, 20)
-        Me.lblDBD.TabIndex = 57
-        Me.lblDBD.Text = "IMS DBD File"
-        '
-        'txtStructName
-        '
-        Me.txtStructName.Location = New System.Drawing.Point(118, 8)
-        Me.txtStructName.MaxLength = 128
-        Me.txtStructName.Name = "txtStructName"
-        Me.txtStructName.Size = New System.Drawing.Size(103, 20)
-        Me.txtStructName.TabIndex = 1
-        '
-        'Label3
-        '
-        Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(8, 8)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(115, 20)
-        Me.Label3.TabIndex = 55
-        Me.Label3.Text = "Description  Name"
         '
         'OpenMultiFileDialog1
         '
@@ -515,7 +591,7 @@ Public Class frmStructure
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Nothing
-        Me.ClientSize = New System.Drawing.Size(569, 425)
+        Me.ClientSize = New System.Drawing.Size(604, 448)
         Me.Controls.Add(Me.pnlSelect)
         Me.Controls.Add(Me.cmdShowHideFieldAttr)
         Me.Controls.Add(Me.pnlFields)
@@ -536,9 +612,17 @@ Public Class frmStructure
         Me.pnlFields.ResumeLayout(False)
         Me.pnlFields.PerformLayout()
         Me.pnlSelect.ResumeLayout(False)
-        Me.pnlSelect.PerformLayout()
+        Me.gbProp.ResumeLayout(False)
+        Me.gbProp.PerformLayout()
         Me.gbDMLConn.ResumeLayout(False)
         Me.gbDMLConn.PerformLayout()
+        Me.gbCOBOL.ResumeLayout(False)
+        Me.gbCOBOL.PerformLayout()
+        Me.gbName.ResumeLayout(False)
+        Me.gbName.PerformLayout()
+        Me.gbDesc.ResumeLayout(False)
+        Me.gbDesc.PerformLayout()
+        Me.gbSeg.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -805,7 +889,7 @@ doAgain:
         '//For COB, DBD
         lblCobolFile.Visible = bIsCOBOLorIMS
         lblDBD.Visible = bIsCOBOLorIMS
-        lblSeg.Visible = bIsCOBOLorIMS
+        'lblSeg.Visible = bIsCOBOLorIMS
 
         cmdBrowseCobolFile.Visible = bIsCOBOLorIMS
         cmdBrowseDBDFile.Visible = bIsCOBOLorIMS
@@ -817,10 +901,12 @@ doAgain:
         lblFile.Visible = Not bIsCOBOLorIMS
         txtFilePath.Visible = Not bIsCOBOLorIMS
         cmdBrowseFile.Visible = Not bIsCOBOLorIMS
+        gbCOBOL.Visible = bIsCOBOLorIMS
+        gbName.Visible = Not bIsCOBOLorIMS
+        gbSeg.Visible = False
 
-        Label7.Visible = bIsCOBOLorIMS
-        Label6.Visible = bIsCOBOLorIMS
-
+        Label7.Visible = False
+        Label6.Visible = False
 
 
         '//Dont allow changing field once object is created coz it might conflict other place
@@ -835,6 +921,7 @@ doAgain:
         End If
 
         If StructType = modDeclares.enumStructure.STRUCT_COBOL And (IsNewObj = True Or IsChangeObj = True) Then
+            'gbCOBOL.Visible = True
             txtCobolFilePath.Enabled = True
             txtDBDFilePath.Enabled = False
             chkAddDBD.Checked = False
@@ -843,8 +930,13 @@ doAgain:
             lblDBD.Visible = False
             txtDBDFilePath.Visible = False
             tvSegments.Visible = False
-            lblSeg.Visible = False
+            'lblSeg.Visible = False
         ElseIf StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS And (IsNewObj = True Or IsChangeObj = True) Then
+            Label7.Visible = True
+            Label7.BringToFront()
+            Label6.Visible = True
+            Label6.BringToFront()
+            gbSeg.Visible = True
             txtCobolFilePath.Enabled = True
             txtDBDFilePath.Enabled = True
             chkAddDBD.Checked = True
@@ -1113,7 +1205,7 @@ doAgain:
                             nd = tvSegments.SelectedNode
                             segname = nd.Text
                         End If
-                        
+
 
 
                         If Not nd Is Nothing Then

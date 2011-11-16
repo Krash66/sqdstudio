@@ -100,7 +100,7 @@ Public Class clsStructure
             End If
 
             Me.LoadMe(cmd)
-            Me.LoadItems(True, False, cmd)
+            Me.LoadItems(, False, cmd)
 
             obj.StructureName = Me.StructureName
             obj.StructureDescription = Me.StructureDescription
@@ -114,22 +114,24 @@ Public Class clsStructure
             obj.IsModified = Me.IsModified
             obj.Connection = Me.Connection
 
-            If Me.ObjFields IsNot Nothing Then
-                Dim newfld As clsField
-                '//clone all fields
-                For Each fld As clsField In Me.ObjFields
-                    newfld = fld.Clone(obj, True, cmd)
-                    newfld.ParentStructureName = obj.StructureName
-                    newfld.Struct = obj
-                    obj.ObjFields.Add(newfld)
-                Next
-            End If
+            'If Me.ObjFields IsNot Nothing Then
+
+            '//clone all fields
+            For Each fld As clsField In Me.ObjFields
+                Dim newfld As New clsField
+                newfld = fld.Clone(obj, True, cmd)
+                newfld.ParentStructureName = obj.StructureName
+                newfld.Struct = obj
+                obj.ObjFields.Add(newfld)
+            Next
+            ' End If
 
             '//clone all Selections under structure
             If Cascade = True Then
-                Dim newsel As clsStructureSelection
+
                 '//clone all structures under Structure
                 For Each sel As clsStructureSelection In Me.StructureSelections
+                    Dim newsel As New clsStructureSelection
                     newsel = sel.Clone(obj, True, cmd)
                     newsel.ObjStructure = obj
                     AddToCollection(obj.StructureSelections, newsel, newsel.GUID)

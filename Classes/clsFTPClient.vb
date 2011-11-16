@@ -7,6 +7,7 @@ Public Enum FTPDType
     MVS_PDS
     Windows
 End Enum
+
 Public Enum FTPFileType
     File
     Directory
@@ -14,6 +15,7 @@ Public Enum FTPFileType
     Symlink
     Other
 End Enum
+
 Public Enum FTPFileEntryType
     UNKNOWN
     UNIX
@@ -23,6 +25,7 @@ Public Enum FTPFileEntryType
 End Enum
 
 Public Class FTPFile
+
     Public Filename As String
     Public Type As FTPFileType
     Public Owner As String
@@ -47,6 +50,7 @@ Public Class FTPFile
     End Function
 
     Public ReadOnly Property EntryString() As String
+
         Get
             Dim strEntryType As String = ""
             Select Case Me.EntryType
@@ -63,9 +67,11 @@ Public Class FTPFile
             End Select
             Return strEntryType & Me.UnParsed
         End Get
+
     End Property
 
     Public Function Fill(ByVal Listing As String, Optional ByVal ListingType As FTPFileEntryType = FTPFileEntryType.UNKNOWN) As Boolean
+
         If ListingType = FTPFileEntryType.UNKNOWN Then
             ListingType = Me.EntryType
         Else
@@ -82,11 +88,14 @@ Public Class FTPFile
             Case FTPFileEntryType.UNIX
                 Me.LIST_Parse_Unix(Listing)
         End Select
+
     End Function
 
     Public Function FillFromEntryString(ByVal EntryString As String) As Boolean
+
         Dim strEntryType As String
         Dim Entry As String
+
         strEntryType = Mid(EntryString, 1, InStr(EntryString, "|"))
         Entry = Mid(EntryString, InStr(EntryString, "|") + 1)
 
@@ -104,6 +113,7 @@ Public Class FTPFile
     End Function
 
     Private Sub LIST_Parse_Unix(ByVal line As String)
+
         Dim re As New Regex("([^ ]+) +[0-9]+ +(\w+) +(\w+) +([0-9]+) +((?:[a-zA-Z]{3} +)?[^ ]+ +[^ ]+) +(.*)")
         Dim matches As Match
 
@@ -138,6 +148,7 @@ Public Class FTPFile
     End Sub
 
     Private Sub LIST_Parse_MVS_dir(ByVal line As String)
+
         Dim matches As Match
 
         Me.EntryType = FTPFileEntryType.MVS_Dir
@@ -155,9 +166,11 @@ Public Class FTPFile
             End If
             Me.Filename = matches.Groups(2).ToString
         End If
+
     End Sub
 
     Private Sub LIST_Parse_MVS_partitioned(ByVal line As String)
+
         Dim matches As Match
         ' Name     VV.MM   Created       Changed      Size  Init   Mod   Id
 
@@ -171,10 +184,13 @@ Public Class FTPFile
         Me.Owner = matches.Groups(6).ToString
         Me.ModDate = matches.Groups(3).ToString
         Me.Size = matches.Groups(4).ToString
+
     End Sub
+
 End Class
 
 Public Class FTPClient
+
     Private CWD_Sync As Boolean
     Private Hostname As String
     Private Port As String
@@ -202,6 +218,7 @@ Public Class FTPClient
             oldHostname = Value
         End Set
     End Property
+
     Property userNameValue() As String
         Get
             Return oldUsername
@@ -210,6 +227,7 @@ Public Class FTPClient
             oldUsername = Value
         End Set
     End Property
+
     Property portValue() As String
         Get
             Return oldPort
@@ -218,6 +236,7 @@ Public Class FTPClient
             oldPort = Value
         End Set
     End Property
+
     Property dirValue() As String
         Get
             Return olddir
@@ -230,6 +249,7 @@ Public Class FTPClient
     Public Sub New(Optional ByVal Hostname As String = "", Optional ByVal Port As String = "21", _
                    Optional ByVal Username As String = "", Optional ByVal Password As String = "", _
                    Optional ByVal InitialDir As String = "", Optional ByRef formftp As frmFTPClient = Nothing)
+
         Me.Hostname = Hostname
         Me.Port = Port
         Me.Username = Username
@@ -247,10 +267,11 @@ Public Class FTPClient
                 Me.CurrentWorkingDirectory = Me.PWD()
             End If
         End If
+
     End Sub
 
-
     Public Function PWD() As String
+
         If Me.CWD_Sync Then
             PWD = Me.CurrentWorkingDirectory
         Else
@@ -269,31 +290,43 @@ Public Class FTPClient
             Me.CWD_Sync = True
             PWD = Me.CurrentWorkingDirectory
         End If
+
     End Function
 
     Public Sub InitFTPScript()
+
         fScript = Init_FTP_Script()
+
     End Sub
 
     Public Function AddGetCmd(ByVal RemotePath As String, ByVal LocalPath As String) As Boolean
+
         fScript.WriteLine("get """ & RemotePath & """ """ & LocalPath & """")
         OutText.AppendText("get """ & RemotePath & """ """ & LocalPath & """" & Chr(10))
+
     End Function
 
     Public Function AddPutCmd(ByVal LocalFile As String, ByVal RemoteFile As String) As Boolean
+
         fScript.WriteLine("put """ & LocalFile & """ """ & RemoteFile & """")
         OutText.AppendText("put """ & LocalFile & """ """ & RemoteFile & """" & Chr(10))
+
     End Function
 
     Public Function GETFILE() As Boolean
+
         Exec_FTP_Script(fScript, Me.TempFile)
+
     End Function
 
     Public Function PUTFILE() As Boolean
+
         Exec_FTP_Script(fScript, Me.TempFile)
+
     End Function
 
     Public Function CWD(ByVal NewPath As String) As String
+
         Me.CWD_Sync = False
 
         Dim fScript As StreamWriter = Init_FTP_Script()
@@ -320,10 +353,13 @@ Public Class FTPClient
     End Function
 
     Public Function UP() As String
+
         UP = Me.CWD("..")
+
     End Function
 
     Public Function CDLS(ByVal NewPath As String) As Collection
+
         Dim fScript As StreamWriter = Init_FTP_Script()
         Dim Listing As Collection
         Dim line As String
@@ -367,9 +403,11 @@ Public Class FTPClient
             Next
         End If
         Me.Files = CDLS
+
     End Function
 
     Public Function LIST() As Collection
+
         Dim fScript As StreamWriter = Init_FTP_Script()
         Dim Listing As Collection
         Dim line As String
@@ -393,6 +431,7 @@ Public Class FTPClient
             Next
         End If
         Me.Files = LIST
+
     End Function
 
     Private Function LIST_type(ByVal Headers As String) As FTPFileEntryType
@@ -416,9 +455,11 @@ Public Class FTPClient
                 '    SystemType = FTPDType.Windows
                 'End If
         End Select
+
     End Function
 
     Private Sub GetSystype(ByVal Headers As String)
+
         Dim id As String
 
         id = Strings.Mid(Headers.Trim, 6, 1)
@@ -431,9 +472,11 @@ Public Class FTPClient
         Else
             SystemType = FTPDType.Windows
         End If
+
     End Sub
 
     Private Function LIST_seperate(ByVal LogFileName As String) As Collection
+
         Dim fLog As New StreamReader(LogFileName)
         Dim listing As New Collection
         Dim line As String
@@ -483,9 +526,11 @@ Public Class FTPClient
             i = i + 1
             LIST_seperate.Add(line, i)
         Next
+
     End Function
 
     Private Function Init_FTP_Script() As StreamWriter
+
         Dim fOut As New StreamWriter(Me.ScriptFile)
         fOut.WriteLine("open " & Hostname & " " & Port)
         OutText.AppendText("open " & Hostname & " " & Port & Chr(10))
@@ -500,9 +545,11 @@ Public Class FTPClient
             OutText.AppendText("cd """ & Me.CurrentWorkingDirectory & """" & Chr(10))
         End If
         Init_FTP_Script = fOut
+
     End Function
 
     Private Sub Exec_FTP_Script(ByRef fScript As StreamWriter, ByVal LogFileName As String)
+
         fScript.WriteLine("close")
         OutText.AppendText("close" & Chr(10))
         fScript.WriteLine("quit")
@@ -513,9 +560,11 @@ Public Class FTPClient
         End If
         Debug.WriteLine("ftp -s:""" & Me.ScriptFile & """" & LogFileName)
         Shell(Environ$("comspec") & " /c" & "ftp -s:""" & Me.ScriptFile & """" & LogFileName, AppWinStyle.Hide, True, -1)
+
     End Sub
 
     Private Function Find_Reply_To(ByVal Command As String, ByVal LogFileName As String) As String
+
         Dim fLog As New StreamReader(LogFileName)
         Dim found As Boolean = False
 
@@ -528,9 +577,11 @@ Public Class FTPClient
             Find_Reply_To = Nothing
         End If
         fLog.Close()
+
     End Function
 
     Private Function Find_Reply_To(ByVal Command As String, ByRef fLog As StreamReader) As Boolean
+
         Dim line As String
         Dim found As Boolean = False
 
@@ -557,6 +608,7 @@ Public Class FTPClient
     End Function
 
     Private Function StreamReader_Readline_SkipBlank(ByVal Stream As StreamReader) As String
+
         Dim found As Boolean = False
         Dim Line As String
 
@@ -574,14 +626,18 @@ Public Class FTPClient
         Else
             StreamReader_Readline_SkipBlank = ""
         End If
+
     End Function
 
     Public Sub DelWorkFiles()
+
         System.IO.File.Delete(Me.TempFile)
         System.IO.File.Delete(Me.ScriptFile)
+
     End Sub
 
     Public Function TransRc() As Integer
+
         Dim fLog As New StreamReader(Me.TempFile)
         Dim line As String
 
@@ -599,9 +655,13 @@ Public Class FTPClient
         End While
 
         fLog.Close()
+
     End Function
 
     Public Sub ShowLog()
+
         Shell("notepad.exe " & Me.TempFile, AppWinStyle.NormalFocus)
+
     End Sub
+
 End Class

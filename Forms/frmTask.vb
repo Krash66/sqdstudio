@@ -14,13 +14,15 @@ Public Class frmTask
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents txtTaskDesc As System.Windows.Forms.TextBox
     Friend WithEvents txtTaskName As System.Windows.Forms.TextBox
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents tvSource As System.Windows.Forms.TreeView
     Friend WithEvents tvTarget As System.Windows.Forms.TreeView
+    Friend WithEvents gbTaskProp As System.Windows.Forms.GroupBox
+    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents gbDesc As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSrc As System.Windows.Forms.GroupBox
+    Friend WithEvents gbTgt As System.Windows.Forms.GroupBox
     Friend WithEvents lblTaskName As System.Windows.Forms.Label
 
     'Form overrides dispose to clean up the component list.
@@ -41,45 +43,54 @@ Public Class frmTask
     End Sub
 
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.Label6 = New System.Windows.Forms.Label
         Me.txtTaskName = New System.Windows.Forms.TextBox
         Me.lblTaskName = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
         Me.tvSource = New System.Windows.Forms.TreeView
         Me.tvTarget = New System.Windows.Forms.TreeView
         Me.txtTaskDesc = New System.Windows.Forms.TextBox
+        Me.gbTaskProp = New System.Windows.Forms.GroupBox
+        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
+        Me.gbSrc = New System.Windows.Forms.GroupBox
+        Me.gbTgt = New System.Windows.Forms.GroupBox
+        Me.gbDesc = New System.Windows.Forms.GroupBox
         Me.Panel1.SuspendLayout()
+        Me.gbTaskProp.SuspendLayout()
+        Me.SplitContainer1.Panel1.SuspendLayout()
+        Me.SplitContainer1.Panel2.SuspendLayout()
+        Me.SplitContainer1.SuspendLayout()
+        Me.gbSrc.SuspendLayout()
+        Me.gbTgt.SuspendLayout()
+        Me.gbDesc.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(570, 68)
+        Me.Panel1.Size = New System.Drawing.Size(626, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 402)
-        Me.GroupBox1.Size = New System.Drawing.Size(572, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 454)
+        Me.GroupBox1.Size = New System.Drawing.Size(628, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(288, 425)
+        Me.cmdOk.Location = New System.Drawing.Point(344, 477)
         Me.cmdOk.TabIndex = 5
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(384, 425)
+        Me.cmdCancel.Location = New System.Drawing.Point(440, 477)
         Me.cmdCancel.TabIndex = 6
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(480, 425)
+        Me.cmdHelp.Location = New System.Drawing.Point(536, 477)
         Me.cmdHelp.TabIndex = 7
         '
         'Label1
@@ -88,115 +99,158 @@ Public Class frmTask
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(494, 39)
+        Me.Label2.Size = New System.Drawing.Size(550, 39)
         Me.Label2.Text = "Enter a unique task name within an engine. Specify the source and target datastor" & _
             "es on which the task operates. For a lookup or join task, only select a source d" & _
             "atastore."
         '
-        'Label6
-        '
-        Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(296, 120)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(102, 16)
-        Me.Label6.TabIndex = 24
-        Me.Label6.Text = "Select Target(s)"
-        '
         'txtTaskName
         '
         Me.txtTaskName.ImeMode = System.Windows.Forms.ImeMode.[On]
-        Me.txtTaskName.Location = New System.Drawing.Point(104, 88)
+        Me.txtTaskName.Location = New System.Drawing.Point(51, 19)
         Me.txtTaskName.MaxLength = 20
         Me.txtTaskName.Name = "txtTaskName"
-        Me.txtTaskName.Size = New System.Drawing.Size(240, 20)
+        Me.txtTaskName.Size = New System.Drawing.Size(311, 20)
         Me.txtTaskName.TabIndex = 1
         '
         'lblTaskName
         '
+        Me.lblTaskName.AutoSize = True
         Me.lblTaskName.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTaskName.Location = New System.Drawing.Point(16, 88)
+        Me.lblTaskName.Location = New System.Drawing.Point(7, 22)
         Me.lblTaskName.Name = "lblTaskName"
-        Me.lblTaskName.Size = New System.Drawing.Size(101, 20)
+        Me.lblTaskName.Size = New System.Drawing.Size(38, 14)
         Me.lblTaskName.TabIndex = 19
-        Me.lblTaskName.Text = "Task  Name"
-        '
-        'Label5
-        '
-        Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(16, 360)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(102, 16)
-        Me.Label5.TabIndex = 21
-        Me.Label5.Text = "Description"
-        '
-        'Label4
-        '
-        Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(16, 120)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(102, 16)
-        Me.Label4.TabIndex = 23
-        Me.Label4.Text = "Select Source(s)"
+        Me.lblTaskName.Text = "Name"
         '
         'tvSource
         '
-        Me.tvSource.Location = New System.Drawing.Point(16, 136)
+        Me.tvSource.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tvSource.Location = New System.Drawing.Point(3, 16)
         Me.tvSource.Name = "tvSource"
         Me.tvSource.ShowPlusMinus = False
         Me.tvSource.ShowRootLines = False
-        Me.tvSource.Size = New System.Drawing.Size(256, 192)
+        Me.tvSource.Size = New System.Drawing.Size(289, 197)
         Me.tvSource.TabIndex = 2
         '
         'tvTarget
         '
-        Me.tvTarget.Location = New System.Drawing.Point(296, 136)
+        Me.tvTarget.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tvTarget.Location = New System.Drawing.Point(3, 16)
         Me.tvTarget.Name = "tvTarget"
         Me.tvTarget.ShowPlusMinus = False
         Me.tvTarget.ShowRootLines = False
-        Me.tvTarget.Size = New System.Drawing.Size(256, 192)
+        Me.tvTarget.Size = New System.Drawing.Size(290, 197)
         Me.tvTarget.TabIndex = 3
         '
         'txtTaskDesc
         '
-        Me.txtTaskDesc.Location = New System.Drawing.Point(104, 344)
+        Me.txtTaskDesc.Location = New System.Drawing.Point(6, 19)
         Me.txtTaskDesc.MaxLength = 1000
         Me.txtTaskDesc.Multiline = True
         Me.txtTaskDesc.Name = "txtTaskDesc"
         Me.txtTaskDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtTaskDesc.Size = New System.Drawing.Size(376, 51)
+        Me.txtTaskDesc.Size = New System.Drawing.Size(346, 75)
         Me.txtTaskDesc.TabIndex = 4
+        '
+        'gbTaskProp
+        '
+        Me.gbTaskProp.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbTaskProp.Controls.Add(Me.SplitContainer1)
+        Me.gbTaskProp.Controls.Add(Me.gbDesc)
+        Me.gbTaskProp.Controls.Add(Me.txtTaskName)
+        Me.gbTaskProp.Controls.Add(Me.lblTaskName)
+        Me.gbTaskProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbTaskProp.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbTaskProp.Location = New System.Drawing.Point(7, 74)
+        Me.gbTaskProp.Name = "gbTaskProp"
+        Me.gbTaskProp.Size = New System.Drawing.Size(607, 374)
+        Me.gbTaskProp.TabIndex = 25
+        Me.gbTaskProp.TabStop = False
+        Me.gbTaskProp.Text = "Properties"
+        '
+        'SplitContainer1
+        '
+        Me.SplitContainer1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SplitContainer1.Location = New System.Drawing.Point(6, 152)
+        Me.SplitContainer1.Name = "SplitContainer1"
+        '
+        'SplitContainer1.Panel1
+        '
+        Me.SplitContainer1.Panel1.Controls.Add(Me.gbSrc)
+        '
+        'SplitContainer1.Panel2
+        '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.gbTgt)
+        Me.SplitContainer1.Size = New System.Drawing.Size(595, 216)
+        Me.SplitContainer1.SplitterDistance = 295
+        Me.SplitContainer1.TabIndex = 21
+        '
+        'gbSrc
+        '
+        Me.gbSrc.Controls.Add(Me.tvSource)
+        Me.gbSrc.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSrc.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbSrc.Location = New System.Drawing.Point(0, 0)
+        Me.gbSrc.Name = "gbSrc"
+        Me.gbSrc.Size = New System.Drawing.Size(295, 216)
+        Me.gbSrc.TabIndex = 21
+        Me.gbSrc.TabStop = False
+        Me.gbSrc.Text = "Source(s)"
+        '
+        'gbTgt
+        '
+        Me.gbTgt.Controls.Add(Me.tvTarget)
+        Me.gbTgt.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTgt.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbTgt.Location = New System.Drawing.Point(0, 0)
+        Me.gbTgt.Name = "gbTgt"
+        Me.gbTgt.Size = New System.Drawing.Size(296, 216)
+        Me.gbTgt.TabIndex = 0
+        Me.gbTgt.TabStop = False
+        Me.gbTgt.Text = "Target(s)"
+        '
+        'gbDesc
+        '
+        Me.gbDesc.Controls.Add(Me.txtTaskDesc)
+        Me.gbDesc.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.gbDesc.Location = New System.Drawing.Point(10, 46)
+        Me.gbDesc.Name = "gbDesc"
+        Me.gbDesc.Size = New System.Drawing.Size(358, 100)
+        Me.gbDesc.TabIndex = 20
+        Me.gbDesc.TabStop = False
+        Me.gbDesc.Text = "Description"
         '
         'frmTask
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.CancelButton = Nothing
-        Me.ClientSize = New System.Drawing.Size(570, 464)
-        Me.Controls.Add(Me.txtTaskDesc)
-        Me.Controls.Add(Me.tvSource)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.txtTaskName)
-        Me.Controls.Add(Me.lblTaskName)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.tvTarget)
+        Me.ClientSize = New System.Drawing.Size(626, 516)
+        Me.Controls.Add(Me.gbTaskProp)
+        Me.MinimumSize = New System.Drawing.Size(401, 457)
         Me.Name = "frmTask"
         Me.Text = "Task Properties"
-        Me.Controls.SetChildIndex(Me.tvTarget, 0)
-        Me.Controls.SetChildIndex(Me.Label4, 0)
-        Me.Controls.SetChildIndex(Me.Label5, 0)
-        Me.Controls.SetChildIndex(Me.lblTaskName, 0)
-        Me.Controls.SetChildIndex(Me.txtTaskName, 0)
-        Me.Controls.SetChildIndex(Me.Label6, 0)
-        Me.Controls.SetChildIndex(Me.tvSource, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
-        Me.Controls.SetChildIndex(Me.txtTaskDesc, 0)
+        Me.Controls.SetChildIndex(Me.gbTaskProp, 0)
         Me.Panel1.ResumeLayout(False)
+        Me.gbTaskProp.ResumeLayout(False)
+        Me.gbTaskProp.PerformLayout()
+        Me.SplitContainer1.Panel1.ResumeLayout(False)
+        Me.SplitContainer1.Panel2.ResumeLayout(False)
+        Me.SplitContainer1.ResumeLayout(False)
+        Me.gbSrc.ResumeLayout(False)
+        Me.gbTgt.ResumeLayout(False)
+        Me.gbDesc.ResumeLayout(False)
+        Me.gbDesc.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -340,27 +394,31 @@ Public Class frmTask
             Case modDeclares.enumTaskType.TASK_MAIN
                 Me.Text = "Main Procedure Properties"
                 Me.Label1.Text = "Main Procedure Definition"
+                Me.gbTaskProp.Text = "Main Procedure Properties"
                 Me.tvTarget.Visible = False
-                Me.Label6.Visible = False
-                Me.tvSource.Width = 476
+                'Me.Label6.Visible = False
+                'Me.tvSource.Width = 476
                 NamePrefix = "Main"
             Case modDeclares.enumTaskType.TASK_PROC
                 Me.Text = "Mapping Procedure Properties"
                 Me.Label1.Text = "Mapping Procedure Definition"
+                Me.gbTaskProp.Text = "Mapping Procedure Properties"
                 NamePrefix = "P_Proc"
             Case modDeclares.enumTaskType.TASK_GEN
                 Me.Text = "General Procedure Properties"
                 Me.Label1.Text = "General Procedure Definition"
+                Me.gbTaskProp.Text = "General Procedure Properties"
                 Me.tvTarget.Visible = False
-                Me.Label6.Visible = False
-                Me.tvSource.Width = 476
+                'Me.Label6.Visible = False
+                'me.tvSource.Width = 476
                 NamePrefix = "P_Proc"
             Case modDeclares.enumTaskType.TASK_LOOKUP
                 Me.Text = "LookUp Properties"
                 Me.Label1.Text = "LookUp Definition"
+                Me.gbTaskProp.Text = "LookUp Properties"
                 Me.tvTarget.Visible = False
-                Me.Label6.Visible = False
-                Me.tvSource.Width = 476
+                'Me.Label6.Visible = False
+                'Me.tvSource.Width = 476
                 NamePrefix = "L_LookUp"
         End Select
 

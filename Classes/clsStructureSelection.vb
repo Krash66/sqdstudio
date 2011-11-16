@@ -85,7 +85,7 @@ Public Class clsStructureSelection
     Function Clone(ByVal NewParent As INode, Optional ByVal Cascade As Boolean = True, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Object Implements INode.Clone
 
         Dim obj As New clsStructureSelection
-        Dim ret As clsField
+        'Dim ret As clsField
         Dim cmd As Odbc.OdbcCommand
 
         Try
@@ -107,12 +107,12 @@ Public Class clsStructureSelection
 
             '//commented by npatel on 7/25/05
             For Each fld As clsField In Me.ObjSelectionFields
-                ret = SearchField(obj.ObjStructure, fld)
-                If ret Is Nothing Then
-                    Throw (New Exception("Selection Field [" & fld.Text & "] is not found in parent structure [" & fld.Struct.Text & "]"))
-                Else
-                    obj.ObjSelectionFields.Add(ret.Clone(obj, True, cmd))
-                End If
+                'ret = SearchField(obj.ObjStructure, fld)
+                'If ret Is Nothing Then
+                '    Throw (New Exception("Selection Field [" & fld.Text & "] is not found in parent structure [" & fld.Struct.Text & "]"))
+                'Else
+                obj.ObjSelectionFields.Add(fld.Clone(obj, True, cmd))
+                'End If
             Next
 
             If obj.IsSystemSelection = "1" Then
@@ -371,17 +371,20 @@ Public Class clsStructureSelection
                 Next
             End If
 
-            tran.Commit()
-
             AddToCollection(Me.ObjStructure.StructureSelections, Me, Me.GUID)
 
+            tran.Commit()
+            IsModified = False
             AddNew = True
-            Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSS AddNew", strsql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
             tran.Rollback()
             LogError(ex, "clsSS AddNew", strsql)
-            Return False
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -475,12 +478,15 @@ Public Class clsStructureSelection
             '//Add structuresel in to structure's structuresel collection
             AddToCollection(Me.ObjStructure.StructureSelections, Me, Me.GUID)
 
+            IsModified = False
             AddNew = True
-            Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSS AddNew", strsql)
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsSS AddNew", strsql)
-            Return False
+            AddNew = False
         End Try
 
     End Function
@@ -539,10 +545,12 @@ Public Class clsStructureSelection
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsConnection Delete", sql)
+            Delete = False
         Catch ex As Exception
-            LogError(ex, sql)
-            'MsgBox("craps at StrSelection")
-            Return False
+            LogError(ex, "clsSS Delete", sql)
+            Delete = False
         End Try
 
     End Function
@@ -555,6 +563,7 @@ Public Class clsStructureSelection
 
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
+        Dim sql As String = ""
         Try
             If Me.IsLoaded = True Then Exit Try
 
@@ -562,7 +571,6 @@ Public Class clsStructureSelection
             Dim dr As System.Data.DataRow
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As System.Data.DataTable
-            Dim sql As String = ""
             Dim i As Integer
 
             '//check if already loaded ?
@@ -623,11 +631,14 @@ Public Class clsStructureSelection
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSS LoadMe", sql)
+            LoadMe = False
         Catch ex As Exception
-            LogError(ex, "clsSS LoadMe")
-            Return False
+            LogError(ex, "clsSS LoadMe", sql)
+            LoadMe = False
         End Try
 
     End Function
@@ -690,11 +701,14 @@ Public Class clsStructureSelection
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSS ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
-            LogError(ex)
-            Return False
+            LogError(ex, "clsSS ValidateNewObject", sql)
+            ValidateNewObject = False
         Finally
             'cnn.Close()
         End Try

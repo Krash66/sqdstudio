@@ -111,6 +111,18 @@ Public Class ctlInclude
                     End If
                     If CType(objThis, clsTask).TaskName <> txtName.Text Then
                         objThis.IsRenamed = RenameTask(objThis, txtName.Text)
+                        If objThis.IsRenamed = False And objThis.Project.ODBCtype = enumODBCtype.ACCESS Then
+                            MsgBox("Renaming of this Procedure Failed" & Chr(13) & _
+                                   "Due to transactional deficiencies in MS Access" & Chr(13) & _
+                                   "A manual rollback will now take place as an extra precaution", MsgBoxStyle.Information, "MS Access Rollback")
+                            If RenameTask(objThis, CType(objThis, clsTask).TaskName, txtName.Text) = False Then
+                                MsgBox("Manual Rollback failed!" & Chr(13) & _
+                                       "To maintain Database integrity," & Chr(13) & _
+                                       "Please manually rename this item back to it's previous Name", MsgBoxStyle.Information, "IMPORTANT")
+                                txtName.Text = CType(objThis, clsTask).TaskName
+                                Exit Function
+                            End If
+                        End If
                     End If
                     If objThis.IsRenamed = False Then
                         txtName.Text = CType(objThis, clsTask).TaskName

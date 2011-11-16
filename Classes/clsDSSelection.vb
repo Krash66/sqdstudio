@@ -113,20 +113,20 @@ Public Class clsDSSelection
             obj.ObjSelection = Me.ObjSelection
 
             Dim fld As clsField
-            Dim retfld As clsField
+            'Dim retfld As clsField
 
             '//Clone the Fields in the DS Selection
             For Each fld In Me.DSSelectionFields
-                retfld = SearchDSFieldByName(Me, fld.FieldName, Me.ObjStructure.StructureName, Me.ObjStructure.Environment.EnvironmentName, Me.Project.ProjectName)
-                If retfld Is Nothing Then
-                    Throw (New Exception("Selection Field [" & fld.Text & "] is not found in parent structure [" & fld.Struct.Text & "]"))
-                Else
-                    Dim NewFld As clsField
-                    NewFld = New clsField
-                    NewFld = fld.Clone(obj, True, cmd)
-                    NewFld.Parent = obj
-                    obj.DSSelectionFields.Add(NewFld)
-                End If
+                'retfld = SearchDSFieldByName(Me, fld.FieldName, Me.ObjStructure.StructureName, Me.ObjStructure.Environment.EnvironmentName, Me.Project.ProjectName)
+                'If retfld Is Nothing Then
+                '    Throw (New Exception("Selection Field [" & fld.Text & "] is not found in parent structure [" & fld.Struct.Text & "]"))
+                'Else
+                Dim NewFld As clsField
+                NewFld = New clsField
+                NewFld = fld.Clone(obj, True, cmd)
+                NewFld.Parent = obj
+                obj.DSSelectionFields.Add(NewFld)
+                'End If
             Next
 
             '/// Now Clone all Child DS Selections in this Selection

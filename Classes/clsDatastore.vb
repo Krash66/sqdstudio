@@ -152,7 +152,7 @@ Public Class clsDatastore
                 cmd.Connection = cnn
             End If
 
-            Me.LoadItems(True, False, cmd)
+            Me.LoadItems(, False, cmd)
 
             'obj.ObjTreeNode = Me.ObjTreeNode
             obj.DatastoreName = Me.DatastoreName
@@ -197,8 +197,8 @@ Public Class clsDatastore
             '/// completely redone to clone all child selections properly
             For Each DSSelObj As clsDSSelection In Me.ObjSelections
                 DSSelObj.LoadMe(cmd)
-                Dim dsselClone As clsDSSelection
-                dsselClone = New clsDSSelection
+                Dim dsselClone As New clsDSSelection
+                'dsselClone = New clsDSSelection
                 dsselClone = DSSelObj.Clone(obj, True, cmd)
                 dsselClone.ObjDatastore = obj
                 dsselClone.ObjSelection = FindStrSelforDSSel(dsselClone)
@@ -287,21 +287,25 @@ Public Class clsDatastore
 
             If UpdateDatastore(cmd) = False Then
                 tran.Rollback()
+                Save = False
                 Exit Try
             End If
 
             If DeleteUnselectedSelections(cmd) = False Then
                 tran.Rollback()
+                Save = False
                 Exit Try
             End If
 
             If AddNewSelections(cmd) = False Then
                 tran.Rollback()
+                Save = False
                 Exit Try
             End If
 
             If UpdateSelectionFields(cmd) = False Then
                 tran.Rollback()
+                Save = False
                 Exit Try
             End If
 
@@ -311,6 +315,10 @@ Public Class clsDatastore
 
             Save = True
 
+        Catch OE As Odbc.OdbcException
+            tran.Rollback()
+            LogODBCError(OE, " clsDatastore Inode Save() ")
+            Save = False
         Catch ex As Exception
             tran.Rollback()
             LogError(ex, " clsDatastore Inode Save() ")
@@ -346,7 +354,8 @@ Public Class clsDatastore
             '/////////////////////////////////////////////////////////////////////////
 
             If AddNewDatastore(cmd) = False Then
-                Return False
+                tran.Rollback()
+                AddNew = False
                 Exit Try
             End If
 
@@ -356,7 +365,8 @@ Public Class clsDatastore
 
             If ObjSelections.Count > 0 Then
                 If AddNewSelections(cmd) = False Then
-                    Return False
+                    tran.Rollback()
+                    AddNew = False
                     Exit Try
                 End If
             End If
@@ -377,13 +387,18 @@ Public Class clsDatastore
             'AddToCollection(Me.Environment.Datastores, Me, Me.GUID)
             'End If
 
-            AddNew = True
             Me.IsModified = False
 
+            AddNew = True
+
+        Catch OE As Odbc.OdbcException
+            tran.Rollback()
+            LogODBCError(OE, "clsDatastore AddNew")
+            AddNew = False
         Catch ex As Exception
             tran.Rollback()
-            LogError(ex, , , True)
-            Return False
+            LogError(ex, "clsDatastore AddNew", , True)
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -397,7 +412,7 @@ Public Class clsDatastore
             Me.Text = Me.Text.Trim
 
             If AddNewDatastore(cmd) = False Then
-                Return False
+                AddNew = False
                 Exit Try
             End If
 
@@ -407,7 +422,7 @@ Public Class clsDatastore
 
             If ObjSelections.Count > 0 Then
                 If AddNewSelections(cmd) = False Then
-                    Return False
+                    AddNew = False
                     Exit Try
                 End If
             End If
@@ -426,9 +441,12 @@ Public Class clsDatastore
             AddNew = True
             Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore AddNew")
+            AddNew = False
         Catch ex As Exception
-            LogError(ex, , , True)
-            Return False
+            LogError(ex, "clsDatastore AddNew", , True)
+            AddNew = False
         End Try
 
     End Function
@@ -540,7 +558,9 @@ Public Class clsDatastore
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
             '/// Delete from DatastoreATTR Table
-            Me.DeleteATTR(cmd)
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+            End If
             'End If
 
             '/// the Datastores are removed from the Database, 
@@ -585,6 +605,9 @@ Public Class clsDatastore
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore Delete")
+            Delete = False
         Catch ex As Exception
             LogError(ex, sql, "clsDatastore Delete", False)
             Delete = False
@@ -667,7 +690,7 @@ Public Class clsDatastore
             Next
 
             '/// Now set DSSelection Parents based on FKey
-            Return SetDSselParents()
+            LoadItems = SetDSselParents()
 
 
         Catch OE As Odbc.OdbcException
@@ -676,10 +699,10 @@ Public Class clsDatastore
                    OE.Message.ToString & Chr(13) & Chr(13) & _
                    "For more information, see the ODBC Error Log" & Chr(13) & _
                    "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
-            Return False
+            LoadItems = False
         Catch ex As Exception
             LogError(ex, "clsDatastore LoadItems")
-            Return False
+            LoadItems = False
         End Try
 
     End Function
@@ -779,7 +802,7 @@ Public Class clsDatastore
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
         Catch OE As Odbc.OdbcException
             LogODBCError(OE, "clsDatastore LoadMe")
@@ -787,10 +810,10 @@ Public Class clsDatastore
                    OE.Message.ToString & Chr(13) & Chr(13) & _
                    "For more information, see the ODBC Error Log" & Chr(13) & _
                    "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
-            Return False
+            LoadMe = False
         Catch ex As Exception
             LogError(ex, "clsDatastore LoadMe")
-            Return False
+            LoadMe = False
         End Try
 
     End Function
@@ -858,11 +881,14 @@ Public Class clsDatastore
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore ValidateNewObject")
+            ValidateNewObject = False
         Catch ex As Exception
             LogError(ex, "clsDatastore ValidateNewObject")
-            Return False
+            ValidateNewObject = False
         End Try
 
     End Function
@@ -1331,11 +1357,14 @@ Public Class clsDatastore
                 objSel.IsModified = False
             Next
 
-            Return True
+            UpdateSelectionFields = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore UpdateSelectionFields")
+            UpdateSelectionFields = False
         Catch ex As Exception
             LogError(ex, strSql, "clsDatastore UpdateSelectionFields", False)
-            Return False
+            UpdateSelectionFields = False
         End Try
 
     End Function
@@ -1513,15 +1542,24 @@ Public Class clsDatastore
             cmd.ExecuteNonQuery()
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
+            'If Me.DeleteATTR(cmd) = False Then
+            '    AddNewDatastore = False
+            '    Exit Try
+            'End If
+            If Me.InsertATTR(cmd) = False Then
+                AddNewDatastore = False
+                Exit Try
+            End If
             'End If
 
-            Return True
+            AddNewDatastore = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore AddNewDatastore", strSql)
+            AddNewDatastore = False
         Catch ex As Exception
             LogError(ex, strSql, "clsDatastore AddNewDatastore", False)
-            Return False
+            AddNewDatastore = False
         End Try
 
     End Function
@@ -1692,11 +1730,14 @@ Public Class clsDatastore
                 End If
             Next '/// end selection loop
 
-            Return True
+            AddNewSelections = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore AddNewSelections", strSql)
+            AddNewSelections = False
         Catch ex As Exception
-            LogError(ex, "clsDatastore AddNewSelections")
-            Return False
+            LogError(ex, "clsDatastore AddNewSelections", strSql)
+            AddNewSelections = False
         End Try
 
     End Function
@@ -1798,15 +1839,25 @@ Public Class clsDatastore
             Log(strSql)
             cmd.ExecuteNonQuery()
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
+            If Me.DeleteATTR(cmd) = False Then
+                UpdateDatastore = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                UpdateDatastore = False
+                Exit Try
+            End If
+
             'End If
 
-            Return True
+            UpdateDatastore = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore UpdateDatastore", strSql)
+            UpdateDatastore = False
         Catch ex As Exception
-            LogError(ex, "clsDatastore Update Datastore")
-            Return False
+            LogError(ex, "clsDatastore UpdateDatastore", strSql)
+            UpdateDatastore = False
         End Try
 
     End Function
@@ -1875,11 +1926,14 @@ Public Class clsDatastore
                 End If
             Next
 
-            Return True
+            DeleteUnselectedSelections = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore DeleteUnselectedSelections", strSql)
+            DeleteUnselectedSelections = False
         Catch ex As Exception
-            LogError(ex, "clsDatastore DeleteUnselectedSelections")
-            Return False
+            LogError(ex, "clsDatastore DeleteUnselectedSelections", strSql)
+            DeleteUnselectedSelections = False
         End Try
 
     End Function
@@ -1969,11 +2023,14 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
                 End If
             Next
 
-            Return True
+            LoadDSSelectionFields = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore LoadDSSelectionFields", sql)
+            LoadDSSelectionFields = False
         Catch ex As Exception
-            LogError(ex)
-            Return False
+            LogError(ex, "clsDatastore LoadDSSelectionFields", sql)
+            LoadDSSelectionFields = False
         Finally
             'cnn.Close()
         End Try
@@ -2007,7 +2064,8 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
             fld.SetSingleFieldAttr(enumFieldAttributes.ATTR_FKEY, GetStr(GetVal(dr("FOREIGNKEY"))))
 
 
-
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore SetFieldExtendedAttributes")
         Catch ex As Exception
             LogError(ex, "clsDatastore SetFieldExtendedAttributes")
         End Try
@@ -2079,11 +2137,14 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
                 End If
             End If
 
-            Return NewDSS
+            CloneSSeltoDSSel = NewDSS
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore CloneSSeltoDSSel")
+            CloneSSeltoDSSel = Nothing
         Catch ex As Exception
-            LogError(ex, "clsDatastore CloneSStoDSSel")
-            Return Nothing
+            LogError(ex, "clsDatastore CloneSSeltoDSSel")
+            CloneSSeltoDSSel = Nothing
         End Try
 
     End Function
@@ -2148,11 +2209,11 @@ nextfld:            objDSsel.DSSelectionFields.Add(fld)
                 Next
             Next
 
-            Return True
+            SetDSselParents = True
 
         Catch ex As Exception
             LogError(ex, "clsDatastore SetDSselParents")
-            Return False
+            SetDSselParents = False
         End Try
 
     End Function
@@ -2299,20 +2360,32 @@ NextSel:        '// next selection
             '//DSSELECTIONS and fields in 
             '//three steps so if one fails rollback all
 
-            Call UpdateDatastore(cmd)
-
-            Call DeleteUnselectedSelections(cmd)
-
-            Call AddNewSelections(cmd)
-
-            Call UpdateSelectionFields(cmd)
+            If UpdateDatastore(cmd) = False Then
+                MapAsSave = False
+                Exit Try
+            End If
+            If DeleteUnselectedSelections(cmd) = False Then
+                MapAsSave = False
+                Exit Try
+            End If
+            If AddNewSelections(cmd) = False Then
+                MapAsSave = False
+                Exit Try
+            End If
+            If UpdateSelectionFields(cmd) = False Then
+                MapAsSave = False
+                Exit Try
+            End If
 
             Me.IsModified = False
 
             MapAsSave = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore MapAsSave")
+            MapAsSave = False
         Catch ex As Exception
-            LogError(ex, " Error in MapAsSave In clsDatastore")
+            LogError(ex, "clsDatastore MapAsSave")
             MapAsSave = False
         End Try
 
@@ -2511,11 +2584,14 @@ NextSel:        '// next selection
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
-            LogError(ex, "clsDatastore InsertATTR")
-            Return False
+            LogError(ex, "clsDatastore InsertATTR", sql)
+            InsertATTR = False
         End Try
 
     End Function
@@ -2555,11 +2631,14 @@ NextSel:        '// next selection
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsDatastore DeleteATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
-            LogError(ex, "clsDatastore DeleteATTR")
-            Return False
+            LogError(ex, "clsDatastore DeleteATTR", sql)
+            DeleteATTR = False
         End Try
 
     End Function

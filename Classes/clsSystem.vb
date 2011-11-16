@@ -105,11 +105,11 @@ Public Class clsSystem
             obj.Parent = NewParent 'Me.Parent
 
             If Cascade = True Then
-                Dim NewEng As clsEngine
+
                 '//clone all engines under system
                 For Each eng As clsEngine In Me.Engines
                     eng.LoadMe(cmd)
-
+                    Dim NewEng As New clsEngine
                     NewEng = eng.Clone(obj, True, cmd)
                     NewEng.ObjSystem = obj
                     AddToCollection(obj.Engines, NewEng, NewEng.GUID)
@@ -169,12 +169,15 @@ Public Class clsSystem
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Update " & Me.Project.tblSystems & " set SystemName='" & FixStr(Me.SystemName) & "'" & _
@@ -195,21 +198,37 @@ Public Class clsSystem
                             " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = '" & _
                             Me.Environment.Text & "'" & " And ProjectName = '" & Me.Environment.Project.Text & "'"
 
-            Me.DeleteATTR(cmd)
-            Me.InsertATTR(cmd)
             'End If
-
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.DeleteATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                Save = False
+                Exit Try
+            End If
+
             Me.IsModified = False
+
+            tran.Commit()
+
             Save = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem Save", sql)
+            tran.Rollback()
+            Save = False
         Catch ex As Exception
             LogError(ex, "clsSystem Save", sql)
-            Return False
+            tran.Rollback()
+            Save = False
         Finally
             'cnn.Close()
         End Try
@@ -222,12 +241,15 @@ Public Class clsSystem
         'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New System.Data.Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
             'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
             'cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
             'If Me.Project.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "INSERT INTO " & Me.Project.tblSystems & "(ProjectName " & _
@@ -264,13 +286,17 @@ Public Class clsSystem
                        "," & Me.GetQuotedText & _
                        ",'" & FixStr(SystemDescription) & "')"
 
-            Me.InsertATTR(cmd)
             'end If
-
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
 
             AddToCollection(Me.Environment.Systems, Me, Me.GUID)
 
@@ -280,16 +306,26 @@ Public Class clsSystem
             '//AddNew method of parent node
             If Cascade = True Then
                 For Each child As clsEngine In Me.Engines
-                    child.AddNew(True)
+                    If child.AddNew(cmd, True) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
 
+            tran.Commit()
+            IsModified = False
             AddNew = True
-            Me.IsModified = False
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem AddNew", sql)
+            tran.Rollback()
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsSystem AddNew", sql)
-            Return False
+            tran.Rollback()
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -334,12 +370,16 @@ Public Class clsSystem
                  " Values(" & Me.Project.GetQuotedText & "," & Me.Environment.GetQuotedText & "," & Me.GetQuotedText & _
                  ",'" & FixStr(SystemDescription) & "')"
 
-            Me.InsertATTR(cmd)
             'End If
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
+
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
 
             AddToCollection(Me.Environment.Systems, Me, Me.GUID)
 
@@ -348,17 +388,23 @@ Public Class clsSystem
             '//entire copied object tree can be added to database by just calling 
             '//AddNew method of parent node
             If Cascade = True Then
-                For Each child As INode In Engines
-                    child.AddNew(True)
+                For Each eng As clsEngine In Me.Engines
+                    If eng.AddNew(cmd, True) = False Then
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
 
-            AddNew = True
             Me.IsModified = False
+            AddNew = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem AddNew", sql)
+            AddNew = False
         Catch ex As Exception
             LogError(ex, "clsSystem AddNew", sql)
-            Return False
+            AddNew = False
         End Try
 
     End Function
@@ -370,16 +416,21 @@ Public Class clsSystem
 
         Try
             If Cascade = True Then
-                Dim o As INode
-                For Each o In Me.Engines
-                    o.Delete(cmd, cnn, Cascade)
+                For Each eng As clsEngine In Me.Engines
+                    If eng.Delete(cmd, cnn, Cascade) = False Then
+                        Delete = False
+                        Exit Try
+                    End If
                 Next
                 RemoveFromCollection(Me.Engines, "") '//clear collection
             End If
 
-            If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
-                Me.DeleteATTR(cmd)
+            'If Me.Project.ProjectMetaVersion = enumMetaVersion.V3 Then
+            If Me.DeleteATTR(cmd) = False Then
+                Delete = False
+                Exit Try
             End If
+            'End If
 
             sql = "Delete From " & Me.Project.tblSystems & " where SystemName=" & Me.GetQuotedText & " AND EnvironmentName = " & Me.Environment.GetQuotedText & " And ProjectName = " & Me.Environment.Project.GetQuotedText
 
@@ -394,9 +445,12 @@ Public Class clsSystem
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem Delete", sql)
+            Delete = False
         Catch ex As Exception
             LogError(ex, "clsSystem Delete", sql)
-            Return False
+            Delete = False
         End Try
 
     End Function
@@ -409,6 +463,8 @@ Public Class clsSystem
 
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
+        Dim sql As String = ""
+
         Try
             If Me.IsLoaded = True Then Exit Try
 
@@ -417,7 +473,6 @@ Public Class clsSystem
             Dim da As System.Data.Odbc.OdbcDataAdapter
             Dim dt As New DataTable("temp")
             Dim dr As DataRow
-            Dim sql As String = ""
             'Dim strAttrs As String
             Dim Attrib As String = ""
             Dim Value As String = ""
@@ -428,7 +483,6 @@ Public Class clsSystem
                 cmd = New Odbc.OdbcCommand
                 cmd.Connection = cnn
             End If
-
 
             sql = "SELECT SYSTEMATTRB,SYSTEMATTRBVALUE FROM " & Me.Project.tblSystemsATTR & _
             " WHERE PROJECTNAME='" & FixStr(Me.Project.ProjectName) & _
@@ -469,10 +523,13 @@ Public Class clsSystem
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem LoadMe", sql)
+            LoadMe = False
         Catch ex As Exception
-            LogError(ex, "clsSystem LoadMe")
+            LogError(ex, "clsSystem LoadMe", sql)
             Return False
         End Try
 
@@ -530,11 +587,14 @@ Public Class clsSystem
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
             LogError(ex, "clsSystem ValidateNewObject", sql)
-            Return False
+            ValidateNewObject = False
         Finally
             'cnn.Close()
         End Try
@@ -671,11 +731,14 @@ Public Class clsSystem
                 cmd.ExecuteNonQuery()
             Next
 
-            Return True
+            InsertATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem InsertATTR", sql)
+            InsertATTR = False
         Catch ex As Exception
-            LogError(ex, "clsSystem InsertATTR")
-            Return False
+            LogError(ex, "clsSystem InsertATTR", sql)
+            InsertATTR = False
         End Try
 
     End Function
@@ -706,13 +769,16 @@ Public Class clsSystem
             Log(sql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteATTR = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsSystem DeleteATTR", sql)
+            DeleteATTR = False
         Catch ex As Exception
-            LogError(ex, "clsSystem DeleteATTR")
-            Return False
+            LogError(ex, "clsSystem DeleteATTR", sql)
+            DeleteATTR = False
         End Try
-
+       
     End Function
 
 #End Region

@@ -19,8 +19,7 @@ Public Class ctlDatastore
     Private Const SplitSrcNoDel As Integer = 298
     Private Const SplitTgtNoDel As Integer = 221
     Private Pnt As Point
-    Friend WithEvents cbKeyChng As System.Windows.Forms.CheckBox
-
+    
     Private lvItem As ListViewItem
 
 #Region " Windows Form Designer generated code "
@@ -130,6 +129,8 @@ Public Class ctlDatastore
     Friend WithEvents txtRestart As System.Windows.Forms.TextBox
     Friend WithEvents lblRestart As System.Windows.Forms.Label
     Friend WithEvents lblPoll As System.Windows.Forms.Label
+    Friend WithEvents cbKeyChng As System.Windows.Forms.CheckBox
+
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ctlDatastore))
@@ -1528,7 +1529,13 @@ Public Class ctlDatastore
             If objThis.IsModified = True Then
                 ret = MsgBox("Do you want to save change(s) made to the opened form?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, MsgTitle)
                 If ret = MsgBoxResult.Yes Then
-                    Save()
+                    If Save() = True Then
+                        RaiseEvent Saved(Me, objThis)
+                    Else
+                        MsgBox("Save was NOT successful" & Chr(3) & _
+                               "Please review your changes and save again.", MsgBoxStyle.Exclamation, "Save Operation Failed")
+                        Exit Sub
+                    End If
                 ElseIf ret = MsgBoxResult.No Then
                     objThis.IsModified = False
                 ElseIf ret = MsgBoxResult.Cancel Then
@@ -1540,7 +1547,7 @@ Public Class ctlDatastore
             RaiseEvent Closed(Me, objThis)
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlDatastore cmdClose_click")
         End Try
 
     End Sub
@@ -2736,17 +2743,16 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             Dim OldName As String = ""
             Me.Cursor = Cursors.WaitCursor
 
-            If ValidateNewName(txtDatastoreName.Text) = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
-            End If
+            'If ValidateNewName(txtDatastoreName.Text) = False Then
+            '    Save = False
+            '    Me.Cursor = Cursors.Default
+            '    Exit Function
+            'End If
 
             If txtPhysicalSource.Text.Trim = "" Then
                 MsgBox("'Physical Name' Must not be left blank", MsgBoxStyle.OkOnly, "Missing Physical Name")
                 Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
+                Exit Try
             End If
 
             '//save form data to the object before saving object to database
@@ -2763,8 +2769,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             '//save structure selections too 
             If SaveCurrentSelection() = False Then
                 Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
+                Exit Try
             End If
 
             If objThis.DsDirection = DS_DIRECTION_TARGET Or objThis.IsLookUp = True Then
@@ -2785,14 +2790,12 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             If IsNewObj = True Then
                 If objThis.AddNew = False Then
                     Save = False
-                    Me.Cursor = Cursors.Default
-                    Exit Function
+                    Exit Try
                 End If
             Else
                 If objThis.Save = False Then
                     Save = False
-                    Me.Cursor = Cursors.Default
-                    Exit Function
+                    Exit Try
                     'Else
                     '    If objThis.Engine Is Nothing Then
                     '        For Each sys As clsSystem In objThis.Environment.Systems
@@ -2848,7 +2851,6 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     '    End If
                 End If
             End If
-            Me.Cursor = Cursors.Default
 
             Save = True
 
@@ -2865,6 +2867,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         Catch ex As Exception
             LogError(ex, "ctlDatastore Save()")
             Save = False
+        Finally
             Me.Cursor = Cursors.Default
         End Try
 

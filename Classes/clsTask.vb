@@ -129,6 +129,9 @@ Public Class clsTask
             '// Make sure All items are loaded first
             Me.LoadDatastores(cmd)
             Me.LoadMappings(True, cmd)
+            'Me.LoadMe()
+            'Me.LoadItems()
+
 
             For Each ds As clsDatastore In Me.ObjSources
                 'If Me.Engine IsNot Nothing Then
@@ -165,7 +168,8 @@ Public Class clsTask
             If Cascade = True Then
                 '//clone all mappings for new object
                 For Each map As clsMapping In Me.ObjMappings
-                    Dim NewMap As clsMapping = map.Clone(obj, True, cmd)
+                    Dim NewMap As New clsMapping
+                    NewMap = map.Clone(obj, True, cmd)
                     NewMap.Task = obj
                     obj.ObjMappings.Add(NewMap)
                 Next
@@ -279,10 +283,14 @@ Public Class clsTask
 
             Save = True
 
-        Catch ex As Odbc.OdbcException 'Exception
+        Catch OE As Odbc.OdbcException
+            tran.Rollback()
+            LogODBCError(OE, "clsTask Save")
+            Save = False
+        Catch ex As Exception
             tran.Rollback()
             LogError(ex, "clsTask Save")
-            Return False
+            Save = False
         Finally
             'cnn.Close()
         End Try
@@ -384,9 +392,12 @@ Public Class clsTask
 
             Delete = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask Delete", sql)
+            Delete = False
         Catch ex As Exception
             LogError(ex, "clsTask Delete", sql)
-            Return False
+            Delete = False
         End Try
 
     End Function
@@ -463,10 +474,14 @@ Public Class clsTask
             AddNew = True
             Me.IsModified = False
 
-        Catch ex As Odbc.OdbcException 'Exception
+        Catch OE As Odbc.OdbcException
+            tran.Rollback()
+            LogODBCError(OE, "clsTask AddNew")
+            AddNew = False
+        Catch ex As Exception
             tran.Rollback()
             LogError(ex, "clsTask AddNew")
-            Return False
+            AddNew = False
         Finally
             'cnn.Close()
         End Try
@@ -476,25 +491,28 @@ Public Class clsTask
     '// added by TK and KS 11/6/2006
     Public Overloads Function AddNew(ByRef cmd As Odbc.OdbcCommand, Optional ByVal Cascade As Boolean = False) As Boolean Implements INode.AddNew
 
+        Dim success As Boolean = False
         Try
             Me.Text = Me.Text.Trim
             '/////////////////////////////////////////////////////////////////////////
-            '//1) Insert in to DATASTORES table
+            '//1) Insert in to TASKS table
             '/////////////////////////////////////////////////////////////////////////
-            Call AddNewTask(cmd)
-
+            success = AddNewTask(cmd)
             '/////////////////////////////////////////////////////////////////////////
             '//2) Insert in to TASKDS
             '/////////////////////////////////////////////////////////////////////////
-            Call UpdateTaskDataStores(cmd)
-
+            If success = True Then
+                success = UpdateTaskDataStores(cmd)
+            End If
             '/////////////////////////////////////////////////////////////////////////
             '//3) Insert in to TASKMAP table
             '/////////////////////////////////////////////////////////////////////////
-            If ObjMappings.Count > 0 Then
-                AddNewMappings(cmd)
+            If success = True Then
+                If ObjMappings.Count > 0 Then
+                    success = AddNewMappings(cmd)
+                End If
             End If
-
+           
 
             ' If Me.TaskType = modDeclares.enumTaskType.TASK_GEN Then
             'AddToCollection(Me.Engine.Gens, Me, Me.GUID)
@@ -512,12 +530,15 @@ Public Class clsTask
                 AddToCollection(Me.Environment.Procedures, Me, Me.GUID)
             End If
 
-            AddNew = True
+            AddNew = success
             Me.IsModified = False
 
-        Catch ex As Odbc.OdbcException 'Exception
-            LogError(ex, "clsTask AddNew", ex.ToString)
-            Return False
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask AddNew")
+            AddNew = False
+        Catch ex As Exception
+            LogError(ex, "clsTask AddNew")
+            AddNew = False
         End Try
 
     End Function
@@ -550,11 +571,14 @@ Public Class clsTask
                 LoadMappings(Reload, cmd)
             End If
 
-            Return True
+            LoadItems = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask LoadItems")
+            LoadItems = False
         Catch ex As Exception
             LogError(ex, "clsTask LoadItems")
-            Return False
+            LoadItems = False
         End Try
 
 
@@ -579,11 +603,14 @@ Public Class clsTask
 
             Me.IsLoaded = True
 
-            Return True
+            LoadMe = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask LoadMe")
+            LoadMe = False
         Catch ex As Exception
             LogError(ex, "clsTask LoadMe")
-            Return False
+            LoadMe = False
         End Try
 
     End Function
@@ -642,11 +669,14 @@ Public Class clsTask
             End While
             dr.Close()
 
-            Return NameValid
+            ValidateNewObject = NameValid
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask ValidateNewObject", sql)
+            ValidateNewObject = False
         Catch ex As Exception
             LogError(ex, "clsTask ValidateNewObject", sql)
-            Return False
+            ValidateNewObject = False
         Finally
             'cnn.Close()
         End Try
@@ -729,9 +759,10 @@ Public Class clsTask
 #Region "Methods"
 
     Public Function SaveSeqNo(Optional ByRef P_cmd As Odbc.OdbcCommand = Nothing) As Boolean
+
+        Dim sql As String = ""
         Try
             '/// modified by Tom Karasch 6/07
-            Dim sql As String = ""
             Dim cmd As New System.Data.Odbc.OdbcCommand
 
             'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
@@ -796,9 +827,12 @@ Public Class clsTask
             Me.IsModified = False
             SaveSeqNo = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask SaveSeqNo", sql)
+            SaveSeqNo = False
         Catch ex As Exception
-            LogError(ex, "clsTask SaveSeqNo")
-            Return False
+            LogError(ex, "clsTask SaveSeqNo", sql)
+            SaveSeqNo = False
         Finally
             'cnn.Close()
         End Try
@@ -806,9 +840,10 @@ Public Class clsTask
     End Function
 
     Public Function SaveTaskType(Optional ByRef P_cmd As Odbc.OdbcCommand = Nothing) As Boolean
+
+        '/// modified by Tom Karasch 6/07
+        Dim sql As String = ""
         Try
-            '/// modified by Tom Karasch 6/07
-            Dim sql As String = ""
             Dim cmd As New System.Data.Odbc.OdbcCommand
 
             'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
@@ -834,7 +869,7 @@ Public Class clsTask
             '        " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
             '        " AND ProjectName=" & Me.Project.GetQuotedText
             '    Else
-            sql = "Update " & Me.Project.tblTasks & _
+            Sql = "Update " & Me.Project.tblTasks & _
             " set TaskType=" & Me.TaskType & _
             " where TaskName=" & Me.GetQuotedText & _
             " AND EngineName=" & Me.Engine.GetQuotedText & _
@@ -862,16 +897,19 @@ Public Class clsTask
             'End If
             'End If
 
-            Log(sql)
-            cmd.CommandText = sql
+            Log(Sql)
+            cmd.CommandText = Sql
             cmd.ExecuteNonQuery()
 
             Me.IsModified = False
             SaveTaskType = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask SaveTaskType", sql)
+            SaveTaskType = False
         Catch ex As Exception
-            LogError(ex, "clsTask SaveTaskType")
-            Return False
+            LogError(ex, "clsTask SaveTaskType", sql)
+            SaveTaskType = False
         Finally
             'cnn.Close()
         End Try
@@ -933,8 +971,8 @@ Public Class clsTask
             Log(sql)
             dr = cmd.ExecuteReader
 
-            ObjTargets.Clear()
-            ObjSources.Clear()
+            Me.ObjTargets.Clear()
+            Me.ObjSources.Clear()
 
             While dr.Read
                 Dim objDs As clsDatastore
@@ -953,9 +991,9 @@ Public Class clsTask
                     clsLogging.LogEvent("Task Datastore [" & dr("DatastoreName") & "] is not found under this engine")
                 ElseIf GetVal(dr("TASKNAME")) = Me.TaskName Then
                     If objDs.DsDirection = DS_DIRECTION_SOURCE Then
-                        ObjSources.Add(objDs)
+                        Me.ObjSources.Add(objDs)
                     Else 'If objDs.DsDirection = DS_DIRECTION_TARGET Then
-                        ObjTargets.Add(objDs)
+                        Me.ObjTargets.Add(objDs)
                         'Else
                         '    ObjSources.Add(objDs)
                         '    ObjTargets.Add(objDs)
@@ -983,7 +1021,7 @@ Public Class clsTask
 
     Public Function LoadMappings(Optional ByVal Reload As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Integer
 
-        
+        Dim sql As String = ""
 
         Try
             If Reload = False Then
@@ -999,7 +1037,7 @@ Public Class clsTask
             'Dim cmd As System.Data.Odbc.OdbcCommand
             Dim dr As System.Data.Odbc.OdbcDataReader
             'Dim objHash As New Hashtable
-            Dim sql As String = ""
+
             Dim cmd As System.Data.Odbc.OdbcCommand
 
             If Incmd IsNot Nothing Then
@@ -1122,13 +1160,13 @@ Public Class clsTask
             '/// "As Integer" not used
             '///doesn't return anything
         Catch OE As Odbc.OdbcException
-            LogODBCError(OE, "clsTask LoadMappings")
+            LogODBCError(OE, "clsTask LoadMappings", Sql)
             MsgBox("An ODBC exception error occured: " & Chr(13) & _
                    OE.Message.ToString & Chr(13) & Chr(13) & _
                    "For more information, see the ODBC Error Log" & Chr(13) & _
                    "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
         Catch ex As Exception
-            LogError(ex, "clsTask LoadMappings")
+            LogError(ex, "clsTask LoadMappings", Sql)
         Finally
             'cnn.Close()
         End Try
@@ -1440,9 +1478,12 @@ Public Class clsTask
 
             UpdateTaskDataStores = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask UpdateTaskDataStores", sql)
+            UpdateTaskDataStores = False
         Catch ex As Exception
             LogError(ex, "clsTask UpdateTaskDatastores", sql)
-            Return False
+            UpdateTaskDataStores = False
         End Try
 
     End Function
@@ -1511,12 +1552,16 @@ Public Class clsTask
             cmd.ExecuteNonQuery()
             tran.Commit()
 
-            Return True
+            UpdateTaskDesc = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask UpdateTaskDesc", sql)
+            tran.Rollback()
+            UpdateTaskDesc = False
         Catch ex As Exception
             LogError(ex, "clsTask UpdateTaskDesc")
             tran.Rollback()
-            Return False
+            UpdateTaskDesc = False
         End Try
 
     End Function
@@ -1625,6 +1670,9 @@ Public Class clsTask
 
             AddNewTask = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask AddNewTask", strSql)
+            AddNewTask = False
         Catch ex As Exception
             LogError(ex, "clsTask AddNewTask", strSql)
             AddNewTask = False
@@ -1753,6 +1801,9 @@ Public Class clsTask
 
             AddNewMappings = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask AddNewMappings", strSql)
+            AddNewMappings = False
         Catch ex As Exception
             LogError(ex, "clsTask AddNewMappings", strSql)
             AddNewMappings = False
@@ -1787,11 +1838,14 @@ Public Class clsTask
             Log(strSql)
             cmd.ExecuteNonQuery()
 
-            Return True
+            DeleteMappings = True
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask DeleteMappings", strSql)
+            DeleteMappings = False
         Catch ex As Exception
             LogError(ex, "clsTask DeleteMappings", strSql)
-            Return False
+            DeleteMappings = False
         End Try
 
     End Function

@@ -8,8 +8,6 @@ Public Class ctlEngine
 
     Dim objThis As New clsEngine
     Dim IsNewObj As Boolean
-    Friend WithEvents gbCreateBat As System.Windows.Forms.GroupBox
-    Friend WithEvents btnCreateBat As System.Windows.Forms.Button
     Dim DefaultDir As String
 
 #Region " Windows Form Designer generated code "
@@ -93,6 +91,8 @@ Public Class ctlEngine
     Friend WithEvents btnCMDbat As System.Windows.Forms.Button
     Friend WithEvents btnCMDexe As System.Windows.Forms.Button
     Friend WithEvents btnCMDcdc As System.Windows.Forms.Button
+    Friend WithEvents gbCreateBat As System.Windows.Forms.GroupBox
+    Friend WithEvents btnCreateBat As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cmdClose = New System.Windows.Forms.Button
@@ -279,16 +279,14 @@ Public Class ctlEngine
         '
         'txtEngineDesc
         '
-        Me.txtEngineDesc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtEngineDesc.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtEngineDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEngineDesc.Location = New System.Drawing.Point(9, 19)
+        Me.txtEngineDesc.Location = New System.Drawing.Point(3, 16)
         Me.txtEngineDesc.MaxLength = 1000
         Me.txtEngineDesc.Multiline = True
         Me.txtEngineDesc.Name = "txtEngineDesc"
         Me.txtEngineDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtEngineDesc.Size = New System.Drawing.Size(349, 51)
+        Me.txtEngineDesc.Size = New System.Drawing.Size(359, 61)
         Me.txtEngineDesc.TabIndex = 5
         '
         'txtReportFile
@@ -862,11 +860,11 @@ Public Class ctlEngine
             Me.Cursor = Cursors.WaitCursor
 
             '// First Check Validity before Saving
-            If ValidateNewName(txtEngineName.Text, True) = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
-            End If
+            'If ValidateNewName(txtEngineName.Text, True) = False Then
+            '    Save = False
+            '    Me.Cursor = Cursors.Default
+            '    Exit Function
+            'End If
 
             If objThis.EngineName <> txtEngineName.Text Then
                 objThis.IsRenamed = RenameEngine(objThis, txtEngineName.Text)
@@ -969,7 +967,10 @@ Public Class ctlEngine
             If objThis.IsModified = True Then
                 ret = MsgBox("Do you want to save change(s) made to the opened form?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, MsgTitle)
                 If ret = MsgBoxResult.Yes Then
-                    Save()
+                    If Save() = False Then
+                        MsgBox("Save Failed, Please try again", MsgBoxStyle.Exclamation, "Engine Save Failed")
+                        Exit Try
+                    End If
                 ElseIf ret = MsgBoxResult.No Then
                     objThis.IsModified = False
                 ElseIf ret = MsgBoxResult.Cancel Then
@@ -981,7 +982,7 @@ Public Class ctlEngine
             RaiseEvent Closed(Me, objThis)
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlEngine cmdClose_Click")
         End Try
 
     End Sub
@@ -1181,6 +1182,60 @@ Public Class ctlEngine
 
     End Sub
 
+
+#Region "Main Proc...Not Presently Used"
+
+    Private Sub txtCodeEditor_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragEnter
+
+        'See if there is a TreeNode or text being dragged
+        If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Or e.Data.GetDataPresent(DataFormats.Text) Then
+            'TreeNode found allow copy effect
+            e.Effect = e.AllowedEffect
+        End If
+
+    End Sub
+
+    Private Sub txtCodeEditor_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragOver
+
+        Dim pt As Point
+        Dim ret As Integer
+
+        pt = New Point(e.X, e.Y)
+        pt = txtMain.PointToClient(pt)
+        txtMain.Focus()
+        ret = GetCharFromPos(txtMain, pt)
+        txtMain.Select(ret, 0)
+
+    End Sub
+
+    Private Sub txtCodeEditor_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragDrop
+
+        Dim prevSel As Integer
+        Dim txt As String
+        Dim obj As INode
+
+        Try
+            prevSel = txtMain.SelectionStart
+            If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
+                Dim draggedNode As TreeNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
+                '//Only accept nodes with INOde interface
+                If Not (draggedNode.Tag.GetType.GetInterface("INode") Is Nothing) Then
+                    obj = draggedNode.Tag
+                    txt = obj.Text
+                    txtMain.Text = txtMain.Text.Insert(prevSel, txt)
+                    txtMain.SelectionStart = prevSel
+                End If
+            ElseIf e.Data.GetDataPresent(DataFormats.Text) Then
+                txtMain.Text = txtMain.Text.Insert(prevSel, e.Data.GetData(DataFormats.Text))
+                txtMain.SelectionStart = prevSel
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask DragDrop")
+        End Try
+
+    End Sub
+
     Private Sub btnMain_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMain.Click
 
         txtMain.Text = GetMainText()
@@ -1287,72 +1342,7 @@ Public Class ctlEngine
 
     End Function
 
-#Region "DragDrop"
-
-    Private Sub txtCodeEditor_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragEnter
-
-        'See if there is a TreeNode or text being dragged
-        If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Or e.Data.GetDataPresent(DataFormats.Text) Then
-            'TreeNode found allow copy effect
-            e.Effect = e.AllowedEffect
-        End If
-
-    End Sub
-
-    Private Sub txtCodeEditor_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragOver
-
-        Dim pt As Point
-        Dim ret As Integer
-
-        pt = New Point(e.X, e.Y)
-        pt = txtMain.PointToClient(pt)
-        txtMain.Focus()
-        ret = GetCharFromPos(txtMain, pt)
-        txtMain.Select(ret, 0)
-
-    End Sub
-
-    Private Sub txtCodeEditor_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtMain.DragDrop
-
-        Dim prevSel As Integer
-        Dim txt As String
-        Dim obj As INode
-
-        Try
-            prevSel = txtMain.SelectionStart
-            If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
-                Dim draggedNode As TreeNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
-                '//Only accept nodes with INOde interface
-                If Not (draggedNode.Tag.GetType.GetInterface("INode") Is Nothing) Then
-                    obj = draggedNode.Tag
-                    txt = obj.Text
-                    txtMain.Text = txtMain.Text.Insert(prevSel, txt)
-                    txtMain.SelectionStart = prevSel
-                End If
-            ElseIf e.Data.GetDataPresent(DataFormats.Text) Then
-                txtMain.Text = txtMain.Text.Insert(prevSel, e.Data.GetData(DataFormats.Text))
-                txtMain.SelectionStart = prevSel
-            End If
-
-        Catch ex As Exception
-            LogError(ex, "ctlTask DragDrop")
-        End Try
-
-    End Sub
-
 #End Region
-
-    'Private Sub txtCDC_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCDC.TextChanged
-
-    'End Sub
-
-    'Private Sub txtEXE_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtEXE.TextChanged
-
-    'End Sub
-
-    'Private Sub txtBAT_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtBAT.TextChanged
-
-    'End Sub
 
     Private Sub btnCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCDC.Click
 

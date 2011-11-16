@@ -198,7 +198,7 @@ Public Class ctlConnection
         Me.txtDatabase.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDatabase.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDatabase.Location = New System.Drawing.Point(85, 18)
+        Me.txtDatabase.Location = New System.Drawing.Point(85, 19)
         Me.txtDatabase.MaxLength = 128
         Me.txtDatabase.Name = "txtDatabase"
         Me.txtDatabase.Size = New System.Drawing.Size(251, 20)
@@ -470,11 +470,11 @@ Public Class ctlConnection
             Me.Cursor = Cursors.WaitCursor
 
             '// First Check Validity before Saving
-            If ValidateNewName(txtConnectionName.Text) = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
-            End If
+            'If ValidateNewName(txtConnectionName.Text) = False Then
+            '    Save = False
+            '    Me.Cursor = Cursors.Default
+            '    Exit Function
+            'End If
 
             If objThis.ConnectionName <> txtConnectionName.Text Then
                 objThis.IsRenamed = RenameConnection(objThis, txtConnectionName.Text)
@@ -527,7 +527,7 @@ Public Class ctlConnection
             objThis.IsRenamed = False
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlConn Save")
             Save = False
             Me.Cursor = Cursors.Default
         End Try
@@ -539,13 +539,19 @@ Public Class ctlConnection
     End Sub
 
     Public Sub cmdClose_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdClose.Click
-        Dim ret As MsgBoxResult
 
+        Dim ret As MsgBoxResult
         Try
             If objThis.IsModified = True Then
                 ret = MsgBox("Do you want to save change(s) made to the opened form?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, MsgTitle)
                 If ret = MsgBoxResult.Yes Then
-                    Save()
+                    If Save() = True Then
+                        RaiseEvent Saved(Me, objThis)
+                    Else
+                        MsgBox("Save was NOT successful" & Chr(3) & _
+                               "Please review your changes and save again.", MsgBoxStyle.Exclamation, "Save Operation Failed")
+                        Exit Sub
+                    End If
                 ElseIf ret = MsgBoxResult.No Then
                     If IsNewObj = True Then
                         objThis = Nothing
@@ -561,8 +567,9 @@ Public Class ctlConnection
             RaiseEvent Closed(Me, objThis)
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlConn cmdClose_Click")
         End Try
+
     End Sub
 
     Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbCnnType.SelectedIndexChanged, txtConnectionDesc.TextChanged, txtConnectionName.TextChanged, txtDatabase.TextChanged, txtDateformat.TextChanged, txtPassword.TextChanged, txtUserId.TextChanged, cmbODBC.SelectedIndexChanged
@@ -726,6 +733,7 @@ Public Class ctlConnection
             Case Keys.F1
                 cmdHelp_Click(sender, New EventArgs)
         End Select
+
     End Sub
 
     Private Function CheckConn() As Boolean
