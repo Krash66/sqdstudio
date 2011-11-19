@@ -2922,7 +2922,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             StartLoad()
             objThis = obj '//Load the form Datastore object
             objThis.LoadMe()
-            objThis.LoadItems(True)
+            objThis.LoadItems() 'True
             InitControls()
             ShowHideControls(objThis.DatastoreType)
 
@@ -2942,17 +2942,17 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
             FillStructure(cNode, nd)
 
-            If objThis.Engine IsNot Nothing Then
-                objThis.SetIsMapped()
-            End If
+            'If objThis.Engine IsNot Nothing Then
+            '    objThis.SetIsMapped()
+            'End If
 
             HiLiteMappedNodes(tvDatastoreStructures, objThis)
 
-            If Not ActiveQueryDSlist Is Nothing Then
-                If ActiveQueryDSlist.Contains(obj) = True Then
-                    Me.Enabled = False
-                End If
-            End If
+            'If Not ActiveQueryDSlist Is Nothing Then
+            '    If ActiveQueryDSlist.Contains(obj) = True Then
+            '        Me.Enabled = False
+            '    End If
+            'End If
 
             'If objThis.DsDirection = DS_DIRECTION_TARGET Then
             '    If objThis.DatastoreType = enumDatastore.DS_RELATIONAL Then
@@ -3627,7 +3627,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             '//Now load selected fields and check if object is already created and user is editing it
             If IsNewObj = False Then
                 '// This is to make sure that changes to Procs, etc. are up to date.
-                objThis.LoadItems(True)
+                objThis.LoadItems() 'True
                 CheckSelected()
                 If objThis.Engine IsNot Nothing Then
                     objThis.SetIsMapped()

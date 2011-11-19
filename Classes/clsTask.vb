@@ -464,11 +464,11 @@ Public Class clsTask
             Me.TaskType = enumTaskType.TASK_IncProc Or _
             Me.TaskType = enumTaskType.TASK_GEN Then
                 '//Add Proc into Engines's Proc collection
-                If Me.Engine IsNot Nothing Then
-                    AddToCollection(Me.Engine.Procs, Me, Me.GUID)
-                Else
-                    AddToCollection(Me.Environment.Procedures, Me, Me.GUID)
-                End If
+                'If Me.Engine IsNot Nothing Then
+                AddToCollection(Me.Engine.Procs, Me, Me.GUID)
+                'Else
+                '    AddToCollection(Me.Environment.Procedures, Me, Me.GUID)
+                'End If
             End If
 
             AddNew = True
@@ -555,20 +555,24 @@ Public Class clsTask
     Public Function LoadItems(Optional ByVal Reload As Boolean = False, Optional ByVal TreeLode As Boolean = False, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadItems
 
         Try
-            Dim cmd As New System.Data.Odbc.OdbcCommand
-
-            If Incmd IsNot Nothing Then
-                cmd = Incmd
-            Else
-                cmd = New Odbc.OdbcCommand
-                cmd.Connection = cnn
-            End If
-
-            'cmd.Connection.Open()
+            'If Me.IsLoaded = True Then Exit Function
 
             If TreeLode = False Then
+                Dim cmd As New System.Data.Odbc.OdbcCommand
+
+                If Incmd IsNot Nothing Then
+                    cmd = Incmd
+                Else
+                    cmd = New Odbc.OdbcCommand
+                    cmd.Connection = cnn
+                End If
+
+                'cmd.Connection.Open()
+
+
                 LoadDatastores(cmd)
                 LoadMappings(Reload, cmd)
+                Me.IsLoaded = Reload
             End If
 
             LoadItems = True
@@ -587,7 +591,11 @@ Public Class clsTask
     Function LoadMe(Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As Boolean Implements INode.LoadMe
 
         Try
-            If Me.IsLoaded = True Then Exit Try
+            If Me.IsLoaded = True Then
+                LoadMe = True
+                Exit Try
+            End If
+
 
             Dim cmd As New System.Data.Odbc.OdbcCommand
 
@@ -925,8 +933,8 @@ Public Class clsTask
 
         Try
             '//check if already loaded ?
-            If Me.ObjSources.Count > 0 Then Exit Function
-            If Me.ObjTargets.Count > 0 Then Exit Function
+            If Me.ObjSources.Count > 0 And Me.ObjTargets.Count > 0 Then Exit Function
+            'If  Then Exit Function
 
             Dim cmd As System.Data.Odbc.OdbcCommand
 
@@ -1034,9 +1042,9 @@ Public Class clsTask
             End If
 
             'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
-            'Dim cmd As System.Data.Odbc.OdbcCommand
+                'Dim cmd As System.Data.Odbc.OdbcCommand
             Dim dr As System.Data.Odbc.OdbcDataReader
-            'Dim objHash As New Hashtable
+                'Dim objHash As New Hashtable
 
             Dim cmd As System.Data.Odbc.OdbcCommand
 
@@ -1047,27 +1055,29 @@ Public Class clsTask
                 cmd.Connection = cnn
             End If
 
-            'cmd.Connection.Open()
+                'cmd.Connection.Open()
 
-            'cmd = cmd.Connection.CreateCommand
+                'cmd = cmd.Connection.CreateCommand
 
-            'If Me.Engine IsNot Nothing Then
+                'If Me.Engine IsNot Nothing Then
+
             sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
-                       " where TaskType=" & Me.TaskType & _
-                       " AND TaskName=" & Me.GetQuotedText & _
-                       " AND EngineName=" & Me.Engine.GetQuotedText & _
-                       " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
-                       " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-                       " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
-            'Else
-            'sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
-            '           " where TaskType=" & Me.TaskType & _
-            '           " AND TaskName=" & Me.GetQuotedText & _
-            '           " AND EngineName=" & Quote(DBNULL) & _
-            '           " AND SystemName=" & Quote(DBNULL) & _
-            '           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
-            '           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
-            'End If
+                           " where TaskType=" & Me.TaskType & _
+                           " AND TaskName=" & Me.GetQuotedText & _
+                           " AND EngineName=" & Me.Engine.GetQuotedText & _
+                           " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+                           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
+                'Else
+                'sql = "Select MAPPINGID,MAPPINGDESC,MAPPINGTARGET,SOURCETYPE,TARGETTYPE,ISMAPPED,MAPPINGSOURCEID,MAPPINGTARGETID,SOURCEPARENT,TARGETPARENT,SEQNO,SOURCEDATASTORE,TARGETDATASTORE,MAPPINGSOURCE from " & Me.Project.tblTaskMap & _
+                '           " where TaskType=" & Me.TaskType & _
+                '           " AND TaskName=" & Me.GetQuotedText & _
+                '           " AND EngineName=" & Quote(DBNULL) & _
+                '           " AND SystemName=" & Quote(DBNULL) & _
+                '           " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+                '           " AND ProjectName=" & Me.Project.GetQuotedText & " order by MAPPINGID"
+                'End If
+
 
             cmd.CommandText = sql
             Log(sql)
@@ -1157,16 +1167,16 @@ Public Class clsTask
 
             dr.Close()
 
-            '/// "As Integer" not used
-            '///doesn't return anything
+                '/// "As Integer" not used
+                '///doesn't return anything
         Catch OE As Odbc.OdbcException
-            LogODBCError(OE, "clsTask LoadMappings", Sql)
+            LogODBCError(OE, "clsTask LoadMappings", sql)
             MsgBox("An ODBC exception error occured: " & Chr(13) & _
                    OE.Message.ToString & Chr(13) & Chr(13) & _
                    "For more information, see the ODBC Error Log" & Chr(13) & _
                    "in Main Program Window", MsgBoxStyle.OkOnly, MsgTitle)
         Catch ex As Exception
-            LogError(ex, "clsTask LoadMappings", Sql)
+            LogError(ex, "clsTask LoadMappings", sql)
         Finally
             'cnn.Close()
         End Try

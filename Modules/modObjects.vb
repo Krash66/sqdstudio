@@ -32,20 +32,21 @@ Module modObjects
     '//Input : objEng - Engine which contains the variable list which needs to be search
     '//        VariableId - VariableId of a Variable which needs to be located in engine's variable list
     '//Return : Variable reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchVariableByName(ByRef objEng As clsEngine, ByRef VariableName As String, ByRef EngineName As String, ByRef SystemName As String, ByRef EnvironmentName As String, ByRef ProjectName As String) As clsVariable
 
-        Dim var As clsVariable
-        Dim i As Integer
+        'Dim var As clsVariable
+        'Dim i As Integer
 
         Try
-            For i = 1 To objEng.Variables.Count
-                var = objEng.Variables(i)
+            For Each var As clsVariable In objEng.Variables
+                'var = objEng.Variables(i)
                 If var.VariableName = VariableName _
                 And var.Engine.EngineName = EngineName _
                 And var.Engine.ObjSystem.SystemName = SystemName _
                 And var.Environment.EnvironmentName = EnvironmentName _
                 And var.Project.ProjectName = ProjectName Then
-                    Return objEng.Variables(i)
+                    Return var
                     Exit Function
                 End If
             Next
@@ -93,10 +94,11 @@ Module modObjects
     '//Input : objStruct - Structure which contains the field which needs to be search
     '//        FieldId - FieldId of a field which needs to be located in structure field list
     '//Return : Field reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchTaskByName(ByRef TaskName As String, ByRef EngineName As String, ByRef SystemName As String, ByRef EnvironmentName As String, ByRef ProjectName As String, ByRef TaskType As enumTaskType, Optional ByRef objEng As clsEngine = Nothing, Optional ByRef ObjEnv As clsEnvironment = Nothing) As clsTask
 
-        Dim tsk As clsTask
-        Dim i As Integer
+        'Dim tsk As clsTask
+        'Dim i As Integer
 
         Try
             Select Case TaskType
@@ -125,76 +127,76 @@ Module modObjects
                 '    End If
 
                 Case modDeclares.enumTaskType.TASK_LOOKUP
-                    If objEng IsNot Nothing Then
-                        For i = 1 To objEng.Lookups.Count
-                            tsk = objEng.Lookups(i)
-                            If tsk.TaskName = TaskName And _
-                            tsk.Engine.EngineName = EngineName _
-                            And tsk.Engine.ObjSystem.SystemName = SystemName _
-                            And tsk.Environment.EnvironmentName = EnvironmentName _
-                            And tsk.Project.ProjectName = ProjectName Then
-                                Return objEng.Lookups(i)
-                                Exit Function
-                            End If
-                        Next
-                    Else
-                        For Each proc As clsTask In ObjEnv.Procedures
-                            If proc.TaskName = TaskName _
-                            And proc.Environment.EnvironmentName = EnvironmentName _
-                            And proc.Project.ProjectName = ProjectName Then
-                                Return proc
-                                Exit Function
-                            End If
-                        Next
-                    End If
+                    'if objEng IsNot Nothing Then
+                    For Each tsk As clsTask In objEng.Lookups
+                        'tsk = objEng.Lookups(i)
+                        If tsk.TaskName = TaskName _
+                        And tsk.Engine.EngineName = EngineName _
+                        And tsk.Engine.ObjSystem.SystemName = SystemName _
+                        And tsk.Environment.EnvironmentName = EnvironmentName _
+                        And tsk.Project.ProjectName = ProjectName Then
+                            Return tsk
+                            Exit Function
+                        End If
+                    Next
+                    'Else
+                    '    For Each proc As clsTask In ObjEnv.Procedures
+                    '        If proc.TaskName = TaskName _
+                    '        And proc.Environment.EnvironmentName = EnvironmentName _
+                    '        And proc.Project.ProjectName = ProjectName Then
+                    '            Return proc
+                    '            Exit Function
+                    '        End If
+                    '    Next
+                    'End If
 
                 Case modDeclares.enumTaskType.TASK_MAIN
-                    If objEng IsNot Nothing Then
-                        For i = 1 To objEng.Mains.Count
-                            tsk = objEng.Mains(i)
-                            If tsk.TaskName = TaskName _
-                            And tsk.Engine.EngineName = EngineName _
-                            And tsk.Engine.ObjSystem.SystemName = SystemName _
-                            And tsk.Environment.EnvironmentName = EnvironmentName _
-                            And tsk.Project.ProjectName = ProjectName Then
-                                Return objEng.Mains(i)
-                                Exit Function
-                            End If
-                        Next
-                    Else
-                        For Each proc As clsTask In ObjEnv.Procedures
-                            If proc.TaskName = TaskName _
-                            And proc.Environment.EnvironmentName = EnvironmentName _
-                            And proc.Project.ProjectName = ProjectName Then
-                                Return proc
-                                Exit Function
-                            End If
-                        Next
-                    End If
+                    'If objEng IsNot Nothing Then
+                    For Each tsk As clsTask In objEng.Mains
+                        'tsk = objEng.Mains(i)
+                        If tsk.TaskName = TaskName _
+                        And tsk.Engine.EngineName = EngineName _
+                        And tsk.Engine.ObjSystem.SystemName = SystemName _
+                        And tsk.Environment.EnvironmentName = EnvironmentName _
+                        And tsk.Project.ProjectName = ProjectName Then
+                            Return tsk
+                            Exit Function
+                        End If
+                    Next
+                    'Else
+                    '    For Each proc As clsTask In ObjEnv.Procedures
+                    '        If proc.TaskName = TaskName _
+                    '        And proc.Environment.EnvironmentName = EnvironmentName _
+                    '        And proc.Project.ProjectName = ProjectName Then
+                    '            Return proc
+                    '            Exit Function
+                    '        End If
+                    '    Next
+                    'End If
 
                 Case modDeclares.enumTaskType.TASK_PROC, modDeclares.enumTaskType.TASK_GEN
-                    If objEng IsNot Nothing Then
-                        For i = 1 To objEng.Procs.Count
-                            tsk = objEng.Procs(i)
-                            If tsk.TaskName = TaskName _
-                            And tsk.Engine.EngineName = EngineName _
-                            And tsk.Engine.ObjSystem.SystemName = SystemName _
-                            And tsk.Environment.EnvironmentName = EnvironmentName _
-                            And tsk.Project.ProjectName = ProjectName Then
-                                Return objEng.Procs(i)
-                                Exit Function
-                            End If
-                        Next
-                    Else
-                        For Each proc As clsTask In ObjEnv.Procedures
-                            If proc.TaskName = TaskName _
-                            And proc.Environment.EnvironmentName = EnvironmentName _
-                            And proc.Project.ProjectName = ProjectName Then
-                                Return proc
-                                Exit Function
-                            End If
-                        Next
-                    End If
+                    'If objEng IsNot Nothing Then
+                    For Each tsk As clsTask In objEng.Procs
+                        'tsk = objEng.Procs(i)
+                        If tsk.TaskName = TaskName _
+                        And tsk.Engine.EngineName = EngineName _
+                        And tsk.Engine.ObjSystem.SystemName = SystemName _
+                        And tsk.Environment.EnvironmentName = EnvironmentName _
+                        And tsk.Project.ProjectName = ProjectName Then
+                            Return tsk
+                            Exit Function
+                        End If
+                    Next
+                    'Else
+                    '    For Each proc As clsTask In ObjEnv.Procedures
+                    '        If proc.TaskName = TaskName _
+                    '        And proc.Environment.EnvironmentName = EnvironmentName _
+                    '        And proc.Project.ProjectName = ProjectName Then
+                    '            Return proc
+                    '            Exit Function
+                    '        End If
+                    '    Next
+                    'End If
 
             End Select
 
@@ -213,27 +215,50 @@ Module modObjects
     '//Input : objEng - Engine which contains the datastore->selections which needs to be search
     '//        FieldId - FieldId of a field which needs to be located in selection list
     '//Return : Field reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchFieldByName(ByRef objEng As clsEngine, ByRef FieldName As String, ByRef StructureName As String, ByRef EnvironmentName As String, ByRef ProjectName As String, ByRef Dir As enumDirection) As clsField
 
-        Dim i, j, k As Integer
-        Dim objDs As clsDatastore
-        Dim objSel As clsDSSelection
+        'Dim i, j, k As Integer
+        'Dim objDs As clsDatastore
+        'Dim objSel As clsDSSelection
 
         Try
+            'If Dir = modDeclares.enumDirection.DI_SOURCE Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
+            '    For i = 1 To objEng.Sources.Count
+            '        objDs = objEng.Sources(i)
+            '        objDs.LoadItems()
+            '        For j = 0 To objDs.ObjSelections.Count - 1
+            '            objSel = objDs.ObjSelections(j)
+            '            'objSel.LoadItems()
+            '            For k = 0 To objSel.DSSelectionFields.Count - 1
+            '                If CType(objSel.DSSelectionFields(k), clsField).FieldName = FieldName _
+            '                   And CType(objSel.DSSelectionFields(k), clsField).Struct.StructureName = StructureName _
+            '                   And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.EnvironmentName = EnvironmentName _
+            '                   And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.Project.ProjectName = ProjectName Then
+            '                    'objSel.IsMapped = True  '/// added 5/9/07 by TKarasch
+            '                    Return objSel.DSSelectionFields(k)
+            '                    Exit Function
+            '                    'Else
+            '                    '    objSel.IsMapped = False
+            '                End If
+            '            Next
+            '        Next
+            '    Next
+            'End If
+
             If Dir = modDeclares.enumDirection.DI_SOURCE Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
-                For i = 1 To objEng.Sources.Count
-                    objDs = objEng.Sources(i)
+                For Each objDs As clsDatastore In objEng.Sources
+                    'objDs = objEng.Sources(i)
                     objDs.LoadItems()
-                    For j = 0 To objDs.ObjSelections.Count - 1
-                        objSel = objDs.ObjSelections(j)
-                        'objSel.LoadItems()
-                        For k = 0 To objSel.DSSelectionFields.Count - 1
-                            If CType(objSel.DSSelectionFields(k), clsField).FieldName = FieldName _
-                               And CType(objSel.DSSelectionFields(k), clsField).Struct.StructureName = StructureName _
-                               And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.EnvironmentName = EnvironmentName _
-                               And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.Project.ProjectName = ProjectName Then
+                    For Each objSel As clsDSSelection In objDs.ObjSelections
+                        'objSel = objDs.ObjSelections(j)
+                        objSel.LoadItems()
+                        For Each fld As clsField In objSel.DSSelectionFields
+                            If fld.FieldName = FieldName And fld.Struct.StructureName = StructureName _
+                               And fld.Struct.Environment.EnvironmentName = EnvironmentName _
+                               And fld.Struct.Project.ProjectName = ProjectName Then
                                 'objSel.IsMapped = True  '/// added 5/9/07 by TKarasch
-                                Return objSel.DSSelectionFields(k)
+                                Return fld
                                 Exit Function
                                 'Else
                                 '    objSel.IsMapped = False
@@ -243,20 +268,46 @@ Module modObjects
                 Next
             End If
 
+
+
+
+
+            'If Dir = modDeclares.enumDirection.DI_TARGET Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
+            '    For i = 1 To objEng.Targets.Count
+            '        objDs = objEng.Targets(i)
+            '        objDs.LoadItems()
+            '        For j = 0 To objDs.ObjSelections.Count - 1
+            '            objSel = objDs.ObjSelections(j)
+            '            'objSel.LoadItems()
+            '            For k = 0 To objSel.DSSelectionFields.Count - 1
+            '                If CType(objSel.DSSelectionFields(k), clsField).FieldName = FieldName _
+            '                        And CType(objSel.DSSelectionFields(k), clsField).Struct.StructureName = StructureName _
+            '                        And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.EnvironmentName = EnvironmentName _
+            '                        And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.Project.ProjectName = ProjectName Then
+            '                    'objSel.IsMapped = True   '/// added 5/9/07  by TKarasch
+            '                    Return objSel.DSSelectionFields(k)
+            '                    Exit Function
+            '                    'Else
+            '                    '    objSel.IsMapped = False
+            '                End If
+            '            Next
+            '        Next
+            '    Next
+            'End If
+
             If Dir = modDeclares.enumDirection.DI_TARGET Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
-                For i = 1 To objEng.Targets.Count
-                    objDs = objEng.Targets(i)
+                For Each objDs As clsDatastore In objEng.Targets
+                    'objDs = objEng.Sources(i)
                     objDs.LoadItems()
-                    For j = 0 To objDs.ObjSelections.Count - 1
-                        objSel = objDs.ObjSelections(j)
-                        'objSel.LoadItems()
-                        For k = 0 To objSel.DSSelectionFields.Count - 1
-                            If CType(objSel.DSSelectionFields(k), clsField).FieldName = FieldName _
-                                    And CType(objSel.DSSelectionFields(k), clsField).Struct.StructureName = StructureName _
-                                    And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.EnvironmentName = EnvironmentName _
-                                    And CType(objSel.DSSelectionFields(k), clsField).Struct.Environment.Project.ProjectName = ProjectName Then
-                                'objSel.IsMapped = True   '/// added 5/9/07  by TKarasch
-                                Return objSel.DSSelectionFields(k)
+                    For Each objSel As clsDSSelection In objDs.ObjSelections
+                        'objSel = objDs.ObjSelections(j)
+                        objSel.LoadItems()
+                        For Each fld As clsField In objSel.DSSelectionFields
+                            If fld.FieldName = FieldName And fld.Struct.StructureName = StructureName _
+                               And fld.Struct.Environment.EnvironmentName = EnvironmentName _
+                               And fld.Struct.Project.ProjectName = ProjectName Then
+                                'objSel.IsMapped = True  '/// added 5/9/07 by TKarasch
+                                Return fld
                                 Exit Function
                                 'Else
                                 '    objSel.IsMapped = False
@@ -265,6 +316,7 @@ Module modObjects
                     Next
                 Next
             End If
+
 
             '// if it makes it out of the loops
             Return Nothing
@@ -311,6 +363,7 @@ Module modObjects
 
     'End Function
 
+
     '//Created : 7/18/05
     '//Description : This function will find matching field from struct field list. 
     '//Input : objStruct - Structure which contains the field which needs to be search
@@ -319,21 +372,28 @@ Module modObjects
     '//        EnvironmentName -
     '//        ProjectName -
     '//Return : Field reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchFieldByName(ByRef objStruct As clsStructure, ByRef FieldName As String, ByRef StructureName As String, ByVal EnvironmentName As String, ByVal ProjectName As String) As clsField
 
-        Dim fld As clsField
-        Dim i As Integer
+        'Dim fld As clsField
+        'Dim i As Integer
 
         Try
             objStruct.LoadItems()
-            For i = 0 To objStruct.ObjFields.Count - 1
-                fld = objStruct.ObjFields(i)
+            'For i = 0 To objStruct.ObjFields.Count - 1
+            '    fld = objStruct.ObjFields(i)
+            '    If (fld.FieldName = FieldName) And (fld.Struct.Text = StructureName) Then
+            '        Return objStruct.ObjFields(i)
+            '        Exit Function
+            '    End If
+            'Next
+
+            For Each fld As clsField In objStruct.ObjFields
                 If (fld.FieldName = FieldName) And (fld.Struct.Text = StructureName) Then
-                    Return objStruct.ObjFields(i)
+                    Return fld
                     Exit Function
                 End If
             Next
-
             '// if it makes it out of the loop
             Return Nothing
 
@@ -352,17 +412,28 @@ Module modObjects
     '//        EnvironmentName -
     '//        ProjectName -
     '//Return : Field reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchFieldByName(ByRef objSel As clsStructureSelection, ByRef FieldName As String, ByRef StructureName As String, ByVal EnvironmentName As String, ByVal ProjectName As String) As clsField
 
-        Dim fld As clsField
-        Dim i As Integer
+        'Dim fld As clsField
+        'Dim i As Integer
 
         Try
             objSel.LoadMe()
-            For i = 0 To objSel.ObjSelectionFields.Count - 1
-                fld = objSel.ObjSelectionFields(i)
-                If (fld.FieldName = FieldName) And (fld.Struct.Text = StructureName) And (fld.Struct.Environment.Text = EnvironmentName) And (fld.Struct.Environment.Project.Text = ProjectName) Then
-                    Return objSel.ObjSelectionFields(i)
+            'For i = 0 To objSel.ObjSelectionFields.Count - 1
+            '    fld = objSel.ObjSelectionFields(i)
+            '    If (fld.FieldName = FieldName) And (fld.Struct.Text = StructureName) And (fld.Struct.Environment.Text = EnvironmentName) And (fld.Struct.Environment.Project.Text = ProjectName) Then
+            '        Return objSel.ObjSelectionFields(i)
+            '        Exit Function
+            '    End If
+            'Next
+
+            For Each fld As clsField In objSel.ObjSelectionFields
+                If (fld.FieldName = FieldName) And _
+                (fld.Struct.StructureName = StructureName) And _
+                (fld.Struct.Environment.EnvironmentName = EnvironmentName) And _
+                (fld.Struct.Project.ProjectName = ProjectName) Then
+                    Return fld
                     Exit Function
                 End If
             Next
@@ -381,6 +452,7 @@ Module modObjects
     '//Input : objEng - Engine which contains the selection which needs to be search
     '//DatastoreName,.... - DatastoreName of a datastore which needs to be located in engine's datastore list 
     '//Return : datastore reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchDatastoreByName(ByRef objEng As clsEngine, _
             ByRef DatastoreName As String, _
             ByRef EngineName As String, _
@@ -389,34 +461,30 @@ Module modObjects
             ByRef ProjectName As String, _
             ByRef DsDirection As String) As clsDatastore
 
-        Dim i As Integer
+        'Dim i As Integer
 
         Try
             If DsDirection = DS_DIRECTION_SOURCE Then
-                For i = 1 To objEng.Sources.Count
-
-                    If CType(objEng.Sources(i), clsDatastore).DatastoreName = DatastoreName _
-                        And CType(objEng.Sources(i), clsDatastore).Engine.EngineName = EngineName _
-                        And CType(objEng.Sources(i), clsDatastore).Engine.ObjSystem.SystemName = SystemName _
-                        And CType(objEng.Sources(i), clsDatastore).Engine.ObjSystem.Environment.EnvironmentName = EnvironmentName _
-                        And CType(objEng.Sources(i), clsDatastore).Engine.ObjSystem.Environment.Project.ProjectName = ProjectName Then
-
-                        Return objEng.Sources(i)
+                For Each objDS As clsDatastore In objEng.Sources
+                    If objDS.DatastoreName = DatastoreName _
+                        And objDS.Engine.EngineName = EngineName _
+                        And objDS.Engine.ObjSystem.SystemName = SystemName _
+                        And objDS.Engine.ObjSystem.Environment.EnvironmentName = EnvironmentName _
+                        And objDS.Engine.Project.ProjectName = ProjectName Then
+                        Return objDS
                         Exit Function
                     End If
                 Next
             End If
 
             If DsDirection = DS_DIRECTION_TARGET Then
-
-                For i = 1 To objEng.Targets.Count
-                    If CType(objEng.Targets(i), clsDatastore).DatastoreName = DatastoreName _
-                        And CType(objEng.Targets(i), clsDatastore).Engine.EngineName = EngineName _
-                        And CType(objEng.Targets(i), clsDatastore).Engine.ObjSystem.SystemName = SystemName _
-                        And CType(objEng.Targets(i), clsDatastore).Engine.ObjSystem.Environment.EnvironmentName = EnvironmentName _
-                        And CType(objEng.Targets(i), clsDatastore).Engine.ObjSystem.Environment.Project.ProjectName = ProjectName Then
-
-                        Return objEng.Targets(i)
+                For Each objDS As clsDatastore In objEng.Targets
+                    If objDS.DatastoreName = DatastoreName _
+                        And objDS.Engine.EngineName = EngineName _
+                        And objDS.Engine.ObjSystem.SystemName = SystemName _
+                        And objDS.Engine.ObjSystem.Environment.EnvironmentName = EnvironmentName _
+                        And objDS.Engine.Project.ProjectName = ProjectName Then
+                        Return objDS
                         Exit Function
                     End If
                 Next
@@ -456,7 +524,9 @@ Module modObjects
 
     'End Function
 
+
     'added by TK 12/29/2006
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchDSFieldByName(ByRef objSel As clsDSSelection, ByRef FieldName As String, ByRef StructureName As String, ByVal EnvironmentName As String, ByVal ProjectName As String) As clsField
 
         'Dim fld As clsField 'new???? try this
@@ -532,14 +602,15 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchField(ByRef objEnv As clsEnvironment, ByRef objFld As clsField) As clsField
 
-        Dim str As clsStructure
-        Dim i As Integer
+        'Dim str As clsStructure
+        'Dim i As Integer
 
         Try
-            For i = 1 To objEnv.Structures.Count
-                str = objEnv.Structures(i)
+            For Each str As clsStructure In objEnv.Structures
+                'str = objEnv.Structures(i)
                 If str.StructureName = objFld.ParentStructureName Then
                     Return SearchFieldByName(str, objFld.FieldName, objFld.Struct.Text, objFld.Struct.Environment.Text, objFld.Struct.Environment.Project.Text)
                     Exit Function
@@ -561,18 +632,19 @@ Module modObjects
     '//        objSel - selection object which needs to be located in structure's selection 
     '///                list under a specified env
     '//Return : Selection reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchStructSel(ByRef objEnv As clsEnvironment, ByRef objSel As clsStructureSelection) As clsStructureSelection
 
-        Dim objStr As clsStructure
-        Dim i, j As Integer
+        'Dim objStr As clsStructure
+        'Dim i, j As Integer
 
         Try
-            For i = 1 To objEnv.Structures.Count
-                objStr = objEnv.Structures(i)
+            For Each objStr As clsStructure In objEnv.Structures
+                'objStr = objEnv.Structures(i)
                 If objStr.StructureName = objSel.ObjStructure.StructureName Then
-                    For j = 1 To objStr.StructureSelections.Count
-                        If CType(objStr.StructureSelections(j), clsStructureSelection).SelectionName = objSel.SelectionName Then
-                            Return objStr.StructureSelections(j)
+                    For Each ss As clsStructureSelection In objStr.StructureSelections
+                        If ss.SelectionName = objSel.SelectionName Then
+                            Return ss
                             Exit Function
                         End If
                     Next
@@ -588,16 +660,16 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchEnvForConn(ByRef objStr As clsStructure, ByVal ConnName As String) As clsConnection
 
-        Dim i As Integer
-        Dim objConn As clsConnection
-        Dim objEnv As clsEnvironment
+        'Dim i As Integer
+        'Dim objConn As clsConnection
 
         Try
-            objEnv = objStr.Environment
-            For i = 1 To objEnv.Connections.Count
-                objConn = objEnv.Connections(i)
+            Dim objEnv As clsEnvironment = objStr.Environment
+            For Each objConn As clsConnection In objEnv.Connections
+                'objConn = objEnv.Connections(i)
                 If objConn.ConnectionName = ConnName Then
                     Return objConn
                     Exit Function
@@ -613,16 +685,17 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchForConn(ByRef objEng As clsEngine, ByVal ConnName As String) As clsConnection
 
-        Dim i As Integer
-        Dim objConn As clsConnection
-        Dim objEnv As clsEnvironment
+        'Dim i As Integer
+        'Dim objConn As clsConnection
+
 
         Try
-            objEnv = objEng.ObjSystem.Environment
-            For i = 1 To objEnv.Connections.Count
-                objConn = objEnv.Connections(i)
+            Dim objEnv As clsEnvironment = objEng.ObjSystem.Environment
+            For Each objConn As clsConnection In objEnv.Connections
+                'objConn = objEnv.Connections(i)
                 If objConn.ConnectionName = ConnName Then
                     Return objConn
                     Exit Function
@@ -645,6 +718,7 @@ Module modObjects
     '// Usage: Used when Structure or StructSelection is deleted
     '//        so that corresponding datastore selections will also be deleted.
     '//        or to find all structure selection references in it's environment
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchDSselForStructureRef(ByRef objsel As clsStructureSelection) As ArrayList
 
         Try
@@ -679,6 +753,7 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchSSForDSSelRef(ByRef objsel As clsStructureSelection) As Collection
 
         Try
@@ -719,17 +794,30 @@ Module modObjects
     '//        objSel - DSselection object which needs to be located in structure's selection list 
     '//                 under a specified env
     '//Return : DSSelection reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchDSSel(ByRef objEnv As clsEnvironment, ByRef objSel As clsDSSelection) As clsDSSelection
 
-        Dim objStr As clsStructure
-        Dim i, j As Integer
+        'Dim objStr As clsStructure
+        'Dim i, j As Integer
 
         Try
-            For i = 1 To objEnv.Structures.Count
-                objStr = objEnv.Structures(i)
+            'For i = 1 To objEnv.Structures.Count
+            '    objStr = objEnv.Structures(i)
+            '    If objStr.StructureName = objSel.ObjStructure.StructureName Then
+            '        For j = 1 To objStr.StructureSelections.Count
+            '            If CType(objStr.StructureSelections(j), clsStructureSelection).SelectionName = objSel.SelectionName Then
+            '                Return objSel
+            '                Exit Function
+            '            End If
+            '        Next
+            '    End If
+            'Next
+
+            For Each objStr As clsStructure In objEnv.Structures
+                'objStr = objEnv.Structures(i)
                 If objStr.StructureName = objSel.ObjStructure.StructureName Then
-                    For j = 1 To objStr.StructureSelections.Count
-                        If CType(objStr.StructureSelections(j), clsStructureSelection).SelectionName = objSel.SelectionName Then
+                    For Each ss As clsStructureSelection In objStr.StructureSelections
+                        If ss.SelectionName = objSel.SelectionName Then
                             Return objSel
                             Exit Function
                         End If
@@ -751,24 +839,25 @@ Module modObjects
     '//Input : objEng - Engine which contains the selection which needs to be search
     '//        objDs - datastore which needs to be located in engine's datastore list 
     '//Return : datastore reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchDatastore(ByRef objEng As clsEngine, ByRef objDs As clsDatastore) As clsDatastore
 
-        Dim i As Integer
+        'dim i As Integer
 
         Try
             If objDs.DsDirection = DS_DIRECTION_SOURCE Then
-                For i = 1 To objEng.Sources.Count
-                    If CType(objEng.Sources(i), clsDatastore).DatastoreName = objDs.DatastoreName Then
-                        Return objEng.Sources(i)
+                For Each ds As clsDatastore In objEng.Sources
+                    If ds.DatastoreName = objDs.DatastoreName Then
+                        Return ds
                         Exit Function
                     End If
                 Next
             End If
 
             If objDs.DsDirection = DS_DIRECTION_TARGET Then
-                For i = 1 To objEng.Targets.Count
-                    If CType(objEng.Targets(i), clsDatastore).DatastoreName = objDs.DatastoreName Then
-                        Return objEng.Targets(i)
+                For Each ds As clsDatastore In objEng.Targets
+                    If ds.DatastoreName = objDs.DatastoreName Then
+                        Return ds
                         Exit Function
                     End If
                 Next
@@ -807,11 +896,13 @@ Module modObjects
 
     'End Function
 
+
     '//Created : 4/29/05
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchTask(ByRef objEng As clsEngine, ByRef objTask As clsTask) As clsTask
 
-        Dim tsk As clsTask
-        Dim i As Integer
+        'Dim tsk As clsTask
+        'Dim i As Integer
         Dim TaskType As enumTaskType
 
         Try
@@ -829,31 +920,31 @@ Module modObjects
                 '        End If
                 '    Next
                 Case modDeclares.enumTaskType.TASK_LOOKUP
-                    For i = 1 To objEng.Lookups.Count
-                        tsk = objEng.Lookups(i)
+                    For Each tsk As clsTask In objEng.Lookups
+                        'tsk = objEng.Lookups(i)
                         tsk.LoadMappings()
                         If tsk.TaskName = objTask.TaskName And tsk.ObjMappings.Count = objTask.ObjMappings.Count Then
-                            Return objEng.Lookups(i)
+                            Return tsk
                             Exit Function
                         End If
                     Next
                 Case modDeclares.enumTaskType.TASK_MAIN
-                    For i = 1 To objEng.Mains.Count
-                        tsk = objEng.Mains(i)
+                    For Each tsk As clsTask In objEng.Mains
+                        'tsk = objEng.Mains(i)
                         tsk.LoadMappings()
 
                         If tsk.TaskName = objTask.TaskName And tsk.ObjMappings.Count = objTask.ObjMappings.Count Then
-                            Return objEng.Mains(i)
+                            Return tsk
                             Exit Function
                         End If
                     Next
                 Case modDeclares.enumTaskType.TASK_PROC, modDeclares.enumTaskType.TASK_GEN
-                    For i = 1 To objEng.Procs.Count
-                        tsk = objEng.Procs(i)
+                    For Each tsk As clsTask In objEng.Procs
+                        'tsk = objEng.Procs(i)
                         tsk.LoadMappings()
 
                         If tsk.TaskName = objTask.TaskName And tsk.ObjMappings.Count = objTask.ObjMappings.Count Then
-                            Return objEng.Procs(i)
+                            Return tsk
                             Exit Function
                         End If
                     Next
@@ -869,6 +960,7 @@ Module modObjects
     End Function
 
     '//Created : 4/29/05
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchTask(ByRef objEnv As clsEnvironment, ByRef objTask As clsTask) As clsTask
 
         Try
@@ -892,16 +984,17 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchVariable(ByRef objEng As clsEngine, ByRef objVar As clsVariable) As clsVariable
 
-        Dim var As clsVariable
-        Dim i As Integer
+        'Dim var As clsVariable
+        'Dim i As Integer
 
         Try
-            For i = 1 To objEng.Variables.Count
-                var = objEng.Variables(i)
+            For Each var As clsVariable In objEng.Variables
+                'var = objEng.Variables(i)
                 If var.VariableName = objVar.VariableName And var.VariableType = objVar.VariableType Then
-                    Return objEng.Variables(i)
+                    Return var
                     Exit Function
                 End If
             Next
@@ -915,6 +1008,7 @@ Module modObjects
 
     End Function
 
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchVariable(ByRef objEnv As clsEnvironment, ByRef objVar As clsVariable) As clsVariable
 
         Try
@@ -939,12 +1033,13 @@ Module modObjects
     '//Input : objEng - Engine which contains the datastore->selections which needs to be search
     '//        FieldId - FieldId of a field which needs to be located in selection list
     '//Return : Field reference if found
+    '///***** Updated by TK 11/18/11 to remove integer loops ****
     Function SearchField(ByRef objEng As clsEngine, ByRef objFld As clsField, ByRef Dir As enumDirection, Optional ByRef Incmd As Odbc.OdbcCommand = Nothing) As clsField
 
-        Dim fld As clsField
-        Dim i, j, k As Integer
-        Dim objDs As clsDatastore
-        Dim objSel As clsDSSelection
+        'Dim fld As clsField
+        'Dim i, j, k As Integer
+        'Dim objDs As clsDatastore
+        'Dim objSel As clsDSSelection
         Dim cmd As Odbc.OdbcCommand
 
         Try
@@ -956,16 +1051,17 @@ Module modObjects
             End If
 
             If Dir = modDeclares.enumDirection.DI_SOURCE Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
-                For i = 1 To objEng.Sources.Count
-                    objDs = objEng.Sources(i)
+                For Each objDs As clsDatastore In objEng.Sources
+                    'objDs = objEng.Sources(i)
                     objDs.LoadItems(, , cmd)
-                    For j = 0 To objDs.ObjSelections.Count - 1
-                        objSel = objDs.ObjSelections(j)
+                    For Each objSel As clsDSSelection In objDs.ObjSelections
+                        'objSel = objDs.ObjSelections(j)
                         objSel.LoadMe(cmd)
-                        For k = 0 To objSel.DSSelectionFields.Count - 1
-                            fld = objSel.DSSelectionFields(k)
-                            If fld.FieldName = objFld.FieldName And fld.ParentStructureName = objFld.ParentStructureName Then
-                                Return objSel.DSSelectionFields(k)
+                        For Each fld As clsField In objSel.DSSelectionFields
+                            'fld = objSel.DSSelectionFields(k)
+                            If fld.FieldName = objFld.FieldName _
+                            And fld.ParentStructureName = objFld.ParentStructureName Then
+                                Return fld
                                 Exit Function
                             End If
                         Next
@@ -974,16 +1070,17 @@ Module modObjects
             End If
 
             If Dir = modDeclares.enumDirection.DI_TARGET Or Dir = modDeclares.enumDirection.DI_SOURCE_TARGET Then
-                For i = 1 To objEng.Targets.Count
-                    objDs = objEng.Targets(i)
+                For Each objDs As clsDatastore In objEng.Targets
+                    'objDs = objEng.Sources(i)
                     objDs.LoadItems(, , cmd)
-                    For j = 0 To objDs.ObjSelections.Count - 1
-                        objSel = objDs.ObjSelections(j)
+                    For Each objSel As clsDSSelection In objDs.ObjSelections
+                        'objSel = objDs.ObjSelections(j)
                         objSel.LoadMe(cmd)
-                        For k = 0 To objSel.DSSelectionFields.Count - 1
-                            fld = objSel.DSSelectionFields(k)
-                            If fld.FieldName = objFld.FieldName And fld.ParentStructureName = objFld.ParentStructureName Then
-                                Return objSel.DSSelectionFields(k)
+                        For Each fld As clsField In objSel.DSSelectionFields
+                            'fld = objSel.DSSelectionFields(k)
+                            If fld.FieldName = objFld.FieldName _
+                            And fld.ParentStructureName = objFld.ParentStructureName Then
+                                Return fld
                                 Exit Function
                             End If
                         Next

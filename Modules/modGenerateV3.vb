@@ -1904,18 +1904,18 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 End If
 ErrorGoTo1: Next
 
-            For Each Rproc As clsTask In ObjThis.Mains
-                Rproc.LoadMe()
-                'Rproc.LoadDatastores()
-                'Rproc.LoadMappings(True)
+            '            For Each Rproc As clsTask In ObjThis.Mains
+            '                Rproc.LoadMe()
+            '                'Rproc.LoadDatastores()
+            '                'Rproc.LoadMappings(True)
 
-                ' IsMapped is True if it is the Main Procedure
-                If Rproc.TaskType = enumTaskType.TASK_GEN Then
-                    If PrtProcs(rc, Rproc) = False Then
-                        GoTo ErrorGoTo2
-                    End If
-                End If
-ErrorGoTo2: Next
+            '                ' IsMapped is True if it is the Main Procedure
+            '                If Rproc.TaskType = enumTaskType.TASK_GEN Then
+            '                    If PrtProcs(rc, Rproc) = False Then
+            '                        GoTo ErrorGoTo2
+            '                    End If
+            '                End If
+            'ErrorGoTo2: Next
 
             '/// send returnPath or enumreturncode
 
@@ -2523,7 +2523,7 @@ errorgoto:
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
                     Case Else
@@ -2757,7 +2757,7 @@ ErrorGoTo:
                             End If
                         End If
                     Case DS_ACCESSMETHOD_SQDCDC
-                        EXname = "cdc://" & AccessHost & "/" & ds.ExceptionDatastore '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        EXname = "cdc://" & AccessHost & "/" & ds.ExceptionDatastore & "/" & ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         EXname = "vsam://" & AccessHost & "/" & ds.ExceptionDatastore
                     Case Else
@@ -3289,13 +3289,13 @@ ErrorGoTo:
                     Else
                         'added 10/19/11 for making inline file correct for subsets
                         'no undefined dssel fields are written
-                        For Each fld As clsField In dssel.DSSelectionFields
-                            Dim fldname As String = fld.FieldName
-                            If TempString.Contains(fldname) Then
-                                objWriteINL.WriteLine(TempString)
-                                GoTo nextTempstr
-                            End If
-                        Next
+                        'For Each fld As clsField In dssel.DSSelectionFields
+                        '    Dim fldname As String = fld.FieldName
+                        '    If TempString.Contains(fldname) Then
+                        objWriteINL.WriteLine(TempString)
+                        '        GoTo nextTempstr
+                        '    End If
+                        'Next
                     End If
 nextTempstr:        AddToLineNo(rc, False, , False)
                 End While

@@ -1755,9 +1755,9 @@ Public Class ctlTask
 
             objThis = obj '//Load the form env object
 
-            If objThis.Engine IsNot Nothing Then
-                cbGroupItems.Checked = objThis.Engine.MapGroupItems
-            End If
+            'If objThis.Engine IsNot Nothing Then
+            cbGroupItems.Checked = objThis.Engine.MapGroupItems
+            'End If
 
             'objThis.ObjTreeNode = cNode
 
@@ -1774,13 +1774,17 @@ Public Class ctlTask
 
             UpdateFields()
 
-            EditObj = objThis
+
 
             FillMappings()
 
-            EndLoad()
+
 
             FillSourceTarget(cNode)
+
+            EndLoad()
+
+            EditObj = objThis
 
             If tvSource.Nodes.Count <> 0 Then
                 tvSource.CollapseAll()
@@ -2276,8 +2280,10 @@ Public Class ctlTask
     Function FillMappings() As Boolean
         '//Now load selected mappings
         If IsNewObj = False Then
-            objThis.LoadDatastores()
-            objThis.LoadMappings()
+            If objThis.IsLoaded = False Then
+                objThis.LoadDatastores()
+                objThis.LoadMappings()
+            End If
             LoadTaskMappings()
         End If
 
@@ -2436,7 +2442,8 @@ Public Class ctlTask
             tvTarget.CheckBoxes = False
 
 
-            objThis.LoadDatastores()
+            'objThis.LoadDatastores()
+            'objThis.LoadMe()
 
 
             For Each nd In cNode.Nodes
@@ -2564,11 +2571,11 @@ Public Class ctlTask
 
             '//Now load fields for selected source/target items and check if object is already created and user is editing it on seperate dialogbox (not on user control)
             If IsNewObj = False Then
-                If objThis.Engine IsNot Nothing Then
-                    objThis.LoadDatastores()
-                    CheckSelectedDatastores()
-                    RemoveUnSelectedDatastores()
-                End If
+                'If objThis.Engine IsNot Nothing Then
+                'objThis.LoadDatastores()
+                CheckSelectedDatastores()
+                RemoveUnSelectedDatastores()
+                'End If
 
                 '/now add all the selections and fields to each datastore node
                 LoadCheckedItems(tvSource)
@@ -2711,7 +2718,7 @@ Public Class ctlTask
 
         If CType(ndDs.Tag, INode).Type = "SDS" Or CType(ndDs.Tag, INode).Type = "TDS" Then
             objDs = ndDs.Tag
-            objDs.LoadItems(True)
+            objDs.LoadItems() 'True
 
             If objDs.ObjSelections.Count > 0 Then
                 '//Add all selection of this DS

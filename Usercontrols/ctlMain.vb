@@ -105,7 +105,8 @@ Public Class ctlMain
 
     'End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTaskDesc.TextChanged, txtTaskName.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTaskDesc.TextChanged, txtTaskName.TextChanged, txtCodeEditor.TextChanged
+
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -148,6 +149,9 @@ Public Class ctlMain
             StartLoad()
 
             objThis = obj '//Load the form env object
+            objThis.LoadMe()
+            'objThis.LoadItems()
+
 
             'If objThis.Engine IsNot Nothing Then
             '    cbGroupItems.Checked = objThis.Engine.MapGroupItems
@@ -166,21 +170,28 @@ Public Class ctlMain
             '    tvTarget.Visible = True
             'End If
 
+
+
+
+
+
+
+
             UpdateFields()
 
-            EditObj = objThis
+            FillSourceTarget(cNode)
 
             FillMappings()
 
+            'If CType(cNode.Tag, INode).Type = NODE_ENGINE Then
+
+            'Else
+            'FillSrcTgtTop(cNode)
+            'End If
             EndLoad()
 
-            If CType(cNode.Tag, INode).Type = NODE_ENGINE Then
-                FillSourceTarget(cNode)
-            Else
-                FillSrcTgtTop(cNode)
-            End If
 
-
+            EditObj = objThis
             'the following if statement is to relode the source and target for the first time 
             'If firstTime = True Then
             '    FillSourceTarget(objThis.ObjTreeNode)
@@ -644,8 +655,12 @@ Public Class ctlMain
     Function FillMappings() As Boolean
         '//Now load selected mappings
         If IsNewObj = False Then
-            objThis.LoadDatastores()
-            objThis.LoadMappings(True)
+            'If objThis.IsLoaded = False Then
+            'objThis.LoadMe()
+
+            'objThis.LoadDatastores()
+            objThis.LoadMappings() 'True
+            'End If
             LoadCodeEditor()
         End If
 
@@ -654,11 +669,11 @@ Public Class ctlMain
     Function LoadCodeEditor() As Boolean
 
         Try
-            If objThis.TaskType = enumTaskType.TASK_GEN Then
-                cbIsMain.Checked = False
-            Else
-                cbIsMain.Checked = True
-            End If
+            'If objThis.TaskType = enumTaskType.TASK_GEN Then
+            '    cbIsMain.Checked = False
+            'Else
+            '    cbIsMain.Checked = True
+            'End If
 
             If objThis.ObjMappings.Count > 0 Then
                 objCurMap = CType(objThis.ObjMappings(0), clsMapping)
@@ -841,8 +856,8 @@ Public Class ctlMain
             'tvTarget.CheckBoxes = False
 
 
-            objThis.LoadDatastores()
-
+            'objThis.LoadDatastores()
+            'objThis.LoadMe()
 
             For Each nd In cNode.Nodes
                 If CType(nd.Tag, INode).Type = NODE_FO_SOURCEDATASTORE Then
@@ -969,11 +984,11 @@ Public Class ctlMain
 
             '//Now load fields for selected source/target items and check if object is already created and user is editing it on seperate dialogbox (not on user control)
             If IsNewObj = False Then
-                If objThis.Engine IsNot Nothing Then
-                    objThis.LoadDatastores()
-                    CheckSelectedDatastores()
-                    RemoveUnSelectedDatastores()
-                End If
+                'If objThis.Engine IsNot Nothing Then
+                'objThis.LoadDatastores()
+                CheckSelectedDatastores()
+                RemoveUnSelectedDatastores()
+                'End If
 
                 '/now add all the selections and fields to each datastore node
                 LoadCheckedItems(tvSource)
@@ -1116,7 +1131,7 @@ Public Class ctlMain
 
         If CType(ndDs.Tag, INode).Type = "SDS" Or CType(ndDs.Tag, INode).Type = "TDS" Then
             objDs = ndDs.Tag
-            objDs.LoadItems(True)
+            objDs.LoadItems()  'True
 
             If objDs.ObjSelections.Count > 0 Then
                 '//Add all selection of this DS
@@ -4378,72 +4393,72 @@ Public Class ctlMain
     End Function
 
     '//Switch to code edit view when user double click or select edit menu item
-    Function ShowScriptEditor(ByVal objMap As clsMapping) As Boolean
+    'Function ShowScriptEditor(ByVal objMap As clsMapping) As Boolean
 
-        Try
-            objCurMap = objMap
-            IsEventFromCode = True
-            txtCodeEditor.Text = ""
+    '    Try
+    '        objCurMap = objMap
+    '        IsEventFromCode = True
+    '        txtCodeEditor.Text = ""
 
-            If curEditType = modDeclares.enumDirection.DI_SOURCE Then
-                If objCurMap.MappingSource IsNot Nothing Then
-                    If objCurMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
-                        ObjCurFld = CType(objCurMap.MappingSource, clsField)
-                    End If
-                    If objCurMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Then
-                        txtCodeEditor.Text = CType(objCurMap.MappingSource, clsSQFunction).SQFunctionWithInnerText
-                    Else
-                        txtCodeEditor.Text = objCurMap.MappingSource.Text
-                    End If
-                Else
-                    txtCodeEditor.Text = ""
-                End If
-                'If objCurMap.MappingTarget IsNot Nothing Then
-                '    If objCurMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-                '        lblTgtFldName.Text = CType(objCurMap.MappingTarget, clsField).FieldName
-                '    Else
-                '        lblTgtFldName.Text = "No Target Field Mapped"
-                '    End If
-                'End If
-            Else
-                If objCurMap.MappingTarget IsNot Nothing Then
-                    If objCurMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-                        ObjCurFld = CType(objCurMap.MappingTarget, clsField)
-                    End If
-                    If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Or _
-                        objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-                        txtCodeEditor.Text = objCurMap.MappingTarget.Text
-                    ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _
-                    objCurMap.TargetType = enumMappingType.MAPPING_TYPE_VAR Then
-                        If CType(objCurMap.MappingTarget, clsVariable).CorrectedVariableName = "" Then
-                            txtCodeEditor.Text = objCurMap.MappingTarget.Text
-                        Else
-                            txtCodeEditor.Text = CType(objCurMap.MappingTarget, clsVariable).CorrectedVariableName
-                        End If
-                    End If
-                Else
-                    txtCodeEditor.Text = ""
-                End If
-            End If
+    '        If curEditType = modDeclares.enumDirection.DI_SOURCE Then
+    '            If objCurMap.MappingSource IsNot Nothing Then
+    '                If objCurMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                    ObjCurFld = CType(objCurMap.MappingSource, clsField)
+    '                End If
+    '                If objCurMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Then
+    '                    txtCodeEditor.Text = CType(objCurMap.MappingSource, clsSQFunction).SQFunctionWithInnerText
+    '                Else
+    '                    txtCodeEditor.Text = objCurMap.MappingSource.Text
+    '                End If
+    '            Else
+    '                txtCodeEditor.Text = ""
+    '            End If
+    '            'If objCurMap.MappingTarget IsNot Nothing Then
+    '            '    If objCurMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '            '        lblTgtFldName.Text = CType(objCurMap.MappingTarget, clsField).FieldName
+    '            '    Else
+    '            '        lblTgtFldName.Text = "No Target Field Mapped"
+    '            '    End If
+    '            'End If
+    '        Else
+    '            If objCurMap.MappingTarget IsNot Nothing Then
+    '                If objCurMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                    ObjCurFld = CType(objCurMap.MappingTarget, clsField)
+    '                End If
+    '                If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Or _
+    '                    objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                    txtCodeEditor.Text = objCurMap.MappingTarget.Text
+    '                ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _
+    '                objCurMap.TargetType = enumMappingType.MAPPING_TYPE_VAR Then
+    '                    If CType(objCurMap.MappingTarget, clsVariable).CorrectedVariableName = "" Then
+    '                        txtCodeEditor.Text = objCurMap.MappingTarget.Text
+    '                    Else
+    '                        txtCodeEditor.Text = CType(objCurMap.MappingTarget, clsVariable).CorrectedVariableName
+    '                    End If
+    '                End If
+    '            Else
+    '                txtCodeEditor.Text = ""
+    '            End If
+    '        End If
 
-            IsEventFromCode = False
-            pnlScript.Visible = True
-            'pnlSourceTarget.Visible = False
-            'pnlDesc.Visible = False
-            pnlScript.BringToFront()
+    '        'IsEventFromCode = False
+    '        pnlScript.Visible = True
+    '        'pnlSourceTarget.Visible = False
+    '        'pnlDesc.Visible = False
+    '        pnlScript.BringToFront()
 
-            IsCodeEditorOnTop = True
-            IsDescEditorOnTop = False
-            'txtCodeEditor.Focus()
+    '        IsCodeEditorOnTop = True
+    '        IsDescEditorOnTop = False
+    '        'txtCodeEditor.Focus()
 
-            Return True
+    '        Return True
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask ShowScriptEditor")
-            Return False
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask ShowScriptEditor")
+    '        Return False
+    '    End Try
 
-    End Function
+    'End Function
 
     'Function ShowDescEditor(ByVal objMap As clsMapping) As Boolean
 
@@ -4597,6 +4612,8 @@ Public Class ctlMain
             ''Dim StartIdx As Integer
             'Dim SubStr As String
 
+            If IsEventFromCode = True Then Exit Sub
+
             objCurFunct.SQFunctionWithInnerText = txtCodeEditor.Text
 
             ''StartIdx = txtCodeEditor.GetFirstCharIndexOfCurrentLine()
@@ -4620,7 +4637,7 @@ Public Class ctlMain
 
             txtColNum.Text = ColNum.ToString
 
-            OnChange(Me, New EventArgs)
+            'OnChange(Me, New EventArgs)
 
         Catch ex As Exception
             LogError(ex, "ctlTask txtCodeEditorTextChng")
@@ -4647,7 +4664,7 @@ Public Class ctlMain
 
             DoSetTaskType = True
 
-            OnChange(Me, New EventArgs)
+            'OnChange(Me, New EventArgs)
 
         Catch ex As Exception
             LogError(ex, "cbIsMain_CheckedChanged")

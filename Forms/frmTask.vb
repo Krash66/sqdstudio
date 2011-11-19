@@ -452,7 +452,9 @@ doAgain:
 
         'cbGroupItems.Checked = True
 
-        If objThis.TaskType = modDeclares.enumTaskType.TASK_GEN Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
+        If objThis.TaskType = modDeclares.enumTaskType.TASK_GEN _
+        Or objThis.TaskType = modDeclares.enumTaskType.TASK_MAIN _
+        Or objThis.TaskType = modDeclares.enumTaskType.TASK_LOOKUP Then
             'tvTarget.Enabled = False
             tvTarget.Visible = False
             'lblTargetCaption.Visible = False
@@ -466,10 +468,10 @@ doAgain:
 
         'FillMappings()
 
-        EndLoad()
+
 
         FillSourceTarget(cNode)
-
+        EndLoad()
         'the following if statement is to relode the source and target for the first time 
         'If firstTime = True Then
         '    FillSourceTarget(objThis.ObjTreeNode)

@@ -5393,7 +5393,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPop = mnuPopupProject.CloneMenu
                 Case NODE_FO_ENVIRONMENT, NODE_ENVIRONMENT
                     '//If clicked on folder then disable del and edit options
-                    mnuDelEnv.Enabled = Not bFolderClick
+                    If obj.Type = NODE_FO_ENVIRONMENT Then
+                        mnuDelEnv.Text = "Delete All"
+                    Else
+                        mnuDelEnv.Text = "Delete"
+                    End If
+                    mnuDelEnv.Enabled = True 'Not bFolderClick
                     'mnuEditEnv.Enabled = Not bFolderClick
                     'mnuCopyEnv.Enabled = Not bFolderClick
                     mnuPasteEnv.Enabled = bAllowPaste
@@ -5435,7 +5440,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                                 mnuDelAllStruct.Text = "Delete All COBOLIMS Descriptions"
                         End Select
                     Else
-                        mnuDelAllStruct.Enabled = Not bFolderClick
+                        mnuDelAllStruct.Text = "Delete All Descriptions"
+                        mnuDelAllStruct.Enabled = True
                     End If
 
                     mnuPop = mnuPopupStruct.CloneMenu
@@ -5458,7 +5464,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPop = mnuPopupStructSelection.CloneMenu
                 Case NODE_FO_SYSTEM, NODE_SYSTEM
                     '//If clicked on folder then disable del and edit options
-                    mnuDelSystem.Enabled = Not bFolderClick
+                    mnuDelSystem.Enabled = True 'Not bFolderClick
+                    If obj.Type = NODE_FO_SYSTEM Then
+                        mnuDelSystem.Text = "Delete All"
+                    Else
+                        mnuDelSystem.Text = "Delete"
+                    End If
                     'mnuEditSystem.Enabled = Not bFolderClick
                     'mnuCopySystem.Enabled = Not bFolderClick
                     mnuPasteSystem.Enabled = bAllowPaste
@@ -5466,7 +5477,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPop = mnuPopupSystem.CloneMenu
                 Case NODE_FO_CONNECTION, NODE_CONNECTION
                     '//If clicked on folder then disable del and edit options
-                    mnuDelConn.Enabled = Not bFolderClick
+                    mnuDelConn.Enabled = True 'Not bFolderClick
+                    If obj.Type = NODE_FO_CONNECTION Then
+                        mnuDelConn.Text = "Delete All"
+                    Else
+                        mnuDelConn.Text = "Delete"
+                    End If
                     'mnuEditConn.Enabled = Not bFolderClick
                     'mnuCopyConn.Enabled = Not bFolderClick
                     mnuPasteConn.Enabled = bAllowPaste
@@ -5474,7 +5490,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     mnuPop = mnuPopupConnection.CloneMenu
                 Case NODE_FO_ENGINE, NODE_ENGINE
                     '//If clicked on folder then disable del and edit options
-                    mnuDelEngine.Enabled = Not bFolderClick
+                    mnuDelEngine.Enabled = True 'Not bFolderClick
+                    If obj.Type = NODE_FO_ENGINE Then
+                        mnuDelEngine.Text = "Delete All"
+                    Else
+                        mnuDelEngine.Text = "Delete"
+                    End If
                     'mnuEditEngine.Enabled = Not bFolderClick
                     mnuScriptEngine.Enabled = Not bFolderClick
                     mnuCopyEngine.Enabled = True 'Not bFolderClick
@@ -5745,7 +5766,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                 Case NODE_FO_VARIABLE, NODE_VARIABLE
                     '//If clicked on folder then disable del and edit options
-                    mnuDelVar.Enabled = Not bFolderClick
+                    mnuDelVar.Enabled = True 'Not bFolderClick
+                    If obj.Type = NODE_FO_VARIABLE Then
+                        mnuDelVar.Text = "Delete All"
+                    Else
+                        mnuDelVar.Text = "Delete"
+                    End If
                     'mnuEditVar.Enabled = Not bFolderClick
                     'mnuCopyVar.Enabled = Not bFolderClick
                     mnuPasteVar.Enabled = bAllowPaste
@@ -6991,6 +7017,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                 lblStatusMsg.Text = "Creating Object Clone to Paste"
                 Me.Refresh()
+                Me.Cursor = Cursors.WaitCursor
 
                 destObj = obj.Clone(newObjParent, True, cmd)
                 'If destObj Is Nothing Then
@@ -7027,7 +7054,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     Exit Sub
                 End If
 
-                Windows.Forms.Cursor.Current = Cursors.WaitCursor
+                Me.Cursor = Cursors.WaitCursor
                 '/// modified by Tom Karasch 6/07
                 '// if cancel button clicked then destobj.text = "" and will fall through to next in loop
                 If destObj.Text <> "" Then
@@ -7041,7 +7068,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                     lblStatusMsg.Text = "Adding Cloned Object to Metadata"
                     Me.Refresh()
-
+                    Me.Cursor = Cursors.WaitCursor
                     'conn.Open()
                     'cmd.Connection = conn
                     'tran = conn.BeginTransaction()
@@ -7061,9 +7088,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                         lblStatusMsg.Text = "Object added to Metadata, Filling Object tree"
                         Me.Refresh()
+                        Me.Cursor = Cursors.WaitCursor
 
                         Dim Success As Boolean = False
-
+                        Me.Cursor = Cursors.WaitCursor
                         Select Case GetClipboardObjectType()
                             Case NODE_PROJECT
                                 Success = FillProjectFromClipboard(destObj)
@@ -7125,6 +7153,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 [continue]: Next
             lblStatusMsg.Text = "Complete!"
             Me.Refresh()
+            Me.Cursor = Cursors.WaitCursor
             ShowUsercontrol(cNode, True)
 
         Catch OE As Odbc.OdbcException
@@ -8382,9 +8411,49 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             Dim pNode As TreeNode = tvExplorer.SelectedNode.Parent
             Dim selNode As TreeNode = tvExplorer.SelectedNode
 
-            If CType(tvExplorer.SelectedNode.Tag, INode).IsFolderNode = True Then
-                If MsgBox("Are you sure you want to delete everything in this folder?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
-                    If Not (tvExplorer.SelectedNode Is Nothing) Then
+            Me.Cursor = Cursors.WaitCursor
+
+            Select Case inodetype
+                Case NODE_STRUCT, NODE_STRUCT_SEL
+                    If MsgBox("*** Warning ***" & (Chr(13)) & _
+                              "All references to this Description, throughout the project," & (Chr(13)) & _
+                              " will be deleted to maintain referential integrity of MetaData." & (Chr(13)) & _
+                              "(This will delete Description from Datastores and Mappings)", _
+                              MsgBoxStyle.OkCancel, MsgTitle) = MsgBoxResult.Ok Then
+                        Me.Cursor = Cursors.WaitCursor
+                        If selNode IsNot Nothing Then
+                            '// until the current node is empty .. do a recursive delete
+                            DoDeleteAction = DoRecursiveDelete(selNode)
+                        End If
+                    End If
+                    If CurLoadedProject IsNot Nothing Then
+                        FillProject(CurLoadedProject, False, True)
+                    End If
+                    tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, pNode.Text)
+
+                Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
+                    If MsgBox("Are you sure you want to delete selected item and sub items?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
+                        'If Not (tvExplorer.SelectedNode Is Nothing) Then
+                        '// until the current node is empty .. do a recursive delete
+                        DoDeleteAction = DoRecursiveDelete(pNode, inodetype)
+                        'End If
+                        tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, pNode.Text)
+                    End If
+
+                Case NODE_FO_CONNECTION, _
+                NODE_FO_ENGINE, _
+                NODE_FO_ENVIRONMENT, _
+                NODE_FO_SYSTEM, _
+                NODE_FO_VARIABLE, _
+                NODE_FO_MAIN, _
+                NODE_FO_PROC, _
+                NODE_FO_SOURCEDATASTORE, _
+                NODE_FO_TARGETDATASTORE
+                    If MsgBox("Are you sure you want to delete everything in this folder?", _
+                              MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
+
+                        Me.Cursor = Cursors.WaitCursor
+
                         Dim cnode As TreeNode = tvExplorer.SelectedNode
                         Dim Flag As Boolean = True
                         Dim i As Int32
@@ -8394,56 +8463,91 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         '/// also this cannot be done with a "for each ..." (don't ask me why again)
                         For i = range To 0 Step -1
                             ChildNode = cnode.Nodes.Item(i)
-                            '// until the current node (cnode) is empty .. do a recursive delete
+
                             Flag = DoRecursiveDelete(ChildNode, inodetype)
                             If Flag = False Then
                                 Exit For
                             End If
+                            'ChildNode = cnode.Nodes.Item(i)
                         Next
-                        If cnode.Parent.Text.Contains("Descriptions") Then
-                            cnode.Remove()
-                        End If
                         DoDeleteAction = Flag
                     End If
-                End If
-                If tvExplorer.SelectedNode IsNot Nothing Then
+                    'If tvExplorer.SelectedNode IsNot Nothing Then
                     UpdateParentNodeCount(selNode)
+                    tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, selNode.Text)
                     tvExplorer.SelectedNode.Expand()
-                End If
-            Else
-                If inodetype = NODE_STRUCT Or inodetype = NODE_STRUCT_SEL Then
-                    If MsgBox("*** Warning ***" & (Chr(13)) & "All references to this Description, throughout the project," & (Chr(13)) & " will be deleted to maintain referential integrity of MetaData." & (Chr(13)) & "(This will delete Description from Datastores and Mappings)", MsgBoxStyle.OkCancel, MsgTitle) = MsgBoxResult.Ok Then
-                        If Not (tvExplorer.SelectedNode Is Nothing) Then
-                            '// until the current node is empty .. do a recursive delete
-                            DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode, inodetype)
-                        End If
+                    'End If
+
+                Case NODE_FO_STRUCT
+                    If MsgBox("*** Warning ***" & (Chr(13)) & _
+                              "All references to this Description, throughout the project," & (Chr(13)) & _
+                              " will be deleted to maintain referential integrity of MetaData." & (Chr(13)) & _
+                              "(This will delete Description from Datastores and Mappings)", _
+                              MsgBoxStyle.OkCancel, MsgTitle) = MsgBoxResult.Ok Then
+
+                        Me.Cursor = Cursors.WaitCursor
+
+                        Dim cnode As TreeNode = tvExplorer.SelectedNode
+                        Dim Flag As Boolean = True
+                        Dim i As Int32
+                        Dim range As Int32 = cnode.Nodes.Count - 1
+                        Dim ChildNode As TreeNode
+                        '/// Nodes must be deleted in reverse order (don't ask me why)
+                        '/// also this cannot be done with a "for each ..." (don't ask me why again)
+                        For i = range To 0 Step -1
+                            ChildNode = cnode.Nodes.Item(i)
+                            If cnode.Text.Contains("Descriptions") Then
+                                '// go to each Description Type folder 
+                                '// and delete all the description out of each folder
+                                'For Each cldcldnode As TreeNode In ChildNode.Nodes
+                                Dim j As Int32
+                                Dim range2 As Int32 = ChildNode.Nodes.Count - 1
+                                Dim grCldNode As TreeNode
+
+                                For j = range2 To 0 Step -1
+                                    grCldNode = ChildNode.Nodes.Item(j)
+                                    Flag = DoRecursiveDelete(grCldNode)
+                                    If Flag = False Then
+                                        Exit For
+                                    End If
+                                Next
+                                '// then delete the type folder
+                                ChildNode.Remove()  'Remove Desc type folder (i.e. COBOL,c,ddl,...)
+                            Else
+                                '// until the current node (cnode) is empty .. do a recursive delete
+                                Flag = DoRecursiveDelete(ChildNode, inodetype)
+                                If Flag = False Then
+                                    Exit For
+                                End If
+                            End If
+                        Next
+                        DoDeleteAction = Flag
                     End If
-                ElseIf inodetype = NODE_SOURCEDSSEL Or inodetype = NODE_TARGETDSSEL Then
-                    If MsgBox("Are you sure you want to delete selected item and sub items?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
-                        If Not (tvExplorer.SelectedNode Is Nothing) Then
-                            '// until the current node is empty .. do a recursive delete
-                            DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode.Parent, inodetype)
-                        End If
+                    'UpdateParentNodeCount(selNode)
+                    If CurLoadedProject IsNot Nothing Then
+                        FillProject(CurLoadedProject, False, True)
                     End If
-                Else
-                    If MsgBox("Are you sure you want to delete selected item and sub items?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
-                        If Not (tvExplorer.SelectedNode Is Nothing) Then
-                            '// until the current node is empty .. do a recursive delete
-                            DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode, inodetype)
-                        End If
-                    End If
-                End If
-                If tvExplorer.SelectedNode IsNot Nothing Then
-                    UpdateParentNodeCount(pNode)
+                    tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, pNode.Text)
                     tvExplorer.SelectedNode.Expand()
-                End If
-            End If
+
+                Case Else
+                    If MsgBox("Are you sure you want to delete selected item and sub items?", _
+                              MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, MsgTitle) = MsgBoxResult.Yes Then
+
+                        'Me.Cursor = Cursors.WaitCursor
+                        '// until the current node is empty .. do a recursive delete
+                        DoDeleteAction = DoRecursiveDelete(tvExplorer.SelectedNode, inodetype)
+                    End If
+
+            End Select
 
             DoDeleteAction = True
 
         Catch ex As Exception
             LogError(ex, "frmMain DoDeleteAction")
             DoDeleteAction = False
+        Finally
+            Me.Cursor = Cursors.Default
         End Try
 
     End Function
@@ -8455,22 +8559,26 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim cmd As New Odbc.OdbcCommand
         Dim tran As Odbc.OdbcTransaction = Nothing
         Dim Successful As Boolean
-        Dim tempnode As TreeNode = tvExplorer.SelectedNode.PrevNode
+        Dim tempnode As TreeNode '= tvExplorer.SelectedNode.PrevNode
         Dim nodetext As String = cNode.Text
 
+        Me.Cursor = Cursors.WaitCursor
         Try
-            If tempnode Is Nothing Then
-                tempnode = CurLoadedProject.ObjTreeNode
-            End If
-
             If cNode Is Nothing Then
                 '// if the current node is empty, the exit this function
                 Exit Function
             End If
+            If tvExplorer.SelectedNode IsNot Nothing Then
+                If tvExplorer.SelectedNode.PrevNode IsNot Nothing Then
+                    tempnode = tvExplorer.SelectedNode.PrevNode
+                Else
+                    tempnode = CurLoadedProject.ObjTreeNode
+                End If
+            Else
+                tempnode = CurLoadedProject.ObjTreeNode
+            End If
 
             cmd.Connection = cnn
-            '//We need to put in transaction because we will add structure and 
-            '//fields in two steps so if one fails rollback all
             tran = cnn.BeginTransaction()
             cmd.Transaction = tran
 
@@ -8485,13 +8593,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 ctFolder.Clear()
                 DoRecursiveDelete = True
                 HideAllUC()
-                If InodeType = NODE_STRUCT Or InodeType = NODE_STRUCT_SEL Then
-                    If CurLoadedProject IsNot Nothing Then
-                        FillProject(CurLoadedProject, False, True)
-                    End If
-                    '' vv Was here vv
-                End If
-                tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, tempnode.Text)
+
+                tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, tempnode.Text) 'tempnode '
             Else
                 tran.Rollback()
             End If
@@ -8506,6 +8609,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             LogError(ex, "frmMain DoRecursiveDelete")
             tran.Rollback()
             DoRecursiveDelete = False
+        Finally
+            'Me.Cursor = Cursors.Default
         End Try
 
     End Function

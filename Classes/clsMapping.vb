@@ -97,7 +97,7 @@ Public Class clsMapping
             obj.Parent = NewParent 'Me.Parent
             obj.IsMapped = Me.IsMapped
 
-            If Not (Me.MappingSource Is Nothing) Then
+            If Me.MappingSource IsNot Nothing Then
                 If Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Or _
                     Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT Or _
                     Me.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
@@ -139,7 +139,7 @@ Public Class clsMapping
                 End If
             End If
 
-            If Not (Me.MappingTarget Is Nothing) Then
+            If Me.MappingTarget IsNot Nothing Then
                 If Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FUN Or _
                     Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT Or _
                     Me.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Or _

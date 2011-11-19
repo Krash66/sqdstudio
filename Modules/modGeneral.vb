@@ -1367,11 +1367,13 @@ Public Module modGeneral
     '// Note: if used for second option then must pass SelectionId to search and SearchForCheckmark must be true
     Function SearchTree(ByVal tv As TreeView, ByVal colSkipNodes As ArrayList, ByVal IgnoreSkipList As Boolean, ByRef cNode As TreeNodeCollection, ByRef TextToSearch As String, Optional ByVal SearchForCheckmark As Boolean = False, Optional ByVal IdToSearch As String = "", Optional ByVal DoSelection As Boolean = True, Optional ByVal ExactMatch As Boolean = False) As TreeNode
 
+        Dim oldIsEventFromCode As Boolean = IsEventFromCode
+
         Try
             Dim nd As TreeNode
             Dim arrItm As Object
             Dim bSkip As Boolean
-            Dim oldIsEventFromCode As Boolean = IsEventFromCode
+
 
             For Each nd In cNode
                 If SearchForCheckmark = True Then
@@ -1385,7 +1387,7 @@ Public Module modGeneral
                                 nd.EnsureVisible()
                             End If
                             SearchTree = nd
-                            Exit Function
+                            Exit Try
                         End If
                     End If
 
@@ -1393,7 +1395,7 @@ Public Module modGeneral
                     nd = SearchTree(tv, colSkipNodes, IgnoreSkipList, nd.Nodes, TextToSearch, SearchForCheckmark, IdToSearch)
                     If Not (nd Is Nothing) Then
                         SearchTree = nd
-                        Exit Function
+                        Exit Try
                     End If
                 Else
                     bSkip = False
@@ -1419,7 +1421,7 @@ Public Module modGeneral
                                     nd.EnsureVisible()
                                 End If
                                 SearchTree = nd
-                                Exit Function
+                                Exit Try
                             End If
                         Else
                             If Strings.Left(nd.Text, TextToSearch.Length).ToUpper = TextToSearch.ToUpper Then
@@ -1432,7 +1434,7 @@ Public Module modGeneral
                                     nd.EnsureVisible()
                                 End If
                                 SearchTree = nd
-                                Exit Function
+                                Exit Try
                             End If
                         End If
 
@@ -1442,18 +1444,20 @@ Public Module modGeneral
                     nd = SearchTree(tv, colSkipNodes, IgnoreSkipList, nd.Nodes, TextToSearch, , , , True)
                     If Not (nd Is Nothing) Then
                         SearchTree = nd
-                        Exit Function
+                        Exit Try
                     End If
                 End If
             Next
 
-            IsEventFromCode = oldIsEventFromCode
+
 
             Return Nothing
 
         Catch ex As Exception
             LogError(ex, "modGeneral SearchTree")
             Return Nothing
+        Finally
+            IsEventFromCode = oldIsEventFromCode
         End Try
 
     End Function

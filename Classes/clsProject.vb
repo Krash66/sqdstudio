@@ -1343,7 +1343,7 @@ Public Class clsProject
             Return True
 
         Catch ex As Exception
-            LogError(ex, ex.Message, "clsProject SaveToRegistry")
+            LogError(ex, "clsProject SaveToRegistry")
             Return False
         End Try
 
@@ -1409,7 +1409,7 @@ Public Class clsProject
             Return True
 
         Catch ex As Exception
-            LogError(ex, ex.Message, "clsProject RetrieveFromRegistry")
+            LogError(ex, "clsProject RetrieveFromRegistry")
             Return False
         End Try
 

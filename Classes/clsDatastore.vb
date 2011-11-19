@@ -623,6 +623,9 @@ Public Class clsDatastore
             If Me.ObjSelections.Count > 0 And Reload = False Then
                 Exit Function
             End If
+            'If Me.IsLoaded = True And Reload = False Then
+            '    Exit Function
+            'End If
             'Dim cnn As New System.Data.Odbc.OdbcConnection(Me.Project.MetaConnectionString)
             Dim cmd As System.Data.Odbc.OdbcCommand
             Dim dr As System.Data.DataRow
@@ -691,6 +694,7 @@ Public Class clsDatastore
 
             '/// Now set DSSelection Parents based on FKey
             LoadItems = SetDSselParents()
+            Me.IsLoaded = True
 
 
         Catch OE As Odbc.OdbcException

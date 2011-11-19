@@ -274,18 +274,19 @@ Public Class clsDSSelection
             Dim sql As String = ""
             Dim i As Integer
 
-            If Incmd IsNot Nothing Then
-                cmd = Incmd
-            Else
-                cmd = New Odbc.OdbcCommand
-                cmd.Connection = cnn
-            End If
             '//check if already loaded ?
             If TreeLode = True Then
                 Exit Function
             End If
             If Reload = False Then
                 If Me.DSSelectionFields.Count > 0 Then Exit Function
+            End If
+
+            If Incmd IsNot Nothing Then
+                cmd = Incmd
+            Else
+                cmd = New Odbc.OdbcCommand
+                cmd.Connection = cnn
             End If
 
             Me.ObjDatastore.LoadMe()
