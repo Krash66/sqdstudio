@@ -2731,12 +2731,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
             If loopRange > 50 Then
                 ValidateNewName = False
                 MsgBox("Name cannot be more than 50 characters," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
+                ValidateNewName = False
                 Exit Function
             End If
 
             If NewName = "" Then
                 ValidateNewName = False
                 MsgBox("Name cannot be left blank," & (Chr(13)) & "Please enter a name", MsgBoxStyle.Information, MsgTitle)
+                ValidateNewName = False
                 Exit Function
             End If
 
@@ -2746,6 +2748,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                     MsgBox("Substitution Variables Must be in the format '%XX'," & Chr(13) & _
                     "where each X is a digit from 0 thru 9." & Chr(13) & _
                     "New name will not be saved", MsgBoxStyle.Information, "Invalid Name")
+                    ValidateNewName = False
                     Exit Function
                 End If
             Else
@@ -2757,12 +2760,14 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
                         If Not ((asciiInt >= 97 And asciiInt <= 122) Or (asciiInt >= 64 And asciiInt <= 90) Or (asciiInt = 38)) Then
                             ValidateNewName = False
                             MsgBox("Name must start with an alphabetic character, &, or @." & Chr(13) & "New name will not be saved", MsgBoxStyle.Information, "Invalid Name")
+                            ValidateNewName = False
                             Exit Function
                         End If
                     Else
                         If Not ((asciiInt >= 97 And asciiInt <= 122) Or (asciiInt >= 64 And asciiInt <= 90) Or (asciiInt >= 48 And asciiInt <= 57) Or (asciiInt = 38) Or (asciiInt = 35) Or (asciiInt = 45) Or (asciiInt = 95)) Then
                             ValidateNewName = False
                             MsgBox("Name must only consist of alpha-numeric characters, &, @, -, _, or #." & Chr(13) & "New Name will not be saved", MsgBoxStyle.Information, "Invalid Name")
+                            ValidateNewName = False
                             Exit Function
                         End If
                     End If
@@ -2774,7 +2779,7 @@ editGoTo:   EditDescriptions = EditDescriptionsATTR(cmd, OldValue, NewValue, obj
 
         Catch ex As Exception
             LogError(ex, "modRename ValidateNewName")
-            Return False
+            ValidateNewName = False
         End Try
 
     End Function

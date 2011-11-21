@@ -8,6 +8,7 @@ Public Class frmChangeProj
     Private ProjVer As String = ""
     Private ProjCdate As String = ""
     Private SecATTR As String = ""
+    Private ProjUdate As String = ""
     Private MetaVer As enumMetaVersion
 
     Public Event ShowErrorLog(ByVal sender As System.Object, ByVal e As Object)
@@ -17,19 +18,20 @@ Public Class frmChangeProj
         Dim rowNum As Integer = 0
 
         rowNum = DataGridView2.CurrentCell.RowIndex
-        If DataGridView2.ColumnCount = 4 Then
-            ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-            Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-            ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
-            ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
-            MetaVer = enumMetaVersion.V2
-        Else
-            ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-            Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-            SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
-            MetaVer = enumMetaVersion.V3
-        End If
-       
+        'If DataGridView2.ColumnCount = 4 Then
+        '    ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+        '    Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+        '    ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
+        '    MetaVer = enumMetaVersion.V2
+        'Else
+        ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+        Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+        SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
+        ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
+        ProjUdate = DataGridView2.Item(4, rowNum).Value.ToString
+        MetaVer = enumMetaVersion.V3
+        'End If
+
         txtProj.Text = ProjName
 
     End Sub
@@ -39,18 +41,20 @@ Public Class frmChangeProj
         Dim rowNum As Integer = 0
 
         rowNum = DataGridView2.CurrentCell.RowIndex
-        If DataGridView2.ColumnCount = 4 Then
-            ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-            Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-            ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
-            ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
-            MetaVer = enumMetaVersion.V2
-        Else
-            ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-            Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-            SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
-            MetaVer = enumMetaVersion.V3
-        End If
+        'If DataGridView2.ColumnCount = 4 Then
+        '    ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+        '    Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+        '    ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
+        '    ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
+        '    MetaVer = enumMetaVersion.V2
+        'Else
+        ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+        Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+        SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
+        ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
+        ProjUdate = DataGridView2.Item(4, rowNum).Value.ToString
+        MetaVer = enumMetaVersion.V3
+        'End If
         txtProj.Text = ProjName
 
         cmdOk_Click_1(sender, New EventArgs)
@@ -129,6 +133,7 @@ doAgain:
                     Projdesc = DataGridView2.Item(1, 0).Value.ToString
                     SecATTR = DataGridView2.Item(2, 0).Value.ToString
                     ProjCdate = DataGridView2.Item(3, 0).Value.ToString
+                    ProjUdate = DataGridView2.Item(4, 0).Value.ToString
                 End If
 
                 txtProj.Text = ProjName
@@ -189,6 +194,7 @@ doAgain:
             ObjThis.ProjectDesc = Projdesc
             ObjThis.ProjectVer = ProjVer
             ObjThis.ProjectCDate = ProjCdate
+            ObjThis.ProjectUDate = ProjUdate
             ObjThis.MetaVersion = MetaVer
 
             Me.Close()
@@ -227,19 +233,21 @@ doAgain:
 
         Try
             rowNum = DataGridView2.CurrentCell.RowIndex
-            If DataGridView2.ColumnCount = 4 Then
-                ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-                Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-                ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
-                ProjCdate = DataGridView2.Item(3, 0).Value.ToString
-                MetaVer = enumMetaVersion.V2
-            Else
-                ProjName = DataGridView2.Item(0, rowNum).Value.ToString
-                Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
-                SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
-                MetaVer = enumMetaVersion.V3
-            End If
-            
+            'If DataGridView2.ColumnCount = 4 Then
+            '    ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+            '    Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+            '    ProjVer = DataGridView2.Item(2, rowNum).Value.ToString
+            '    ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
+            '    MetaVer = enumMetaVersion.V2
+            'Else
+            ProjName = DataGridView2.Item(0, rowNum).Value.ToString
+            Projdesc = DataGridView2.Item(1, rowNum).Value.ToString
+            SecATTR = DataGridView2.Item(2, rowNum).Value.ToString
+            ProjCdate = DataGridView2.Item(3, rowNum).Value.ToString
+            ProjUdate = DataGridView2.Item(4, rowNum).Value.ToString
+            MetaVer = enumMetaVersion.V3
+            'End If
+
             txtProj.Text = ProjName
 
         Catch ex As Exception

@@ -8,6 +8,11 @@ Public Class frmMain
     Dim IsRename As Boolean
     Friend WithEvents mnuXMLtoDTD As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMainXMLtoDTD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuCopyProj As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuPasteProj As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuCloseProj As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem27 As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem24 As System.Windows.Forms.MenuItem
 
 
     '//This collection holds Inode objects copied into clipboard
@@ -529,6 +534,8 @@ Public Class frmMain
         Me.mnuScriptProc = New System.Windows.Forms.MenuItem
         Me.mnuPopupProject = New System.Windows.Forms.MenuItem
         Me.mnuDelProject = New System.Windows.Forms.MenuItem
+        Me.mnuCopyProj = New System.Windows.Forms.MenuItem
+        Me.mnuPasteProj = New System.Windows.Forms.MenuItem
         Me.mnuPopupStructSelection = New System.Windows.Forms.MenuItem
         Me.mnuAddStructSelection = New System.Windows.Forms.MenuItem
         Me.mnuDelStructSelection = New System.Windows.Forms.MenuItem
@@ -564,6 +571,9 @@ Public Class frmMain
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.MenuItem24 = New System.Windows.Forms.MenuItem
+        Me.mnuCloseProj = New System.Windows.Forms.MenuItem
+        Me.MenuItem27 = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1797,13 +1807,23 @@ Public Class frmMain
         'mnuPopupProject
         '
         Me.mnuPopupProject.Index = 8
-        Me.mnuPopupProject.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuDelProject})
+        Me.mnuPopupProject.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuCloseProj, Me.MenuItem27, Me.mnuCopyProj, Me.mnuPasteProj, Me.MenuItem24, Me.mnuDelProject})
         Me.mnuPopupProject.Text = "mnuPopupProject"
         '
         'mnuDelProject
         '
-        Me.mnuDelProject.Index = 0
+        Me.mnuDelProject.Index = 5
         Me.mnuDelProject.Text = "Delete Entire Project"
+        '
+        'mnuCopyProj
+        '
+        Me.mnuCopyProj.Index = 2
+        Me.mnuCopyProj.Text = "Copy Project"
+        '
+        'mnuPasteProj
+        '
+        Me.mnuPasteProj.Index = 3
+        Me.mnuPasteProj.Text = "Paste Project"
         '
         'mnuPopupStructSelection
         '
@@ -2066,6 +2086,21 @@ Public Class frmMain
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
         Me.ProgressBar1.TabIndex = 10
+        '
+        'MenuItem24
+        '
+        Me.MenuItem24.Index = 4
+        Me.MenuItem24.Text = "-"
+        '
+        'mnuCloseProj
+        '
+        Me.mnuCloseProj.Index = 0
+        Me.mnuCloseProj.Text = "Close Project"
+        '
+        'MenuItem27
+        '
+        Me.MenuItem27.Index = 1
+        Me.MenuItem27.Text = "-"
         '
         'frmMain
         '
@@ -2795,7 +2830,7 @@ Public Class frmMain
                     If obj IsNot Nothing Then
                         '// set the current loaded project as the object containing 
                         '//the array of treenode objects
-                        obj.LoadMe()
+                        'obj.LoadMe()
                         CurLoadedProject = obj
                         '// fill the object array with it's child treenodes
                         FillProject(obj)
@@ -3696,7 +3731,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            'obj.LoadMe()
+            obj.LoadMe()
 
             '// Optional Passed Vars added By Tom Karasch for change(i.e. delete, etc...) and rename
             '/// to reload project according to what occured in the object tree.
@@ -5356,7 +5391,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             bFolderClick = CType(cNode.Tag, INode).IsFolderNode
 
-            EnableCopy(Not bFolderClick)
+            EnableCopy(True)
 
             If CType(cNode.Tag, INode).Text = "Descriptions" Then
                 bStructFolder = True
@@ -5390,6 +5425,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             Select Case obj.Type
                 Case NODE_PROJECT
+                    mnuCopyProj.Enabled = True
+                    mnuPasteProj.Enabled = bAllowPaste
+
                     mnuPop = mnuPopupProject.CloneMenu
                 Case NODE_FO_ENVIRONMENT, NODE_ENVIRONMENT
                     '//If clicked on folder then disable del and edit options
@@ -5693,7 +5731,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
 
                     mnuCopyDS.Enabled = True 'Not bFolderClick
-                    mnuPasteDS.Enabled = True
+                    mnuPasteDS.Enabled = bAllowPaste
                     mnuQuery.Enabled = False
                     mnuAddDS.Enabled = True
                     mnuScriptDS.Enabled = Not bFolderClick
@@ -5754,8 +5792,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                     mnuDelDS.Enabled = True
                     'mnuEditDS.Enabled = True
-                    mnuCopyDS.Enabled = False
-                    mnuPasteDS.Enabled = False
+                    mnuCopyDS.Enabled = True
+                    mnuPasteDS.Enabled = bAllowPaste
                     MenuItem9.Enabled = False
                     '*********************************************************
                     '******* debug false --- to use set to true *********************
@@ -6793,13 +6831,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Sub
 
-    Private Sub mnuCloseProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCloseProject.Click
+    Private Sub mnuCloseProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCloseProject.Click, mnuCloseProj.Click
 
         If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
             If DoSave() = MsgBoxResult.Cancel Then Exit Sub
             tvExplorer.Nodes(0).Remove()
 
             ctFolder.Clear()
+            HideAllUC()
         ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
             If tvExplorer.SelectedNode Is Nothing Then
                 MsgBox("Please select project from treeview", MsgBoxStyle.OkOnly, MsgTitle)
@@ -6810,14 +6849,14 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End If
         End If
 
-        If Not CurLoadedProject Is Nothing Then
+        If CurLoadedProject IsNot Nothing Then
             CurLoadedProject.Save()
             CurLoadedProject.SaveToRegistry()
             CurLoadedProject = Nothing
         End If
         cnn.Close()
 
-        HideAllUC()
+        'HideAllUC()
 
     End Sub
 
@@ -6885,7 +6924,11 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 EnablePaste(True)
             Else
                 ClearClipboard()
-                m_ClipObjects.Add(cNode.Tag)
+                If CType(cNode.Tag, INode).Type = NODE_SOURCEDSSEL Or CType(cNode.Tag, INode).Type = NODE_TARGETDSSEL Then
+                    m_ClipObjects.Add(cNode.Parent.Tag)
+                Else
+                    m_ClipObjects.Add(cNode.Tag)
+                End If
                 EnablePaste(True)
             End If
 
@@ -6953,13 +6996,13 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
-    Private Sub CopyClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyConn.Click, mnuCopyDS.Click, mnuCopyEngine.Click, mnuCopyEnv.Click, mnuCopyStruct.Click, mnuCopyStructSel.Click, mnuCopySystem.Click, mnuCopyTask.Click, mnuCopyVar.Click
+    Private Sub CopyClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyConn.Click, mnuCopyDS.Click, mnuCopyEngine.Click, mnuCopyEnv.Click, mnuCopyStruct.Click, mnuCopyStructSel.Click, mnuCopySystem.Click, mnuCopyTask.Click, mnuCopyVar.Click, mnuCopyProj.Click
 
         SetClipobjects(tvExplorer.SelectedNode)
 
     End Sub
 
-    Private Sub PasteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPasteConn.Click, mnuPasteDS.Click, mnuPasteEngine.Click, mnuPasteEnv.Click, mnuPasteStruct.Click, mnuPasteStructSel.Click, mnuPasteSystem.Click, mnuPasteTask.Click, mnuPasteVar.Click
+    Private Sub PasteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPasteConn.Click, mnuPasteDS.Click, mnuPasteEngine.Click, mnuPasteEnv.Click, mnuPasteStruct.Click, mnuPasteStructSel.Click, mnuPasteSystem.Click, mnuPasteTask.Click, mnuPasteVar.Click, mnuPasteProj.Click
 
 
         Dim cNode As TreeNode
@@ -6994,6 +7037,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         cNode = cNode.Parent
                         newObjParent = cNode.Tag '//structure will become the parent for new cloned obj 
                     End If
+                Case NODE_PROJECT
+                    newObjParent = cNode.Tag
+
                 Case Else
                     '//Make parent node to one step up if node is not folder
                     If CType(cNode.Tag, INode).IsFolderNode = False Then
@@ -7029,21 +7075,22 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '    conn.Close()
                 'End If
 
-                
-                If tvExplorer.SelectedNode.Text = "Sources" Then
-                    CType(destObj, clsDatastore).DsDirection = "S"
-                    'CType(destObj, clsDatastore).LoadAttr()
 
-                ElseIf tvExplorer.SelectedNode.Text = "Targets" Then
-                    CType(destObj, clsDatastore).DsDirection = "T"
-                    'CType(destObj, clsDatastore).LoadAttr()
-                End If
+                'If tvExplorer.SelectedNode.Text.Contains("Sources") = True Then
+                '    If CType(destObj, clsDatastore).DsDirection = DS_DIRECTION_TARGET Then
+
+                '    End If
+                'ElseIf tvExplorer.SelectedNode.Text.Contains("Targets") = True Then
+                '    If CType(destObj, clsDatastore).DsDirection = DS_DIRECTION_SOURCE Then
+
+                '    End If
+                'End If
                 '/*************************************************
                 '/*** Copies Structure file to new location
                 '/*************************************************
                 'If obj.Type = NODE_STRUCT Then
                 '    If copyBackGroundFiles(obj, CType(destObj, clsStructure)) = False Then
-                '        GoTo [continue]
+                '        'GoTo [continue]
                 '    End If
                 'End If
 
@@ -7051,6 +7098,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     MsgBox("One or more dependant objects are missing" & vbCrLf & _
                     "Note: Please make sure that you copy all Descriptions before you copy any object dependent on that Description.", MsgBoxStyle.Critical, MsgTitle)
                     Me.Cursor = Cursors.Default
+                    lblStatusMsg.Text = ""
                     Exit Sub
                 End If
 
@@ -7059,12 +7107,19 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 '// if cancel button clicked then destobj.text = "" and will fall through to next in loop
                 If destObj.Text <> "" Then
 
-                    If ValidateNewName(destObj.Text) = True Then
+TryNewName:         If ValidateNewName(destObj.Text) = False Then
+                        destObj.Text = InputBox("Please Enter Object Name", "", obj.Text)
+                        GoTo TryNewName
+                    Else
                         If destObj.ValidateNewObject() = False Then
                             destObj.Text = InputBox("Please Enter Object Name", "", obj.Text)
+                            GoTo TryNewName
                         End If
                     End If
 
+                    If destObj.Type = NODE_PROJECT Then
+                        GoTo ProjSkip
+                    End If
 
                     lblStatusMsg.Text = "Adding Cloned Object to Metadata"
                     Me.Refresh()
@@ -7074,81 +7129,84 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     'tran = conn.BeginTransaction()
                     'cmd.Transaction = tran
 
-                    If destObj.AddNew(True) = True Then '//8/15/05
-                        'tran.Commit()
-                        'conn.Close()
-
-                        'If destObj Is Nothing Then
-
-                        'Else
-                        '    tran.Rollback()
-                        '    conn.Close()
-                        '    Exit Try
-                        'End If
-
+                    If destObj.AddNew(True) = True Then
                         lblStatusMsg.Text = "Object added to Metadata, Filling Object tree"
                         Me.Refresh()
                         Me.Cursor = Cursors.WaitCursor
+                    End If
+                    '//8/15/05
+                    'tran.Commit()
+                    'conn.Close()
 
-                        Dim Success As Boolean = False
-                        Me.Cursor = Cursors.WaitCursor
-                        Select Case GetClipboardObjectType()
-                            Case NODE_PROJECT
-                                Success = FillProjectFromClipboard(destObj)
+                    'If destObj Is Nothing Then
 
-                            Case NODE_ENVIRONMENT
-                                Success = FillEnvFromClipboard(cNode, destObj)
+                    'Else
+                    '    tran.Rollback()
+                    '    conn.Close()
+                    '    Exit Try
+                    'End If
 
-                            Case NODE_SYSTEM
-                                Success = FillSysFromClipboard(cNode, destObj)
 
-                            Case NODE_ENGINE
-                                Success = FillEngineFromClipboard(cNode, destObj)
+ProjSkip:
+                    Dim Success As Boolean = False
+                    Me.Cursor = Cursors.WaitCursor
+                    Select Case GetClipboardObjectType()
+                        Case NODE_PROJECT
+                            Success = FillProjectFromClipboard(destObj)
 
-                            Case NODE_CONNECTION
-                                Success = FillConnFromClipboard(cNode, destObj)
+                        Case NODE_ENVIRONMENT
+                            Success = FillEnvFromClipboard(cNode, destObj)
 
-                            Case NODE_STRUCT
-                                Success = FillStructFromClipboard(cNode, destObj)
+                        Case NODE_SYSTEM
+                            Success = FillSysFromClipboard(cNode, destObj)
 
-                            Case NODE_STRUCT_SEL
-                                Success = FillStructSelFromClipboard(cNode, destObj)
+                        Case NODE_ENGINE
+                            Success = FillEngineFromClipboard(cNode, destObj)
 
-                            Case NODE_SOURCEDATASTORE
-                                Success = FillDataStoreFromClipboard(cNode, destObj)
+                        Case NODE_CONNECTION
+                            Success = FillConnFromClipboard(cNode, destObj)
 
-                            Case NODE_TARGETDATASTORE
-                                Success = FillDataStoreFromClipboard(cNode, destObj)
+                        Case NODE_STRUCT
+                            Success = FillStructFromClipboard(cNode, destObj)
 
-                            Case NODE_PROC
-                                Success = FillTasksFromClipboard(cNode, destObj)
+                        Case NODE_STRUCT_SEL
+                            Success = FillStructSelFromClipboard(cNode, destObj)
 
-                            Case NODE_GEN
-                                Success = FillTasksFromClipboard(cNode, destObj)
+                        Case NODE_SOURCEDATASTORE
+                            Success = FillDataStoreFromClipboard(cNode, destObj)
 
-                            Case NODE_LOOKUP
-                                Success = FillTasksFromClipboard(cNode, destObj)
+                        Case NODE_TARGETDATASTORE
+                            Success = FillDataStoreFromClipboard(cNode, destObj)
 
-                            Case NODE_MAIN
-                                Success = FillTasksFromClipboard(cNode, destObj)
+                        Case NODE_PROC
+                            Success = FillTasksFromClipboard(cNode, destObj)
 
-                            Case NODE_VARIABLE
-                                Success = FillVarFromClipboard(cNode, destObj)
+                        Case NODE_GEN
+                            Success = FillTasksFromClipboard(cNode, destObj)
 
-                            Case Else
-                                Me.Cursor = Cursors.Default
-                                Exit Sub
-                        End Select
+                        Case NODE_LOOKUP
+                            Success = FillTasksFromClipboard(cNode, destObj)
 
-                        If Success = False Then
-                            lblStatusMsg.Text = "Filling Object Tree Failed, ReOpen Project to reflect changes"
-                            Exit Try
-                        End If
-                    Else
-                        tran.Rollback()
-                        conn.Close()
+                        Case NODE_MAIN
+                            Success = FillTasksFromClipboard(cNode, destObj)
+
+                        Case NODE_VARIABLE
+                            Success = FillVarFromClipboard(cNode, destObj)
+
+                        Case Else
+                            Me.Cursor = Cursors.Default
+                            Exit Sub
+                    End Select
+
+                    If Success = False Then
+                        lblStatusMsg.Text = "Filling Object Tree Failed, ReOpen Project to reflect changes"
                         Exit Try
                     End If
+                    'Else
+                    '    tran.Rollback()
+                    '    conn.Close()
+                    '    Exit Try
+                    'End If
                 End If
 [continue]: Next
             lblStatusMsg.Text = "Complete!"
@@ -7166,86 +7224,86 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Sub
 
-    'Function copyBackGroundFiles(ByVal ClipObj As INode, ByVal obj As clsStructure) As Boolean
+    Function copyBackGroundFiles(ByVal ClipObj As INode, ByVal obj As clsStructure) As Boolean
 
-    '    Dim returnVal As Boolean = True
-    '    Dim oldParent As clsEnvironment
-    '    Dim newParent As clsEnvironment
-    '    Dim FileToCopy As String = ""
-    '    Dim NewCopy As String = ""
-    '    Dim DBDFileToCopy As String = ""
-    '    Dim DBDNewCopy As String = ""
+        Dim returnVal As Boolean = True
+        Dim oldParent As clsEnvironment
+        Dim newParent As clsEnvironment
+        Dim FileToCopy As String = ""
+        Dim NewCopy As String = ""
+        Dim DBDFileToCopy As String = ""
+        Dim DBDNewCopy As String = ""
 
-    '    oldParent = ClipObj.Parent()
-    '    newParent = obj.Parent()
+        oldParent = ClipObj.Parent()
+        newParent = obj.Parent()
 
-    '    Select Case CType(ClipObj, clsStructure).StructureType
-    '        Case modDeclares.enumStructure.STRUCT_C
-    '            FileToCopy = oldParent.LocalCDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalCDir & GetFileName(obj.fPath1)
-    '        Case modDeclares.enumStructure.STRUCT_COBOL
-    '            FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
-    '        Case modDeclares.enumStructure.STRUCT_REL_DDL
-    '            FileToCopy = oldParent.LocalDDLDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalDDLDir & GetFileName(obj.fPath1)
-    '        Case modDeclares.enumStructure.STRUCT_XMLDTD
-    '            FileToCopy = oldParent.LocalDTDDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalDTDDir & GetFileName(obj.fPath1)
-    '        Case modDeclares.enumStructure.STRUCT_COBOL_IMS
-    '            FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
-    '            DBDFileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath2)
-    '            DBDNewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath2)
-    '        Case modDeclares.enumStructure.STRUCT_REL_DML, enumStructure.STRUCT_REL_DML_FILE
-    '            FileToCopy = oldParent.LocalDMLDir & GetFileName(obj.fPath1)
-    '            NewCopy = newParent.LocalDMLDir & GetFileName(obj.fPath1)
-    '    End Select
-    '    Try
+        Select Case CType(ClipObj, clsStructure).StructureType
+            Case modDeclares.enumStructure.STRUCT_C
+                FileToCopy = oldParent.LocalCDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalCDir & GetFileName(obj.fPath1)
+            Case modDeclares.enumStructure.STRUCT_COBOL
+                FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
+            Case modDeclares.enumStructure.STRUCT_REL_DDL
+                FileToCopy = oldParent.LocalDDLDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalDDLDir & GetFileName(obj.fPath1)
+            Case modDeclares.enumStructure.STRUCT_XMLDTD
+                FileToCopy = oldParent.LocalDTDDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalDTDDir & GetFileName(obj.fPath1)
+            Case modDeclares.enumStructure.STRUCT_COBOL_IMS
+                FileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath1)
+                DBDFileToCopy = oldParent.LocalCobolDir & GetFileName(obj.fPath2)
+                DBDNewCopy = newParent.LocalCobolDir & GetFileName(obj.fPath2)
+            Case modDeclares.enumStructure.STRUCT_REL_DML, enumStructure.STRUCT_REL_DML_FILE
+                FileToCopy = oldParent.LocalDMLDir & GetFileName(obj.fPath1)
+                NewCopy = newParent.LocalDMLDir & GetFileName(obj.fPath1)
+        End Select
+        Try
 
-    '        If FileToCopy <> Nothing & NewCopy <> Nothing Then
-    '            If System.IO.File.Exists(NewCopy) = True Then
-    '                If MsgBox(NewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
-    '                    System.IO.File.Delete(NewCopy)
-    '                    System.IO.File.Copy(FileToCopy, NewCopy)
-    '                Else
-    '                    returnVal = False
-    '                    Return returnVal
-    '                End If
-    '            Else
-    '                System.IO.File.Copy(FileToCopy, NewCopy)
-    '            End If
-    '        Else
-    '            MsgBox("Source OR Destination path is EMPTY!!", MsgBoxStyle.Critical, MsgTitle)
-    '            returnVal = False
-    '        End If
-    '        If DBDFileToCopy <> Nothing & DBDNewCopy <> Nothing Then
-    '            If System.IO.File.Exists(DBDNewCopy) = True Then
-    '                If MsgBox(DBDNewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
-    '                    System.IO.File.Delete(DBDNewCopy)
-    '                    System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
-    '                Else
-    '                    returnVal = False
-    '                    Return returnVal
-    '                End If
-    '            Else
-    '                System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
-    '            End If
-    '        End If
+            If FileToCopy <> Nothing & NewCopy <> Nothing Then
+                If System.IO.File.Exists(NewCopy) = True Then
+                    If MsgBox(NewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
+                        System.IO.File.Delete(NewCopy)
+                        System.IO.File.Copy(FileToCopy, NewCopy)
+                    Else
+                        returnVal = False
+                        Return returnVal
+                    End If
+                Else
+                    System.IO.File.Copy(FileToCopy, NewCopy)
+                End If
+            Else
+                MsgBox("Source OR Destination path is EMPTY!!", MsgBoxStyle.Critical, MsgTitle)
+                returnVal = False
+            End If
+            If DBDFileToCopy <> Nothing & DBDNewCopy <> Nothing Then
+                If System.IO.File.Exists(DBDNewCopy) = True Then
+                    If MsgBox(DBDNewCopy & "   already exists." & vbNewLine & vbNewLine & " Do you want to overwrite?" & vbNewLine & vbNewLine & "Respond YES to overwrite the file or NO to cancel copying this Structure", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, MsgTitle) = MsgBoxResult.Yes Then
+                        System.IO.File.Delete(DBDNewCopy)
+                        System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
+                    Else
+                        returnVal = False
+                        Return returnVal
+                    End If
+                Else
+                    System.IO.File.Copy(DBDFileToCopy, DBDNewCopy)
+                End If
+            End If
 
-    '    Catch ex As Exception
-    '        LogError(ex)
-    '        returnVal = False
-    '    End Try
-    '    Return returnVal
+        Catch ex As Exception
+            LogError(ex)
+            returnVal = False
+        End Try
+        Return returnVal
 
-    'End Function
+    End Function
 
-    'Function GetFileName(ByVal filePath As String) As String
-    '    Dim retFilePath As String
-    '    retFilePath = filePath.Substring(filePath.LastIndexOf("\"))
-    '    Return (retFilePath)
-    'End Function
+    Function GetFileName(ByVal filePath As String) As String
+        Dim retFilePath As String
+        retFilePath = filePath.Substring(filePath.LastIndexOf("\"))
+        Return (retFilePath)
+    End Function
 
     '/obj is object being pasted. and cNode is target node underwhich object is being pasted
     'newObjParent is new parent of object being pasted. 
@@ -7341,38 +7399,38 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim env As clsEnvironment
 
         Try
-            env = obj.ObjStructure.Environment
-
+            'env = CType(newObjParent, clsEngine).ObjSystem.Environment
+            env = GetEnvironment(newObjParent)
             '/// Modified by Tom Karasch 4/07
             '//Try to find Selection under target Environment, If found then 
             '//make sure that it has same defination and same number of fields.
             For Each str In env.Structures
                 '//System Selection represents the structure so handle it differently
-                If obj.ObjSelection.IsSystemSelection = "1" Then
+
+                '//Match names
+                If String.Compare(str.Text, obj.Text, True) = 0 Then
+                    str.LoadItems()
+                    'obj.LoadMe()
+                    '//Match field counts
+                    If str.ObjFields.Count = obj.DSSelectionFields.Count Then
+                        Return False
+                        Exit Try
+                    End If
+                End If
+
+                For Each sel In str.StructureSelections
                     '//Match names
-                    If str.Text = obj.Text Then
-                        str.LoadItems()
-                        obj.LoadMe()
+                    If String.Compare(sel.Text, obj.Text, True) = 0 Then
+                        sel.LoadMe()
+                        'obj.LoadMe()
                         '//Match field counts
-                        If str.ObjFields.Count = obj.DSSelectionFields.Count Then
+                        If sel.ObjSelectionFields.Count = obj.DSSelectionFields.Count Then
                             Return False
                             Exit Try
                         End If
                     End If
-                Else
-                    For Each sel In str.StructureSelections
-                        '//Match names
-                        If sel.Text = obj.Text Then
-                            sel.LoadMe()
-                            obj.LoadMe()
-                            '//Match field counts
-                            If sel.ObjSelectionFields.Count = obj.DSSelectionFields.Count Then
-                                Return False
-                                Exit Try
-                            End If
-                        End If
-                    Next
-                End If
+                Next
+
             Next
             Return True
 
@@ -7731,7 +7789,15 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             objClip = obj
             Dim cNode As TreeNode
 
+            lblStatusMsg.Text = "Adding Cloned Project to Metadata"
+            Me.Refresh()
+            Me.Cursor = Cursors.WaitCursor
+
             If objClip.AddNew(True) = True Then
+
+                lblStatusMsg.Text = "Project added to Metadata, Filling Object tree"
+                Me.Refresh()
+                Me.Cursor = Cursors.WaitCursor
                 '//Add project node
                 cNode = AddTreeNode(tvExplorer, NODE_PROJECT, objClip)
                 obj.SeqNo = cNode.Index '//store position
@@ -8540,6 +8606,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     End If
 
             End Select
+            ShowUsercontrol(tvExplorer.SelectedNode)
 
             DoDeleteAction = True
 
@@ -8571,8 +8638,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             If tvExplorer.SelectedNode IsNot Nothing Then
                 If tvExplorer.SelectedNode.PrevNode IsNot Nothing Then
                     tempnode = tvExplorer.SelectedNode.PrevNode
+                ElseIf tvExplorer.SelectedNode.NextNode IsNot Nothing Then
+                    tempnode = tvExplorer.SelectedNode.NextNode
+                ElseIf tvExplorer.SelectedNode.Parent IsNot Nothing Then
+                    tempnode = tvExplorer.SelectedNode.Parent
                 Else
-                    tempnode = CurLoadedProject.ObjTreeNode
+                    tempnode = tvExplorer.SelectedNode
                 End If
             Else
                 tempnode = CurLoadedProject.ObjTreeNode
@@ -8595,6 +8666,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 HideAllUC()
 
                 tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, tempnode.Text) 'tempnode '
+                If tvExplorer.SelectedNode Is Nothing Then
+                    tvExplorer.SelectedNode = tvExplorer.TopNode
+                End If
             Else
                 tran.Rollback()
             End If
@@ -9491,6 +9565,14 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
         frm = New frmXMLconv
         frm.OpenForm()
+
+    End Sub
+
+    Private Sub mnuCopyProj_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyProj.Click
+
+    End Sub
+
+    Private Sub mnuPasteProj_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPasteProj.Click
 
     End Sub
 

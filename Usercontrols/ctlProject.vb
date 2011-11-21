@@ -324,13 +324,13 @@ Public Class ctlProject
         cmdSave.Enabled = False
         txtProjectName.Enabled = True '//added on 7/24 to disable object name editing
 
-        If objThis.ProjectMetaVersion = enumMetaVersion.V2 Then
-            'txtMetaVer.Text = "Version 2 MetaData"
-            gbV3.Visible = False
-        Else
-            'txtMetaVer.Text = "Version 3 MetaData"
-            gbV3.Visible = True
-        End If
+        'If objThis.ProjectMetaVersion = enumMetaVersion.V2 Then
+        '    'txtMetaVer.Text = "Version 2 MetaData"
+        '    gbV3.Visible = False
+        'Else
+        'txtMetaVer.Text = "Version 3 MetaData"
+        gbV3.Visible = True
+        'End If
         ClearControls(Me.Controls)
 
     End Sub
@@ -432,17 +432,20 @@ Public Class ctlProject
         txtProjectName.Text = objThis.ProjectName
         txtCreateDate.Text = objThis.ProjectCreationDate
         txtMetaDSN.Text = objThis.ProjectMetaDSN
+        If objThis.ProjectVersion = "" Then
+            objThis.ProductVersion = Application.ProductVersion
+        End If
         txtVersion.Text = objThis.ProjectVersion
-        If objThis.ChangeVersion = True Then
-            objThis.Save()
-        End If
-        If objThis.ProjectMetaVersion = enumMetaVersion.V3 Then
-            txtCust.Text = objThis.ProjectCustomerName
-            txtLastUpd.Text = objThis.ProjectLastUpdated
-            txtMetaVer.Text = "Version 3 MetaData"
-        Else
-            txtMetaVer.Text = "Version 2 MetaData"
-        End If
+        'If objThis.ChangeVersion = True Then
+        '    objThis.Save()
+        'End If
+        'If objThis.ProjectMetaVersion = enumMetaVersion.V3 Then
+        txtCust.Text = objThis.ProjectCustomerName
+        txtLastUpd.Text = objThis.ProjectLastUpdated
+        txtMetaVer.Text = "Version 3 MetaData"
+        'Else
+        '    txtMetaVer.Text = "Version 2 MetaData"
+        'End If
 
     End Function
 
@@ -469,11 +472,11 @@ Public Class ctlProject
             objThis.ProjectVersion = txtVersion.Text
             objThis.ProjectMetaDSN = txtMetaDSN.Text
 
-            If objThis.ProjectMetaVersion = enumMetaVersion.V3 Then
-                objThis.ProjectCustomerName = txtCust.Text
-                '***this is handled when Project attr are saved
-                'objThis.ProjectLastUpdated = Now.ToString
-            End If
+            'If objThis.ProjectMetaVersion = enumMetaVersion.V3 Then
+            objThis.ProjectCustomerName = txtCust.Text
+            '***this is handled when Project attr are saved
+            'objThis.ProjectLastUpdated = Now.ToString
+            'End If
 
 
             If IsNewObj = True Then

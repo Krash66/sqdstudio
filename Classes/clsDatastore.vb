@@ -190,7 +190,8 @@ Public Class clsDatastore
             obj.IsModified = Me.IsModified
             obj.Parent = NewParent 'Me.Parent
 
-            'obj.Engine = NewParent
+            obj.Engine = NewParent
+            obj.Environment = obj.Engine.ObjSystem.Environment
 
             'Me.LoadItems()
 
@@ -202,7 +203,9 @@ Public Class clsDatastore
                 dsselClone = DSSelObj.Clone(obj, True, cmd)
                 dsselClone.ObjDatastore = obj
                 dsselClone.ObjSelection = FindStrSelforDSSel(dsselClone)
-                dsselClone.ObjStructure = dsselClone.ObjSelection.ObjStructure
+                If dsselClone.ObjSelection IsNot Nothing Then
+                    dsselClone.ObjStructure = dsselClone.ObjSelection.ObjStructure
+                End If
                 obj.ObjSelections.Add(dsselClone)
             Next
 

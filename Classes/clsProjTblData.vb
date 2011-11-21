@@ -4,6 +4,7 @@ Public Class clsProjTblData
     Private m_ProjDesc As String
     Private m_ProjVer As String
     Private m_ProjcDate As String
+    Private m_ProjuDate As String
     Private m_ProjMetaVersion As enumMetaVersion
     Private m_MetaConnStr As String
     Private m_ProjTblName As String
@@ -52,6 +53,15 @@ Public Class clsProjTblData
         End Get
         Set(ByVal value As String)
             m_ProjcDate = value
+        End Set
+    End Property
+
+    Property ProjectUDate() As String
+        Get
+            Return m_ProjuDate
+        End Get
+        Set(ByVal value As String)
+            m_ProjuDate = value
         End Set
     End Property
 

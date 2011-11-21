@@ -124,7 +124,10 @@ Public Class clsTask
             obj.TaskType = Me.TaskType
             obj.SeqNo = Me.SeqNo
             obj.IsModified = Me.IsModified
-            obj.Parent = NewParent 'Me.Parent
+            obj.Engine = NewParent
+            obj.LastSrcFld = Me.LastSrcFld
+            obj.LastTgtFld = Me.LastTgtFld
+            'obj.Parent = NewParent 'Me.Parent
 
             '// Make sure All items are loaded first
             Me.LoadDatastores(cmd)
@@ -135,7 +138,7 @@ Public Class clsTask
 
             For Each ds As clsDatastore In Me.ObjSources
                 'If Me.Engine IsNot Nothing Then
-                retDS = SearchDatastore(Me.Engine, ds)
+                retDS = SearchDatastore(obj.Engine, ds)
                 'Else
                 'retDS = SearchDatastore(Me.Environment, ds)
                 'End If
@@ -143,15 +146,15 @@ Public Class clsTask
                 If retDS Is Nothing Then
                     Throw (New Exception("Source datastore " & ds.Text & " is not found in the target environment"))
                 Else
-                    Dim NewDS As clsDatastore
-                    NewDS = ds.Clone(obj, True, cmd)
-                    obj.ObjSources.Add(NewDS)
+                    'Dim NewDS As clsDatastore
+                    'NewDS = ds.Clone(obj, True, cmd)
+                    obj.ObjSources.Add(retDS)
                 End If
             Next
 
             For Each ds As clsDatastore In Me.ObjTargets
                 'If Me.Engine IsNot Nothing Then
-                retDS = SearchDatastore(Me.Engine, ds)
+                retDS = SearchDatastore(obj.Engine, ds)
                 'Else
                 'retDS = SearchDatastore(Me.Environment, ds)
                 'End If
@@ -159,9 +162,9 @@ Public Class clsTask
                 If retDS Is Nothing Then
                     Throw (New Exception("Target datastore " & ds.Text & " is not found in the target environment"))
                 Else
-                    Dim NewDS As clsDatastore
-                    NewDS = ds.Clone(obj, True, cmd)
-                    obj.ObjTargets.Add(NewDS)
+                    'Dim NewDS As clsDatastore
+                    'NewDS = ds.Clone(obj, True, cmd)
+                    obj.ObjTargets.Add(retDS)
                 End If
             Next
 

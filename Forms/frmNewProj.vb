@@ -71,6 +71,7 @@ Public Class frmNewProj
                     objThis.LoginReq = objThis.LoginReq
                     objThis.SchemaReq = objThis.SchemaReq
                     objThis.ProjectVersion = Application.ProductVersion
+                    objThis.ProductVersion = Application.ProductVersion
 
 
                     cnn = New System.Data.Odbc.OdbcConnection(objThis.MetaConnectionString)

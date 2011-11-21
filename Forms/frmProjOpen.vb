@@ -132,6 +132,7 @@ Public Class frmProjOpen
             ProjectDBdata.ProjectDSN = m_objthis.ProjectMetaDSN
             ProjectDBdata.ProjectDesc = m_objthis.ProjectDesc
             ProjectDBdata.ProjectCDate = m_objthis.ProjectCreationDate
+            ProjectDBdata.ProjectUDate = m_objthis.ProjectLastUpdated
             ProjectDBdata.ProjectVer = m_objthis.ProjectVersion
 
             '// open new form to pick a project
@@ -146,10 +147,11 @@ Public Class frmProjOpen
                     m_objthis.ProjectCreationDate = ProjectDBdata.ProjectCDate
                     If ProjectDBdata.ProjectVer = "" Then
                         ProjectDBdata.ProjectVer = Application.ProductVersion
-                        m_objthis.ChangeVersion = True
+                        'm_objthis.ChangeVersion = True
                     End If
                     m_objthis.ProjectVersion = ProjectDBdata.ProjectVer
                     m_objthis.ProjectMetaVersion = ProjectDBdata.MetaVersion
+                    m_objthis.ProductVersion = Application.ProductVersion
                 End If
             End If
 
@@ -215,6 +217,7 @@ Public Class frmProjOpen
                 If m_objthis.ProjectName <> "" Then
                     objThis.ODBCtype = m_objthis.ODBCtype
                     objThis.ProjectCreationDate = m_objthis.ProjectCreationDate
+                    objThis.ProjectLastUpdated = m_objthis.ProjectLastUpdated
                     objThis.ProjectDesc = m_objthis.ProjectDesc
                     objThis.ProjectMetaDSN = m_objthis.ProjectMetaDSN
                     objThis.ProjectMetaDSNPWD = m_objthis.ProjectMetaDSNPWD
@@ -228,6 +231,13 @@ Public Class frmProjOpen
                     objThis.ProjectVersion = m_objthis.ProjectVersion
                     objThis.ChangeVersion = m_objthis.ChangeVersion
                     objThis.ProjectMetaVersion = m_objthis.ProjectMetaVersion
+                    objThis.ProductVersion = m_objthis.ProductVersion
+                    If objThis.ProjectVersion = "" Then
+                        objThis.ProjectVersion = Application.ProductVersion
+                    End If
+
+                    'objThis.LoadMe()
+
 
                     Me.Close()
                     DialogResult = Windows.Forms.DialogResult.OK

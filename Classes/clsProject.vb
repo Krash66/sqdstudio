@@ -173,22 +173,60 @@ Public Class clsProject
                 cmd.Connection = cnn
             End If
 
+            Me.LoadMe(cmd)
+
+            Dim NewP As clsProject = CType(NewParent, clsProject)
+
             obj.ProjectName = Me.ProjectName
             obj.ProjectVersion = Me.ProjectVersion
             obj.ProjectCreationDate = Me.ProjectCreationDate
-            obj.ProjectMetaDSN = Me.ProjectMetaDSN
+            'obj.ProjectMetaDSN = NewP.ProjectMetaDSN 'Me.ProjectMetaDSN
             obj.ProductVersion = Me.ProductVersion
             obj.ProjectDesc = Me.ProjectDesc
             obj.IsModified = Me.IsModified
             obj.SeqNo = Me.SeqNo
 
-            obj.Parent = NewParent 'Me.Parent
+            'Mew for V3
+            obj.Cexpanded = Me.Cexpanded
+            obj.COBOLexpanded = Me.COBOLexpanded
+            obj.COBOLIMSexpanded = Me.COBOLIMSexpanded
+            obj.CONNexpanded = Me.CONNexpanded
+            obj.DDLexpanded = Me.DDLexpanded
+            obj.DMLexpanded = Me.DMLexpanded
+            obj.ENG_FOexpanded = Me.ENG_FOexpanded
+            obj.ENGexpanded = Me.ENGexpanded
+            obj.ENV_FOexpanded = Me.ENV_FOexpanded
+            obj.ENVexpanded = Me.ENVexpanded
+            obj.LoginReq = Me.LoginReq
+            obj.MAINexpanded = Me.MAINexpanded
+            obj.MapListPath = Me.MapListPath
+            obj.ODBCtype = NewP.ODBCtype
+            obj.PROCexpanded = Me.PROCexpanded
+            obj.ProjectCustomerName = Me.ProjectCustomerName
+
+            obj.ProjectLastUpdated = Now.ToString
+            obj.ProjectMetaDSN = NewP.ProjectMetaDSN
+            obj.ProjectMetaDSNPWD = NewP.ProjectMetaDSNPWD
+            obj.ProjectMetaDSNUID = NewP.ProjectMetaDSNUID
+            obj.ProjectMetaVersion = NewP.ProjectMetaVersion
+            obj.SchemaReq = NewP.SchemaReq
+
+            obj.SecurityATTR = Me.SecurityATTR
+            obj.SRCexpanded = Me.SRCexpanded
+            obj.SRCselExpanded = Me.SRCselExpanded
+            obj.STRexpanded = Me.STRexpanded
+            obj.SYS_FOexpanded = Me.SYS_FOexpanded
+            obj.SYSexpanded = Me.SYSexpanded
+            obj.TablePrefix = Me.TablePrefix
+            obj.TGTexpanded = Me.TGTexpanded
+
+            'obj.Parent = obj 'Me.Parent
 
             '//clone all environments under project
             If Cascade = True Then
                 Dim newenv As clsEnvironment
                 For Each env As clsEnvironment In Me.Environments
-                    newenv = env.Clone(obj, True, cmd)
+                    newenv = env.Clone(obj, Cascade, cmd)
                     AddToCollection(obj.Environments, newenv, newenv.GUID)
                 Next
             End If
@@ -297,50 +335,64 @@ Public Class clsProject
 
     Public Overloads Function AddNew(Optional ByVal Cascade As Boolean = False) As Boolean Implements INode.AddNew
 
-        'Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
+        Dim cnn As System.Data.Odbc.OdbcConnection = Nothing
         Dim cmd As New Odbc.OdbcCommand
         Dim sql As String = ""
+        Dim tran As Odbc.OdbcTransaction = Nothing
 
         Try
             Me.Text = Me.Text.Trim
-            'cnn = New Odbc.OdbcConnection(Project.MetaConnectionString)
-            'cnn.Open()
+            cnn = New Odbc.OdbcConnection(Me.MetaConnectionString)
+            cnn.Open()
             cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
 
-            If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,Description,Version,cDate) " & _
-                " Values('" & FixStr(ProjectName) & "','" & FixStr(ProjectDesc) & "','" _
-                & FixStr(ProjectVersion) & "','" & FixStr(Now().ToString) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR,CREATED_TIMESTAMP) " & _
-                "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & _
-                "','" & FixStr(Me.ProjectCreationDate) & "')"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            'If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,Description,Version,cDate) " & _
+            '    " Values('" & FixStr(ProjectName) & "','" & FixStr(ProjectDesc) & "','" _
+            '    & FixStr(ProjectVersion) & "','" & FixStr(Now().ToString) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR,CREATED_TIMESTAMP) " & _
+            "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & _
+            "','" & FixStr(Me.ProjectCreationDate) & "')"
 
+            
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                tran.Rollback()
+                AddNew = False
+                Exit Try
+            End If
             '//Add all child object to database if Cascade flag is true. 
             '//Generally when performing Clipboard copy/paste thi flag is set so 
             '//entire copied object tree can be added to database by just calling 
             '//AddNew method of parent node
             If Cascade = True Then
                 For Each child As clsEnvironment In Environments
-                    child.AddNew(True)
+                    If child.AddNew(cmd, Cascade) = False Then
+                        tran.Rollback()
+                        AddNew = False
+                        Exit Try
+                    End If
                 Next
             End If
+
+            tran.Commit()
 
             AddNew = True
             Me.IsModified = False
 
         Catch ex As Exception
             LogError(ex, "clsProject AddNew", sql)
+            tran.Rollback()
             Return False
         Finally
             'cnn.Close()
@@ -356,23 +408,27 @@ Public Class clsProject
         Try
             Me.Text = Me.Text.Trim
             '//When we add new record we need to find Unique Database Record ID.
-            If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
-                '//When we add new record we need to find Unique Database Record ID.
-                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,Description,Version,cDate) " & _
-                " Values('" & FixStr(ProjectName) & "','" & FixStr(ProjectDesc) & "','" _
-                & FixStr(ProjectVersion) & "','" & FixStr(Now()) & "')"
-            Else
-                sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR) " & _
-                "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & "')"
+            'If Me.ProjectMetaVersion = enumMetaVersion.V2 Then
+            '    '//When we add new record we need to find Unique Database Record ID.
+            '    sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,Description,Version,cDate) " & _
+            '    " Values('" & FixStr(ProjectName) & "','" & FixStr(ProjectDesc) & "','" _
+            '    & FixStr(ProjectVersion) & "','" & FixStr(Now()) & "')"
+            'Else
+            sql = "INSERT INTO " & Me.Project.tblProjects & "(ProjectName,ProjectDescription,SecurityATTR) " & _
+            "Values('" & FixStr(Me.ProjectName) & "','" & FixStr(Me.ProjectDesc) & "','" & FixStr(Me.SecurityATTR) & "')"
 
-                Me.DeleteATTR(cmd)
-                Me.InsertATTR(cmd)
-            End If
+            'Me.DeleteATTR(cmd)
+            'Me.InsertATTR(cmd)
+            'End If
 
             cmd.CommandText = sql
             Log(sql)
             cmd.ExecuteNonQuery()
 
+            If Me.InsertATTR(cmd) = False Then
+                AddNew = False
+                Exit Try
+            End If
             '//Add all child object to database if Cascade flag is true. 
             '//Generally when performing Clipboard copy/paste thi flag is set so 
             '//entire copied object tree can be added to database by just calling 
@@ -380,7 +436,7 @@ Public Class clsProject
             If Cascade = True Then
                 Dim child As INode
                 For Each child In Environments
-                    child.AddNew(True)
+                    child.AddNew(cmd, True)
                 Next
             End If
 
@@ -496,6 +552,9 @@ Public Class clsProject
                         Me.MainSeparatorX = GetVal(dr("PROJECTATTRBVALUE"))
                     Case "VERSION"
                         Me.ProjectVersion = GetVal(dr("PROJECTATTRBVALUE"))
+                        If Me.ProjectVersion = "" Then
+                            Me.ProjectVersion = Application.ProductVersion
+                        End If
                     Case "ENV_FOexpanded"
                         Me.ENV_FOexpanded = GetVal(dr("PROJECTATTRBVALUE"))
                     Case "ENVexpanded"
@@ -586,7 +645,7 @@ Public Class clsProject
 
             'cnn.Open()
             cmd = cnn.CreateCommand
-            sql = "Select * from " & Me.tblProjects
+            sql = "Select PROJECTNAME from " & Me.tblProjects
             cmd.CommandText = sql
             Log(sql)
             dr = cmd.ExecuteReader
@@ -609,9 +668,12 @@ Public Class clsProject
                 Return NameValid
             End If
 
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, cmd.Connection.ConnectionString, "clsProject ValidateNewObject")
+            Return False
         Catch ex As Exception
             'MsgBox("The ODBC DSN of your last opened project has been removed, please select a datasource from the DSN list")
-            LogError(ex, ex.Message, NewName, , False)
+            LogError(ex, NewName, "clsProject ValidateNewObject")
             Return False
         Finally
             'cnn.Close()
@@ -1448,6 +1510,9 @@ Public Class clsProject
                         Value = Me.MainSeparatorX
                     Case 4
                         Attrib = "VERSION"
+                        If Me.ProjectVersion = "" Then
+                            Me.ProjectVersion = Application.ProductVersion
+                        End If
                         Value = Me.ProjectVersion
                     Case 5
                         Attrib = "ENV_FOexpanded"
