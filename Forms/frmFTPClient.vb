@@ -41,8 +41,6 @@ Public Class frmFTPClient
     Friend WithEvents cmdBrowseRemote As System.Windows.Forms.Button
     Friend WithEvents cmdUp As System.Windows.Forms.Button
     Friend WithEvents cmdCancel As System.Windows.Forms.Button
-    Friend WithEvents lblRemote As System.Windows.Forms.Label
-    Friend WithEvents lblLocal As System.Windows.Forms.Label
     Friend WithEvents statusbar As System.Windows.Forms.Label
     Friend WithEvents cmdhelp As System.Windows.Forms.Button
     Friend WithEvents cmdBrowseLocal As System.Windows.Forms.Button
@@ -54,6 +52,10 @@ Public Class frmFTPClient
     Friend WithEvents cmdUpld As System.Windows.Forms.Button
     Friend WithEvents txtRemotePath As System.Windows.Forms.TextBox
     Friend WithEvents txtLocalPath As System.Windows.Forms.TextBox
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
+    Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents txtFTPout As System.Windows.Forms.TextBox
 
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
@@ -72,9 +74,7 @@ Public Class frmFTPClient
         Me.lvRemote = New System.Windows.Forms.ListView
         Me.cmdDnld = New System.Windows.Forms.Button
         Me.cmdCancel = New System.Windows.Forms.Button
-        Me.lblRemote = New System.Windows.Forms.Label
         Me.txtLocalPath = New System.Windows.Forms.TextBox
-        Me.lblLocal = New System.Windows.Forms.Label
         Me.cmdhelp = New System.Windows.Forms.Button
         Me.statusbar = New System.Windows.Forms.Label
         Me.cmdBrowseLocal = New System.Windows.Forms.Button
@@ -83,54 +83,66 @@ Public Class frmFTPClient
         Me.lvLocal = New System.Windows.Forms.ListView
         Me.cmdUpld = New System.Windows.Forms.Button
         Me.txtFTPout = New System.Windows.Forms.TextBox
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.GroupBox3 = New System.Windows.Forms.GroupBox
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox
+        Me.GroupBox1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
+        Me.GroupBox3.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblHost
         '
+        Me.lblHost.AutoSize = True
         Me.lblHost.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHost.Location = New System.Drawing.Point(12, 12)
+        Me.lblHost.Location = New System.Drawing.Point(6, 22)
         Me.lblHost.Name = "lblHost"
-        Me.lblHost.Size = New System.Drawing.Size(36, 16)
+        Me.lblHost.Size = New System.Drawing.Size(33, 13)
         Me.lblHost.TabIndex = 11
         Me.lblHost.Text = "Host"
         '
         'lblPort
         '
+        Me.lblPort.AutoSize = True
         Me.lblPort.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPort.Location = New System.Drawing.Point(12, 39)
+        Me.lblPort.Location = New System.Drawing.Point(6, 48)
         Me.lblPort.Name = "lblPort"
-        Me.lblPort.Size = New System.Drawing.Size(36, 16)
+        Me.lblPort.Size = New System.Drawing.Size(30, 13)
         Me.lblPort.TabIndex = 14
         Me.lblPort.Text = "Port"
         '
         'lblUser
         '
+        Me.lblUser.AutoSize = True
         Me.lblUser.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUser.Location = New System.Drawing.Point(429, 12)
+        Me.lblUser.Location = New System.Drawing.Point(423, 22)
         Me.lblUser.Name = "lblUser"
-        Me.lblUser.Size = New System.Drawing.Size(66, 16)
+        Me.lblUser.Size = New System.Drawing.Size(63, 13)
         Me.lblUser.TabIndex = 12
         Me.lblUser.Text = "Username"
         '
         'lblPass
         '
+        Me.lblPass.AutoSize = True
         Me.lblPass.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPass.Location = New System.Drawing.Point(429, 39)
+        Me.lblPass.Location = New System.Drawing.Point(423, 48)
         Me.lblPass.Name = "lblPass"
-        Me.lblPass.Size = New System.Drawing.Size(69, 16)
+        Me.lblPass.Size = New System.Drawing.Size(61, 13)
         Me.lblPass.TabIndex = 15
         Me.lblPass.Text = "Password"
         '
         'txtHost
         '
-        Me.txtHost.Location = New System.Drawing.Point(45, 9)
+        Me.txtHost.Location = New System.Drawing.Point(48, 19)
         Me.txtHost.Name = "txtHost"
         Me.txtHost.Size = New System.Drawing.Size(219, 20)
         Me.txtHost.TabIndex = 1
         '
         'txtPort
         '
-        Me.txtPort.Location = New System.Drawing.Point(45, 36)
+        Me.txtPort.Location = New System.Drawing.Point(48, 45)
         Me.txtPort.Name = "txtPort"
         Me.txtPort.Size = New System.Drawing.Size(48, 20)
         Me.txtPort.TabIndex = 2
@@ -138,14 +150,14 @@ Public Class frmFTPClient
         '
         'txtUser
         '
-        Me.txtUser.Location = New System.Drawing.Point(501, 9)
+        Me.txtUser.Location = New System.Drawing.Point(498, 19)
         Me.txtUser.Name = "txtUser"
         Me.txtUser.Size = New System.Drawing.Size(213, 20)
         Me.txtUser.TabIndex = 3
         '
         'txtPass
         '
-        Me.txtPass.Location = New System.Drawing.Point(501, 36)
+        Me.txtPass.Location = New System.Drawing.Point(498, 44)
         Me.txtPass.Name = "txtPass"
         Me.txtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPass.Size = New System.Drawing.Size(213, 20)
@@ -153,14 +165,15 @@ Public Class frmFTPClient
         '
         'txtRemotePath
         '
-        Me.txtRemotePath.Location = New System.Drawing.Point(432, 90)
+        Me.txtRemotePath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtRemotePath.Location = New System.Drawing.Point(6, 19)
         Me.txtRemotePath.Name = "txtRemotePath"
-        Me.txtRemotePath.Size = New System.Drawing.Size(265, 20)
+        Me.txtRemotePath.Size = New System.Drawing.Size(253, 20)
         Me.txtRemotePath.TabIndex = 5
         '
         'cmdBrowseRemote
         '
-        Me.cmdBrowseRemote.Location = New System.Drawing.Point(703, 90)
+        Me.cmdBrowseRemote.Location = New System.Drawing.Point(265, 17)
         Me.cmdBrowseRemote.Name = "cmdBrowseRemote"
         Me.cmdBrowseRemote.Size = New System.Drawing.Size(67, 22)
         Me.cmdBrowseRemote.TabIndex = 6
@@ -169,7 +182,7 @@ Public Class frmFTPClient
         'cmdUp
         '
         Me.cmdUp.Image = CType(resources.GetObject("cmdUp.Image"), System.Drawing.Image)
-        Me.cmdUp.Location = New System.Drawing.Point(776, 90)
+        Me.cmdUp.Location = New System.Drawing.Point(338, 17)
         Me.cmdUp.Name = "cmdUp"
         Me.cmdUp.Size = New System.Drawing.Size(28, 22)
         Me.cmdUp.TabIndex = 7
@@ -180,9 +193,9 @@ Public Class frmFTPClient
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lvRemote.FullRowSelect = True
-        Me.lvRemote.Location = New System.Drawing.Point(432, 118)
+        Me.lvRemote.Location = New System.Drawing.Point(432, 146)
         Me.lvRemote.Name = "lvRemote"
-        Me.lvRemote.Size = New System.Drawing.Size(372, 266)
+        Me.lvRemote.Size = New System.Drawing.Size(372, 238)
         Me.lvRemote.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvRemote.TabIndex = 8
         Me.lvRemote.UseCompatibleStateImageBehavior = False
@@ -191,9 +204,9 @@ Public Class frmFTPClient
         '
         Me.cmdDnld.Enabled = False
         Me.cmdDnld.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdDnld.Location = New System.Drawing.Point(384, 228)
+        Me.cmdDnld.Location = New System.Drawing.Point(389, 228)
         Me.cmdDnld.Name = "cmdDnld"
-        Me.cmdDnld.Size = New System.Drawing.Size(42, 23)
+        Me.cmdDnld.Size = New System.Drawing.Size(37, 23)
         Me.cmdDnld.TabIndex = 9
         Me.cmdDnld.Text = "<<"
         '
@@ -207,30 +220,16 @@ Public Class frmFTPClient
         Me.cmdCancel.TabIndex = 10
         Me.cmdCancel.Text = "Close"
         '
-        'lblRemote
-        '
-        Me.lblRemote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRemote.Location = New System.Drawing.Point(429, 67)
-        Me.lblRemote.Name = "lblRemote"
-        Me.lblRemote.Size = New System.Drawing.Size(130, 16)
-        Me.lblRemote.TabIndex = 13
-        Me.lblRemote.Text = "Remote Directory"
-        '
         'txtLocalPath
         '
-        Me.txtLocalPath.Location = New System.Drawing.Point(6, 90)
+        Me.txtLocalPath.BackColor = System.Drawing.SystemColors.Window
+        Me.txtLocalPath.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtLocalPath.HideSelection = False
+        Me.txtLocalPath.Location = New System.Drawing.Point(6, 19)
         Me.txtLocalPath.Name = "txtLocalPath"
-        Me.txtLocalPath.Size = New System.Drawing.Size(336, 20)
+        Me.txtLocalPath.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal
+        Me.txtLocalPath.Size = New System.Drawing.Size(329, 20)
         Me.txtLocalPath.TabIndex = 16
-        '
-        'lblLocal
-        '
-        Me.lblLocal.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLocal.Location = New System.Drawing.Point(12, 67)
-        Me.lblLocal.Name = "lblLocal"
-        Me.lblLocal.Size = New System.Drawing.Size(110, 16)
-        Me.lblLocal.TabIndex = 17
-        Me.lblLocal.Text = "Local Directory"
         '
         'cmdhelp
         '
@@ -247,16 +246,16 @@ Public Class frmFTPClient
         Me.statusbar.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.statusbar.Font = New System.Drawing.Font("Times New Roman", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.statusbar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.statusbar.Location = New System.Drawing.Point(6, 469)
+        Me.statusbar.Location = New System.Drawing.Point(6, 71)
         Me.statusbar.Name = "statusbar"
-        Me.statusbar.Size = New System.Drawing.Size(586, 18)
+        Me.statusbar.Size = New System.Drawing.Size(598, 18)
         Me.statusbar.TabIndex = 18
         Me.statusbar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'cmdBrowseLocal
         '
         Me.cmdBrowseLocal.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseLocal.Location = New System.Drawing.Point(348, 91)
+        Me.cmdBrowseLocal.Location = New System.Drawing.Point(341, 18)
         Me.cmdBrowseLocal.Name = "cmdBrowseLocal"
         Me.cmdBrowseLocal.Size = New System.Drawing.Size(30, 21)
         Me.cmdBrowseLocal.TabIndex = 19
@@ -264,17 +263,18 @@ Public Class frmFTPClient
         '
         'cmbExtension
         '
-        Me.cmbExtension.Location = New System.Drawing.Point(302, 64)
+        Me.cmbExtension.Location = New System.Drawing.Point(301, 44)
         Me.cmbExtension.Name = "cmbExtension"
         Me.cmbExtension.Size = New System.Drawing.Size(76, 21)
         Me.cmbExtension.TabIndex = 20
         '
         'Label1
         '
+        Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(145, 67)
+        Me.Label1.Location = New System.Drawing.Point(138, 48)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(151, 18)
+        Me.Label1.Size = New System.Drawing.Size(146, 13)
         Me.Label1.TabIndex = 21
         Me.Label1.Text = "File Type (file extension)"
         '
@@ -282,63 +282,110 @@ Public Class frmFTPClient
         '
         Me.lvLocal.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lvLocal.Location = New System.Drawing.Point(6, 118)
+        Me.lvLocal.FullRowSelect = True
+        Me.lvLocal.Location = New System.Drawing.Point(6, 146)
         Me.lvLocal.Name = "lvLocal"
-        Me.lvLocal.Size = New System.Drawing.Size(372, 266)
+        Me.lvLocal.Size = New System.Drawing.Size(377, 238)
         Me.lvLocal.TabIndex = 22
         Me.lvLocal.UseCompatibleStateImageBehavior = False
         '
         'cmdUpld
         '
         Me.cmdUpld.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdUpld.Location = New System.Drawing.Point(384, 258)
+        Me.cmdUpld.Location = New System.Drawing.Point(389, 258)
         Me.cmdUpld.Name = "cmdUpld"
-        Me.cmdUpld.Size = New System.Drawing.Size(42, 24)
+        Me.cmdUpld.Size = New System.Drawing.Size(37, 24)
         Me.cmdUpld.TabIndex = 23
         Me.cmdUpld.Text = ">>"
         '
         'txtFTPout
         '
-        Me.txtFTPout.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.txtFTPout.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFTPout.BackColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.txtFTPout.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtFTPout.Location = New System.Drawing.Point(6, 398)
+        Me.txtFTPout.Location = New System.Drawing.Point(6, 19)
         Me.txtFTPout.Multiline = True
         Me.txtFTPout.Name = "txtFTPout"
         Me.txtFTPout.ReadOnly = True
         Me.txtFTPout.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtFTPout.Size = New System.Drawing.Size(586, 61)
+        Me.txtFTPout.Size = New System.Drawing.Size(598, 49)
         Me.txtFTPout.TabIndex = 24
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.txtLocalPath)
+        Me.GroupBox1.Controls.Add(Me.cmdBrowseLocal)
+        Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox1.Location = New System.Drawing.Point(6, 94)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(377, 46)
+        Me.GroupBox1.TabIndex = 26
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Local Directory"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.cmdUp)
+        Me.GroupBox2.Controls.Add(Me.cmdBrowseRemote)
+        Me.GroupBox2.Controls.Add(Me.txtRemotePath)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox2.Location = New System.Drawing.Point(432, 94)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(372, 46)
+        Me.GroupBox2.TabIndex = 27
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Remote Directory"
+        '
+        'GroupBox3
+        '
+        Me.GroupBox3.Controls.Add(Me.lblHost)
+        Me.GroupBox3.Controls.Add(Me.txtHost)
+        Me.GroupBox3.Controls.Add(Me.txtPort)
+        Me.GroupBox3.Controls.Add(Me.lblPort)
+        Me.GroupBox3.Controls.Add(Me.Label1)
+        Me.GroupBox3.Controls.Add(Me.cmbExtension)
+        Me.GroupBox3.Controls.Add(Me.lblUser)
+        Me.GroupBox3.Controls.Add(Me.txtUser)
+        Me.GroupBox3.Controls.Add(Me.txtPass)
+        Me.GroupBox3.Controls.Add(Me.lblPass)
+        Me.GroupBox3.Location = New System.Drawing.Point(6, 12)
+        Me.GroupBox3.Name = "GroupBox3"
+        Me.GroupBox3.Size = New System.Drawing.Size(717, 76)
+        Me.GroupBox3.TabIndex = 28
+        Me.GroupBox3.TabStop = False
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox4.Controls.Add(Me.txtFTPout)
+        Me.GroupBox4.Controls.Add(Me.statusbar)
+        Me.GroupBox4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox4.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 390)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(610, 94)
+        Me.GroupBox4.TabIndex = 29
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Transaction Log"
         '
         'frmFTPClient
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.ClientSize = New System.Drawing.Size(808, 496)
-        Me.Controls.Add(Me.txtFTPout)
+        Me.Controls.Add(Me.GroupBox4)
+        Me.Controls.Add(Me.GroupBox3)
+        Me.Controls.Add(Me.GroupBox2)
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.cmdUpld)
         Me.Controls.Add(Me.lvLocal)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.cmbExtension)
-        Me.Controls.Add(Me.cmdBrowseLocal)
-        Me.Controls.Add(Me.statusbar)
         Me.Controls.Add(Me.cmdhelp)
-        Me.Controls.Add(Me.lblLocal)
-        Me.Controls.Add(Me.txtLocalPath)
-        Me.Controls.Add(Me.txtPass)
-        Me.Controls.Add(Me.txtUser)
-        Me.Controls.Add(Me.txtPort)
-        Me.Controls.Add(Me.txtHost)
-        Me.Controls.Add(Me.txtRemotePath)
-        Me.Controls.Add(Me.lblRemote)
         Me.Controls.Add(Me.cmdCancel)
         Me.Controls.Add(Me.cmdDnld)
-        Me.Controls.Add(Me.lblPass)
-        Me.Controls.Add(Me.lblUser)
-        Me.Controls.Add(Me.lblPort)
-        Me.Controls.Add(Me.lblHost)
-        Me.Controls.Add(Me.cmdUp)
         Me.Controls.Add(Me.lvRemote)
-        Me.Controls.Add(Me.cmdBrowseRemote)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
@@ -346,9 +393,16 @@ Public Class frmFTPClient
         Me.Name = "frmFTPClient"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "File Transfer"
+        Me.Text = "FTP File Transfer Client"
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
+        Me.GroupBox3.ResumeLayout(False)
+        Me.GroupBox3.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -662,7 +716,7 @@ Public Class frmFTPClient
             End Select
         Else
             Me.Text = "Remote File Open"
-            txtLocalPath.Enabled = False
+            txtLocalPath.Enabled = True
         End If
         'Windows.Forms.Cursor.Current = LastCursor
     End Sub
@@ -694,6 +748,9 @@ Public Class frmFTPClient
         dlgBrowseFolder.SelectedPath = txtLocalPath.Text
         If dlgBrowseFolder.ShowDialog() = Windows.Forms.DialogResult.OK Then
             txtLocalPath.Text = dlgBrowseFolder.SelectedPath
+            txtLocalPath.ScrollToCaret()
+            Me.StoreDir = txtLocalPath.Text
+            lvLocal_Update(Me.StoreDir, cmbExtension.SelectedItem)
         End If
     End Sub
 
@@ -761,6 +818,7 @@ Public Class frmFTPClient
         cmbExtension.Items.Add(".cob")
         cmbExtension.Items.Add(".dbd")
         cmbExtension.Items.Add(".dtd")
+        cmbExtension.Items.Add(".xml")
         cmbExtension.Items.Add(".ddl")
         cmbExtension.Items.Add(".dml")
         cmbExtension.Items.Add(".h")
@@ -788,5 +846,21 @@ Public Class frmFTPClient
 
     End Sub
 
-    
+    Private Sub txtLocalPath_TextChanged(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles txtLocalPath.KeyDown
+
+        If e.KeyCode = Keys.Enter Then
+            If System.IO.Directory.Exists(txtLocalPath.Text) = True Then
+                Me.StoreDir = txtLocalPath.Text
+                lvLocal_Update(Me.StoreDir, cmbExtension.SelectedItem)
+                dlgBrowseFolder.SelectedPath = txtLocalPath.Text
+            Else
+                MsgBox("Folder does not exist," & Chr(13) & _
+                       "Please correct Directory Path" & Chr(13) & _
+                       "or use '...'button to browse for Folder.", MsgBoxStyle.Information, "Invalid Folder")
+                txtLocalPath.Focus()
+            End If
+        End If
+
+    End Sub
+
 End Class

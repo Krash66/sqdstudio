@@ -57,7 +57,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4DC4EC9E9F8146839FB47B9388CFFA62"
+        "MsmKey" = "8:_51396A84C3A14EA3A31D7E73766065B8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -260,14 +260,14 @@
             "SourcePath" = "8:..\\ReadMeSQLserver.txt"
             "TargetName" = "8:ReadMeSQLserver.txt"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -320,14 +320,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\SQLsvrMetaV3_2.sql"
             "TargetName" = "8:SQLsvrMetaV3_2.sql"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -375,12 +375,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4DC4EC9E9F8146839FB47B9388CFFA62"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51396A84C3A14EA3A31D7E73766065B8"
             {
-            "SourcePath" = "8:..\\bin\\3.7.17\\sqdparse.exe"
-            "TargetName" = "8:sqdparse.exe"
+            "SourcePath" = "8:..\\images\\44.ico"
+            "TargetName" = "8:44.ico"
             "Tag" = "8:"
-            "Folder" = "8:_6AC189CC28BA4221BF41BA604F8C2730"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -400,14 +400,14 @@
             "SourcePath" = "8:..\\V3MetaData.mdb"
             "TargetName" = "8:V3MetaData.mdb"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -420,14 +420,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\ORCL_meta_drop.ddl"
             "TargetName" = "8:ORCL_meta_drop.ddl"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -460,14 +460,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\ORCL_meta_create.ddl"
             "TargetName" = "8:ORCL_meta_create.ddl"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -480,14 +480,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\ALLTBLS_DB2_LUW.txt"
             "TargetName" = "8:ALLTBLS_DB2_LUW.txt"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -520,14 +520,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\SQDmetaSQLsvr.mdf"
             "TargetName" = "8:SQDmetaSQLsvr.mdf"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -540,14 +540,14 @@
             "SourcePath" = "8:..\\bin\\supporting files\\DB2_LUW DROP TABLES.txt"
             "TargetName" = "8:DB2_LUW DROP TABLES.txt"
             "Tag" = "8:"
-            "Folder" = "8:_DB8348C779684E02A15B9A8CD5A88C2E"
+            "Folder" = "8:_5A4F3B2A0E114F619455A8F49FE169BB"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
+            "Permanent" = "11:TRUE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -601,46 +601,79 @@
         }
         "Folder"
         {
-            "{1525181F-901A-416C-8A58-119130FE478E}:_28066D696967455A8FC51CFF682C0E62"
+            "{1525181F-901A-416C-8A58-119130FE478E}:_5A1BB0700FAF4CA68B002D305E685A7C"
             {
-            "Name" = "8:#1916"
+            "Name" = "8:#1918"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
-            "Property" = "8:DesktopFolder"
+            "Property" = "8:PersonalFolder"
                 "Folders"
                 {
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_65875A4758AD4AA892692980CAAC9BA1"
-            {
-            "Name" = "8:#1915"
-            "AlwaysCreate" = "11:TRUE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:AppDataFolder"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_31728C51028D4AC3A0D3BA276EC62492"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_16901173D342441A8F38FB02975B0731"
                     {
-                    "Name" = "8:Backup"
+                    "Name" = "8:Design Studio"
                     "AlwaysCreate" = "11:TRUE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_3E3B2B554A2A45BAACF758A13082B495"
+                    "Property" = "8:_398AF63627364526BD8A4CE31228320C"
                         "Folders"
                         {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_D09965BFD40A4E39B7E80696CEA3A7F3"
-                    {
-                    "Name" = "8:Temp"
-                    "AlwaysCreate" = "11:TRUE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_96E5C5D9372E47D89908797B437B97BE"
-                        "Folders"
-                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_2EEBBCAEAED84EB2BFE574DF22AEB46C"
+                            {
+                            "Name" = "8:Projects"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_AA95863714D14EBB89C37A7ABBB30492"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_5A4F3B2A0E114F619455A8F49FE169BB"
+                            {
+                            "Name" = "8:MetaData"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_86DDD64C299A436E8DFF53DC69175866"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_94455CD8D34E41E9B97229A754375941"
+                            {
+                            "Name" = "8:Temp"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_96E5C5D9372E47D89908797B437B97BE"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_B6CAF5D7758B46F390AB5718696C4F08"
+                            {
+                            "Name" = "8:Logs"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_543CFFA5A32946008438BCB3A7523D3E"
+                                "Folders"
+                                {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_C3CAB06E65364622A019115AF9408FFE"
+                            {
+                            "Name" = "8:Backup"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_3E3B2B554A2A45BAACF758A13082B495"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                 }
@@ -655,28 +688,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_6AC189CC28BA4221BF41BA604F8C2730"
-                    {
-                    "Name" = "8:3.7.17"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_103D16CF25E94674AD0DD7F95E0F5A09"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_DB8348C779684E02A15B9A8CD5A88C2E"
-                    {
-                    "Name" = "8:MetaData"
-                    "AlwaysCreate" = "11:TRUE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_86DDD64C299A436E8DFF53DC69175866"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_D8C13839BF724CF6B5763749F079AE97"
@@ -717,19 +728,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
-        "ProductCode" = "8:{74CE5CF8-1760-4E22-B4CB-006E1C3E36D4}"
-        "PackageCode" = "8:{856FA770-69FC-4E3E-8E2F-7D6460D7D3D1}"
+        "ProductCode" = "8:{52C26812-5063-4C40-9FB7-941EC9F669E0}"
+        "PackageCode" = "8:{B0CCC33B-D544-43B5-8F47-17614E4218A9}"
         "UpgradeCode" = "8:{ECBC2F4A-B3CB-4E3A-A724-5337F324CFB9}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.41.2000"
+        "ProductVersion" = "8:3.41.3000"
         "Manufacturer" = "8:SQData"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
         "Title" = "8:SQDStudio Setup"
-        "Subject" = "8:Studio version 3.4.1.2"
+        "Subject" = "8:Studio version 3.4.1.3"
         "ARPCONTACT" = "8:SQData"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
@@ -837,11 +848,25 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3F97BB4889A44D97849B39028BA60F50"
+            {
+            "Name" = "8:Design Studio Data Folder"
+            "Arguments" = "8:"
+            "Description" = "8:Data Folder for Design Studio Projects and Data"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_16901173D342441A8F38FB02975B0731"
+            "Folder" = "8:_51E326FBA49B4786BD3D4BFA8EB227C7"
+            "WorkingFolder" = "8:_5A1BB0700FAF4CA68B002D305E685A7C"
+            "Icon" = "8:_51396A84C3A14EA3A31D7E73766065B8"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_E94453161AFA42EDB195BFC426C5DB72"
             {
             "Name" = "8:Design Studio"
             "Arguments" = "8:"
-            "Description" = "8:"
+            "Description" = "8:SQData Design Studio"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"

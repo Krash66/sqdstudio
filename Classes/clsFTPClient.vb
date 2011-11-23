@@ -279,6 +279,7 @@ Public Class FTPClient
             Dim Reply As String
             Dim re As New Regex("""(.*)""")
             Dim matches As Match
+
             fScript.WriteLine("pwd")
             OutText.AppendText("pwd" & Chr(10))
             Exec_FTP_Script(fScript, Me.TempFile)
@@ -586,7 +587,7 @@ Public Class FTPClient
         Dim found As Boolean = False
 
         line = StreamReader_Readline_SkipBlank(fLog)
-        While Not found And Not line Is Nothing
+        While Not found And line IsNot Nothing
             If line.Length = "ftp> ".Length + Command.Length Then
                 If line.Substring("ftp> ".Length, Command.Length) = Command Then
                     found = True
@@ -624,7 +625,7 @@ Public Class FTPClient
         If found Then
             StreamReader_Readline_SkipBlank = Line
         Else
-            StreamReader_Readline_SkipBlank = ""
+            StreamReader_Readline_SkipBlank = Nothing
         End If
 
     End Function

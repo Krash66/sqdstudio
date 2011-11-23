@@ -10,7 +10,7 @@ Public Class clsLogging
 
         Try
             If EnableLogging = True Then
-                oStreamWriter = New System.IO.StreamWriter(GetAppTemp() & "\" & TraceFile, True)
+                oStreamWriter = New System.IO.StreamWriter(GetAppLog() & "\" & TraceFile, True)
                 If AddNewLine = True Then
                     Msg = "[" & Now & "] " & Msg & vbCrLf
                     oStreamWriter.Write(Msg)
@@ -34,7 +34,7 @@ Public Class clsLogging
 
         Try
             If EnableLogging = True Then
-                oStreamWriter = New System.IO.StreamWriter(GetAppTemp() & "\" & errorTrace, True)
+                oStreamWriter = New System.IO.StreamWriter(GetAppLog() & "\" & errorTrace, True)
                 If AddNewLine = True Then
                     Msg = "[" & Now & "] " & Msg & vbCrLf
                     oStreamWriter.Write(Msg)
@@ -58,7 +58,7 @@ Public Class clsLogging
 
         Try
             If EnableLogging = True Then
-                oStreamWriter = New System.IO.StreamWriter(GetAppTemp() & "\" & ODBCTrace, True)
+                oStreamWriter = New System.IO.StreamWriter(GetAppLog() & "\" & ODBCTrace, True)
                 If AddNewLine = True Then
                     Msg = "[" & Now & "] " & Msg & vbCrLf
                     oStreamWriter.Write(Msg)

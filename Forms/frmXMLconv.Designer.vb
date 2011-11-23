@@ -30,6 +30,7 @@ Partial Class frmXMLconv
         Me.OFD1 = New System.Windows.Forms.OpenFileDialog
         Me.SFD1 = New System.Windows.Forms.SaveFileDialog
         Me.btnConv = New System.Windows.Forms.Button
+        Me.btnImportDTD = New System.Windows.Forms.Button
         Me.Panel1.SuspendLayout()
         Me.gbIn.SuspendLayout()
         Me.gbXMLout.SuspendLayout()
@@ -57,6 +58,7 @@ Partial Class frmXMLconv
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.cmdCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdCancel.Location = New System.Drawing.Point(548, 498)
         Me.cmdCancel.Text = "&Close"
         '
@@ -64,6 +66,7 @@ Partial Class frmXMLconv
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.cmdHelp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmdHelp.Location = New System.Drawing.Point(644, 498)
         '
         'Label1
@@ -199,9 +202,22 @@ Partial Class frmXMLconv
         Me.btnConv.Text = "Convert"
         Me.btnConv.UseVisualStyleBackColor = True
         '
+        'btnImportDTD
+        '
+        Me.btnImportDTD.FlatAppearance.BorderColor = System.Drawing.Color.Silver
+        Me.btnImportDTD.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        Me.btnImportDTD.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnImportDTD.Location = New System.Drawing.Point(206, 498)
+        Me.btnImportDTD.Name = "btnImportDTD"
+        Me.btnImportDTD.Size = New System.Drawing.Size(155, 23)
+        Me.btnImportDTD.TabIndex = 62
+        Me.btnImportDTD.Text = "Add DTD to Project"
+        Me.btnImportDTD.UseVisualStyleBackColor = True
+        '
         'frmXMLconv
         '
         Me.ClientSize = New System.Drawing.Size(734, 537)
+        Me.Controls.Add(Me.btnImportDTD)
         Me.Controls.Add(Me.gbIn)
         Me.Controls.Add(Me.gbXMLout)
         Me.Controls.Add(Me.btnConv)
@@ -209,6 +225,7 @@ Partial Class frmXMLconv
         Me.Controls.SetChildIndex(Me.btnConv, 0)
         Me.Controls.SetChildIndex(Me.gbXMLout, 0)
         Me.Controls.SetChildIndex(Me.gbIn, 0)
+        Me.Controls.SetChildIndex(Me.btnImportDTD, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
@@ -233,5 +250,6 @@ Partial Class frmXMLconv
     Friend WithEvents txtXMLout As System.Windows.Forms.TextBox
     Friend WithEvents btnbrowseOut As System.Windows.Forms.Button
     Friend WithEvents txtOutPath As System.Windows.Forms.TextBox
+    Friend WithEvents btnImportDTD As System.Windows.Forms.Button
 
 End Class

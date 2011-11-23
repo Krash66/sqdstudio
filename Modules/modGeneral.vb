@@ -211,17 +211,18 @@ Public Module modGeneral
     Public Function SaveTextFile(ByVal FilePath As String, ByVal FileContent As String, Optional ByVal Append As Boolean = False) As Boolean
 
         Dim sw As System.IO.StreamWriter = Nothing
-
+        Dim sw2 As System.IO.StreamWriter = Nothing
         Try
             sw = New System.IO.StreamWriter(FilePath, Append)
+
             sw.Write(FileContent)
             Return True
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "modGeneral SaveTextFile")
             Return False
         Finally
-            If Not sw Is Nothing Then sw.Close()
+            If sw IsNot Nothing Then sw.Close()
         End Try
 
     End Function
@@ -235,7 +236,7 @@ Public Module modGeneral
             LoadTextFile = sr.ReadToEnd()
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "modGeneral LoadTextFile")
             Return ""
         Finally
             If Not sr Is Nothing Then sr.Close()
@@ -595,7 +596,7 @@ Public Module modGeneral
             Dim PathErr As String
 
 
-            If SavePath = "" Then SavePath = GetAppTemp()
+            If SavePath = "" Then SavePath = TempPath
 
             Select Case OutType
                 Case "DTD"
@@ -641,11 +642,11 @@ Public Module modGeneral
                 '//run out little exe with command line args so it produces meta data in XML format
                 Try
                     '//delete previous log file
-                    If System.IO.File.Exists(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR")) Then
-                        System.IO.File.Delete(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR"))
+                    If System.IO.File.Exists(IO.Path.Combine(GetAppLog(), "sqdumodl.ERR")) Then
+                        System.IO.File.Delete(IO.Path.Combine(GetAppLog(), "sqdumodl.ERR"))
                     End If
                     '// create new error file stream
-                    fsERR = System.IO.File.Create(IO.Path.Combine(GetAppTemp(), "sqdumodl.ERR"))
+                    fsERR = System.IO.File.Create(IO.Path.Combine(GetAppLog(), "sqdumodl.ERR"))
                     PathErr = fsERR.Name
                     objWriteERR = New System.IO.StreamWriter(fsERR)
 
@@ -853,23 +854,29 @@ Public Module modGeneral
         End If
 
         If outputData.EXCEPT IsNot Nothing Then
-            Throw outputData.EXCEPT
+            'Throw outputData.EXCEPT
+            LogError(outputData.EXCEPT, "StdOutputStream ... modGeneral OutputToEnd")
         End If
 
         If errorData.EXCEPT IsNot Nothing Then
-            Throw errorData.EXCEPT
+            'Throw errorData.EXCEPT
+            LogError(errorData.EXCEPT, "StdErrorStream ... modGeneral OutputToEnd")
         End If
 
     End Sub
 
     '/// Sub to capture data into outputToEndData class
     Private Sub OutputToEndProc(ByVal OutData As Object)
+
         Dim data = DirectCast(OutData, OutputToEndData)
+
         Try
             data.output = data.stream.readtoend
+
         Catch ex As Exception
             data.except = ex
         End Try
+
     End Sub
 
 
@@ -1858,21 +1865,50 @@ Public Module modGeneral
 
 #Region "Folder Paths"
 
-    '//Creates a Tempfolder in the same location of Application exe file
-    Function GetAppTemp(Optional ByVal TempFolderName As String = "Temp") As String
+    Public Function GetAppPath() As String
 
-        Dim AppData As String = System.Windows.Forms.Application.LocalUserAppDataPath()
+        GetAppPath = System.Windows.Forms.Application.StartupPath()
+        If Right(GetAppPath, 1) <> "\" Then
+            GetAppPath = GetAppPath & "\"
+        End If
+
+    End Function
+
+    '//Gets ..My Documents\Design Studio\
+    Function GetAppData() As String
+
+        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        'System.Windows.Forms.Application.LocalUserAppDataPath()
+
         Dim AppTemp As String = ""
 
         If Right(AppData, 1) <> "\" Then
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & TempFolderName
+        AppTemp = AppData & "Design Studio\"
 
-        'If Right(AppTemp, 1) <> "\" Then
-        '    AppTemp = AppTemp & "\"
-        'End If
+        If System.IO.Directory.Exists(AppTemp) = False Then
+            System.IO.Directory.CreateDirectory(AppTemp)
+        End If
+
+        GetAppData = AppTemp
+
+    End Function
+
+    '//Creates a Tempfolder in ..My Documents\Design Studio\
+    Function GetAppTemp(Optional ByVal TempFolderName As String = "Temp") As String
+
+        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        'System.Windows.Forms.Application.LocalUserAppDataPath()
+
+        Dim AppTemp As String = ""
+
+        If Right(AppData, 1) <> "\" Then
+            AppData = AppData & "\"
+        End If
+
+        AppTemp = AppData & "Design Studio\" & TempFolderName
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -1882,14 +1918,80 @@ Public Module modGeneral
 
     End Function
 
-    Function GetAppTempImp(Optional ByVal TempFolderName As String = "Temp") As String
-        Dim AppPath As String = GetAppPath()
+    '//Creates a Backupfolder in ..My Documents\Design Studio\
+    Function GetAppBackup(Optional ByVal BackupFolderName As String = "Backup") As String
 
-        If System.IO.Directory.Exists(AppPath & TempFolderName) = False Then
-            System.IO.Directory.CreateDirectory(AppPath & TempFolderName)
+        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        'System.Windows.Forms.Application.LocalUserAppDataPath()
+
+        Dim AppTemp As String = ""
+
+        If Right(AppData, 1) <> "\" Then
+            AppData = AppData & "\"
         End If
-        GetAppTempImp = AppPath & TempFolderName
+
+        AppTemp = AppData & "Design Studio\" & BackupFolderName
+
+        If System.IO.Directory.Exists(AppTemp) = False Then
+            System.IO.Directory.CreateDirectory(AppTemp)
+        End If
+
+        GetAppBackup = AppTemp
+
     End Function
+
+    '//Creates a Logfolder in ..My Documents\Design Studio\
+    Function GetAppLog(Optional ByVal LogFolderName As String = "Logs") As String
+
+        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        'System.Windows.Forms.Application.LocalUserAppDataPath()
+
+        Dim AppTemp As String = ""
+
+        If Right(AppData, 1) <> "\" Then
+            AppData = AppData & "\"
+        End If
+
+        AppTemp = AppData & "Design Studio\" & LogFolderName
+
+        If System.IO.Directory.Exists(AppTemp) = False Then
+            System.IO.Directory.CreateDirectory(AppTemp)
+        End If
+
+        GetAppLog = AppTemp
+
+    End Function
+
+    '//Creates a Projectfolder in ..My Documents\Design Studio\
+    Function GetAppProj(Optional ByVal ProjectFolderName As String = "Projects") As String
+
+        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        'System.Windows.Forms.Application.LocalUserAppDataPath()
+
+        Dim AppTemp As String = ""
+
+        If Right(AppData, 1) <> "\" Then
+            AppData = AppData & "\"
+        End If
+
+        AppTemp = AppData & "Design Studio\" & ProjectFolderName
+
+        If System.IO.Directory.Exists(AppTemp) = False Then
+            System.IO.Directory.CreateDirectory(AppTemp)
+        End If
+
+        GetAppProj = AppTemp
+
+    End Function
+
+    'Function GetAppTempImp(Optional ByVal TempFolderName As String = "Temp") As String
+    '    Dim AppPath As String = GetAppPath()
+
+    '    If System.IO.Directory.Exists(AppPath & TempFolderName) = False Then
+    '        System.IO.Directory.CreateDirectory(AppPath & TempFolderName)
+    '    End If
+    '    GetAppTempImp = AppPath & TempFolderName
+    'End Function
 
     '//Filename with extension
     Public Function GetFileNameFromPath(ByVal sPath As String) As String
@@ -1923,8 +2025,11 @@ Public Module modGeneral
 
     '//Filename without extension
     Public Function GetFileNameWithoutExtenstionFromPath(ByVal sPath As String) As String
+
         Dim sTemp1 As String
+
         sTemp1 = GetFileNameOnly(sPath)
+
         If sTemp1.Contains("%") = False Then
             If sTemp1.Contains(".") = True Then
                 GetFileNameWithoutExtenstionFromPath = Left(sTemp1, sTemp1.IndexOf("."))
@@ -1934,35 +2039,37 @@ Public Module modGeneral
         Else
             GetFileNameWithoutExtenstionFromPath = sPath
         End If
-    End Function
 
-    Public Function GetAppPath() As String
-        GetAppPath = System.Windows.Forms.Application.StartupPath()
-        If Right(GetAppPath, 1) <> "\" Then
-            GetAppPath = GetAppPath & "\"
-        End If
     End Function
 
     ' JDM - 0/28/2006 - Find parent folder
     Public Function GetParentPath() As String
+
         Dim strAppPath As String = GetAppPath()
         Dim astrParentPath() As String = strAppPath.Split("\")
         Dim strParentPath As String = ""
+
         For intLoop As Integer = 0 To astrParentPath.Length - 3
             strParentPath += astrParentPath.GetValue(intLoop) & "\"
         Next
+
         Return strParentPath
+
     End Function
 
     ' JDM - 0/28/2006 - Find Models folder
-    Public Function GetModelPath() As String
-        Return GetAppTemp() & "\" & "Models"
-    End Function
+    'Public Function GetModelPath() As String
+
+    '    Return GetAppData() & "\" & "Models"
+
+    'End Function
 
     ' JDM - 0/28/2006 - Find Scripts folder
-    Public Function GetScriptPath() As String
-        Return GetAppTemp() & "\" & "Scripts"
-    End Function
+    'Public Function GetScriptPath() As String
+
+    '    Return GetAppData() & "\" & "Scripts"
+
+    'End Function
 
     ' JDM - 0/28/2006 - Find Help folder
     'Public Function GetHelpPath() As String
@@ -1972,24 +2079,27 @@ Public Module modGeneral
     '// new 12/4/2006 by TK
     '//Creates a Query folder in the Application directory
     Function QueryFolderPath(Optional ByVal QueryFolderName As String = "Queries") As String
-        Dim AppPath As String = GetAppTemp() & "\"
+
+        Dim AppPath As String = GetAppData() & "\"
 
         If System.IO.Directory.Exists(AppPath & QueryFolderName) = False Then
             System.IO.Directory.CreateDirectory(AppPath & QueryFolderName)
         End If
+
         QueryFolderPath = AppPath & QueryFolderName
+
     End Function
 
     Function ReportFolderPath(Optional ByVal ReportFolderName As String = "Temp") As String
 
-        Dim AppPath As String = GetAppPath()
-        Dim AppTemp As String = GetAppTemp()
+        'Dim AppPath As String = GetAppPath()
+        Dim AppData As String = GetAppData()
 
         'If System.IO.Directory.Exists(AppPath & ReportFolderName) = False Then
         '    System.IO.Directory.CreateDirectory(AppPath & ReportFolderName)
         'End If
         'ReportFolderPath = AppPath & ReportFolderName
-        ReportFolderPath = GetAppTemp()
+        ReportFolderPath = AppData
 
     End Function
 

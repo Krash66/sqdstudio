@@ -29,7 +29,6 @@ Partial Class frmODBCLogin
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmODBCLogin))
         Me.UsernameLabel = New System.Windows.Forms.Label
         Me.PasswordLabel = New System.Windows.Forms.Label
         Me.UsernameTextBox = New System.Windows.Forms.TextBox
@@ -104,11 +103,11 @@ Partial Class frmODBCLogin
         '
         'LogoPictureBox
         '
-        Me.LogoPictureBox.Image = CType(resources.GetObject("LogoPictureBox.Image"), System.Drawing.Image)
+        Me.LogoPictureBox.Image = Global.SQDStudio.My.Resources.Resources.Ball
         Me.LogoPictureBox.Location = New System.Drawing.Point(-2, -3)
         Me.LogoPictureBox.Name = "LogoPictureBox"
-        Me.LogoPictureBox.Size = New System.Drawing.Size(451, 199)
-        Me.LogoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.LogoPictureBox.Size = New System.Drawing.Size(212, 204)
+        Me.LogoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.LogoPictureBox.TabIndex = 0
         Me.LogoPictureBox.TabStop = False
         '

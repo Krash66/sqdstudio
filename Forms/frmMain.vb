@@ -6,14 +6,6 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
-    Friend WithEvents mnuXMLtoDTD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuMainXMLtoDTD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuCopyProj As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuPasteProj As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuCloseProj As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem27 As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem24 As System.Windows.Forms.MenuItem
-
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -324,6 +316,13 @@ Public Class frmMain
     Friend WithEvents mnuModelSSSQLDDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelDSSelOraDDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelDSSelSQLDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuXMLtoDTD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuMainXMLtoDTD As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuCopyProj As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuPasteProj As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuCloseProj As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem27 As System.Windows.Forms.MenuItem
+    Friend WithEvents MenuItem24 As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -533,9 +532,12 @@ Public Class frmMain
         Me.MenuItem20 = New System.Windows.Forms.MenuItem
         Me.mnuScriptProc = New System.Windows.Forms.MenuItem
         Me.mnuPopupProject = New System.Windows.Forms.MenuItem
-        Me.mnuDelProject = New System.Windows.Forms.MenuItem
+        Me.mnuCloseProj = New System.Windows.Forms.MenuItem
+        Me.MenuItem27 = New System.Windows.Forms.MenuItem
         Me.mnuCopyProj = New System.Windows.Forms.MenuItem
         Me.mnuPasteProj = New System.Windows.Forms.MenuItem
+        Me.MenuItem24 = New System.Windows.Forms.MenuItem
+        Me.mnuDelProject = New System.Windows.Forms.MenuItem
         Me.mnuPopupStructSelection = New System.Windows.Forms.MenuItem
         Me.mnuAddStructSelection = New System.Windows.Forms.MenuItem
         Me.mnuDelStructSelection = New System.Windows.Forms.MenuItem
@@ -555,6 +557,9 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.SCmain = New System.Windows.Forms.SplitContainer
+        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.ctMain = New SQDStudio.ctlMain
         Me.ctInc = New SQDStudio.ctlInclude
         Me.ctFolder = New SQDStudio.ctlFolderNode
@@ -568,12 +573,6 @@ Public Class frmMain
         Me.ctEnv = New SQDStudio.ctlEnvironment
         Me.ctPrj = New SQDStudio.ctlProject
         Me.ctDs = New SQDStudio.ctlDatastore
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.SCmain = New System.Windows.Forms.SplitContainer
-        Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.MenuItem24 = New System.Windows.Forms.MenuItem
-        Me.mnuCloseProj = New System.Windows.Forms.MenuItem
-        Me.MenuItem27 = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1810,10 +1809,15 @@ Public Class frmMain
         Me.mnuPopupProject.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuCloseProj, Me.MenuItem27, Me.mnuCopyProj, Me.mnuPasteProj, Me.MenuItem24, Me.mnuDelProject})
         Me.mnuPopupProject.Text = "mnuPopupProject"
         '
-        'mnuDelProject
+        'mnuCloseProj
         '
-        Me.mnuDelProject.Index = 5
-        Me.mnuDelProject.Text = "Delete Entire Project"
+        Me.mnuCloseProj.Index = 0
+        Me.mnuCloseProj.Text = "Close Project"
+        '
+        'MenuItem27
+        '
+        Me.MenuItem27.Index = 1
+        Me.MenuItem27.Text = "-"
         '
         'mnuCopyProj
         '
@@ -1824,6 +1828,16 @@ Public Class frmMain
         '
         Me.mnuPasteProj.Index = 3
         Me.mnuPasteProj.Text = "Paste Project"
+        '
+        'MenuItem24
+        '
+        Me.MenuItem24.Index = 4
+        Me.MenuItem24.Text = "-"
+        '
+        'mnuDelProject
+        '
+        Me.mnuDelProject.Index = 5
+        Me.mnuDelProject.Text = "Delete Entire Project"
         '
         'mnuPopupStructSelection
         '
@@ -1936,6 +1950,34 @@ Public Class frmMain
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.pnlProp.Size = New System.Drawing.Size(665, 513)
         Me.pnlProp.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SCmain.Location = New System.Drawing.Point(0, 29)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
+        Me.SCmain.SplitterDistance = 346
+        Me.SCmain.SplitterWidth = 5
+        Me.SCmain.TabIndex = 9
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
         '
         'ctMain
         '
@@ -2059,49 +2101,6 @@ Public Class frmMain
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
         '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SCmain.Location = New System.Drawing.Point(0, 29)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
-        Me.SCmain.SplitterDistance = 346
-        Me.SCmain.SplitterWidth = 5
-        Me.SCmain.TabIndex = 9
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
-        '
-        'MenuItem24
-        '
-        Me.MenuItem24.Index = 4
-        Me.MenuItem24.Text = "-"
-        '
-        'mnuCloseProj
-        '
-        Me.mnuCloseProj.Index = 0
-        Me.mnuCloseProj.Text = "Close Project"
-        '
-        'MenuItem27
-        '
-        Me.MenuItem27.Index = 1
-        Me.MenuItem27.Text = "-"
-        '
         'frmMain
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
@@ -2219,8 +2218,8 @@ Public Class frmMain
                 Case Else
                     Me.WindowState = FormWindowState.Normal
             End Select
-
         End If
+
         InitMain()
         LoadGlobalValues()
         ToolBar1.Buttons(enumToolBarButtons.TB_MAP).Enabled = False
@@ -9525,7 +9524,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                             SaveFileDialog1.FileName = InputBox("Please Name Your Backup", "Backup Name", "BAK_" & _
                                                                 GetFileNameOnly(OpenFileDialog1.FileName))
                             SaveFileDialog1.Title = "Save Metadata Backup File"
-                            SaveFileDialog1.InitialDirectory = GetDirFromPath(cnn.Database)
+                            SaveFileDialog1.InitialDirectory = GetAppBackup()
                             If SaveFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
                                 System.IO.File.Copy(OpenFileDialog1.FileName, SaveFileDialog1.FileName)
                             Else
@@ -9550,6 +9549,8 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
 #End Region
 
+#Region "XML Message to DTD"
+
     Private Sub mnuXMLtoDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuXMLtoDTD.Click
 
         Dim frm As frmXMLconv
@@ -9568,12 +9569,6 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
     End Sub
 
-    Private Sub mnuCopyProj_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopyProj.Click
-
-    End Sub
-
-    Private Sub mnuPasteProj_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPasteProj.Click
-
-    End Sub
+#End Region
 
 End Class

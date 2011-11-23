@@ -128,8 +128,8 @@ Public Module modGenerateV3
                 EnginePath = ObjThis.EXEdir & "\" & "sqdata.exe"
             Else
                 If EngObj.EngVersion <> "" Then
-                    ParserPath = GetAppPath() & EngObj.EngVersion & "\" & "sqdparse.exe"
-                    EnginePath = GetAppPath() & EngObj.EngVersion & "\" & "sqdata.exe"
+                    ParserPath = GetAppPath() & "sqdparse.exe" 'EngObj.EngVersion & "\" & 
+                    EnginePath = GetAppPath() & "sqdata.exe"  'EngObj.EngVersion & "\" & 
                 Else
                     ParserPath = GetAppPath() & "sqdparse.exe"
                     EnginePath = GetAppPath() & "sqdata.exe"
@@ -726,11 +726,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppTemp() & "\" & "sqdparse.log"
+                        rc.ParserPath = GetAppLog() & "\" & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
+                        rc.Path = Quote(GetAppLog() & "\" & "sqdparse.log", """")
                         rc.ParserRC = myProcess.ExitCode
 
                     Case 0
@@ -852,11 +852,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppTemp() & "\" & "sqdparse.log"
+                        rc.ParserPath = GetAppLog() & "\" & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppTemp() & "\" & "sqdparse.log", """")
+                        rc.Path = Quote(GetAppLog() & "\" & "sqdparse.log", """")
                         rc.ParserRC = myProcess.ExitCode
 
                     Case 0
@@ -5151,7 +5151,7 @@ ErrorGoTo:
 
             If InEng IsNot Nothing Then
                 If InEng.EngVersion <> "" Then
-                    EnginePath = GetAppPath() & InEng.EngVersion & "\" & "sqdata.exe"
+                    EnginePath = GetAppPath() & "sqdata.exe"  'InEng.EngVersion & "\" & 
                 Else
                     EnginePath = GetAppPath() & "sqdata.exe"
                 End If

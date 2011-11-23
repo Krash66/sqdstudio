@@ -1,5 +1,7 @@
 Public Class clsRcode
 
+    '///Object class for a return code object
+
     Private mName As String                     'Return Code gets name of object that creates (e.g. Engine when gen. script)
     Private mHasError As Boolean                'Error Has Occured
     Private mErrorCount As Integer

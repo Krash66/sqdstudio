@@ -480,9 +480,9 @@ Public Module modDeclares
                 ODBCTrace = "ODBCErrLog.log"
             End If
             If ClearLogOnStartUp = True Then
-                System.IO.File.Delete(GetAppTemp() & "\" & TraceFile)  '
-                System.IO.File.Delete(GetAppTemp() & "\" & errorTrace)   '& "\"
-                System.IO.File.Delete(GetAppTemp() & "\" & ODBCTrace)
+                System.IO.File.Delete(GetAppLog() & "\" & TraceFile)  '
+                System.IO.File.Delete(GetAppLog() & "\" & errorTrace)   '& "\"
+                System.IO.File.Delete(GetAppLog() & "\" & ODBCTrace)
                 'System.IO.File.Delete(GetAppPath() & "*.log")
             End If
             EnableLogging = True

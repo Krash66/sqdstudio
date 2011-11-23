@@ -1,22 +1,28 @@
 ﻿Public Class frmXMLconv
 
-    Dim InFilePath As String
-    Dim OutFilePath As String
-    Dim xml_Indoc As New XmlDocument
-    Dim xml_OutDoc As New XmlDocument
-    Dim ArrAllElements As New ArrayList
-    Dim ArrParentNodes As New ArrayList
-    Dim ArrPrintedChildren As New ArrayList
-    Dim ArrCDataNodes As New ArrayList
+    '/// Created by TK   November 2011
+    '/// Creates XML DTD files from XML messages
 
-    Dim sb As New System.Text.StringBuilder
+    Private InFilePath As String                      '** Input XML Message File Path
+    Private OutFilePath As String                     '** Output DTD XML Description File
+    Private xml_Indoc As New XmlDocument              '** Windows XML doc that XML message is read into
 
-    Enum enumXMLActionType
+    Private ArrAllElements As New ArrayList           '** Array of all elements in Document
+    Private ArrParentNodes As New ArrayList           '** Array of all elements that are parents of other elements
+    Private ArrPrintedChildren As New ArrayList       '** Array of child elements that have children
+    Private ArrCDataNodes As New ArrayList            '** Array of child elements that have NO children
+    Private InputDir As String = ""                   '** Input Directory of the XML Message
+
+    Private sb As System.Text.StringBuilder           '** String Builder Object that is built to create DTD message
+
+    Private Enum enumXMLActionType
         Failed = 0
         E_PrintwCldrn = 1
         E_PrintAsCdata = 2
         E_Ignore = 3
     End Enum
+
+#Region "Form actions"
 
     Public Function OpenForm() As Boolean
 
@@ -24,6 +30,7 @@
             cmdOk.Enabled = False
             btnConv.Enabled = False
             btnbrowseOut.Enabled = False
+            btnImportDTD.Visible = False
 
             Me.Show()
 
@@ -34,12 +41,58 @@
 
     End Function
 
+    Public Function GetDTD(Optional ByVal InDir As String = "") As String
+
+        cmdOk.Enabled = False
+        btnConv.Enabled = False
+        btnbrowseOut.Enabled = False
+        btnImportDTD.Visible = True
+        btnImportDTD.Enabled = False
+        InputDir = InDir
+
+doAgain:
+        Select Case Me.ShowDialog
+            Case Windows.Forms.DialogResult.OK
+                GetDTD = txtOutPath.Text
+            Case Windows.Forms.DialogResult.Retry
+                GoTo doAgain
+            Case Else
+                GetDTD = ""
+        End Select
+
+    End Function
+
+    Private Sub cmdCancel_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
+
+        Me.Close()
+        Me.DialogResult = Windows.Forms.DialogResult.Abort
+
+    End Sub
+
+    Private Sub cmdHelp_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
+
+        ShowHelp(HHId.H_Welcome_to_SQData_Studio)
+
+    End Sub
+
+    Private Sub btnImportDTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImportDTD.Click
+
+        Me.Close()
+        Me.DialogResult = Windows.Forms.DialogResult.OK
+
+    End Sub
+
+#End Region
+
 #Region "Load Input XML Message"
 
     Private Sub btnbrowseIn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnbrowseIn.Click
 
         Try
             OFD1.Title = "XML Message"
+            If InputDir <> "" Then
+                OFD1.InitialDirectory = InputDir
+            End If
             OFD1.ShowDialog()
 
         Catch ex As Exception
@@ -63,12 +116,13 @@
 
     End Sub
 
-    Sub LoadInText()
+    Private Sub LoadInText()
 
         ' Load the XML document in to the Text Window
         Try
+            txtXMLout.Text = ""
             txtInMessage.Text = LoadTextFile(InFilePath)
-           
+
         Catch ex As Exception
             LogError(ex, "frmXMLconv LoadInText")
         End Try
@@ -83,11 +137,14 @@
 
         Try
             ArrAllElements.Clear()
+            ArrParentNodes.Clear()
+            ArrPrintedChildren.Clear()
             ArrCDataNodes.Clear()
-
             'Convert xml_doc to new string builder text
             'EncodeXMLFile(InFilePath) '//encode some special characters like & to &amp;
             xml_Indoc.Load(InFilePath)
+            sb = New System.Text.StringBuilder
+            txtXMLout.Text = ""
 
             'Start processing each node in the Message
             If xml_Indoc.HasChildNodes = True Then
@@ -183,12 +240,6 @@
     Private Function GetNodeAction(ByVal nd As XmlNode) As enumXMLActionType
 
         Try
-            'sb.Append("   *** Type = " & nd.NodeType.ToString)
-            'sb.Append("   LocalName = " & nd.LocalName)
-            'sb.Append("   Name = " & nd.Name)
-            'sb.Append("   Value = " & nd.Value)
-            'sb.AppendLine("   # of Children = " & nd.ChildNodes.Count.ToString)
-
             Dim IsParentElement As Boolean = False
 
             If nd.HasChildNodes = True Then
@@ -202,34 +253,23 @@
                         End If
                         NumEle += 1
                         If NumEle = 2 Then
-                            'sb.AppendLine("   *** Node action E_PrintwCldrn ::" & nd.Name)
-                            'sb.AppendLine()
                             GetNodeAction = enumXMLActionType.E_PrintwCldrn
                             Exit Function
                         End If
                     End If
                 Next
                 If IsParentElement = True Then
-                    'sb.AppendLine("   *** Node action E_PrintwCldrn ::" & nd.Name)
-                    'sb.AppendLine()
                     GetNodeAction = enumXMLActionType.E_PrintwCldrn
                 Else
-                    'sb.AppendLine("   *** Node action E_PrintAsCdata ::" & nd.Name)
-                    'sb.AppendLine()
                     GetNodeAction = enumXMLActionType.E_PrintAsCdata
                 End If
             Else
                 If nd.NodeType = XmlNodeType.Element Then
-                    'sb.AppendLine("   *** Node action E_PrintAsCdata ::" & nd.Name)
-                    'sb.AppendLine()
                     GetNodeAction = enumXMLActionType.E_PrintAsCdata
                 Else
-                    'sb.AppendLine("   --- Node action E_Ignore ::" & nd.Name)
-                    'sb.AppendLine()
                     GetNodeAction = enumXMLActionType.E_Ignore
                 End If
             End If
-
 
         Catch ex As Exception
             LogError(ex, "frmXMLconv GetNodeAction")
@@ -386,6 +426,9 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
 
         Try
             SFD1.Title = "XML DTD File"
+            If InputDir <> "" Then
+                SFD1.InitialDirectory = InputDir
+            End If
             SFD1.ShowDialog()
 
         Catch ex As Exception
@@ -403,6 +446,7 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
                 If Save() = True Then
                     'MsgBox("Save was successful", MsgBoxStyle.OkOnly)
                     cmdOk.Enabled = True
+                    btnImportDTD.Enabled = True
                 End If
             End If
 
@@ -433,16 +477,15 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
     End Sub
 
     '*** Save XML DTD to File
-    Function Save() As Boolean
+    Private Function Save() As Boolean
 
         Try
             If SFD1.FileName <> "" Then
                 Save = SaveTextFile(OutFilePath, txtXMLout.Text)
             Else
                 MsgBox("Please enter a valid Output File Path", MsgBoxStyle.Information, "No Valid Output Path")
+                Save = False
             End If
-
-            Save = True
 
         Catch ex As Exception
             LogError(ex, "frmXMLconv Save")
@@ -453,18 +496,4 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
 
 #End Region
 
-
-    Private Sub cmdCancel_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdCancel.Click
-
-        Me.Close()
-
-    End Sub
-
-    Private Sub cmdHelp_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
-
-        ShowHelp(HHId.H_Welcome_to_SQData_Studio)
-
-    End Sub
-
-    
 End Class

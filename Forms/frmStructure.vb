@@ -13,11 +13,7 @@ Public Class frmStructure
     Dim colSkipNodes As New ArrayList
     Dim GottenFiles As Collection
     Dim FileNames As Collection
-    Friend WithEvents gbCOBOL As System.Windows.Forms.GroupBox
-    Friend WithEvents gbDesc As System.Windows.Forms.GroupBox
-    Friend WithEvents gbName As System.Windows.Forms.GroupBox
-    Friend WithEvents gbProp As System.Windows.Forms.GroupBox
-    Friend WithEvents gbSeg As System.Windows.Forms.GroupBox
+    Friend WithEvents btnGetXML As System.Windows.Forms.Button
 
     Dim DMLFile As String = ""
 
@@ -84,6 +80,11 @@ Public Class frmStructure
     Friend WithEvents gbDMLConn As System.Windows.Forms.GroupBox
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents cbConn As System.Windows.Forms.ComboBox
+    Friend WithEvents gbCOBOL As System.Windows.Forms.GroupBox
+    Friend WithEvents gbDesc As System.Windows.Forms.GroupBox
+    Friend WithEvents gbName As System.Windows.Forms.GroupBox
+    Friend WithEvents gbProp As System.Windows.Forms.GroupBox
+    Friend WithEvents gbSeg As System.Windows.Forms.GroupBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim configurationAppSettings As System.Configuration.AppSettingsReader = New System.Configuration.AppSettingsReader
         Me.cmdShowHideFieldAttr = New System.Windows.Forms.Button
@@ -99,10 +100,12 @@ Public Class frmStructure
         Me.ColumnHeader2 = New System.Windows.Forms.ColumnHeader
         Me.pnlSelect = New System.Windows.Forms.Panel
         Me.gbProp = New System.Windows.Forms.GroupBox
+        Me.btnGetXML = New System.Windows.Forms.Button
         Me.gbDMLConn = New System.Windows.Forms.GroupBox
         Me.cbConn = New System.Windows.Forms.ComboBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.Label3 = New System.Windows.Forms.Label
+        Me.Label7 = New System.Windows.Forms.Label
         Me.txtStructName = New System.Windows.Forms.TextBox
         Me.gbCOBOL = New System.Windows.Forms.GroupBox
         Me.txtCobolFilePath = New System.Windows.Forms.TextBox
@@ -112,12 +115,11 @@ Public Class frmStructure
         Me.txtDBDFilePath = New System.Windows.Forms.TextBox
         Me.chkAddDBD = New System.Windows.Forms.CheckBox
         Me.cmdBrowseDBDFile = New System.Windows.Forms.Button
+        Me.Label6 = New System.Windows.Forms.Label
         Me.gbName = New System.Windows.Forms.GroupBox
         Me.lblFile = New System.Windows.Forms.Label
         Me.txtFilePath = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
         Me.cmdBrowseFile = New System.Windows.Forms.Button
-        Me.Label6 = New System.Windows.Forms.Label
         Me.chkFTP = New System.Windows.Forms.CheckBox
         Me.gbDesc = New System.Windows.Forms.GroupBox
         Me.txtStructDesc = New System.Windows.Forms.TextBox
@@ -296,6 +298,7 @@ Public Class frmStructure
         '
         Me.gbProp.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbProp.Controls.Add(Me.btnGetXML)
         Me.gbProp.Controls.Add(Me.gbDMLConn)
         Me.gbProp.Controls.Add(Me.Label3)
         Me.gbProp.Controls.Add(Me.Label7)
@@ -313,6 +316,15 @@ Public Class frmStructure
         Me.gbProp.TabIndex = 77
         Me.gbProp.TabStop = False
         Me.gbProp.Text = "Description Properties"
+        '
+        'btnGetXML
+        '
+        Me.btnGetXML.Location = New System.Drawing.Point(266, 45)
+        Me.btnGetXML.Name = "btnGetXML"
+        Me.btnGetXML.Size = New System.Drawing.Size(142, 23)
+        Me.btnGetXML.TabIndex = 76
+        Me.btnGetXML.Text = "Get XML Message"
+        Me.btnGetXML.UseVisualStyleBackColor = True
         '
         'gbDMLConn
         '
@@ -353,6 +365,17 @@ Public Class frmStructure
         Me.Label3.Size = New System.Drawing.Size(38, 14)
         Me.Label3.TabIndex = 55
         Me.Label3.Text = "Name"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.Maroon
+        Me.Label7.Location = New System.Drawing.Point(48, 64)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(38, 14)
+        Me.Label7.TabIndex = 70
+        Me.Label7.Text = "Note :"
         '
         'txtStructName
         '
@@ -453,6 +476,17 @@ Public Class frmStructure
         Me.cmdBrowseDBDFile.TabIndex = 9
         Me.cmdBrowseDBDFile.Text = "..."
         '
+        'Label6
+        '
+        Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.Blue
+        Me.Label6.Location = New System.Drawing.Point(92, 64)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(288, 45)
+        Me.Label6.TabIndex = 69
+        Me.Label6.Text = "If structure represents an IMS segment, check the ""Add DBD Source"", specify the I" & _
+            "MS DBD file name, and highlight a segment name in the ""Segments"" tree."
+        '
         'gbName
         '
         Me.gbName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -490,17 +524,6 @@ Public Class frmStructure
         Me.txtFilePath.Size = New System.Drawing.Size(327, 20)
         Me.txtFilePath.TabIndex = 4
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.ForeColor = System.Drawing.Color.Maroon
-        Me.Label7.Location = New System.Drawing.Point(48, 64)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(38, 14)
-        Me.Label7.TabIndex = 70
-        Me.Label7.Text = "Note :"
-        '
         'cmdBrowseFile
         '
         Me.cmdBrowseFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -510,17 +533,6 @@ Public Class frmStructure
         Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFile.TabIndex = 5
         Me.cmdBrowseFile.Text = "..."
-        '
-        'Label6
-        '
-        Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.ForeColor = System.Drawing.Color.Blue
-        Me.Label6.Location = New System.Drawing.Point(92, 64)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(288, 45)
-        Me.Label6.TabIndex = 69
-        Me.Label6.Text = "If structure represents an IMS segment, check the ""Add DBD Source"", specify the I" & _
-            "MS DBD file name, and highlight a segment name in the ""Segments"" tree."
         '
         'chkFTP
         '
@@ -908,6 +920,13 @@ doAgain:
         Label7.Visible = False
         Label6.Visible = False
 
+        '///set Get XML Message Button
+        If StructType = enumStructure.STRUCT_XMLDTD Then
+            btnGetXML.Visible = False
+        Else
+            btnGetXML.Visible = False
+        End If
+
 
         '//Dont allow changing field once object is created coz it might conflict other place
         If IsNewObj = False And IsChangeObj = False Then
@@ -959,8 +978,10 @@ doAgain:
             tvFields.Nodes.Clear()
 
             If IsNewObj = True Or IsChangeObj = True Then
+
                 Dim outXMLPath As String
                 outXMLPath = GetOutDumpXML(objThis)
+
                 If outXMLPath = "" Then
                     Return False
                     Exit Try
@@ -1121,7 +1142,7 @@ doAgain:
                             If objThis.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
                                 If gbDMLConn.Visible = False Then
                                     FileNames = New Collection
-                                    FileNames.Add(DMLFile)
+                                    FileNames.Add(DMLFile, DMLFile)
                                 Else
                                     If txtFilePath.Text <> "" Then
                                         If cbConn.Text = "" Then
@@ -1131,7 +1152,14 @@ doAgain:
                                             Exit Try
                                         Else
                                             FileNames = New Collection
-                                            FileNames.Add(objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & txtFilePath.Text)
+                                            FileNames.Add(objThis.Connection.UserId & "." & _
+                                                          objThis.Connection.Password & "." & _
+                                                          objThis.Connection.Database & "." & _
+                                                          txtFilePath.Text, _
+                                                          objThis.Connection.UserId & "." & _
+                                                          objThis.Connection.Password & "." & _
+                                                          objThis.Connection.Database & "." & _
+                                                          txtFilePath.Text)
                                         End If
                                     Else
                                         MsgBox("File path cannot be blank.", MsgBoxStyle.Critical, MsgTitle)
@@ -1144,7 +1172,7 @@ doAgain:
                             Else
                                 If txtFilePath.Text <> "" Then
                                     FileNames = New Collection
-                                    FileNames.Add(txtFilePath.Text.Clone)
+                                    FileNames.Add(txtFilePath.Text.Clone, txtFilePath.Text.Clone)
                                 Else
                                     MsgBox("File path cannot be blank.", MsgBoxStyle.Critical, MsgTitle)
                                     Me.Cursor = Cursors.Default
@@ -1155,7 +1183,7 @@ doAgain:
                         Else
                             If txtCobolFilePath.Text <> "" Then
                                 FileNames = New Collection
-                                FileNames.Add(txtCobolFilePath.Text.Clone)
+                                FileNames.Add(txtCobolFilePath.Text.Clone, txtCobolFilePath.Text.Clone)
                             Else
                                 MsgBox("Cobol file path cannot be blank.", MsgBoxStyle.Critical, MsgTitle)
                                 Me.Cursor = Cursors.Default
@@ -1384,7 +1412,7 @@ nextFilename:   Next
                 OpenMultiFileDialog1.FileName = ""
                 extString = ".dml"
             Case modDeclares.enumStructure.STRUCT_XMLDTD
-                strFilter = "XML DTD Files (*.dtd)|*.dtd|All files (*.*)|*.*"
+                strFilter = "XML DTD Files (*.dtd)|*.dtd|XML Message Files (*.xml)|*.xml|All files (*.*)|*.*"
                 If objEnv.LocalDTDDir <> "" Then
                     OpenMultiFileDialog1.InitialDirectory = objEnv.LocalDTDDir
                 Else
@@ -1416,7 +1444,7 @@ nextFilename:   Next
                 FileNames = New Collection
                 For Each filename In OpenMultiFileDialog1.FileNames
                     txtFilePath.Text = txtFilePath.Text & filename & " "
-                    FileNames.Add(filename.Clone)
+                    FileNames.Add(filename.Clone, filename.Clone)
                 Next
 
                 txtFilePath.Text = txtFilePath.Text.Trim
@@ -1457,7 +1485,7 @@ nextFilename:   Next
                 FileNames = New Collection
                 For Each filename In OpenMultiFileDialog1.FileNames
                     txtCobolFilePath.Text = txtCobolFilePath.Text & OpenMultiFileDialog1.FileName & " " 'KS100906'
-                    FileNames.Add(filename.Clone)
+                    FileNames.Add(filename.Clone, filename.Clone)
                 Next
                 If txtStructName.Text.Trim = "" And FileNames.Count <= 1 Then
                     txtStructName.Text = IO.Path.GetFileNameWithoutExtension(txtCobolFilePath.Text)
@@ -2010,10 +2038,45 @@ nextFilename:   Next
                 GetOutDumpXML = ""
             End If
         Else
+            '///If it's an XML Message, convert it first to DTD
+            If objThis.fPath1.Contains(".xml") = True Then
+                Dim oldName As String = objThis.fPath1
+                Dim OutPath As String = ProcessXMLmessage(objThis.fPath1, objEnv.LocalDTDDir)
+                If OutPath <> "" Then
+                    objThis.fPath1 = OutPath
+                    txtFilePath.Text = OutPath
+                    txtStructName.Text = GetFileNameWithoutExtenstionFromPath(OutPath)
+                    If FileNames.Contains(oldName) = True Then
+                        FileNames.Remove(oldName)
+                    End If
+                    FileNames.Add(OutPath, OutPath)
+                End If
+            End If
             GetOutDumpXML = GetSQDumpXML(objThis.fPath1, objThis.StructureType)
         End If
 
     End Function
+
+    'Private Sub btnGetXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetXML.Click
+
+    '    Try
+    '        Dim frm As New frmXMLconv
+    '        Dim DTDpath As String
+
+    '        'Open XMLconversion Form and get a converted XML Message
+    '        DTDpath = frm.GetDTD()
+
+    '        If DTDpath <> "" Then
+    '            txtFilePath.Text = DTDpath
+    '            txtStructName.Text = GetFileNameWithoutExtenstionFromPath(DTDpath)
+    '            UpdateControls()
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "frmStructure btnGetXML_Click")
+    '    End Try
+
+    'End Sub
 
 End Class
 
