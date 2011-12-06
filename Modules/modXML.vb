@@ -516,9 +516,9 @@ Public Module modXML
             End Select
 
             If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                GetSQDumpXML = strTempDir & strFilePrefix & par1 & ".xml"   '& "\" & "\"
+                GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"   '& "\" 
             Else
-                GetSQDumpXML = strTempDir & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"   '& "\" & "\" 
+                GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"   '& "\" & "\" 
             End If
 
             '//delete previous temp file
@@ -611,9 +611,9 @@ Public Module modXML
                         '//Now return output file path : 
                         '<temp folder>\<fileprefix><input filename no extension>.XML
                         If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                            GetSQDumpXML = strTempDir & strFilePrefix & par1 & ".xml"    '& "\"& "\"
+                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"    '& "\"
                         Else
-                            GetSQDumpXML = strTempDir & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"  '& "\" & "\"
+                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"  '& "\" & "\"
                         End If
                     End If
 

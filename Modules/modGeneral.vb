@@ -1951,7 +1951,7 @@ tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" 
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & TempFolderName & "\"
+        AppTemp = AppData & TempFolderName '& "\"
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
