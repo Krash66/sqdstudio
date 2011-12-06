@@ -1877,29 +1877,72 @@ Public Module modGeneral
     '//Gets ..My Documents\Design Studio\
     Function GetAppData() As String
 
-        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-        'System.Windows.Forms.Application.LocalUserAppDataPath()
+        'set Appdata to global variable AppDataPath
+        'Dim AppData As String = AppDataPath  'System.Windows.Forms.Application.LocalUserAppDataPath()
+        Try
+            'see if AppData Exists
+            If System.IO.Directory.Exists(AppDataPath) = True Then
+                GetAppData = AppDataPath
+                If Right(GetAppData, 1) <> "\" Then
+                    GetAppData = GetAppData & "\"
+                End If
+                Exit Try
+            End If
 
-        Dim AppTemp As String = ""
+            Dim diares As DialogResult
+tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" & Chr(13) & _
+                            "or deleted since Design Studio was last opened." & Chr(13) & _
+                            "How would you like to proceed? :" & Chr(13) & _
+                            "Create a new 'Design Studio' directory in 'My Documents' (YES)" & Chr(13) & _
+                            "Browse to new location where directory was moved  (NO)" _
+                            , MsgBoxStyle.YesNo, _
+                            "..\Design Studio Directory Location")
+            If diares = DialogResult.Yes Then
+                'set AppTemp to ..\MyDocs\Design Studio\
+                Dim AppTemp As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments()
+                If Right(AppTemp, 1) <> "\" Then
+                    AppTemp = AppTemp & "\"
+                End If
+                AppTemp = AppTemp & "Design Studio\"
+                GetAppData = AppTemp
+            Else
+                dlgBrowseFolder.RootFolder = Environment.SpecialFolder.MyDocuments
+                dlgBrowseFolder.ShowNewFolderButton = False
+                dlgBrowseFolder.Description = "Browse to 'Design Studio' Folder location"
+                If dlgBrowseFolder.ShowDialog() = DialogResult.OK Then
+                    If dlgBrowseFolder.SelectedPath.Contains("Design Studio") = True Then
+                        GetAppData = dlgBrowseFolder.SelectedPath
+                        If Right(GetAppData, 1) <> "\" Then
+                            GetAppData = GetAppData & "\"
+                        End If
+                    Else
+                        MsgBox("Sorry, you must locate the 'Design Studio' data directory", MsgBoxStyle.OkOnly)
+                        GoTo tryagain
+                    End If
+                Else
+                    MsgBox("Sorry, you must locate the 'Design Studio' data directory", MsgBoxStyle.OkOnly)
+                    GoTo tryagain
+                End If
+            End If
+            If Right(GetAppData, 1) <> "\" Then
+                GetAppData = GetAppData & "\"
+            End If
+            AppDataPath = GetAppData
 
-        If Right(AppData, 1) <> "\" Then
-            AppData = AppData & "\"
-        End If
-
-        AppTemp = AppData & "Design Studio\"
-
-        If System.IO.Directory.Exists(AppTemp) = False Then
-            System.IO.Directory.CreateDirectory(AppTemp)
-        End If
-
-        GetAppData = AppTemp
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetAppData")
+            GetAppData = AppDataPath
+            If Right(GetAppData, 1) <> "\" Then
+                GetAppData = GetAppData & "\"
+            End If
+        End Try
 
     End Function
 
-    '//Creates a Tempfolder in ..My Documents\Design Studio\
+    '//Creates a Tempfolder in ..My Documents\Design Studio\Temp\
     Function GetAppTemp(Optional ByVal TempFolderName As String = "Temp") As String
 
-        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        Dim AppData As String = GetAppData()
         'System.Windows.Forms.Application.LocalUserAppDataPath()
 
         Dim AppTemp As String = ""
@@ -1908,7 +1951,7 @@ Public Module modGeneral
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & "Design Studio\" & TempFolderName
+        AppTemp = AppData & TempFolderName & "\"
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -1918,10 +1961,10 @@ Public Module modGeneral
 
     End Function
 
-    '//Creates a Backupfolder in ..My Documents\Design Studio\
+    '//Creates a Backupfolder in ..My Documents\Design Studio\Backup\
     Function GetAppBackup(Optional ByVal BackupFolderName As String = "Backup") As String
 
-        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        Dim AppData As String = GetAppData()
         'System.Windows.Forms.Application.LocalUserAppDataPath()
 
         Dim AppTemp As String = ""
@@ -1930,7 +1973,7 @@ Public Module modGeneral
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & "Design Studio\" & BackupFolderName
+        AppTemp = AppData & BackupFolderName & "\"
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -1940,10 +1983,10 @@ Public Module modGeneral
 
     End Function
 
-    '//Creates a Logfolder in ..My Documents\Design Studio\
+    '//Creates a Logfolder in ..My Documents\Design Studio\Logs\
     Function GetAppLog(Optional ByVal LogFolderName As String = "Logs") As String
 
-        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        Dim AppData As String = GetAppData()
         'System.Windows.Forms.Application.LocalUserAppDataPath()
 
         Dim AppTemp As String = ""
@@ -1952,7 +1995,7 @@ Public Module modGeneral
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & "Design Studio\" & LogFolderName
+        AppTemp = AppData & LogFolderName & "\"
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -1962,10 +2005,10 @@ Public Module modGeneral
 
     End Function
 
-    '//Creates a Projectfolder in ..My Documents\Design Studio\
+    '//Creates a Projectfolder in ..My Documents\Design Studio\Projects\
     Function GetAppProj(Optional ByVal ProjectFolderName As String = "Projects") As String
 
-        Dim AppData As String = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+        Dim AppData As String = GetAppData()
         'System.Windows.Forms.Application.LocalUserAppDataPath()
 
         Dim AppTemp As String = ""
@@ -1974,7 +2017,7 @@ Public Module modGeneral
             AppData = AppData & "\"
         End If
 
-        AppTemp = AppData & "Design Studio\" & ProjectFolderName
+        AppTemp = AppData & ProjectFolderName & "\"
 
         If System.IO.Directory.Exists(AppTemp) = False Then
             System.IO.Directory.CreateDirectory(AppTemp)
@@ -2014,6 +2057,7 @@ Public Module modGeneral
     End Function
 
     Function GetDirFromPath(ByVal filepath As String) As String
+
         Dim tempStr As String
         Dim idx As Integer
 
@@ -2080,7 +2124,7 @@ Public Module modGeneral
     '//Creates a Query folder in the Application directory
     Function QueryFolderPath(Optional ByVal QueryFolderName As String = "Queries") As String
 
-        Dim AppPath As String = GetAppData() & "\"
+        Dim AppPath As String = GetAppData()
 
         If System.IO.Directory.Exists(AppPath & QueryFolderName) = False Then
             System.IO.Directory.CreateDirectory(AppPath & QueryFolderName)

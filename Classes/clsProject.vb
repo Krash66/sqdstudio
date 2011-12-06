@@ -1,6 +1,13 @@
 Public Class clsProject
     Implements INode
 
+    '//User Settings
+    Public MainSeparatorX As Integer = 240
+    Public Environments As New Collection
+    Public Maplist As New ArrayList
+
+#Region "Private Variables"
+
     Private m_ProjectName As String = ""
     Private m_ProjectVersion As String = ""
     Private m_SecurityAttr As String = ""
@@ -76,11 +83,6 @@ Public Class clsProject
     Private m_variables As String = "VARIABLES"
     Private m_variablesATTR As String = "VARIABLESATTR" 'newV3
 
-    '//User Settings
-    Public MainSeparatorX As Integer = 240
-    Public Environments As New Collection
-    Public Maplist As New ArrayList
-
     Private m_ENVexpanded As Boolean = True
     Private m_ENV_FOexpanded As Boolean = True
     Private m_CONNexpanded As Boolean = True
@@ -107,6 +109,7 @@ Public Class clsProject
 
     Private m_IsLoaded As Boolean = False
 
+#End Region
 
 #Region "INode Implementation"
 
@@ -1369,114 +1372,6 @@ Public Class clsProject
 
 #Region "Methods"
 
-    '//New 3/16/2007 by TK
-    Public Function SaveToRegistry() As Boolean
-
-        Dim ReqLogin As String
-        Dim ReqSchema As String
-        Try
-            ' Save the Last Project and Main Separator to the registry
-            Application.UserAppDataRegistry.SetValue("ProjName", Me.ProjectName)
-            Application.UserAppDataRegistry.SetValue("LastDSN", Me.ProjectMetaDSN)
-            Application.UserAppDataRegistry.SetValue("LastDesc", Me.ProjectDesc)
-            Application.UserAppDataRegistry.SetValue("LastVer", Me.ProjectVersion)
-            Application.UserAppDataRegistry.SetValue("MainSeparator", Me.MainSeparatorX)
-            Application.UserAppDataRegistry.SetValue("ODBCType", Me.ODBCtype)
-            Application.UserAppDataRegistry.SetValue("TablePrefix", Me.TablePrefix)
-            Application.UserAppDataRegistry.SetValue("CreationDate", Me.ProjectCreationDate)
-            Application.UserAppDataRegistry.SetValue("LastUpdate", Me.ProjectLastUpdated)
-            If Me.MapListPath IsNot Nothing Then
-                Application.UserAppDataRegistry.SetValue(Me.ProjectName & "MapListPath", Me.MapListPath)
-            End If
-            Application.UserAppDataRegistry.SetValue("MetaVer", Me.ProjectMetaVersion.ToString)
-            If Me.LoginReq = True Then
-                ReqLogin = "true"
-            Else
-                ReqLogin = "false"
-            End If
-            Application.UserAppDataRegistry.SetValue("LoginReq", ReqLogin)
-            If Me.SchemaReq = True Then
-                ReqSchema = "true"
-            Else
-                ReqSchema = "false"
-            End If
-            Application.UserAppDataRegistry.SetValue("SchemaReq", ReqSchema)
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsProject SaveToRegistry")
-            Return False
-        End Try
-
-    End Function
-
-    '//New 3/16/2007 by TK
-    Public Function RetrieveFromRegistry() As Boolean
-
-        Dim ReqLogin As String
-        Dim ReqSchema As String
-        Dim ver As String
-
-        Try
-            ' Get the Last Project and Main Separator from the registry.
-            If Not (Application.UserAppDataRegistry.GetValue("ProjName") Is Nothing) Then
-                Me.ProjectName = Application.UserAppDataRegistry.GetValue("ProjName").ToString()
-                Me.ProjectMetaDSN = Application.UserAppDataRegistry.GetValue("LastDSN").ToString
-                Me.ProjectDesc = Application.UserAppDataRegistry.GetValue("LastDesc").ToString
-                Me.ProjectVersion = Application.UserAppDataRegistry.GetValue("LastVer").ToString
-                Me.MainSeparatorX = CInt(Application.UserAppDataRegistry.GetValue("MainSeparator").ToString)
-                Me.ODBCtype = CInt(Application.UserAppDataRegistry.GetValue("ODBCtype").ToString)
-                Me.TablePrefix = Application.UserAppDataRegistry.GetValue("TablePrefix").ToString
-                Me.ProjectCreationDate = Application.UserAppDataRegistry.GetValue("CreationDate").ToString
-                Me.ProjectLastUpdated = Application.UserAppDataRegistry.GetValue("LastUpdate").ToString
-                If Application.UserAppDataRegistry.GetValue("MetaVer") IsNot Nothing Then
-                    ver = Application.UserAppDataRegistry.GetValue("MetaVer").ToString()
-                    If ver = "V2" Or ver = "0" Then
-                        Me.ProjectMetaVersion = enumMetaVersion.V2
-                    Else
-                        Me.ProjectMetaVersion = enumMetaVersion.V3
-                    End If
-                Else
-                    Me.ProjectMetaVersion = enumMetaVersion.V2
-                End If
-                If Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath") IsNot Nothing Then
-                    Me.MapListPath = Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath").ToString
-                    Me.MapListPath = Strings.Replace(Me.MapListPath, "\\", "\", , , CompareMethod.Text)
-                Else
-                    Me.MapListPath = ""
-                End If
-                If Application.UserAppDataRegistry.GetValue("LoginReq") IsNot Nothing Then
-                    ReqLogin = Application.UserAppDataRegistry.GetValue("LoginReq").ToString
-                Else
-                    ReqLogin = ""
-                End If
-                If ReqLogin = "true" Then
-                    Me.LoginReq = True
-                Else
-                    Me.LoginReq = False
-                End If
-                If Application.UserAppDataRegistry.GetValue("SchemaReq") IsNot Nothing Then
-                    ReqSchema = Application.UserAppDataRegistry.GetValue("SchemaReq").ToString
-                Else
-                    ReqSchema = ""
-                End If
-                If ReqSchema = "true" Then
-                    Me.SchemaReq = True
-                Else
-                    Me.SchemaReq = False
-                End If
-            End If
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "clsProject RetrieveFromRegistry")
-            Return False
-        End Try
-
-    End Function
-
     Function InsertATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
 
         Dim cmd As New Odbc.OdbcCommand
@@ -1623,6 +1518,273 @@ Public Class clsProject
 
         Catch ex As Exception
             LogError(ex, "clsProject DeleteATTR")
+            Return False
+        End Try
+
+    End Function
+
+#Region "Registry Operations - Now Unused"
+
+    ''//New 3/16/2007 by TK
+    'Public Function SaveToRegistry() As Boolean
+
+    '    Dim ReqLogin As String
+    '    Dim ReqSchema As String
+    '    Try
+    '        ' Save the Last Project and Main Separator to the registry
+    '        Application.UserAppDataRegistry.SetValue("ProjName", Me.ProjectName)
+    '        Application.UserAppDataRegistry.SetValue("LastDSN", Me.ProjectMetaDSN)
+    '        Application.UserAppDataRegistry.SetValue("LastDesc", Me.ProjectDesc)
+    '        Application.UserAppDataRegistry.SetValue("LastVer", Me.ProjectVersion)
+    '        Application.UserAppDataRegistry.SetValue("MainSeparator", Me.MainSeparatorX)
+    '        Application.UserAppDataRegistry.SetValue("ODBCType", Me.ODBCtype)
+    '        Application.UserAppDataRegistry.SetValue("TablePrefix", Me.TablePrefix)
+    '        Application.UserAppDataRegistry.SetValue("CreationDate", Me.ProjectCreationDate)
+    '        Application.UserAppDataRegistry.SetValue("LastUpdate", Me.ProjectLastUpdated)
+    '        If Me.MapListPath IsNot Nothing Then
+    '            Application.UserAppDataRegistry.SetValue(Me.ProjectName & "MapListPath", Me.MapListPath)
+    '        End If
+    '        Application.UserAppDataRegistry.SetValue("MetaVer", Me.ProjectMetaVersion.ToString)
+    '        If Me.LoginReq = True Then
+    '            ReqLogin = "true"
+    '        Else
+    '            ReqLogin = "false"
+    '        End If
+    '        Application.UserAppDataRegistry.SetValue("LoginReq", ReqLogin)
+    '        If Me.SchemaReq = True Then
+    '            ReqSchema = "true"
+    '        Else
+    '            ReqSchema = "false"
+    '        End If
+    '        Application.UserAppDataRegistry.SetValue("SchemaReq", ReqSchema)
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        LogError(ex, "clsProject SaveToRegistry")
+    '        Return False
+    '    End Try
+
+    'End Function
+
+    '//New 3/16/2007 by TK
+    'Public Function RetrieveFromRegistry() As Boolean
+
+    '    Dim ReqLogin As String
+    '    Dim ReqSchema As String
+    '    Dim ver As String
+
+    '    Try
+    '        ' Get the Last Project and Main Separator from the registry.
+    '        If Not (Application.UserAppDataRegistry.GetValue("ProjName") Is Nothing) Then
+    '            Me.ProjectName = Application.UserAppDataRegistry.GetValue("ProjName").ToString()
+    '            Me.ProjectMetaDSN = Application.UserAppDataRegistry.GetValue("LastDSN").ToString
+    '            Me.ProjectDesc = Application.UserAppDataRegistry.GetValue("LastDesc").ToString
+    '            Me.ProjectVersion = Application.UserAppDataRegistry.GetValue("LastVer").ToString
+    '            Me.MainSeparatorX = CInt(Application.UserAppDataRegistry.GetValue("MainSeparator").ToString)
+    '            Me.ODBCtype = CInt(Application.UserAppDataRegistry.GetValue("ODBCtype").ToString)
+    '            Me.TablePrefix = Application.UserAppDataRegistry.GetValue("TablePrefix").ToString
+    '            Me.ProjectCreationDate = Application.UserAppDataRegistry.GetValue("CreationDate").ToString
+    '            Me.ProjectLastUpdated = Application.UserAppDataRegistry.GetValue("LastUpdate").ToString
+    '            If Application.UserAppDataRegistry.GetValue("MetaVer") IsNot Nothing Then
+    '                ver = Application.UserAppDataRegistry.GetValue("MetaVer").ToString()
+    '                If ver = "V2" Or ver = "0" Then
+    '                    Me.ProjectMetaVersion = enumMetaVersion.V2
+    '                Else
+    '                    Me.ProjectMetaVersion = enumMetaVersion.V3
+    '                End If
+    '            Else
+    '                Me.ProjectMetaVersion = enumMetaVersion.V2
+    '            End If
+    '            If Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath") IsNot Nothing Then
+    '                Me.MapListPath = Application.UserAppDataRegistry.GetValue(Me.ProjectName & "MapListPath").ToString
+    '                Me.MapListPath = Strings.Replace(Me.MapListPath, "\\", "\", , , CompareMethod.Text)
+    '            Else
+    '                Me.MapListPath = ""
+    '            End If
+    '            If Application.UserAppDataRegistry.GetValue("LoginReq") IsNot Nothing Then
+    '                ReqLogin = Application.UserAppDataRegistry.GetValue("LoginReq").ToString
+    '            Else
+    '                ReqLogin = ""
+    '            End If
+    '            If ReqLogin = "true" Then
+    '                Me.LoginReq = True
+    '            Else
+    '                Me.LoginReq = False
+    '            End If
+    '            If Application.UserAppDataRegistry.GetValue("SchemaReq") IsNot Nothing Then
+    '                ReqSchema = Application.UserAppDataRegistry.GetValue("SchemaReq").ToString
+    '            Else
+    '                ReqSchema = ""
+    '            End If
+    '            If ReqSchema = "true" Then
+    '                Me.SchemaReq = True
+    '            Else
+    '                Me.SchemaReq = False
+    '            End If
+    '        End If
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        LogError(ex, "clsProject RetrieveFromRegistry")
+    '        Return False
+    '    End Try
+
+    'End Function
+
+#End Region
+    
+    '// New 11/2011 to get rid of Project saving to Registry
+    Function SaveToXML() As Boolean
+
+        Try
+            Dim ReqLogin As String
+            Dim ReqSchema As String
+            '*** Path to Project XML file
+            Dim ProjXMLFullPath As String = GetAppProj() & "LastProj.settings.xml"
+            '*** New XML writer for XML file
+            Dim XMLwrite As New Xml.XmlTextWriter(ProjXMLFullPath, System.Text.Encoding.UTF8)
+
+            '*** define doctype and formatting and Open XML file
+            XMLwrite.Formatting = Formatting.Indented
+            XMLwrite.WriteStartDocument()
+            XMLwrite.WriteStartElement("Project", Me.ProjectName, ProjXMLFullPath)
+
+            '*** write Data
+            XMLwrite.WriteElementString("ProjName", Me.ProjectName)
+            XMLwrite.WriteElementString("LastDSN", Me.ProjectMetaDSN)
+            XMLwrite.WriteElementString("LastDesc", Me.ProjectDesc)
+            XMLwrite.WriteElementString("LastVer", Me.ProjectVersion)
+            XMLwrite.WriteElementString("MainSeparator", Me.MainSeparatorX)
+            XMLwrite.WriteElementString("ODBCType", Me.ODBCtype)
+            XMLwrite.WriteElementString("TablePrefix", Me.TablePrefix)
+            XMLwrite.WriteElementString("CreationDate", Me.ProjectCreationDate)
+            XMLwrite.WriteElementString("LastUpdate", Me.ProjectLastUpdated)
+            XMLwrite.WriteElementString("MetaVer", Me.ProjectMetaVersion.ToString)
+            If Me.MapListPath IsNot Nothing Then
+                XMLwrite.WriteElementString(Me.ProjectName & "MapListPath", Me.MapListPath)
+            End If
+            If Me.LoginReq = True Then
+                ReqLogin = "true"
+            Else
+                ReqLogin = "false"
+            End If
+            XMLwrite.WriteElementString("LoginReq", ReqLogin)
+            If Me.SchemaReq = True Then
+                ReqSchema = "true"
+            Else
+                ReqSchema = "false"
+            End If
+            XMLwrite.WriteElementString("SchemaReq", ReqSchema)
+
+            '*** write closing element and close file
+            XMLwrite.WriteEndElement()
+            XMLwrite.WriteEndDocument()
+            XMLwrite.Close()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsProject SaveToXML")
+            Return False
+        End Try
+
+    End Function
+
+    '// New 11/2011 to get rid of Project Retrieving from Registry
+    Function RetrieveFromXML() As Boolean
+
+        Try
+            Dim ReqLogin As String
+            Dim ReqSchema As String
+            Dim ver As String
+            Dim curNode As XmlNode
+            '*** Path to Project XML file
+            Dim ProjXMLFullPath As String = GetAppProj() & "LastProj.settings.xml"
+
+            If System.IO.File.Exists(ProjXMLFullPath) = False Then
+                Return True
+                Exit Try
+            End If
+
+            '*** New XML Doc for XML file
+            Dim XMLDoc As New Xml.XmlDocument
+            XMLDoc.Load(ProjXMLFullPath)
+
+            If XMLDoc.HasChildNodes = True Then
+                curNode = XMLDoc.LastChild
+                Dim TempStr As String = ""
+                For Each nd As XmlNode In curNode.ChildNodes
+                    If nd.InnerText <> "" Then
+                        TempStr = nd.InnerText
+                    Else
+                        TempStr = ""
+                    End If
+                    Select Case nd.Name
+                        Case "ProjName"
+                            Me.ProjectName = TempStr
+
+                        Case "LastDSN"
+                            Me.ProjectMetaDSN = TempStr
+
+                        Case "LastDesc"
+                            Me.ProjectDesc = TempStr
+
+                        Case "LastVer"
+                            Me.ProjectVersion = TempStr
+
+                        Case "MainSeparator"
+                            Me.MainSeparatorX = TempStr
+
+                        Case "ODBCType"
+                            Me.ODBCtype = TempStr
+
+                        Case "TablePrefix"
+                            Me.TablePrefix = TempStr
+
+                        Case "CreationDate"
+                            Me.ProjectCreationDate = TempStr
+
+                        Case "LastUpdate"
+                            Me.ProjectLastUpdated = TempStr
+
+                        Case "MetaVer"
+                            ver = TempStr
+                            If ver = "V2" Or ver = "0" Then
+                                Me.ProjectMetaVersion = enumMetaVersion.V2
+                            Else
+                                Me.ProjectMetaVersion = enumMetaVersion.V3
+                            End If
+
+                        Case Me.ProjectName & "MapListPath"
+                            Me.MapListPath = TempStr
+                            Me.MapListPath = Strings.Replace(Me.MapListPath, "\\", "\", , , CompareMethod.Text)
+
+                        Case "LoginReq"
+                            ReqLogin = TempStr
+                            If ReqLogin = "true" Then
+                                Me.LoginReq = True
+                            Else
+                                Me.LoginReq = False
+                            End If
+
+                        Case "SchemaReq"
+                            ReqSchema = TempStr
+                            If ReqSchema = "true" Then
+                                Me.SchemaReq = True
+                            Else
+                                Me.SchemaReq = False
+                            End If
+
+                    End Select
+                Next
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsProject RetrieveFromXML")
             Return False
         End Try
 

@@ -238,15 +238,15 @@ Public Class frmLog
     Public Function ShowLog() As Boolean
 
         Try
-            If IO.File.Exists(GetAppLog() & "\" & errorTrace) Then
-                txtLog.Text = LoadTextFile(GetAppLog() & "\" & errorTrace)
+            If IO.File.Exists(GetAppLog() & errorTrace) Then
+                txtLog.Text = LoadTextFile(GetAppLog() & errorTrace)
             End If
-            If IO.File.Exists(GetAppLog() & "\" & TraceFile) Then
-                SqlLog.Text = LoadTextFile(GetAppLog() & "\" & TraceFile)
+            If IO.File.Exists(GetAppLog() & TraceFile) Then
+                SqlLog.Text = LoadTextFile(GetAppLog() & TraceFile)
                 SqlLog.ScrollToCaret()
             End If
-            If IO.File.Exists(GetAppLog() & "\" & ODBCTrace) Then
-                ODBClog.Text = LoadTextFile(GetAppLog() & "\" & ODBCTrace)
+            If IO.File.Exists(GetAppLog() & ODBCTrace) Then
+                ODBClog.Text = LoadTextFile(GetAppLog() & ODBCTrace)
                 ODBClog.ScrollToCaret()
             End If
         Catch ex As Exception
@@ -266,11 +266,11 @@ Public Class frmLog
     Private Sub cmdClearLog_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdClearLog.Click
 
         Try
-            IO.File.Delete(GetAppLog() & "\" & errorTrace)
+            IO.File.Delete(GetAppLog() & errorTrace)   '& "\"
             txtLog.Text = ""
-            IO.File.Delete(GetAppLog() & "\" & TraceFile)
+            IO.File.Delete(GetAppLog() & TraceFile)
             SqlLog.Text = ""
-            IO.File.Delete(GetAppLog() & "\" & ODBCTrace)
+            IO.File.Delete(GetAppLog() & ODBCTrace)
             ODBCLog.Text = ""
         Catch ex As Exception
         End Try

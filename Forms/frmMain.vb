@@ -2208,20 +2208,13 @@ Public Class frmMain
 
     Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-        If Application.UserAppDataRegistry.GetValue("WinState") IsNot Nothing Then
-            Dim winStr As String = Application.UserAppDataRegistry.GetValue("WinState")
-            Select Case winStr
-                Case "Maximized"
-                    Me.WindowState = FormWindowState.Maximized
-                Case "Normal"
-                    Me.WindowState = FormWindowState.Normal
-                Case Else
-                    Me.WindowState = FormWindowState.Normal
-            End Select
-        End If
-
         InitMain()
+        If RetrieveStudioFromXML() = True Then
+            Me.WindowState = WinState
+        End If
+        Me.Show()
         LoadGlobalValues()
+        
         ToolBar1.Buttons(enumToolBarButtons.TB_MAP).Enabled = False
         System.Environment.SetEnvironmentVariable("PATH", GetAppPath() & ";" & System.Environment.GetEnvironmentVariable("PATH"))
 
@@ -2258,11 +2251,14 @@ Public Class frmMain
     Private Sub frmMain_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
 
         '/// Save Window State
-        Application.UserAppDataRegistry.SetValue("WinState", Me.WindowState)
+        WinState = Me.WindowState
+        SaveStudioToXML()
+        'Application.UserAppDataRegistry.SetValue("WinState", Me.WindowState)
         '//save project settings
         If Not CurLoadedProject Is Nothing Then
             CurLoadedProject.Save(True)
-            CurLoadedProject.SaveToRegistry()
+            'CurLoadedProject.SaveToRegistry()
+            CurLoadedProject.SaveToXML()
             CurLoadedProject = Nothing
         End If
         If cnn IsNot Nothing Then
@@ -3759,7 +3755,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 cNode.Text = obj.Project.ProjectName
                 'SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
                 CType(obj, clsProject).Save()
-                CType(obj, clsProject).SaveToRegistry()
+                'CType(obj, clsProject).SaveToRegistry()
+                CType(obj, clsProject).SaveToXML()
                 MsgClear = False
             End If
 
@@ -6730,7 +6727,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             If DoSave() = MsgBoxResult.Cancel Then Exit Sub
             If Not CurLoadedProject Is Nothing Then
                 CurLoadedProject.Save()
-                CurLoadedProject.SaveToRegistry()
+                'CurLoadedProject.SaveToRegistry()
+                CurLoadedProject.SaveToXML()
                 CurLoadedProject = Nothing
             End If
             tvExplorer.Nodes(0).Remove()
@@ -6740,7 +6738,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             If DoSave() = MsgBoxResult.Cancel Then Exit Sub
             If Not CurLoadedProject Is Nothing Then
                 CurLoadedProject.Save()
-                CurLoadedProject.SaveToRegistry()
+                'CurLoadedProject.SaveToRegistry()
+                CurLoadedProject.SaveToXML()
                 CurLoadedProject = Nothing
             End If
             Dim nd As TreeNode
@@ -6800,7 +6799,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         If DoSave() = MsgBoxResult.Cancel Then Exit Sub
         If Not CurLoadedProject Is Nothing Then
-            CurLoadedProject.SaveToRegistry()
+            'CurLoadedProject.SaveToRegistry()
+            CurLoadedProject.SaveToXML()
             CurLoadedProject = Nothing
         End If
         If cnn IsNot Nothing Then
@@ -6850,7 +6850,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
         If CurLoadedProject IsNot Nothing Then
             CurLoadedProject.Save()
-            CurLoadedProject.SaveToRegistry()
+            'CurLoadedProject.SaveToRegistry()
+            CurLoadedProject.SaveToXML()
             CurLoadedProject = Nothing
         End If
         cnn.Close()

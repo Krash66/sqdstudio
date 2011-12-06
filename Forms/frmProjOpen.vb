@@ -323,7 +323,9 @@ Public Class frmProjOpen
     Public Function OpenProj() As clsProject
 
         '// get the registry values for the last project opened
-        LastOpened = m_objthis.RetrieveFromRegistry()
+        'LastOpened = m_objthis.RetrieveFromRegistry()
+        LastOpened = m_objthis.RetrieveFromXML
+
         If LastOpened = True Then
             fillLastProjPanel()
         End If

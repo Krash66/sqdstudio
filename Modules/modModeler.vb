@@ -29,7 +29,7 @@ Module modModeler
     Dim OutType As String = ""
     Dim FileExt As String = ""
     Dim FullPathModl As String = ""
-    Dim ErrFile As String = GetAppLog() & "\" & "ModelErr.Log"
+    Dim ErrFile As String = GetAppLog() & "ModelErr.Log"
 
 
     'FileStreams and stream writers

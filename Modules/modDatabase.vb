@@ -155,7 +155,8 @@ Public Module modDatabase
                 cNode.Text = obj.Project.ProjectName
                 'SCmain.SplitterDistance = CType(obj, clsProject).MainSeparatorX
                 CType(obj, clsProject).Save()
-                CType(obj, clsProject).SaveToRegistry()
+                'CType(obj, clsProject).SaveToRegistry()
+                CType(obj, clsProject).SaveToXML()
                 MsgClear = False
             End If
 

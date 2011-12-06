@@ -65,6 +65,10 @@ Public Module modDeclares
 
     Public Procs As New Collection
 
+    Public AppDataPath As String
+    Public WinState As FormWindowState
+
+
 #End Region
 
 #Region "Private Variables"
@@ -480,9 +484,9 @@ Public Module modDeclares
                 ODBCTrace = "ODBCErrLog.log"
             End If
             If ClearLogOnStartUp = True Then
-                System.IO.File.Delete(GetAppLog() & "\" & TraceFile)  '
-                System.IO.File.Delete(GetAppLog() & "\" & errorTrace)   '& "\"
-                System.IO.File.Delete(GetAppLog() & "\" & ODBCTrace)
+                System.IO.File.Delete(GetAppLog() & TraceFile)  '
+                System.IO.File.Delete(GetAppLog() & errorTrace)   '& "\"
+                System.IO.File.Delete(GetAppLog() & ODBCTrace)
                 'System.IO.File.Delete(GetAppPath() & "*.log")
             End If
             EnableLogging = True

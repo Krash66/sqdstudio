@@ -22,6 +22,7 @@ Public Enum FTPFileEntryType
     MVS_Dir
     MVS_Partitioned
     MVS_JCL
+    WINDOWS
 End Enum
 
 Public Class FTPFile
@@ -62,7 +63,7 @@ Public Class FTPFile
                     strEntryType = "MVS_Partitioned|"
                 Case FTPFileEntryType.UNIX
                     strEntryType = "UNIX|"
-                Case FTPFileEntryType.UNKNOWN
+                Case FTPFileEntryType.WINDOWS
                     strEntryType = ""
             End Select
             Return strEntryType & Me.UnParsed
@@ -87,6 +88,8 @@ Public Class FTPFile
                 Me.LIST_Parse_MVS_partitioned(Listing)
             Case FTPFileEntryType.UNIX
                 Me.LIST_Parse_Unix(Listing)
+            Case FTPFileEntryType.WINDOWS
+                Me.LIST_Parse_Windows(Listing)
         End Select
 
     End Function
@@ -147,6 +150,48 @@ Public Class FTPFile
 
     End Sub
 
+    Private Sub LIST_Parse_Windows(ByVal line As String)
+
+        '04-05-11  04:26PM                  220 Linksys.txt 
+        '12-02-11  04:22PM       <DIR>          Tom 
+        Dim re As New Regex("((?:[a-zA-Z]{3} +)?[^ ]+ +[^ ]+) +([^ ]+)  +([0-9]+)  +(.*)")
+        Dim matches As Match
+
+        Me.EntryType = FTPFileEntryType.WINDOWS
+        Me.UnParsed = line
+        matches = re.Match(line)
+        Me.Mode = matches.Groups(3).ToString
+
+        If Me.Mode = "<dir>" Then
+            Me.Type = FTPFileType.Directory
+        Else
+            Me.Type = FTPFileType.File
+        End If
+        'Select Case Me.Mode.Chars(0)
+        '    Case "-"
+
+        '    Case "d"
+
+        '    Case "l"
+        '        Me.Type = FTPFileType.Symlink
+        '    Case "p"
+        '        Me.Type = FTPFileType.Pipe
+        '    Case Else
+        '        Me.Type = FTPFileType.Other
+        'End Select
+
+        'Me.Owner = matches.Groups(2).ToString
+        'Me.Group = matches.Groups(3).ToString
+        Me.Size = matches.Groups(4).ToString
+        Me.ModDate = matches.Groups(1).ToString
+        Me.Filename = matches.Groups(5).ToString
+
+        If Me.Type = FTPFileType.Symlink Then
+            Me.Filename = Mid(Me.Filename, 1, InStr(Me.Filename, " -> ") - 1)
+        End If
+
+    End Sub
+
     Private Sub LIST_Parse_MVS_dir(ByVal line As String)
 
         Dim matches As Match
@@ -200,8 +245,8 @@ Public Class FTPClient
     Shared oldUsername As String
     Shared olddir As String
     Private Password As String
-    Private ScriptFile As String = "r.ftp"
-    Private TempFile As String = "ftp.out"
+    Private ScriptFile As String = GetAppLog() & "r.ftp"
+    Private TempFile As String = GetAppLog() & "ftp.out"
     Public fScript As StreamWriter
 
     Public Files As Collection
@@ -395,7 +440,9 @@ Public Class FTPClient
         CDLS = Nothing
         If (Listing.Count > 0) Then
             file.EntryType = LIST_type(Listing(1))
-            Listing.Remove(1)
+            If file.EntryType <> FTPFileEntryType.WINDOWS Then
+                Listing.Remove(1)
+            End If
 
             CDLS = New Collection
             For Each line In Listing
@@ -415,7 +462,7 @@ Public Class FTPClient
         Dim file As New FTPFile
 
         fScript.WriteLine("dir")
-        OutText.AppendText("dir" & Chr(13))
+        OutText.AppendText("dir" & Chr(10))
         Exec_FTP_Script(fScript, Me.TempFile)
 
         Listing = LIST_seperate(Me.TempFile)
@@ -423,7 +470,9 @@ Public Class FTPClient
         LIST = Nothing
         If (Listing.Count > 0) Then
             file.EntryType = LIST_type(Listing(1))
-            Listing.Remove(1)
+            If file.EntryType <> FTPFileEntryType.UNIX Then
+                Listing.Remove(1)
+            End If
 
             LIST = New Collection
             For Each line In Listing
@@ -449,10 +498,10 @@ Public Class FTPClient
                 SystemType = FTPDType.Unix
 
                 'If Headers.StartsWith("total ") Then
-                '   LIST_type = FTPFileEntryType.UNIX
-                '   SystemType = FTPDType.Unix
+                '    LIST_type = FTPFileEntryType.UNIX
+                '    SystemType = FTPDType.Unix
                 'Else
-                '    LIST_type = Nothing
+                '    LIST_type = FTPFileEntryType.WINDOWS
                 '    SystemType = FTPDType.Windows
                 'End If
         End Select
@@ -502,9 +551,9 @@ Public Class FTPClient
         fLog.Close()
 
         If i > 0 Then
-            'Remove in reverse until line begins with ftp:
+            'Remove in reverse until line begins with 226 or  ftp:
             line = listing(i)
-            While Not i < 1 And Not line.Substring(0, 5) = "ftp: "
+            While Not i < 1 And line.Substring(0, 5) <> "ftp: "  '226
                 listing.Remove(i)
                 i = i - 1
                 If i > 0 Then
@@ -535,7 +584,7 @@ Public Class FTPClient
         Dim fOut As New StreamWriter(Me.ScriptFile)
         fOut.WriteLine("open " & Hostname & " " & Port)
         OutText.AppendText("open " & Hostname & " " & Port & Chr(10))
-        fOut.WriteLine(Username)
+        fOut.WriteLine(Username)                      ' & " " & Password
         OutText.AppendText(Username & Chr(10))
         fOut.WriteLine(Password)
         'OutText.AppendText(Password & Chr(10))

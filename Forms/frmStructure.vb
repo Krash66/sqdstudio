@@ -2078,6 +2078,9 @@ nextFilename:   Next
 
     'End Sub
 
+    'Private Sub cmdOk_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOk.Click
+
+    'End Sub
 End Class
 
 

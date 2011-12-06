@@ -455,11 +455,11 @@ Public Class frmFTPClient
             Client = New FTPClient(Me.txtHost.Text, Me.txtPort.Text, _
                                    Me.txtUser.Text, Me.txtPass.Text, _
                                    Me.txtRemotePath.Text, Me)
-            lvRemote_Update()
             Client.hostNameValue = Me.txtHost.Text
             Client.portValue = Me.txtPort.Text
             Client.userNameValue = Me.txtUser.Text
             Client.dirValue = Me.txtRemotePath.Text
+            lvRemote_Update()
         Else
             If (txtHost.Text = "") Then
                 MsgBox("Host name is missing", MsgBoxStyle.Critical, MsgTitle)
@@ -589,41 +589,46 @@ Public Class frmFTPClient
         Dim Item As New ListViewItem
         Dim LastCursor As Cursor
 
-        LastCursor = Windows.Forms.Cursor.Current
-        Windows.Forms.Cursor.Current = Cursors.WaitCursor
+        Try
+            LastCursor = Windows.Forms.Cursor.Current
+            Windows.Forms.Cursor.Current = Cursors.WaitCursor
 
-        If NewPath.Length > 0 Then
-            Files = Client.CDLS(NewPath)
-        Else
-            Files = Client.LIST
-        End If
+            If NewPath.Length > 0 Then
+                Files = Client.CDLS(NewPath)
+            Else
+                Files = Client.LIST
+            End If
 
-        txtRemotePath.Text = Client.PWD
-        lvRemote.Clear()
-        If (Not Files Is Nothing) Then
-            For Each File In Files
-                Item.SubItems.Clear()
-                Item.Text = File.Filename
+            txtRemotePath.Text = Client.PWD
+            lvRemote.Clear()
+            lvRemote.View = View.Details
+            lvRemote.Columns.Add("Name", 200, HorizontalAlignment.Left)
+            lvRemote.Columns.Add("Mode", 100, HorizontalAlignment.Left)
+            lvRemote.Columns.Add("Size", 100, HorizontalAlignment.Left)
+            lvRemote.Columns.Add("Date", 100, HorizontalAlignment.Left)
+            If Files IsNot Nothing Then
+                For Each File In Files
+                    Item.SubItems.Clear()
+                    Item.Text = File.Filename
 
-                If (File.Type = FTPFileType.Directory) Then
-                    Item.SubItems.Add("<DIR>")
-                Else
-                    Item.SubItems.Add(File.Mode)
-                End If
+                    If (File.Type = FTPFileType.Directory) Then
+                        Item.SubItems.Add("<DIR>")
+                    Else
+                        Item.SubItems.Add(File.Mode)
+                    End If
 
-                Item.SubItems.Add(File.Size)
-                Item.SubItems.Add(File.ModDate)
-                Item.Tag = File.Clone
-                lvRemote.Items.Add(Item.Clone)
-            Next
-        End If
-        lvRemote.View = View.Details
-        lvRemote.Columns.Add("Name", 200, HorizontalAlignment.Left)
-        lvRemote.Columns.Add("Mode", 100, HorizontalAlignment.Left)
-        lvRemote.Columns.Add("Size", 100, HorizontalAlignment.Left)
-        lvRemote.Columns.Add("Date", 100, HorizontalAlignment.Left)
+                    Item.SubItems.Add(File.Size)
+                    Item.SubItems.Add(File.ModDate)
+                    Item.Tag = File.Clone
+                    lvRemote.Items.Add(Item.Clone)
+                Next
+            End If
 
-        Windows.Forms.Cursor.Current = LastCursor
+            Windows.Forms.Cursor.Current = LastCursor
+
+        Catch ex As Exception
+            LogError(ex, "frmFTPclient lvRemote_Update")
+        End Try
 
     End Sub
 
@@ -775,9 +780,9 @@ Public Class frmFTPClient
         modGeneral.FTPUserID = txtUser.Text
         modGeneral.FTPHostName = txtHost.Text
 
-        If (Not Client Is Nothing) Then
-            Client.DelWorkFiles()
-        End If
+        'If (Not Client Is Nothing) Then
+        '    Client.DelWorkFiles()
+        'End If
     End Sub
 
     Private Sub lvLocal_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvLocal.DoubleClick

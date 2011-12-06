@@ -124,8 +124,8 @@ Public Module modGenerateV3
             End If
 
             If UseEXEpath = True Then
-                ParserPath = ObjThis.EXEdir & "\" & "sqdparse.exe"
-                EnginePath = ObjThis.EXEdir & "\" & "sqdata.exe"
+                ParserPath = ObjThis.EXEdir & "sqdparse.exe"
+                EnginePath = ObjThis.EXEdir & "sqdata.exe"
             Else
                 If EngObj.EngVersion <> "" Then
                     ParserPath = GetAppPath() & "sqdparse.exe" 'EngObj.EngVersion & "\" & 
@@ -726,11 +726,11 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppLog() & "\" & "sqdparse.log"
+                        rc.ParserPath = GetAppLog() & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppLog() & "\" & "sqdparse.log", """")
+                        rc.Path = Quote(GetAppLog() & "sqdparse.log", """")
                         rc.ParserRC = myProcess.ExitCode
 
                     Case 0
@@ -852,11 +852,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
                     Case Is > 0
                         rc.HasError = True
-                        rc.ParserPath = GetAppLog() & "\" & "sqdparse.log"
+                        rc.ParserPath = GetAppLog() & "sqdparse.log"
                         rc.ParseCode = enumParserReturnCode.Failed
                         rc.ReturnCode = "Script generated with errors,"
                         rc.ErrorLocation = enumErrorLocation.ModGenSQDParse
-                        rc.Path = Quote(GetAppLog() & "\" & "sqdparse.log", """")
+                        rc.Path = Quote(GetAppLog() & "sqdparse.log", """")
                         rc.ParserRC = myProcess.ExitCode
 
                     Case 0

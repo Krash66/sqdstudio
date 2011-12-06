@@ -516,9 +516,9 @@ Public Module modXML
             End Select
 
             If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"   '& "\" 
+                GetSQDumpXML = strTempDir & strFilePrefix & par1 & ".xml"   '& "\" & "\"
             Else
-                GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"   '& "\" 
+                GetSQDumpXML = strTempDir & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"   '& "\" & "\" 
             End If
 
             '//delete previous temp file
@@ -611,9 +611,9 @@ Public Module modXML
                         '//Now return output file path : 
                         '<temp folder>\<fileprefix><input filename no extension>.XML
                         If StructType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
-                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & par1 & ".xml"    '& "\"
+                            GetSQDumpXML = strTempDir & strFilePrefix & par1 & ".xml"    '& "\"& "\"
                         Else
-                            GetSQDumpXML = strTempDir & "\" & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"  '& "\"
+                            GetSQDumpXML = strTempDir & strFilePrefix & GetFileNameWithoutExtenstionFromPath(strFileToParse) & ".xml"  '& "\" & "\"
                         End If
                     End If
 
@@ -639,14 +639,14 @@ Public Module modXML
 
 #Region "XML Message Processing"
 
-    '/// Created by TK   November 2011
-    '/// Creates XML DTD files from XML messages
-    '/// * Main function:
+    '/// *** Created by TK   November 2011
+    '/// *** Creates XML DTD files from XML messages
+    '/// Main function:
     '/// -- Function ProcessXMLmessage(ByVal InfilePath As String, ByVal DirOut As String) As String
-    '/// * Arguments: 
+    '/// Arguments: 
     '/// -- InfilePath --> Path of the XML Message file to convert to DTD
     '/// -- DirOut     --> Path of Output Directory to Put new DTD file into
-    '/// * Return Value:
+    '/// Return Value:
     '/// -- String Value of the complete filepath of the New DTD file 
     '/// -- or "" if no new file wanted or no new file was created, by user choice or by Error
 
@@ -979,6 +979,105 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
 
 #End Region
 
+#Region "Main Program XML"
+
+    Function SaveStudioToXML(Optional ByVal Newpath As Boolean = False) As Boolean
+
+        Try
+            '*** Path to Studio XML file
+            If Newpath = True Then
+                AppDataPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments()
+                If Right(AppDataPath, 1) <> "\" Then
+                    AppDataPath = AppDataPath & "\"
+                End If
+                AppDataPath = AppDataPath & "Design Studio\"
+                If System.IO.Directory.Exists(AppDataPath) = False Then
+                    System.IO.Directory.CreateDirectory(AppDataPath)
+                End If
+            End If
+
+            Dim StudioXMLFullPath As String = System.Windows.Forms.Application.LocalUserAppDataPath() & _
+            "\DesignStudio.settings.xml"
+
+            '*** New XML writer for XML file
+            Dim XMLwrite As New Xml.XmlTextWriter(StudioXMLFullPath, System.Text.Encoding.UTF8)
+
+            '*** define doctype and formatting and Open XML file
+            XMLwrite.Formatting = Formatting.Indented
+            XMLwrite.WriteStartDocument()
+            XMLwrite.WriteStartElement("DesignStudio", "DesignStudio", StudioXMLFullPath)
+
+            '*** write Data
+            XMLwrite.WriteElementString("Winstate", WinState.ToString())
+            XMLwrite.WriteElementString("AppDataPath", AppDataPath)
+
+            '*** write closing element and close file
+            XMLwrite.WriteEndElement()
+            XMLwrite.WriteEndDocument()
+            XMLwrite.Close()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modXML SaveStudioToXML")
+            Return False
+        End Try
+
+    End Function
+
+    '// New 11/2011 to get rid of Project saving to Registry
+    Function RetrieveStudioFromXML() As Boolean
+
+        Try
+            Dim curNode As XmlNode
+            '*** Path to Project XML file
+            Dim StudioXMLFullPath As String = System.Windows.Forms.Application.LocalUserAppDataPath() & _
+            "\DesignStudio.settings.xml"
+
+            If System.IO.File.Exists(StudioXMLFullPath) = False Then
+                'AppDataPath = System.Windows.Forms.Application.LocalUserAppDataPath()
+                RetrieveStudioFromXML = SaveStudioToXML(True)
+            End If
+
+            '*** New XML Doc for XML file
+            Dim XMLDoc As New Xml.XmlDocument
+            XMLDoc.Load(StudioXMLFullPath)
+
+            If XMLDoc.HasChildNodes = True Then
+                curNode = XMLDoc.LastChild
+                Dim TempStr As String = ""
+                For Each nd As XmlNode In curNode.ChildNodes
+                    If nd.InnerText <> "" Then
+                        TempStr = nd.InnerText
+                    Else
+                        TempStr = ""
+                    End If
+                    Select Case nd.Name
+                        Case "Winstate"
+                            Select Case TempStr
+                                Case "Maximized"
+                                    WinState = FormWindowState.Maximized
+                                Case "Normal"
+                                    WinState = FormWindowState.Normal
+                                Case Else
+                                    WinState = FormWindowState.Normal
+                            End Select
+                        Case "AppDataPath"
+                            AppDataPath = TempStr
+
+                    End Select
+                Next
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modXML RetrieveStudioFromXML")
+            Return False
+        End Try
+
+    End Function
+
+#End Region
+
 End Module
-
-
