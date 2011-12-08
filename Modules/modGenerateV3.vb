@@ -6,6 +6,8 @@ Public Module modGenerateV3
     '/// scripts in Version 3 syntax ///
     '/// and replaces sqdgnsqd.exe ///
 
+#Region "Local Variables"
+
     Dim ObjThis As clsEngine
     Dim ObjProc As clsTask
     Dim ObjDS As clsDatastore
@@ -67,6 +69,7 @@ Public Module modGenerateV3
     Private DBGMap As Boolean = False
     Private OutMsg As Boolean = False
 
+#End Region
 
 #Region " Main Processes "
 
@@ -110,7 +113,7 @@ Public Module modGenerateV3
         DBGMap = MapDBG
         OutMsg = debug
         UseEXEpath = UseEXE
-        
+
 
         Try
             ScriptPath = EngObj.ObjSystem.Environment.LocalScriptDir
@@ -1972,7 +1975,7 @@ ErrorGoTo1: Next
                     GoTo ErrorGoTo
                 End If
             End If
-            
+
             '/// Print Debug OutMsg if debug script
             If OutMsg = True Then
                 For i = 0 To Proc.ObjMappings.Count - 1
@@ -2775,7 +2778,7 @@ ErrorGoTo:
             End If
 
 
-            Dim ForDummy As String  
+            Dim ForDummy As String
             If SynNew = True Then
                 ForDummy = String.Format("{0}{1}{2}", "DATASTORE " & QuoteRes(EXname), " OF BINARY AS " & _
             QuoteRes("EX_" & ds.DatastoreName), " DESCRIBED BY DUMMY" & semi)

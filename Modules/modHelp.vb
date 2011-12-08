@@ -51,6 +51,7 @@ Module modHelp
         H_Menu_and_Toolbar = 1380
         H_Object_Tree = 1390
         H_Object_Properties_Pane = 1400
+        H_MapListTool = 1403
         H_Open_a_Project = 1405
         H_ChangeDSN = 1407
         H_ChangeProject = 1408
@@ -60,6 +61,7 @@ Module modHelp
         H_Structures = 1440
         H_COBOL_Copybook__IMS_DBD = 1450
         H_XML_DTD = 1460
+        H_XML_CONV = 1465
         H_C_Structure = 1470
         H_Relational_DDL = 1480
         H_Relational_DML = 1490
@@ -68,6 +70,7 @@ Module modHelp
         H_Model_Structure = 1500
         H_Structure_Field_Attributes = 1510
         H_Change_Desc = 1515
+        H_Generate_Reports = 1518
         H_Systems = 1520
         H_Connections = 1530
         H_Engines = 1540
@@ -92,6 +95,7 @@ Module modHelp
         H_Editor_Window = 1760
         H_Mapping_Description = 1763
         H_Map_Group_Items = 1766
+        H_Script_OutMsg_forMapping = 1768
         H_Function_Reference = 1790
         H_Function_Guidelines = 1800
         H_Function_Types = 1810

@@ -71,7 +71,18 @@ doAgain:
 
     Private Sub cmdHelp_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdHelp.Click
 
-        ShowHelp(HHId.H_Welcome_to_SQData_Studio)
+        ShowHelp(HHId.H_XML_CONV)
+
+    End Sub
+
+    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+
+        Select Case e.KeyCode
+            Case Keys.Escape
+                cmdCancel_Click_1(sender, New EventArgs)
+            Case Keys.F1
+                cmdHelp_Click_1(sender, New EventArgs)
+        End Select
 
     End Sub
 

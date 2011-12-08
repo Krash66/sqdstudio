@@ -13,7 +13,7 @@ Public Class clsEngine
     Private m_ObjSystem As clsSystem
     Private m_IsModified As Boolean
     Private m_IsRenamed As Boolean = False
-    Private m_MapGroupItems As Boolean = True
+    Private m_MapGroupItems As Boolean = False
     Private m_Connection As clsConnection
     Private m_DateFormat As String = ""
     Private m_Main As String = ""

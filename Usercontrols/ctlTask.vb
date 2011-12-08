@@ -409,14 +409,13 @@ Public Class ctlTask
         '
         'cbGroupItems
         '
-        Me.cbGroupItems.Checked = True
-        Me.cbGroupItems.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.cbGroupItems.AutoSize = True
         Me.cbGroupItems.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbGroupItems.Location = New System.Drawing.Point(628, 14)
         Me.cbGroupItems.Name = "cbGroupItems"
-        Me.cbGroupItems.Size = New System.Drawing.Size(192, 21)
+        Me.cbGroupItems.Size = New System.Drawing.Size(194, 18)
         Me.cbGroupItems.TabIndex = 12
-        Me.cbGroupItems.Text = "Map Group Items w/o children"
+        Me.cbGroupItems.Text = "Map Group Items AND children"
         Me.ToolTip1.SetToolTip(Me.cbGroupItems, "Map Group Items as well as fields")
         Me.cbGroupItems.UseVisualStyleBackColor = True
         '
@@ -1448,8 +1447,7 @@ Public Class ctlTask
         '
         'gbFldAttr
         '
-        Me.gbFldAttr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.gbFldAttr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.gbFldAttr.Controls.Add(Me.txtInvalid)
         Me.gbFldAttr.Controls.Add(Me.lblInValid)
         Me.gbFldAttr.Controls.Add(Me.txtExtType)

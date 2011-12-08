@@ -708,10 +708,13 @@ Public Class frmStructure
             For Each conn As clsConnection In Env.Connections
                 If conn.Text = ConnName Then
                     objThis.Connection = conn
+                    objThis.Connection.LoadMe()
                     Exit For
                 End If
             Next
-            DMLFile = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & txtFilePath.Text
+            DMLFile = objThis.Connection.UserId & "." & _
+            objThis.Connection.Password & "." & _
+            objThis.Connection.Database & "." & txtFilePath.Text
         End If
 
         EndLoad()
@@ -1152,6 +1155,7 @@ doAgain:
                                             Exit Try
                                         Else
                                             FileNames = New Collection
+                                            objThis.Connection.LoadMe()
                                             FileNames.Add(objThis.Connection.UserId & "." & _
                                                           objThis.Connection.Password & "." & _
                                                           objThis.Connection.Database & "." & _
@@ -1213,7 +1217,11 @@ doAgain:
                                 DialogResult = Windows.Forms.DialogResult.Retry
                                 Exit Try
                             Else
-                                filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & filename
+                                objThis.Connection.LoadMe()
+                                filepath1 = objThis.Connection.UserId & "." & _
+                                objThis.Connection.Password & "." & _
+                                objThis.Connection.Database & "." & _
+                                filename
                                 filepath2 = ""
                             End If
                         End If
@@ -1330,7 +1338,11 @@ nextFilename:   Next
                                 DialogResult = Windows.Forms.DialogResult.Retry
                                 Exit Try
                             Else
-                                filepath1 = objThis.Connection.UserId & "." & objThis.Connection.Password & "." & objThis.Connection.Database & "." & txtFilePath.Text
+                                objThis.Connection.LoadMe()
+                                filepath1 = objThis.Connection.UserId & "." & _
+                                objThis.Connection.Password & "." & _
+                                objThis.Connection.Database & "." & _
+                                txtFilePath.Text
                                 filepath2 = ""
                             End If
                         End If

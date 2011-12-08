@@ -91,13 +91,20 @@ doAgain:
             LocEng = LocSQDconf
 
             Problem = "Problem with Script Directory, Check Environment"
+            ObjThis.ObjSystem.LoadMe()
+            ObjThis.ObjSystem.Environment.LoadMe()
             LocScripts = ObjThis.ObjSystem.Environment.LocalScriptDir
             If LocScripts.EndsWith("\") = False Then
                 LocScripts = LocScripts & "\"
             End If
 
             Problem = "Problem with Engine connection"
-            NameODBC = ObjThis.Connection.Database
+            If ObjThis.Connection IsNot Nothing Then
+                ObjThis.Connection.LoadMe()
+                NameODBC = ObjThis.Connection.Database
+            Else
+                NameODBC = ""
+            End If
             If NameODBC = "" Then
                 NameODBC = "<database name>"
             End If

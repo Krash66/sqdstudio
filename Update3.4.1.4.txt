@@ -1,5 +1,5 @@
 Updates for version 3.4.1.4
--- Changed installation directories for user data, metadata, backups, projects, etc. 
+-- Changed installation directories for user data, metadata, backups, projects, etc. DEBUGGED
 -- Removed all program properties from the registry and put them into XML files
 -- rerouted all Logs, teporary files, projects, metadata into a user's data directory that can be moved or copied for different computers or users.
 -- Comprehensive Help changes.
