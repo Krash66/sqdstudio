@@ -6,6 +6,9 @@ Public Class frmMain
     Dim IsFocusOnExplorer As Boolean
     Dim CurLoadedProject As clsProject = Nothing
     Dim IsRename As Boolean
+    '/// Added for Addflow
+    Dim EnginePage As TabPage
+    Dim addflowCtrl As ctlAddFlowTab
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -323,6 +326,19 @@ Public Class frmMain
     Friend WithEvents mnuCloseProj As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem27 As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem24 As System.Windows.Forms.MenuItem
+    Friend WithEvents tabCtrl As System.Windows.Forms.TabControl
+    Friend WithEvents tpProp As System.Windows.Forms.TabPage
+    Friend WithEvents cms1 As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AddTargetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AddProcedureToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AddMainToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem3 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents DeleteItemToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents UndoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RedoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -559,6 +575,19 @@ Public Class frmMain
         Me.pnlProp = New System.Windows.Forms.Panel
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
+        Me.tabCtrl = New System.Windows.Forms.TabControl
+        Me.tpProp = New System.Windows.Forms.TabPage
+        Me.cms1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddTargetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddProcedureToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem
+        Me.AddMainToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.DeleteItemToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.ctMain = New SQDStudio.ctlMain
         Me.ctInc = New SQDStudio.ctlInclude
@@ -579,6 +608,9 @@ Public Class frmMain
         Me.SCmain.Panel1.SuspendLayout()
         Me.SCmain.Panel2.SuspendLayout()
         Me.SCmain.SuspendLayout()
+        Me.tabCtrl.SuspendLayout()
+        Me.tpProp.SuspendLayout()
+        Me.cms1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -589,7 +621,7 @@ Public Class frmMain
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1016, 29)
+        Me.Panel1.Size = New System.Drawing.Size(1016, 27)
         Me.Panel1.TabIndex = 2
         '
         'lblStatusMsg
@@ -605,7 +637,6 @@ Public Class frmMain
         'ToolBar1
         '
         Me.ToolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.tbtnNew, Me.s1, Me.tbtnOpen, Me.tbtnSave, Me.s2, Me.tbtnCut, Me.tbtnCopy, Me.tbtnPaste, Me.tbtnDel, Me.s3, Me.tbtnScript, Me.s4, Me.tbtnEnv, Me.tbtnStructure, Me.tbtnStructSel, Me.tbtnSystem, Me.tbtnConnection, Me.tbtnEngine, Me.tbtnDS, Me.tbtnVar, Me.tbtnProc, Me.tbtnJoin, Me.tbtnLookup, Me.tbtnMain, Me.tbtHelp, Me.tbLog, Me.s5, Me.tbtnQuery, Me.s6, Me.tbMap, Me.s7, Me.tbToggle})
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolBar1.DropDownArrows = True
         Me.ToolBar1.ImageList = Me.ImageListSmall
         Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
@@ -922,10 +953,11 @@ Public Class frmMain
         'tvExplorer
         '
         Me.tvExplorer.AllowDrop = True
+        Me.tvExplorer.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tvExplorer.BackColor = System.Drawing.Color.White
-        Me.tvExplorer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tvExplorer.HideSelection = False
-        Me.tvExplorer.HotTracking = True
         Me.tvExplorer.ImageIndex = 0
         Me.tvExplorer.ImageList = Me.ImageListSmall
         Me.tvExplorer.Indent = 19
@@ -933,7 +965,7 @@ Public Class frmMain
         Me.tvExplorer.Name = "tvExplorer"
         Me.tvExplorer.SelectedImageIndex = 7
         Me.tvExplorer.ShowNodeToolTips = True
-        Me.tvExplorer.Size = New System.Drawing.Size(346, 513)
+        Me.tvExplorer.Size = New System.Drawing.Size(321, 515)
         Me.tvExplorer.TabIndex = 2
         '
         'OpenFileDialog1
@@ -1929,7 +1961,7 @@ Public Class frmMain
         'pnlProp
         '
         Me.pnlProp.AllowDrop = True
-        Me.pnlProp.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.pnlProp.BackColor = System.Drawing.SystemColors.Control
         Me.pnlProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.pnlProp.Controls.Add(Me.ctMain)
         Me.pnlProp.Controls.Add(Me.ctInc)
@@ -1948,33 +1980,125 @@ Public Class frmMain
         Me.pnlProp.Location = New System.Drawing.Point(0, 0)
         Me.pnlProp.Name = "pnlProp"
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.pnlProp.Size = New System.Drawing.Size(665, 513)
+        Me.pnlProp.Size = New System.Drawing.Size(679, 484)
         Me.pnlProp.TabIndex = 3
         '
         'SCmain
         '
         Me.SCmain.AllowDrop = True
-        Me.SCmain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SCmain.Location = New System.Drawing.Point(0, 29)
+        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SCmain.Location = New System.Drawing.Point(0, 27)
         Me.SCmain.Name = "SCmain"
         '
         'SCmain.Panel1
         '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
         Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
         '
         'SCmain.Panel2
         '
-        Me.SCmain.Panel2.Controls.Add(Me.pnlProp)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 513)
-        Me.SCmain.SplitterDistance = 346
-        Me.SCmain.SplitterWidth = 5
+        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 515)
+        Me.SCmain.SplitterDistance = 321
         Me.SCmain.TabIndex = 9
+        '
+        'tabCtrl
+        '
+        Me.tabCtrl.Controls.Add(Me.tpProp)
+        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tabCtrl.HotTrack = True
+        Me.tabCtrl.ImageList = Me.ImageListSmall
+        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
+        Me.tabCtrl.Name = "tabCtrl"
+        Me.tabCtrl.SelectedIndex = 0
+        Me.tabCtrl.Size = New System.Drawing.Size(691, 515)
+        Me.tabCtrl.TabIndex = 4
+        '
+        'tpProp
+        '
+        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.tpProp.Controls.Add(Me.pnlProp)
+        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tpProp.Location = New System.Drawing.Point(4, 23)
+        Me.tpProp.Name = "tpProp"
+        Me.tpProp.Size = New System.Drawing.Size(683, 488)
+        Me.tpProp.TabIndex = 0
+        Me.tpProp.Text = "Properties"
+        '
+        'cms1
+        '
+        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
+        Me.cms1.Name = "cms1"
+        Me.cms1.Size = New System.Drawing.Size(200, 208)
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem1.Text = "Add Source"
+        '
+        'AddTargetToolStripMenuItem
+        '
+        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
+        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddTargetToolStripMenuItem.Text = "Add Target"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem2.Text = "Add Lookup"
+        '
+        'AddProcedureToolStripMenuItem
+        '
+        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
+        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
+        '
+        'ToolStripMenuItem3
+        '
+        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem3.Text = "Add General Procedure"
+        '
+        'AddMainToolStripMenuItem
+        '
+        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
+        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddMainToolStripMenuItem.Text = "Add Main"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
+        '
+        'DeleteItemToolStripMenuItem
+        '
+        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
+        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'RedoToolStripMenuItem
+        '
+        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.RedoToolStripMenuItem.Text = "Redo"
         '
         'ProgressBar1
         '
         Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 545)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 566)
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
         Me.ProgressBar1.TabIndex = 10
@@ -2122,6 +2246,9 @@ Public Class frmMain
         Me.SCmain.Panel1.ResumeLayout(False)
         Me.SCmain.Panel2.ResumeLayout(False)
         Me.SCmain.ResumeLayout(False)
+        Me.tabCtrl.ResumeLayout(False)
+        Me.tpProp.ResumeLayout(False)
+        Me.cms1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -2382,39 +2509,64 @@ Public Class frmMain
     End Sub
 
     Private Sub tvExplorer_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterSelect
-        '// Modified 11/06 by Tom Karasch
 
-        Me.Cursor = Cursors.WaitCursor
-        IsFocusOnExplorer = True
-        mnuEdit.Enabled = True
+        Try
+            '// Modified 11/06 by Tom Karasch
 
-        If Not objTopMost Is Nothing Then
-            Dim obj As INode
-            obj = tvExplorer.SelectedNode.Tag
+            Me.Cursor = Cursors.WaitCursor
+            IsFocusOnExplorer = True
+            mnuEdit.Enabled = True
 
-            '//This will prevent firing save event if user select the same node which he
-            '// is editing. Will allow editing of DS selections
+            If Not objTopMost Is Nothing Then
+                Dim obj As INode
+                obj = tvExplorer.SelectedNode.Tag
 
-            '/// changed 6/5/07 by tk 
-            If objTopMost Is obj And tvExplorer.SelectedNode Is prevNode Then
-                Me.Cursor = Cursors.Default
-                Exit Sub
+                '//This will prevent firing save event if user select the same node which he
+                '// is editing. Will allow editing of DS selections
+
+                '/// changed 6/5/07 by tk 
+                If objTopMost Is obj And tvExplorer.SelectedNode Is prevNode Then
+                    Me.Cursor = Cursors.Default
+                    Exit Sub
+                End If
             End If
-        End If
 
-        If SavePreviousScreen(e.Node) = True Then
-            If IsRename = False Then
-                ShowUsercontrol(e.Node, True)
-            Else
-                ShowUsercontrol(e.Node)
-            End If
-            If Not (tvExplorer.SelectedNode Is Nothing) Then
-                EnableTreeActionButton(True)
-                ShowStatusMessage("Selected node : [" & CType(tvExplorer.SelectedNode.Tag, INode).Key.Replace("-", "->") & "]")
-            End If
-        End If
+            If SavePreviousScreen(e.Node) = True Then
+                If IsRename = False Then
+                    ShowUsercontrol(e.Node, True)
+                Else
+                    ShowUsercontrol(e.Node)
+                End If
+                If Not (tvExplorer.SelectedNode Is Nothing) Then
+                    EnableTreeActionButton(True)
+                    ShowStatusMessage("Selected node : [" & CType(tvExplorer.SelectedNode.Tag, INode).Key.Replace("-", "->") & "]")
+                    '// AddFlow Additions ///////////
+                    Dim nTag As INode = CType(tvExplorer.SelectedNode.Tag, INode)
+                    If nTag.Type = NODE_GEN Or nTag.Type = NODE_MAIN Or nTag.Type = NODE_PROC Then
+                        Dim task1 As clsTask = CType(nTag, clsTask)
+                        task1.Engine.ObjAddFlow.SelectedItem = task1.AFnode
 
-        Me.Cursor = Cursors.Default
+                    ElseIf nTag.Type = NODE_SOURCEDATASTORE Or nTag.Type = NODE_TARGETDATASTORE Or nTag.Type = NODE_LOOKUP Then
+                        Dim DS1 As clsDatastore = CType(nTag, clsDatastore)
+                        DS1.Engine.ObjAddFlow.SelectedItem = DS1.AFnode
+
+                    ElseIf nTag.Type = NODE_SOURCEDSSEL Or nTag.Type = NODE_TARGETDSSEL Then
+                        Dim dsSel As clsDSSelection = CType(nTag, clsDSSelection)
+                        Dim DS As clsDatastore = dsSel.ObjDatastore
+                        DS.Engine.ObjAddFlow.SelectedItem = DS.AFnode
+
+                    End If
+                    '/////////////////////////////
+                End If
+            End If
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_AfterSelect")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
+
 
     End Sub
 
@@ -2777,7 +2929,7 @@ Public Class frmMain
 #End Region
 
     '//////// actions for specific treenode types ////////
-#Region "Node Actions"
+#Region "Tree Node Actions"
 
     Private Function DoProjectAction(ByVal ActionType As enumAction, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0) As Boolean
 
@@ -3032,7 +3184,7 @@ Public Class frmMain
 
     End Function
 
-    Private Function DoTaskAction(ByVal ActionType As enumAction, Optional ByVal TaskType As enumTaskType = modDeclares.enumTaskType.TASK_PROC, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0) As Boolean
+    Public Function DoTaskAction(ByVal ActionType As enumAction, Optional ByVal TaskType As enumTaskType = modDeclares.enumTaskType.TASK_PROC, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0) As Boolean
 
         Dim cNode As TreeNode
         Dim tempobj As INode
@@ -3104,7 +3256,13 @@ Public Class frmMain
                             NodeText = tvExplorer.SelectedNode.Text
                             'tvExplorer.Refresh()
                             'FillProject(CurLoadedProject, , True)
-                            tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
+                            tvExplorer.SelectedNode = obj.ObjTreeNode 'SelectFirstMatchingNode(tvExplorer, NodeText)
+
+                            '/// AddFlow Additions
+                            Dim Eng As clsEngine = obj.Parent
+                            AddAFnode(Eng, obj)
+
+
                         End If
                     End If
 
@@ -3493,7 +3651,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
-    Private Function DoEngineAction(ByVal ActionType As enumAction, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0) As Boolean
+    Function DoEngineAction(ByVal ActionType As enumAction, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0) As Boolean
 
         Dim cNode As TreeNode
         Dim obj As INode = Nothing '//Actual/Modified object stored in node tag
@@ -3565,6 +3723,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         obj.Parent = CType(cNode.Tag, INode)
                         AddNode(cNode, obj.Type, obj)
 
+                        '/// Add AddFlow Tab
+                        AddNewEngineTab(CType(cNode.Tag, INode))
                     End If
 
                 Case modDeclares.enumAction.ACTION_DELETE
@@ -3592,7 +3752,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     End Function
 
-    Private Function DoDatastoreAction(ByVal ActionType As enumAction, Optional ByVal DatastoreType As enumDatastore = modDeclares.enumDatastore.DS_UNKNOWN, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0, Optional ByVal IsLU As Boolean = False) As Boolean
+    Public Function DoDatastoreAction(ByVal ActionType As enumAction, Optional ByVal DatastoreType As enumDatastore = modDeclares.enumDatastore.DS_UNKNOWN, Optional ByVal IsClipboardAction As Boolean = False, Optional ByVal ClipboardObjIndex As Integer = 0, Optional ByVal IsLU As Boolean = False) As Boolean
 
         '/// Modified numerous times by Tom Karasch
 
@@ -3689,6 +3849,11 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                         'tvExplorer.Refresh()
                         'FillProject(CurLoadedProject, , True)
                         tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NodeText)
+
+                        '/// AddFlow Additions
+                        Dim Eng As clsEngine = obj.Parent
+                        AddAFnode(Eng, obj)
+
                     End If
 
                 Case modDeclares.enumAction.ACTION_DELETE
@@ -4344,6 +4509,16 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Now add engines
         '///////////////////////////////////////////////
         Try
+            '****************************************************
+            '/// Temporary location to Clear AddFlow Diagrams ///
+            '****************************************************
+
+
+            ResetTabs()
+
+
+
+
             '//Add engines folder node under env
             Dim cNodeFOENG As TreeNode
             Dim objENG As INode
@@ -4717,11 +4892,17 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 ds.SetIsMapped(False, True)
             Next
 
-            Return True
+            '**************************************************
+            '/// Temporary location to fill AddFlow Diagram ///
+            '**************************************************
+
+
+            FillEngine = FillAddFlowFromEngine(obj)
+
 
         Catch ex As Exception
             LogError(ex, "frmMain FillEngine>fillTasks", sql)
-            Return False
+            FillEngine = False
         End Try
 
     End Function
@@ -4769,6 +4950,9 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 modDeclares.enumTaskType.TASK_GEN, modDeclares.enumTaskType.TASK_LOOKUP
                     'If obj.Engine IsNot Nothing Then
                     AddToCollection(obj.Engine.Procs, obj, obj.GUID)
+                    If obj.TaskType = enumTaskType.TASK_GEN Then
+                        AddToCollection(obj.Engine.Gens, obj, obj.GUID)
+                    End If
                     'Else
                     'AddToCollection(obj.Environment.Procedures, obj, obj.GUID)
                     'End If
@@ -4781,7 +4965,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowStatusMessage("Loading ....[" & obj.Key.Replace("-", "->") & "]")
 
-            cNode = AddNode(cNode, obj.Type, obj, False)
+            cNode = AddNode(cNode, obj.Type, obj)
             obj.SeqNo = cNode.Index '//store treeview node index
             If Procs.Contains(obj.TaskName) Then
                 cNode.ForeColor = Color.Red
@@ -5365,6 +5549,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     '//////////////////////////////////////////////////////////////////
     '//// Now the tree is built from loaded data in the MetaDataDB ////
     '//////////////////////////////////////////////////////////////////
+
 #End Region
 
     '//////// Right-Click on Tree Nodes ////////
@@ -6751,7 +6936,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             ctFolder.Clear()
         End If
         cnn.Close()
-
+        ResetTabs()
         HideAllUC()
 
     End Sub
@@ -6855,7 +7040,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             CurLoadedProject = Nothing
         End If
         cnn.Close()
-
+        ResetTabs()
         'HideAllUC()
 
     End Sub
@@ -9374,6 +9559,8 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
                 tran.Commit()
 
+                FillAddFlowFromEngine(taskMain.Engine)
+
             Catch OE As Odbc.OdbcException
                 tran.Rollback()
                 LogODBCError(OE, "SQL Transaction in mapAs in Main Form")
@@ -9569,6 +9756,123 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
         frm.OpenForm()
 
     End Sub
+
+#End Region
+
+#Region "AddFlow"
+
+    '********* AddFlow Load *********
+    Function FillAddFlowFromEngine(ByVal Eng As clsEngine) As Boolean
+
+        Try
+            '/// Create a pageTab Control for each Engine ///
+            EnginePage = New TabPage(Eng.EngineName)
+            addflowCtrl = New ctlAddFlowTab
+
+            addflowCtrl.LoadAFtab(Eng)
+
+            EnginePage.Controls.Add(addflowCtrl)
+
+            tabCtrl.TabPages.Add(EnginePage)
+
+            With addflowCtrl
+                .Parent = EnginePage
+                .Dock = DockStyle.Fill
+                .Tag = Eng
+            End With
+            '////////////////////////////////////////////////
+            Eng.ObjAddFlow = addflowCtrl.tabAddFlow
+            Eng.ObjTabPage = EnginePage
+
+        Catch ex As Exception
+            LogError(ex, "frmMain FillAddFlowFromEngine")
+            Return False
+        End Try
+
+    End Function
+
+    Function AddNewEngineTab(ByVal Eng As clsEngine) As Boolean
+
+        Try
+            '/// Create a pageTab Control for New Engine ///
+            EnginePage = New TabPage(Eng.EngineName)
+            addflowCtrl = New ctlAddFlowTab
+
+            Eng.ObjAddFlow = addflowCtrl.tabAddFlow
+            Eng.ObjTabPage = EnginePage
+            'addflowCtrl.LoadAFtab(Eng)
+
+            With addflowCtrl
+                .Parent = EnginePage
+                .Dock = DockStyle.Fill
+                .Tag = Eng
+            End With
+
+            Eng.ObjAddFlowCtl = addflowCtrl
+
+            EnginePage.Controls.Add(addflowCtrl)
+
+            tabCtrl.TabPages.Add(EnginePage)
+            '////////////////////////////////////////////////
+            
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "frmMain AddNewEngineTab")
+            Return False
+        End Try
+
+    End Function
+
+    Function AddAFnode(ByVal ObjEng As clsEngine, ByVal oNewNode As INode) As Boolean
+
+        Try
+            
+            Select Case oNewNode.Type
+                Case NODE_LOOKUP, NODE_SOURCEDATASTORE
+                    ObjEng.ObjAddFlowCtl.AddSDS(CType(oNewNode, clsDatastore))
+
+                Case NODE_MAIN
+                    ObjEng.ObjAddFlowCtl.AddMain(CType(oNewNode, clsTask))
+
+                Case NODE_GEN
+                    ObjEng.ObjAddFlowCtl.AddGen(CType(oNewNode, clsTask))
+
+                Case NODE_PROC
+                    ObjEng.ObjAddFlowCtl.AddProc(CType(oNewNode, clsTask))
+
+                Case NODE_TARGETDATASTORE
+                    ObjEng.ObjAddFlowCtl.AddTDS(CType(oNewNode, clsDatastore))
+
+            End Select
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "frmMain AddAFnode")
+            Return False
+        End Try
+
+    End Function
+
+    Function ResetTabs() As Boolean
+
+        Try
+            Dim NumPages As Integer = tabCtrl.TabPages.Count
+            Dim i As Integer = NumPages - 1
+
+            While i > 0
+                tabCtrl.TabPages.RemoveAt(i)
+                i -= 1
+            End While
+
+        Catch ex As Exception
+            LogError(ex, "frmMain ResetTabs")
+            Return False
+        End Try
+
+    End Function
 
 #End Region
 

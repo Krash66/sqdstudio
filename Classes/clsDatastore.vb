@@ -64,6 +64,12 @@ Public Class clsDatastore
     Dim objWriteGlobal As System.IO.StreamWriter
     Dim objReadGlobal As System.IO.StreamReader
 
+    '/// AddFlow Additions
+    Private m_AFnode As Node
+    'Public InLinks As Collection
+    'Public OutLinks As Collection
+
+
 #Region "INode Implementation"
 
     Public Function GetQuotedText(Optional ByVal bFix As Boolean = True) As String Implements INode.GetQuotedText
@@ -603,6 +609,11 @@ Public Class clsDatastore
                 ElseIf Me.DsDirection = DS_DIRECTION_TARGET Then
                     RemoveFromCollection(Me.Engine.Targets, Me.GUID)
                 End If
+
+                '/// AddFlow Additions
+                Me.AFnode.Links.Clear()
+                Me.AFnode.Remove()
+
             End If
             'End If
 
@@ -1198,6 +1209,15 @@ Public Class clsDatastore
         End Get
         Set(ByVal value As String)
             m_IsKeyChng = value
+        End Set
+    End Property
+
+    Public Property AFnode() As Node
+        Get
+            Return m_AFnode
+        End Get
+        Set(ByVal value As Node)
+            m_AFnode = value
         End Set
     End Property
 

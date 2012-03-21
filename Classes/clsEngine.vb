@@ -19,6 +19,10 @@ Public Class clsEngine
     Private m_Main As String = ""
     Private m_IsLoaded As Boolean = False
     Private m_EngVersion As String
+    '/// AddFlow additions
+    Private m_ObjAddFlow As AddFlow
+    Private m_ObjTabPage As TabPage
+    Private m_ObjAddFlowCtl As ctlAddFlowTab
 
     Public Sources As New Collection
     Public Targets As New Collection
@@ -420,6 +424,11 @@ Public Class clsEngine
                 '//Remove from parent collection
                 RemoveFromCollection(Me.ObjSystem.Engines, Me.GUID)
             End If
+
+            '/// AddFlow Additions
+            Dim TC As TabControl = CType(Me.ObjTabPage.Parent, TabControl)
+            TC.TabPages.Remove(Me.ObjTabPage)
+            '/////////////////////////
 
             Delete = True
 
@@ -932,6 +941,33 @@ Public Class clsEngine
         End Get
         Set(ByVal value As String)
             m_EngVersion = value
+        End Set
+    End Property
+
+    Public Property ObjAddFlow() As AddFlow
+        Get
+            Return m_ObjAddFlow
+        End Get
+        Set(ByVal value As AddFlow)
+            m_ObjAddFlow = value
+        End Set
+    End Property
+
+    Public Property ObjTabPage() As TabPage
+        Get
+            Return m_ObjTabPage
+        End Get
+        Set(ByVal value As TabPage)
+            m_ObjTabPage = value
+        End Set
+    End Property
+
+    Public Property ObjAddFlowCtl() As ctlAddFlowTab
+        Get
+            Return m_ObjAddFlowCtl
+        End Get
+        Set(ByVal value As ctlAddFlowTab)
+            m_ObjAddFlowCtl = value
         End Set
     End Property
 

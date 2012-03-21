@@ -37,6 +37,8 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <SignAssembly>false</SignAssembly>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>Client</TargetFrameworkSubset>
     <PublishUrl>ftp://sqdtkarasch/Updates/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -117,10 +119,61 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Lassalle.DlgFlow, Version=2.3.1.0, Culture=neutral, PublicKeyToken=16e1f8979c0e1bdb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.DlgFlow.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow, Version=2.3.2.1, Culture=neutral, PublicKeyToken=bfc5c756e54a9d2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Layout.Hierarchic, Version=2.3.2.0, Culture=neutral, PublicKeyToken=a5098d67a8d68ddf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Layout.Hierarchic.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Layout.Orthogonal, Version=2.3.2.0, Culture=neutral, PublicKeyToken=b1252ad24c259c82, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Layout.Orthogonal.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Layout.SP, Version=2.3.2.0, Culture=neutral, PublicKeyToken=c744fe88085eaad0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Layout.SP.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Layout.Symmetric, Version=2.3.2.0, Culture=neutral, PublicKeyToken=f43759eeb25c46d5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Layout.Symmetric.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Layout.Tree, Version=2.3.2.0, Culture=neutral, PublicKeyToken=577d6084e440e212, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Layout.Tree.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.Router, Version=2.3.1.0, Culture=neutral, PublicKeyToken=4c5bde0b31ec4c39, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.Router.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.Flow.SVG, Version=2.3.2.0, Culture=neutral, PublicKeyToken=fa1d02a54b2109c9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.Flow.SVG.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.GraphAlgo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.GraphAlgo.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.PrnFlow, Version=2.3.2.0, Culture=neutral, PublicKeyToken=2e7b12f33f0a77f8, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.PrnFlow.DLL</HintPath>
+    </Reference>
+    <Reference Include="Lassalle.XMLFlow, Version=2.3.1.0, Culture=neutral, PublicKeyToken=3f172701c0e98f8a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\Lassalle Technologies\AddFlow for WinForms v2.3.2 (VS2008, .NET 3.5)\Bin\Lassalle.XMLFlow.DLL</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -135,12 +188,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="Lassalle" />
+    <Import Include="Lassalle.DlgFlow" />
+    <Import Include="Lassalle.Flow" />
+    <Import Include="Lassalle.Flow.Layout" />
+    <Import Include="Lassalle.Flow.Layout.Hierarchic" />
+    <Import Include="Lassalle.Flow.Layout.Orthogonal" />
+    <Import Include="Lassalle.Flow.Layout.SP" />
+    <Import Include="Lassalle.Flow.Layout.Symmetric" />
+    <Import Include="Lassalle.Flow.Layout.Tree" />
+    <Import Include="Lassalle.Flow.Router" />
+    <Import Include="Lassalle.Flow.SVG" />
+    <Import Include="Lassalle.GraphAlgo" />
+    <Import Include="Lassalle.PrnFlow" />
+    <Import Include="Lassalle.XMLFlow" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
+    <Import Include="System.Linq" />
     <Import Include="System.Windows.Forms" />
     <Import Include="System.Xml" />
   </ItemGroup>
@@ -153,6 +221,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -378,7 +447,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\modGeneral.vb">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Modules\modHelp.vb">
       <SubType>Code</SubType>
@@ -409,6 +477,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.vb" />
+    <Compile Include="Usercontrols\ctlAddFlowTab.Designer.vb">
+      <DependentUpon>ctlAddFlowTab.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlAddFlowTab.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Usercontrols\ctlConnection.vb">
       <SubType>UserControl</SubType>
     </Compile>
@@ -596,6 +670,9 @@
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlAddFlowTab.resx">
+      <DependentUpon>ctlAddFlowTab.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Usercontrols\ctlConnection.resx">
       <DependentUpon>ctlConnection.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -691,8 +768,14 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </Content>
+    <None Include="Resources\Dark_Mottled_Stone.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
@@ -708,6 +791,14 @@
       <ProductName>.NET Framework 3.5</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

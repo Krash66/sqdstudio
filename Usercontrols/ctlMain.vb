@@ -157,7 +157,7 @@ Public Class ctlMain
             '    cbGroupItems.Checked = objThis.Engine.MapGroupItems
             'End If
 
-            objThis.ObjTreeNode = cNode
+            'objThis.ObjTreeNode = cNode
 
             SetTaskTitle(objThis.TaskType)
 

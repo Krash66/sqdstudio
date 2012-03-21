@@ -2,17 +2,6 @@ Imports Microsoft.Win32
 
 Public Module modGeneral
 
-    'Private m_blnDSNUpdated As Boolean = False
-
-    'Public Property DSNUpdated() As Boolean
-    '    Get
-    '        Return m_blnDSNUpdated
-    '    End Get
-    '    Set(ByVal Value As Boolean)
-    '        m_blnDSNUpdated = Value
-    '    End Set
-    'End Property
-
 #Region "Mylist Class"
 
     ''' <summary>
@@ -1230,7 +1219,6 @@ Public Module modGeneral
         Dim tempobj As INode
         Dim objDS As clsDatastore
 
-
         Try
             tempobj = pNode.Tag
 
@@ -1249,7 +1237,8 @@ Public Module modGeneral
 
             '// if DS selection then see if parent is a datastrore and not a structure
             '// then add selections under Datastore node
-            If ((tempobj.Type = NODE_SOURCEDSSEL) Or (tempobj.Type = NODE_TARGETDSSEL)) And ((obj.Type = NODE_SOURCEDATASTORE) Or (obj.Type = NODE_TARGETDATASTORE)) Then
+            If ((tempobj.Type = NODE_SOURCEDSSEL) Or (tempobj.Type = NODE_TARGETDSSEL)) And _
+            ((obj.Type = NODE_SOURCEDATASTORE) Or (obj.Type = NODE_TARGETDATASTORE)) Then
                 objDS = CType(obj, clsDatastore)
                 objDS.SetDSselParents()
                 AddDSstructuresToTree(objDS.ObjTreeNode, objDS)

@@ -20,6 +20,17 @@ Public Module modDatabase
         End If
     End Function
 
+    'Private m_blnDSNUpdated As Boolean = False
+
+    'Public Property DSNUpdated() As Boolean
+    '    Get
+    '        Return m_blnDSNUpdated
+    '    End Get
+    '    Set(ByVal Value As Boolean)
+    '        m_blnDSNUpdated = Value
+    '    End Set
+    'End Property
+
     '/// UnUsed as of March 2007
 #Region "DSN Methods - Added to keep DSN up to date after auto updates occur"
 

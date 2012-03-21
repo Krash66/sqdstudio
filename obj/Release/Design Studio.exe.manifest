@@ -4,7 +4,7 @@
   <description asmv2:iconFile="database_process.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Design Studio" version="3.4.1.4" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Design Studio" version="3.5.0.2" language="neutral" processorArchitecture="msil" />
     <commandLine file="Design Studio.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -33,7 +33,7 @@
   <dependency>
     <dependentOS>
       <osVersionInfo>
-        <os majorVersion="4" minorVersion="10" buildNumber="0" servicePackMajor="0" />
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
       </osVersionInfo>
     </dependentOS>
   </dependency>
@@ -43,14 +43,173 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="1943040">
-      <assemblyIdentity name="Design Studio" version="3.4.1.4" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Sentinel.v3.5Client" version="3.5.0.0" publicKeyToken="b03f5f7f11d50a3a" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Core" version="3.5.0.0" publicKeyToken="b77a5c561934e089" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="WindowsBase" version="3.0.0.0" publicKeyToken="31bf3856ad364e35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="2035712">
+      <assemblyIdentity name="Design Studio" version="3.5.0.2" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>p7bEscR/cD4zGiNXFGwmre7Oung=</dsig:DigestValue>
+        <dsig:DigestValue>VGfba9DZ5BurEOPqp0zIv7VCbP8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.DlgFlow.DLL" size="98304">
+      <assemblyIdentity name="Lassalle.DlgFlow" version="2.3.1.0" publicKeyToken="16E1F8979C0E1BDB" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>AZOIZ31T4Z2VcKdAyUU/N6ncEPs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.DLL" size="335872">
+      <assemblyIdentity name="Lassalle.Flow" version="2.3.2.1" publicKeyToken="BFC5C756E54A9D2A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>uqG4Pb1wbNyfgHdHQcDFY76+FMU=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Layout.Hierarchic.DLL" size="44032">
+      <assemblyIdentity name="Lassalle.Flow.Layout.Hierarchic" version="2.3.2.0" publicKeyToken="A5098D67A8D68DDF" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>06I3WWhNlbf2l21P4JDm8nqzR+A=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Layout.Orthogonal.DLL" size="34816">
+      <assemblyIdentity name="Lassalle.Flow.Layout.Orthogonal" version="2.3.2.0" publicKeyToken="B1252AD24C259C82" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>dhuVpxnXrbhdokfT0VhV3bfXQdo=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Layout.SP.DLL" size="39936">
+      <assemblyIdentity name="Lassalle.Flow.Layout.SP" version="2.3.2.0" publicKeyToken="C744FE88085EAAD0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>TII3dKD54jEVv0Tn//EX/qqi6cg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Layout.Symmetric.DLL" size="28160">
+      <assemblyIdentity name="Lassalle.Flow.Layout.Symmetric" version="2.3.2.0" publicKeyToken="F43759EEB25C46D5" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>0OxmBqbbhm3xeqE1INggjuvSSVA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Layout.Tree.DLL" size="31232">
+      <assemblyIdentity name="Lassalle.Flow.Layout.Tree" version="2.3.2.0" publicKeyToken="577D6084E440E212" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>+Mo8YLJiXjszMqZQP5MXozfR6nw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.Router.DLL" size="28672">
+      <assemblyIdentity name="Lassalle.Flow.Router" version="2.3.1.0" publicKeyToken="4C5BDE0B31EC4C39" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>F/FhZ5YiUC098iamgBW2sv/t2qA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.Flow.SVG.DLL" size="36864">
+      <assemblyIdentity name="Lassalle.Flow.SVG" version="2.3.2.0" publicKeyToken="FA1D02A54B2109C9" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>VvbE4nyZmSr8Sir0y1oAjnIBGI0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.GraphAlgo.DLL" size="24576">
+      <assemblyIdentity name="Lassalle.GraphAlgo" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>zJMbpcAFj5rft/tA0La3zxXQjbw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.PrnFlow.DLL" size="24576">
+      <assemblyIdentity name="Lassalle.PrnFlow" version="2.3.2.0" publicKeyToken="2E7B12F33F0A77F8" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>wFc8kTaLUen9wjtflHd1C8cGUOg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lassalle.XMLFlow.DLL" size="40960">
+      <assemblyIdentity name="Lassalle.XMLFlow" version="2.3.1.0" publicKeyToken="3F172701C0E98F8A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>xnkRWmQckW4HKnLljPKijLf3R6I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -63,13 +222,13 @@
       <dsig:DigestValue>k3yZAxPSprjdP5mPVtWR+QjxpFE=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Design Studio.exe.config" size="2786">
+  <file name="Design Studio.exe.config" size="3068">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>4KXinHbKbM60ZjlAS6L5e0UPb+0=</dsig:DigestValue>
+      <dsig:DigestValue>gZJoVZqGsNtOLHM12Gl2BOwLzlA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="images\1.ico" size="14334">

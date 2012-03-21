@@ -411,12 +411,12 @@ Public Class ctlTask
         '
         Me.cbGroupItems.AutoSize = True
         Me.cbGroupItems.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbGroupItems.Location = New System.Drawing.Point(628, 14)
+        Me.cbGroupItems.Location = New System.Drawing.Point(50, 36)
         Me.cbGroupItems.Name = "cbGroupItems"
-        Me.cbGroupItems.Size = New System.Drawing.Size(194, 18)
+        Me.cbGroupItems.Size = New System.Drawing.Size(196, 18)
         Me.cbGroupItems.TabIndex = 12
-        Me.cbGroupItems.Text = "Map Group Items AND children"
-        Me.ToolTip1.SetToolTip(Me.cbGroupItems, "Map Group Items as well as fields")
+        Me.cbGroupItems.Text = "Map Group Items with children"
+        Me.ToolTip1.SetToolTip(Me.cbGroupItems, "Map Group Item, or just the group item's child fields")
         Me.cbGroupItems.UseVisualStyleBackColor = True
         '
         'mnuPopup
@@ -1294,6 +1294,7 @@ Public Class ctlTask
         Me.gbName.Controls.Add(Me.Label3)
         Me.gbName.Controls.Add(Me.txtTaskDesc)
         Me.gbName.Controls.Add(Me.Label2)
+        Me.gbName.Controls.Add(Me.cbGroupItems)
         Me.gbName.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbName.Location = New System.Drawing.Point(0, 0)
@@ -1462,12 +1463,11 @@ Public Class ctlTask
         Me.gbFldAttr.Controls.Add(Me.lblDataType)
         Me.gbFldAttr.Controls.Add(Me.txtLength)
         Me.gbFldAttr.Controls.Add(Me.lblLen)
-        Me.gbFldAttr.Controls.Add(Me.cbGroupItems)
         Me.gbFldAttr.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbFldAttr.ForeColor = System.Drawing.Color.White
         Me.gbFldAttr.Location = New System.Drawing.Point(3, 505)
         Me.gbFldAttr.Name = "gbFldAttr"
-        Me.gbFldAttr.Size = New System.Drawing.Size(824, 63)
+        Me.gbFldAttr.Size = New System.Drawing.Size(732, 63)
         Me.gbFldAttr.TabIndex = 7
         Me.gbFldAttr.TabStop = False
         Me.gbFldAttr.Text = "Field Attributes"
@@ -1529,7 +1529,7 @@ Public Class ctlTask
         'txtCanNull
         '
         Me.txtCanNull.BackColor = System.Drawing.SystemColors.Window
-        Me.txtCanNull.Location = New System.Drawing.Point(708, 37)
+        Me.txtCanNull.Location = New System.Drawing.Point(623, 37)
         Me.txtCanNull.Name = "txtCanNull"
         Me.txtCanNull.ReadOnly = True
         Me.txtCanNull.Size = New System.Drawing.Size(99, 20)
@@ -1538,7 +1538,7 @@ Public Class ctlTask
         'lblNull
         '
         Me.lblNull.AutoSize = True
-        Me.lblNull.Location = New System.Drawing.Point(625, 40)
+        Me.lblNull.Location = New System.Drawing.Point(632, 16)
         Me.lblNull.Name = "lblNull"
         Me.lblNull.Size = New System.Drawing.Size(77, 13)
         Me.lblNull.TabIndex = 19
@@ -6236,4 +6236,7 @@ fallthru2:          AddMapping(objClip, CurRow)
 
     End Sub
 
+    'Private Sub lvMappings_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvMappings.SelectedIndexChanged
+
+    'End Sub
 End Class

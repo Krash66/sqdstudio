@@ -19,13 +19,14 @@ Public Class clsTask
     '//from usercontrol set this flag so we skip datastore operation
     Public CallFromUsercontrol As Boolean
     Public IsDisturbed As Boolean = False
-    '//Sources and Targets can be one or more than one depending on type of task
+    '// Sources and Targets can be one or more than one depending on type of task
     Public ObjSources As New ArrayList
     Public ObjTargets As New ArrayList
     Public ObjMappings As New ArrayList '//Array of selected Mappings
-    '//Old mappings, this is helpful when doing Save operation, we can compare old mappings and new mappings 
+
+    '// Old mappings, this is helpful when doing Save operation, we can compare old mappings and new mappings 
     '// and perform insert/delete/update based on difference
-    '//This array should be updated before we change ObjMappings so we can have old values for comparision
+    '// This array should be updated before we change ObjMappings so we can have old values for comparision
     Public OldObjMappings As New ArrayList
 
     '/// Last Source and Last Target Mapped
@@ -36,6 +37,12 @@ Public Class clsTask
     Dim fsLastFlds As System.IO.FileStream
     Dim objWriteLastFlds As System.IO.StreamWriter
     Dim objReadLastFlds As System.IO.StreamReader
+
+    '/// AddFlow additions
+    Private m_AFnode As Node
+    'Public InLinks As Collection
+    'Public OutLinks As Collection
+
 
 #Region "INode Implementation"
 
@@ -391,6 +398,11 @@ Public Class clsTask
                 Else
                     RemoveFromCollection(Me.Environment.Procedures, Me.GUID)
                 End If
+
+                '/// AddFlow Additions
+                Me.AFnode.Links.Clear()
+                Me.AFnode.Remove()
+
             End If
 
             Delete = True
@@ -469,6 +481,9 @@ Public Class clsTask
                 '//Add Proc into Engines's Proc collection
                 'If Me.Engine IsNot Nothing Then
                 AddToCollection(Me.Engine.Procs, Me, Me.GUID)
+                If Me.TaskType = enumTaskType.TASK_GEN Then
+                    AddToCollection(Me.Engine.Gens, Me, Me.GUID)
+                End If
                 'Else
                 '    AddToCollection(Me.Environment.Procedures, Me, Me.GUID)
                 'End If
@@ -529,6 +544,9 @@ Public Class clsTask
             Me.TaskType = modDeclares.enumTaskType.TASK_GEN Then
                 If Me.Engine IsNot Nothing Then
                     AddToCollection(Me.Engine.Procs, Me, Me.GUID)
+                    If Me.TaskType = enumTaskType.TASK_GEN Then
+                        AddToCollection(Me.Engine.Gens, Me, Me.GUID)
+                    End If
                 End If
                 AddToCollection(Me.Environment.Procedures, Me, Me.GUID)
             End If
@@ -762,6 +780,15 @@ Public Class clsTask
         End Get
         Set(ByVal value As String)
             g_LastTgtFld = value
+        End Set
+    End Property
+
+    Public Property AFnode() As Node
+        Get
+            Return m_AFnode
+        End Get
+        Set(ByVal value As Node)
+            m_AFnode = value
         End Set
     End Property
 

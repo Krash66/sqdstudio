@@ -21,6 +21,36 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_10BFB83E4A8937E264E8AA73774D9C27"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_13B4CF26DA08AF9B3854243FD9183FC1"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2A58842296E88D1AC0D6D09E1A2F77A0"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2A60219F6E173AF2F7C9DD418F64776C"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_30FA2363A7BA34C264DA8FDEE6696A1D"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3292161EA64B4C33B82DE041121E3310"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_47CE69A93D59ED06A947F295C0F51EA2"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4ACD0DE1F7A14ABA9096072203B6E6DB"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -75,8 +111,86 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7C5C5F847D94EA25C98DB95B5E61F582"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8B544101DE3A57D70DC599BD42F2C54C"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9A429861446B4C9A8696875D8538149C"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_13B4CF26DA08AF9B3854243FD9183FC1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_47CE69A93D59ED06A947F295C0F51EA2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_7C5C5F847D94EA25C98DB95B5E61F582"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_DD7F0A67DF0ECF5D1879DB6BD6657319"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_2A58842296E88D1AC0D6D09E1A2F77A0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_30FA2363A7BA34C264DA8FDEE6696A1D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_B16F2E0BAEE2CE8EF56079C25594592E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_2A60219F6E173AF2F7C9DD418F64776C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_8B544101DE3A57D70DC599BD42F2C54C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_10BFB83E4A8937E264E8AA73774D9C27"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -93,6 +207,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B16F2E0BAEE2CE8EF56079C25594592E"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C3B1C14FDE2B4B4E93F4DF7689DC8719"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -105,6 +225,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D013B825D715D1C6F45EA57DA09B2A59"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D3047A57F06E4FA1BB81072E0C9B3D42"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -113,6 +239,12 @@
         {
         "MsmKey" = "8:_D8C222C230FD44CCB88D03E0E893C1D1"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DD7F0A67DF0ECF5D1879DB6BD6657319"
+        "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -151,6 +283,78 @@
         "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_47CE69A93D59ED06A947F295C0F51EA2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7C5C5F847D94EA25C98DB95B5E61F582"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D013B825D715D1C6F45EA57DA09B2A59"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DD7F0A67DF0ECF5D1879DB6BD6657319"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2A58842296E88D1AC0D6D09E1A2F77A0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_30FA2363A7BA34C264DA8FDEE6696A1D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B16F2E0BAEE2CE8EF56079C25594592E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2A60219F6E173AF2F7C9DD418F64776C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8B544101DE3A57D70DC599BD42F2C54C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_10BFB83E4A8937E264E8AA73774D9C27"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_13B4CF26DA08AF9B3854243FD9183FC1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9F34B41F51283C31E2B0370F9A4F5873"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -178,10 +382,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.2.0"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
                     {
-                    "Name" = "8:.NET Framework 2.0"
-                    "ProductCode" = "8:Microsoft.Net.Framework.2.0"
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
                     }
                 }
             }
@@ -270,7 +474,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "Version" = "8:2.0.50727"
+                "Version" = "8:3.5.30729"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:"
                 "SupportedRuntimes" = "8:1.1.4322"
@@ -297,6 +501,161 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_10BFB83E4A8937E264E8AA73774D9C27"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Layout.Hierarchic, Version=2.3.2.0, Culture=neutral, PublicKeyToken=a5098d67a8d68ddf, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_10BFB83E4A8937E264E8AA73774D9C27"
+                    {
+                    "Name" = "8:Lassalle.Flow.Layout.Hierarchic.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Layout.Hierarchic.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_13B4CF26DA08AF9B3854243FD9183FC1"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.DlgFlow, Version=2.3.1.0, Culture=neutral, PublicKeyToken=16e1f8979c0e1bdb, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_13B4CF26DA08AF9B3854243FD9183FC1"
+                    {
+                    "Name" = "8:Lassalle.DlgFlow.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.DlgFlow.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2A58842296E88D1AC0D6D09E1A2F77A0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Router, Version=2.3.1.0, Culture=neutral, PublicKeyToken=4c5bde0b31ec4c39, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2A58842296E88D1AC0D6D09E1A2F77A0"
+                    {
+                    "Name" = "8:Lassalle.Flow.Router.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Router.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2A60219F6E173AF2F7C9DD418F64776C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Layout.SP, Version=2.3.2.0, Culture=neutral, PublicKeyToken=c744fe88085eaad0, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2A60219F6E173AF2F7C9DD418F64776C"
+                    {
+                    "Name" = "8:Lassalle.Flow.Layout.SP.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Layout.SP.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_30FA2363A7BA34C264DA8FDEE6696A1D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Layout.Tree, Version=2.3.2.0, Culture=neutral, PublicKeyToken=577d6084e440e212, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_30FA2363A7BA34C264DA8FDEE6696A1D"
+                    {
+                    "Name" = "8:Lassalle.Flow.Layout.Tree.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Layout.Tree.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3292161EA64B4C33B82DE041121E3310"
@@ -379,6 +738,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_47CE69A93D59ED06A947F295C0F51EA2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.XMLFlow, Version=2.3.1.0, Culture=neutral, PublicKeyToken=3f172701c0e98f8a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_47CE69A93D59ED06A947F295C0F51EA2"
+                    {
+                    "Name" = "8:Lassalle.XMLFlow.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.XMLFlow.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4ACD0DE1F7A14ABA9096072203B6E6DB"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\sqdparse.exe"
@@ -459,6 +849,68 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7C5C5F847D94EA25C98DB95B5E61F582"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.PrnFlow, Version=2.3.2.0, Culture=neutral, PublicKeyToken=2e7b12f33f0a77f8, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_7C5C5F847D94EA25C98DB95B5E61F582"
+                    {
+                    "Name" = "8:Lassalle.PrnFlow.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.PrnFlow.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8B544101DE3A57D70DC599BD42F2C54C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Layout.Orthogonal, Version=2.3.2.0, Culture=neutral, PublicKeyToken=b1252ad24c259c82, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8B544101DE3A57D70DC599BD42F2C54C"
+                    {
+                    "Name" = "8:Lassalle.Flow.Layout.Orthogonal.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Layout.Orthogonal.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A429861446B4C9A8696875D8538149C"
             {
             "SourcePath" = "8:..\\V3MetaData.mdb"
@@ -477,6 +929,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9F34B41F51283C31E2B0370F9A4F5873"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow, Version=2.3.2.1, Culture=neutral, PublicKeyToken=bfc5c756e54a9d2a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9F34B41F51283C31E2B0370F9A4F5873"
+                    {
+                    "Name" = "8:Lassalle.Flow.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A09E5CDA30994D69A3D93FD05DE586DE"
@@ -519,6 +1002,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B16F2E0BAEE2CE8EF56079C25594592E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.Layout.Symmetric, Version=2.3.2.0, Culture=neutral, PublicKeyToken=f43759eeb25c46d5, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B16F2E0BAEE2CE8EF56079C25594592E"
+                    {
+                    "Name" = "8:Lassalle.Flow.Layout.Symmetric.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.Layout.Symmetric.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3B1C14FDE2B4B4E93F4DF7689DC8719"
             {
             "SourcePath" = "8:..\\logo.BMP"
@@ -559,6 +1073,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D013B825D715D1C6F45EA57DA09B2A59"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.GraphAlgo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D013B825D715D1C6F45EA57DA09B2A59"
+                    {
+                    "Name" = "8:Lassalle.GraphAlgo.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.GraphAlgo.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D3047A57F06E4FA1BB81072E0C9B3D42"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\ALLTBLS_DB2_LUW.txt"
@@ -597,6 +1142,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DD7F0A67DF0ECF5D1879DB6BD6657319"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Lassalle.Flow.SVG, Version=2.3.2.0, Culture=neutral, PublicKeyToken=fa1d02a54b2109c9, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DD7F0A67DF0ECF5D1879DB6BD6657319"
+                    {
+                    "Name" = "8:Lassalle.Flow.SVG.DLL"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Lassalle.Flow.SVG.DLL"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDC55A36F88B4DA9AF8F57A01886B637"
@@ -832,19 +1408,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
-        "ProductCode" = "8:{8CF843F9-682C-46D2-AF71-CA2783D09E93}"
-        "PackageCode" = "8:{EDA5790F-8CEE-4384-B774-1602C5E99654}"
+        "ProductCode" = "8:{3649180F-2F8E-4542-89C1-24ED35092384}"
+        "PackageCode" = "8:{36D787A0-3061-4857-AD53-3AE22A7C699E}"
         "UpgradeCode" = "8:{ECBC2F4A-B3CB-4E3A-A724-5337F324CFB9}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.41.4000"
+        "ProductVersion" = "8:3.50.2000"
         "Manufacturer" = "8:SQData"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
         "Title" = "8:SQDStudio Setup"
-        "Subject" = "8:Studio version 3.4.1.4"
+        "Subject" = "8:Studio version 3.5.0.2"
         "ARPCONTACT" = "8:SQData"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
