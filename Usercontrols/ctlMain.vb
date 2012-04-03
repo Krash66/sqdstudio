@@ -43,9 +43,7 @@ Public Class ctlMain
     Dim lastTreeviewSearchNode As TreeNode
     Dim DoSetTaskType As Boolean
 
-
     Dim colSkipNodes As New ArrayList
-
 
 #Region "form events"
 
@@ -81,30 +79,6 @@ Public Class ctlMain
 
     End Sub
 
-    'Private Sub ctlTask_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Resize
-
-    '    'pnlScript.Size = pnlSelect.Size
-    '    'pnlDesc.Size = pnlSelect.Size
-    '    'pnlScript.Location = pnlSelect.Location
-    '    'pnlDesc.Location = pnlSelect.Location
-
-    'End Sub
-
-    'Private Sub ctlTask_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    '    'lvMappings.SmallImageList = imgListSmall
-
-    'End Sub
-
-    'Private Sub Panel1_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pnlSourceTarget.Resize
-
-    '    'tvSource.Width = (pnlSourceTarget.Width / 2) - 5
-    '    'tvTarget.Left = (pnlSourceTarget.Width / 2) + 5
-    '    'tvTarget.Width = (pnlSourceTarget.Width / 2) - 5
-    '    'lblTargetCaption.Left = tvTarget.Left
-
-    'End Sub
-
     Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTaskDesc.TextChanged, txtTaskName.TextChanged, txtCodeEditor.TextChanged
 
 
@@ -115,30 +89,6 @@ Public Class ctlMain
         RaiseEvent Modified(Me, objThis)
 
     End Sub
-
-    'Private Sub OnCodeChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    If IsEventFromCode = True Then Exit Sub
-
-    '    objCurMap.IsModified = True
-    '    objThis.IsModified = True
-    '    cmdSave.Enabled = True
-
-    '    OnChange(Me, New EventArgs)
-
-    'End Sub
-
-    'Private Sub OnDescChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '
-    '    If IsEventFromCode = True Then Exit Sub
-    '
-    '    objCurMap.IsModified = True
-    '    objThis.IsModified = True
-    '    cmdSave.Enabled = True
-    '
-    '    RaiseEvent Modified(Me, objThis)
-    '
-    'End Sub
 
     Public Function EditObj(ByVal cNode As TreeNode, ByVal obj As INode) As clsTask
 
@@ -224,13 +174,6 @@ Public Class ctlMain
         End Try
 
     End Function
-
-    'Private Sub OngbMap_resize(ByVal sender As Object, ByVal e As EventArgs) Handles gbMap.Resize
-
-    '    'lvMappings.Columns(0).Width = (lvMappings.Width / 2) - 12
-    '    'lvMappings.Columns(1).Width = (lvMappings.Width / 2) - 12
-
-    'End Sub
 
     Sub SetTaskTitle(ByVal Type As enumTaskType)
 
@@ -409,172 +352,6 @@ Public Class ctlMain
         End Try
 
     End Function
-
-    'Function SaveLastMapped() As Boolean
-
-    '    Dim ErrorMsg As String = ""
-    '    Try
-    '        If objThis.SaveLastFlds() = False Then
-    '            ErrorMsg = "An Error occured while saving Last Mapped Fields to a file."
-    '        End If
-
-    '        If ErrorMsg <> "" Then
-    '            MsgBox(ErrorMsg, MsgBoxStyle.OkOnly, MsgTitle)
-    '            Return False
-    '            Exit Function
-    '        End If
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask SaveLastMapped")
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    '////// Modify Here. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    'Function SaveCurrentScript() As Boolean
-
-    '    Dim fieldType As modDeclares.enumMappingType
-
-    '    Try
-    '        If curEditType = modDeclares.enumDirection.DI_SOURCE Then
-    '            fieldType = GetTypeFromText(txtCodeEditor.Text, modDeclares.enumDirection.DI_SOURCE)
-    '            If txtCodeEditor.Text <> "" And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_FUN  '/// mod 12/6/07  TK
-    '            End If
-    '            Select Case fieldType
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
-    '                    Dim c As New clsVariable(txtCodeEditor.Text, modDeclares.enumVariableType.VTYPE_CONST)
-
-    '                    objCurMap.MappingSource = Nothing
-    '                    objCurMap.MappingSource = c
-    '                    objCurMap.SourceType = fieldType
-    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
-    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = ImgIdxFromName(objCurMap.MappingSource.Type)
-
-    '                    objCurMap.IsModified = True
-    '                    If objCurMap.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE And objCurMap.TargetType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                        MapItem(objCurMap.SeqNo)
-    '                    End If
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FUN
-    '                    Dim sqFun As New clsSQFunction
-
-    '                    sqFun.SQFunctionName = txtCodeEditor.Text
-    '                    sqFun.SQFunctionWithInnerText = txtCodeEditor.Text
-    '                    objCurMap.SourceType = fieldType
-    '                    objCurMap.MappingSource = Nothing
-    '                    objCurMap.MappingSource = sqFun
-
-    '                    objCurMap.IsModified = True
-    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
-    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = ImgIdxFromName(objCurMap.MappingSource.Type)
-    '                    If objCurMap.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE And objCurMap.TargetType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                        MapItem(objCurMap.SeqNo)
-    '                    End If
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FIELD
-    '                    'Dim fldObj As New clsField
-
-    '                    ObjCurFld.CorrectedFieldName = TruncatedFieldName(txtCodeEditor.Text)
-    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
-    '                    ObjCurFld.Text = txtCodeEditor.Text
-    '                    objCurMap.SourceType = fieldType
-    '                    objCurMap.MappingSource = ObjCurFld
-    '                    objCurMap.IsModified = True
-
-
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
-    '                    objCurMap.MappingSource = Nothing
-    '                    objCurMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = -1
-    '                    objCurMap.IsModified = True
-    '            End Select
-    '        Else
-    '            fieldType = GetTypeFromText(txtCodeEditor.Text, modDeclares.enumDirection.DI_TARGET)
-    '            If txtCodeEditor.Text <> "" And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR
-    '            End If
-    '            If (txtCodeEditor.Text).IndexOf(".") = -1 And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
-    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR
-    '            End If
-    '            Select Case fieldType
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FIELD
-    '                    'Dim fldObj As New clsField
-
-    '                    ObjCurFld.CorrectedFieldName = TruncatedFieldName(txtCodeEditor.Text)
-    '                    objCurMap.IsModified = True
-    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
-    '                    ObjCurFld.Text = txtCodeEditor.Text
-    '                    objCurMap.MappingTarget = ObjCurFld
-    '                    'OnChange(lvMappings, New EventArgs)
-
-
-
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR, enumMappingType.MAPPING_TYPE_VAR
-    '                    Dim objVar As New clsVariable
-
-    '                    objVar.Text = txtCodeEditor.Text
-    '                    objVar.VariableName = txtCodeEditor.Text
-    '                    objVar.CorrectedVariableName = txtCodeEditor.Text
-    '                    objCurMap.MappingTarget = objVar
-
-    '                    If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                        objVar.VariableName = CType(objCurMap.MappingTarget, clsField).FieldName
-    '                    ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
-    '                        objVar.VariableName = CType(objCurMap.MappingTarget, clsVariable).VariableName
-    '                    End If
-
-    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
-    '                    objCurMap.IsModified = True
-    '                    '//fire change event
-    '                    'OnChange(lvMappings, New EventArgs)
-    '                    If (Not objCurMap.MappingSource Is Nothing) And (Not objCurMap.MappingTarget Is Nothing) Then
-    '                        MapItem(objCurMap.SeqNo)
-    '                    End If
-    '                Case modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    Dim emptyObj As New clsField
-
-    '                    If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Or _
-    '                       objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                        emptyObj.FieldName = CType(objCurMap.MappingTarget, clsField).FieldName
-    '                    ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
-    '                        emptyObj.FieldName = CType(objCurMap.MappingTarget, clsVariable).VariableName
-    '                    End If
-    '                    objCurMap.MappingTarget = emptyObj
-    '                    objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    txtCodeEditor.Text = ""
-    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
-    '                    objCurMap.IsModified = True
-    '                    '//fire change event
-    '                    'OnChange(lvMappings, New EventArgs)
-    '                Case Else
-    '                    MsgBox("Destination can only be a Field or Variable!!", MsgBoxStyle.Critical, MsgTitle)
-    '                    Return False
-    '            End Select
-    '        End If
-
-    '        Return True
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask SaveCurrentScript")
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    'Function SaveMapDesc() As Boolean
-
-    '    If txtMapDesc.Text.Length > 255 Then
-    '        MsgBox("The length of your description is too long. Please Limit your descriptions to under 255 Characters", MsgBoxStyle.Information, MsgTitle)
-    '        Return False
-    '        Exit Function
-    '    End If
-
-    '    objCurMap.MappingDesc = Strings.Replace(txtMapDesc.Text, "'", "''")
-    '    Return True
-
-    'End Function
 
 #End Region
 
@@ -1156,45 +933,26 @@ Public Class ctlMain
 
     End Function
 
-    '//Loads tasks in Listview
-    'Function LoadTaskMappings() As Boolean
-
-    '    Dim objMap As clsMapping
-
-    '    lvMappings.Items.Clear()
-
-    '    For Each objMap In objThis.ObjMappings
-    '        AddMapping(objMap, objMap.SeqNo)
-    '    Next
-
-    '    lvMappings.SelectedItems.Clear()
-
-    '    If lvMappings.Items.Count > 0 Then
-    '        lvMappings.Items(0).EnsureVisible()
-    '    End If
-
-    'End Function
-
 #End Region
 
 #Region "TreeView and ListView Functions"
 
     Private Sub tvFunctions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFunctions.AfterSelect
 
-        If CType(e.Node.Tag, INode).Type = NODE_FUN Then
+        If CType(e.Node.Tag, INode).Type = NODE_FUN Or CType(e.Node.Tag, INode).Type = NODE_TEMPLATE Then
             lblFunName.Text = e.Node.Text
-            'ToolTip1.SetToolTip(lblFunName, lblFunName.Text)
+            ToolTip1.SetToolTip(lblFunName, lblFunName.Text)
             lblFunSyntax.Text = CType(e.Node.Tag, clsSQFunction).SQFunctionSyntax
-            'ToolTip1.SetToolTip(lblFunSyntax, lblFunSyntax.Text)
+            ToolTip1.SetToolTip(lblFunSyntax, lblFunSyntax.Text)
             lblFunDesc.Text = CType(e.Node.Tag, clsSQFunction).SQFunctionDescription
-            'ToolTip1.SetToolTip(lblFunDesc, lblFunDesc.Text)
+            ToolTip1.SetToolTip(lblFunDesc, lblFunDesc.Text)
         Else
             lblFunName.Text = "<" & e.Node.Text & ">"
-            'ToolTip1.SetToolTip(lblFunName, "Category : " & lblFunName.Text)
+            ToolTip1.SetToolTip(lblFunName, "Category : " & lblFunName.Text)
             lblFunSyntax.Text = ""
-            'ToolTip1.SetToolTip(lblFunSyntax, "")
+            ToolTip1.SetToolTip(lblFunSyntax, "")
             lblFunDesc.Text = ""
-            'ToolTip1.SetToolTip(lblFunDesc, "")
+            ToolTip1.SetToolTip(lblFunDesc, "")
         End If
 
     End Sub
@@ -1224,32 +982,6 @@ Public Class ctlMain
         End Try
 
     End Sub
-
-    'Private Sub tvTarget_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
-
-    '    tvSource.HideSelection = True
-    '    'tvTarget.BackColor = Color.Wheat
-    '    'tvSource.BackColor = BACK_COLOR
-
-    '    'tvTarget.HideSelection = False
-    '    tvSource.SelectedNode = Nothing
-
-    'End Sub
-
-    'Private Sub tvTarget_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs)
-
-    '    Try
-    '        If e.Button = Windows.Forms.MouseButtons.Right Then
-    '            MousePos = e.Location
-    '            'ContextMenuStrip1.Show(tvTarget.PointToScreen(e.Location), ToolStripDropDownDirection.BelowRight)
-    '            'OpenStructureFileToolStripMenuItem_Click(sender, New EventArgs)
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask tvTgt_Click")
-    '    End Try
-
-    'End Sub
 
     Private Sub tvSourceTarget_Hover(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseHoverEventArgs) Handles tvSource.NodeMouseHover
 
@@ -1281,55 +1013,6 @@ Public Class ctlMain
 
     End Sub
 
-    'Private Sub lvMappings_Hover(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ListViewItemMouseHoverEventArgs) Handles lvMappings.ItemMouseHover
-
-    '    Try
-    '        Dim targetPoint As Point = Control.MousePosition
-    '        Dim row, col As Integer
-    '        Dim lvItm As ListViewItem
-    '        Dim map As clsMapping
-    '        Dim fld As clsField = Nothing
-
-    '        targetPoint = lvMappings.PointToClient(targetPoint)
-    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
-    '        map = CType(lvItm.Tag, clsMapping)
-
-    '        If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
-    '            Select Case col
-    '                Case 0
-    '                    If map.MappingSource IsNot Nothing Then
-    '                        lvItm.ToolTipText = CType(map.MappingSource, INode).Text
-    '                        If CType(map.MappingSource, INode).Type = NODE_STRUCT_FLD Or _
-    '                        CType(map.MappingSource, INode).Type = MAPPING_TYPE_FIELD Then
-    '                            fld = CType(map.MappingSource, clsField)
-    '                        End If
-    '                    End If
-    '                Case 1
-    '                    If map.MappingTarget IsNot Nothing Then
-    '                        lvItm.ToolTipText = CType(map.MappingTarget, INode).Text
-    '                        If CType(map.MappingTarget, INode).Type = NODE_STRUCT_FLD Or _
-    '                        CType(map.MappingTarget, INode).Type = MAPPING_TYPE_FIELD Then
-    '                            fld = CType(map.MappingTarget, clsField)
-    '                        End If
-    '                    End If
-    '            End Select
-    '            If fld IsNot Nothing Then
-    '                txtLength.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString
-    '                txtDataType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-    '                txtReType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE).ToString
-    '                txtExtType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE).ToString
-    '                txtInitVal.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL).ToString
-    '                txtInvalid.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID).ToString
-    '                txtCanNull.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL).ToString
-    '            End If
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask tvsourceHover")
-    '    End Try
-
-    'End Sub
-
 #End Region
 
 #Region "Drag and Drop"
@@ -1339,482 +1022,6 @@ Public Class ctlMain
         DoDragDrop(e.Item, DragDropEffects.Copy)
 
     End Sub
-
-    'Private Sub lvMappings_ItemDrag(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemDragEventArgs) Handles lvMappings.ItemDrag
-
-    '    DoDragDrop(e.Item, DragDropEffects.Move)
-
-    'End Sub
-
-    'Private Sub lvMappings_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragEnter
-
-    '    'See if there is a TreeNode being dragged
-    '    If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
-    '        'TreeNode found allow copy effect
-    '        e.Effect = e.AllowedEffect
-    '    ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
-    '        e.Effect = DragDropEffects.Move
-    '    End If
-
-    'End Sub
-
-    'Private Sub lvMappings_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragOver
-
-    '    lvMappings.MultiSelect = False
-
-    '    If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
-    '        '//Drag drop treeview node handle here
-    '        OnDragOverFromTreeview(sender, e)
-    '    ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
-    '        '//Drag drop listview items handle here 
-    '        e.Effect = DragDropEffects.Move
-    '        OnDragOverFromListView(sender, e)
-    '    End If
-
-    'End Sub
-
-    'Sub OnDragOverFromListView(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs)
-
-    '    Try
-    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
-    '        Dim draggedItem As ListViewItem = CType(e.Data.GetData(GetType(ListViewItem)), ListViewItem)
-    '        Dim lvItm As ListViewItem
-
-    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
-
-    '        '//just highlight the selection
-    '        If Not (lvItm Is Nothing) Then
-    '            lvItm.Focused = True
-    '        Else
-    '            Exit Sub
-    '        End If
-
-    '        Select Case draggedItem.ListView.Name
-    '            Case "lvMappings"
-    '                '//allowed only from above treeviews
-    '            Case Else
-    '                '//if dragged node came from any other tree except above treevies then dont accept
-    '                e.Effect = DragDropEffects.None
-    '                Exit Sub
-    '        End Select
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask OnDragOverFromListView")
-    '    End Try
-
-    'End Sub
-
-    'Sub OnDragOverFromTreeview(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs)
-
-    '    Try
-    '        'we only drop if drop on source or target column
-    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
-    '        Dim row, col As Integer
-    '        Dim draggedNode As TreeNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
-    '        Dim lvItm As ListViewItem
-
-    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
-    '        '//just highlight the selection
-    '        If Not (lvItm Is Nothing) Then
-    '            lvItm.Focused = True
-    '            lvItm.Selected = True
-    '        End If
-
-    '        Select Case draggedNode.TreeView.Name
-    '            Case "tvTarget", "tvSource", "tvFunctions", "tvExplorer"
-    '                '//allowed only from above treeviews
-    '            Case Else
-    '                '//if dragged node came from any other tree except above treevies then dont accept
-    '                e.Effect = DragDropEffects.None
-    '                Exit Sub
-    '        End Select
-
-    '        If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
-    '            Select Case col
-    '                Case 0 '//dragging on source
-
-    '                    '//dont allow target to be dropped on source
-    '                    If draggedNode.TreeView.Name = "tvTarget" Then
-    '                        e.Effect = DragDropEffects.None
-    '                        Exit Sub
-    '                    End If
-
-    '                    '//Source can take Field, FieldSelection, Variables, functions, 
-    '                    '//lookup, Join, variables
-    '                    '//only allow the following type of node to be drag/drop on source column
-    '                    If CType(draggedNode.Tag, INode).Type = NODE_STRUCT_SEL Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_STRUCT_FLD Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_SOURCEDSSEL Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_JOIN Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_LOOKUP Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_FUN Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_TEMPLATE Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_VARIABLE Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_LOOKUP Then
-
-    '                        e.Effect = DragDropEffects.Copy
-    '                    Else
-    '                        e.Effect = DragDropEffects.None
-    '                    End If
-
-    '                Case 1 '//dragging on target
-    '                    '//dont allow source to be dropped on target
-    '                    If draggedNode.TreeView.Name = "tvSource" Then
-    '                        e.Effect = DragDropEffects.None
-    '                        Exit Sub
-    '                    End If
-
-    '                    '//Target can take Field, FieldSelection and Variables 
-    '                    '//only allow the following type of node to be drag/drop on source column
-    '                    If CType(draggedNode.Tag, INode).Type = NODE_STRUCT_SEL Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_STRUCT_FLD Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_TARGETDSSEL Or _
-    '                        CType(draggedNode.Tag, INode).Type = NODE_VARIABLE Then
-
-    '                        e.Effect = DragDropEffects.Copy
-    '                    Else
-    '                        e.Effect = DragDropEffects.None
-    '                    End If
-    '            End Select
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask OnDragOverFromTreeView")
-    '    End Try
-
-    'End Sub
-
-    '    Private Sub lvMappings_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragDrop
-
-    '        ' Retrieve the client coordinates of the drop location.
-    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
-    '        Dim lvItm As ListViewItem
-    '        'Retrieve the node that was dragged.
-    '        Dim draggedNode As TreeNode = Nothing
-    '        Dim draggedListItm As ListViewItem
-
-    '        Dim DraggedObj As INode
-    '        Dim ObjDragOver As INode
-    '        Dim DraggedMap As clsMapping
-    '        Dim DestMap As clsMapping
-
-    '        Try
-    '            lvMappings.BeginUpdate()
-
-    '            lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
-
-    '            If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
-    '                '//Drag drop treeview node handle here
-    '                draggedNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
-    '            ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
-    '                If Not (lvItm Is Nothing) Then
-    '                    draggedListItm = CType(e.Data.GetData(GetType(ListViewItem)), ListViewItem)
-    '                    '/// If mapping item is target and dropped on item with no target, then map items together
-    '                    '/// and vise-versa  OR insert mapping item in new position.
-    '                    DraggedObj = CType(draggedListItm.Tag, INode)
-    '                    ObjDragOver = CType(lvItm.Tag, INode)
-    '                    If DraggedObj.Type = NODE_MAPPING And ObjDragOver.Type = NODE_MAPPING Then
-    '                        DraggedMap = CType(DraggedObj, clsMapping)
-    '                        DestMap = CType(ObjDragOver, clsMapping)
-    '                        If DraggedMap.SourceType = enumMappingType.MAPPING_TYPE_NONE And _
-    '                        DestMap.TargetType = enumMappingType.MAPPING_TYPE_NONE Then
-    '                            '/// Add Dragged Target Field to Destination Mapping object
-    '                            '// Then delete the mapping that was dragged
-    '                            If DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD And _
-    '                            DraggedMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                                '/// Update the mapping Object  
-    '                                DestMap.MappingTarget = CType(DraggedMap.MappingTarget, clsField)
-    '                                DestMap.IsMapped = "1"
-    '                                DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD
-    '                                DestMap.TargetParent = DraggedMap.TargetParent
-    '                                DestMap.TargetDataStore = DraggedMap.TargetDataStore
-    '                                '/// Update the ListView
-    '                                lvItm.SubItems(1) = draggedListItm.SubItems(1)
-    '                                lvMappings.Items.RemoveAt(draggedListItm.Index)
-    '                                ResetMappingSeqNo()
-    '                                '//Fire change event
-    '                                OnChange(Me, New EventArgs)
-    '                                Exit Try
-    '                            Else
-    '                                GoTo fallThru
-    '                            End If
-    '                        ElseIf DraggedMap.TargetType = enumMappingType.MAPPING_TYPE_NONE And _
-    '                        DestMap.SourceType = enumMappingType.MAPPING_TYPE_NONE Then
-    '                            '/// Add Dragged Source Field to Destination Mapping Object
-    '                            '// Then delete the mapping that was dragged
-    '                            If DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD And _
-    '                            DraggedMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                                '/// Update the Mappings
-    '                                DestMap.MappingSource = CType(DraggedMap.MappingSource, clsField)
-    '                                DestMap.IsMapped = "1"
-    '                                DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD
-    '                                DestMap.SourceParent = DraggedMap.SourceParent
-    '                                DestMap.SourceDataStore = DraggedMap.SourceDataStore
-    '                                '/// Update the Listview
-    '                                lvItm.SubItems(0) = draggedListItm.SubItems(0)
-    '                                lvMappings.Items.RemoveAt(draggedListItm.Index)
-    '                                ResetMappingSeqNo()
-    '                                '//Fire change event
-    '                                OnChange(Me, New EventArgs)
-    '                                Exit Try
-    '                            Else
-    '                                GoTo fallThru
-    '                            End If
-    '                        Else
-    '                            GoTo fallThru
-    '                        End If
-    '                    Else
-    'fallThru:               lvMappings.MultiSelect = True '// now again turnmulti select on
-    '                        '//Note: SetMappingPosition function takes new position of first item in selection. 
-    '                        '//If user dragged any item other than first in the selection then calculate new position 
-    '                        '//of first item based on move offset of entire selection
-    '                        Dim moveOffset As Integer
-    '                        moveOffset = lvItm.Index - draggedListItm.Index
-    '                        SetMappingPosition(lvMappings.SelectedItems(0).Index + moveOffset)
-    '                        Exit Try
-    '                    End If
-    '                End If
-    '            End If
-
-    '            'we only drop if drop on source or target column
-    '            Dim row, col As Integer
-
-    '            If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
-    '                Select Case col
-    '                    Case 0 '//dropped on source
-    '                        DoDropOperation(lvItm, draggedNode, modDeclares.enumDirection.DI_SOURCE, draggedNode.Tag.Type)
-    '                    Case 1 '//dropped on target
-    '                        DoDropOperation(lvItm, draggedNode, modDeclares.enumDirection.DI_TARGET, draggedNode.Tag.Type)
-    '                End Select
-    '            End If
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask lvMappings.DragDrop")
-    '        Finally
-    '            lvMappings.EndUpdate()
-    '        End Try
-
-    '    End Sub
-
-    '//lvItm : is target item, if lvItm is nothing then we will add dragged item at the end of all list items
-    '//draggedNode : is node dragged from tvSource,tvTarget or tvFunction treeview control
-    '//              we perform different operation depending on type of node
-    'Function DoDropOperation(ByRef lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal nType As String = NODE_STRUCT_FLD) As Boolean
-
-    '    Select Case nType
-    '        Case NODE_FUN, NODE_TEMPLATE '//if SQFunction is dropped on listview
-    '            OnSQFunctionDrop(lvItm, draggedNode, dirType)
-    '        Case NODE_STRUCT_SEL, NODE_SOURCEDSSEL, NODE_TARGETDSSEL
-    '            '//if selection is dropped on listview
-    '            OnFldSelectionDrop(lvItm, draggedNode, dirType)
-    '        Case NODE_STRUCT_FLD '//if field is dropped on listview
-    '            OnFieldDrop(lvItm, draggedNode, dirType)
-    '        Case NODE_JOIN '//if join is dropped on listview
-    '            OnJoinDrop(lvItm, draggedNode, dirType)
-    '        Case NODE_LOOKUP '//if lookup is dropped on listview
-    '            OnLookupDrop(lvItm, draggedNode, dirType)
-    '        Case NODE_VARIABLE '//if variable is dropped on listview
-    '            OnVariableDrop(lvItm, draggedNode, dirType)
-    '    End Select
-
-    'End Function
-
-    '//call if SQData function is dropped on listview
-    'Function OnSQFunctionDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
-
-    '    If CType(draggedNode.Tag, clsSQFunction).IsTemplate = True Then
-    '        UpdateTemplateScript(draggedNode.Tag)
-    '    End If
-
-    '    '//Fix on 8/12/05 by npatel : removed draggedNode.tag and replaced with draggedNode
-    '    ManualMapping(lvItm, draggedNode, dirType)
-    '    AddToRecentlyUsedFunctionList(draggedNode)
-
-    'End Function
-
-    ''//call if variable is dropped on listview
-    'Function OnVariableDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
-
-    '    ManualMapping(lvItm, draggedNode, dirType)
-
-    'End Function
-
-    '//call if join is dropped on listview
-    'Function OnJoinDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
-
-    '    ManualMapping(lvItm, draggedNode, dirType)
-
-    'End Function
-
-    ''//call if lookup is dropped on listview
-    'Function OnLookupDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
-
-    '    ManualMapping(lvItm, draggedNode, dirType)
-
-    'End Function
-
-    '//call if selection is dropped on listview
-    'Function OnFldSelectionDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal pass As Integer = 1) As Boolean
-
-    '    Dim objSel As clsDSSelection
-    '    Dim objFld As clsField
-    '    Dim DataStoreName As String
-    '    Dim duplicatecnt As Integer = 0
-
-    '    Try
-    '        DataStoreName = GetParentDSForThisNode(draggedNode).Text
-    '        objSel = draggedNode.Tag
-
-    '        For Each objFld In objSel.DSSelectionFields
-    '            If Not (objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And cbGroupItems.Checked = False) Then
-    '                If IsDuplicateItem(objFld, dirType, False) = False Then
-    '                    '//TODO Add field and create new mapping
-    '                    If objFld.FieldName <> "" Then
-    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
-    '                    ElseIf objFld.OrgName <> "" Then
-    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.CorrectedFieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
-    '                    Else
-    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.OrgName 'GetParentDSForThisNode(draggedNode).Text & "." & _
-    '                    End If
-    '                    AutoFieldMapping(objFld, dirType, DataStoreName, pass)
-    '                Else
-    '                    '//skipping field coz its already in the list
-    '                    If pass < 1 Then
-    '                        duplicatecnt = duplicatecnt + 1
-    '                    End If
-    '                End If
-    '            End If
-    '        Next
-    '        pass = pass + 1
-    '        If pass < 6 Then
-    '            Call OnFldSelectionDrop(lvItm, draggedNode, dirType, pass)
-    '        End If
-
-    '        If duplicatecnt = 1 Then
-    '            MsgBox("[" & duplicatecnt & "] duplicate item was skipped", MsgBoxStyle.Exclamation, MsgTitle)
-    '        ElseIf duplicatecnt > 1 Then
-    '            MsgBox("[" & duplicatecnt & "] duplicate items were skipped", MsgBoxStyle.Exclamation, MsgTitle)
-    '        End If
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex)
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    '//call if single field is dropped on listview
-    'Function OnFieldDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
-
-    '    Try
-    '        Dim objfld As clsField = draggedNode.Tag
-    '        Dim GrpItmFlag As Boolean = False
-
-    '        If (objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And objfld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE) = "") Then
-    '            GroupItemDrop(lvItm, draggedNode, dirType)
-    '        Else
-    '            If dirType = modDeclares.enumDirection.DI_SOURCE Then
-    '                ManualMapping(lvItm, draggedNode, dirType, True)
-    '            Else
-    '                If IsDuplicateItem(CType(draggedNode.Tag, clsField), dirType, False) = False Then
-    '                    ManualMapping(lvItm, draggedNode, dirType, True)
-    '                Else
-    '                    MsgBox("Duplicate field was found", MsgBoxStyle.Exclamation, MsgTitle)
-    '                End If
-    '            End If
-    '        End If
-
-    '        'If objfld.Parent.Type = NODE_SOURCEDSSEL Or objfld.Parent.Type = NODE_TARGETDSSEL Then
-    '        '    CType(objfld.Parent, clsDSSelection).IsMapped = True
-    '        'End If
-
-    '        Return True
-
-    '    Catch ex As Exception
-    '        LogError(ex)
-    '        Return False
-    '    End Try
-
-    'End Function
-
-    '// call if groupitem field is dropped on listview
-    'Function GroupItemDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal pass As Integer = 1) As Boolean
-
-    '    Dim FldNodeCol As TreeNodeCollection = draggedNode.Nodes
-    '    Dim curNode As TreeNode
-    '    Dim objfld As clsField = draggedNode.Tag
-    '    Dim duplicatecnt As Integer = 0
-    '    Dim DataStoreName As String
-
-    '    Try
-    '        DataStoreName = GetParentDSForThisNode(draggedNode).Text
-    '        If DataStoreName = "" Then
-    '            DataStoreName = GetParentDSForField(draggedNode)
-    '        End If
-
-    '        '// First do Group Item Field ... Map if Group Items box checked
-    '        If Not (objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And cbGroupItems.Checked = False) Then
-    '            If IsDuplicateItem(objfld, dirType, False) = False Then
-    '                '//TODO Add field and create new mapping
-    '                If objfld.CorrectedFieldName <> "" Then
-    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.CorrectedFieldName ' GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                ElseIf objfld.OrgName <> "" Then
-    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.OrgName 'GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                Else
-    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                End If
-    '                AutoFieldMapping(objfld, dirType, DataStoreName, pass)
-    '            Else
-    '                '//skipping field coz its already in the list
-    '                duplicatecnt = duplicatecnt + 1
-    '            End If
-    '        Else
-    '            '/// Now do the Group Item's Child fields
-    '            For Each curNode In FldNodeCol
-    '                objfld = curNode.Tag
-    '                If objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then
-    '                    '/// recurse if Child field is a Group Item
-    '                    GroupItemDrop(lvItm, curNode, dirType)
-    '                Else
-    '                    If IsDuplicateItem(objfld, dirType, False) = False Then
-    '                        '//TODO Add field and create new mapping
-    '                        If objfld.CorrectedFieldName <> "" Then
-    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.CorrectedFieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                        ElseIf objfld.OrgName <> "" Then
-    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.OrgName ' GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                        Else
-    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
-    '                        End If
-    '                        AutoFieldMapping(objfld, dirType, DataStoreName, pass)
-    '                    Else
-    '                        '//skipping field coz its already in the list
-    '                        duplicatecnt = duplicatecnt + 1
-    '                    End If
-    '                End If
-    '            Next
-
-    '        End If
-
-    '        pass = pass + 1
-    '        If pass < 6 Then
-    '            Call GroupItemDrop(lvItm, draggedNode, dirType, pass)
-    '        End If
-
-    '        'If duplicatecnt = 1 Then
-    '        '    MsgBox("[" & duplicatecnt & "] duplicate item was skipped", MsgBoxStyle.Exclamation)
-    '        'ElseIf duplicatecnt > 1 Then
-    '        '    MsgBox("[" & duplicatecnt & "] duplicate items were skipped", MsgBoxStyle.Exclamation)
-    '        'End If
-
-    '        Return True
-    '    Catch ex As Exception
-    '        LogError(ex)
-    '        Return False
-    '    End Try
-
-    'End Function
 
     Private Sub txtCodeEditor_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles txtCodeEditor.DragEnter
 
@@ -1864,11 +1071,11 @@ Public Class ctlMain
                     '//handle function differently. We will show expanded text with para place holder
                     If draggedNode.Tag.GetType.Name = GetType(clsSQFunction).Name Then
                         If draggedNode.Text = "Route" Then
-                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainText) 'GetScriptForMainTemplateV3
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainText(objThis.Engine)) 'GetScriptForMainTemplateV3
                         ElseIf draggedNode.Text = "Procedure" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForProcV3)
                         ElseIf draggedNode.Text = "LOOK" Then
-                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK)
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK(objThis))
                         ElseIf draggedNode.Text = "CASE" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCASE)
                         ElseIf draggedNode.Text = "SetImage" Then
@@ -1913,7 +1120,48 @@ Public Class ctlMain
             End If
 
         Catch ex As Exception
-            LogError(ex, "ctlTask DragDrop")
+            LogError(ex, "ctlMain DragDrop")
+        End Try
+
+    End Sub
+
+    Private Sub txtCodeEditor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCodeEditor.TextChanged
+
+        Try
+            Dim ColNum As Integer
+            'Dim idx As Integer
+            ''Dim StartIdx As Integer
+            'Dim SubStr As String
+
+            If IsEventFromCode = True Then Exit Sub
+
+            objCurFunct.SQFunctionWithInnerText = txtCodeEditor.Text
+
+            ''StartIdx = txtCodeEditor.GetFirstCharIndexOfCurrentLine()
+            'idx = txtCodeEditor.GetCharIndexFromPosition(Windows.Forms.Cursor.Position)
+
+
+            'SubStr = txtCodeEditor.Text.Substring(0, idx)
+            'ColNum = SubStr.Length - SubStr.LastIndexOf(Chr(13))
+
+            Dim lineindex As Integer
+            lineindex = Me.txtCodeEditor.GetLineFromCharIndex(Me.txtCodeEditor.SelectionStart)
+
+            Dim columnindex As Integer
+            columnindex = Me.txtCodeEditor.SelectionStart - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
+
+            If Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex + 1) > 1 Then
+                ColNum = Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex + 1) - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
+            Else
+                ColNum = Me.txtCodeEditor.Text.Length - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
+            End If
+
+            txtColNum.Text = ColNum.ToString
+
+            'OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask txtCodeEditorTextChng")
         End Try
 
     End Sub
@@ -1921,33 +1169,6 @@ Public Class ctlMain
 #End Region
 
 #Region "Menu and Click Events"
-
-    'Public Sub cbGroupItems_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGroupItems.CheckedChanged
-
-    '    If IsEventFromCode = True Then Exit Sub
-
-    '    objThis.IsModified = True
-
-    '    cmdSave.Enabled = True
-
-    '    If objThis.Engine IsNot Nothing Then
-    '        If cbGroupItems.Checked = True Then
-    '            objThis.Engine.MapGroupItems = True
-    '        Else
-    '            objThis.Engine.MapGroupItems = False
-    '        End If
-    '    End If
-
-    '    RaiseEvent Modified(Me, objThis)
-
-    'End Sub
-
-    'Private Sub cmdOk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    'HideScriptEditor()
-    '    'HideDescEditor(True)
-
-    'End Sub
 
     Private Sub cmdCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
@@ -1960,26 +1181,13 @@ Public Class ctlMain
 
     End Sub
 
-    'Private Sub cmdSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    If Not (tvSource.SelectedNode Is Nothing) Then
-    '        If SelectFirstMatchingNode(tvSource, colSkipNodes, txtSearchField.Text) = False Then
-    '            MsgBox("No matching node found for entered text", MsgBoxStyle.Critical)
-    '        End If
-    '    ElseIf Not (tvTarget.SelectedNode Is Nothing) Then
-    '        If SelectFirstMatchingNode(tvTarget, colSkipNodes, txtSearchField.Text) = False Then
-    '            MsgBox("No matching node found for entered text", MsgBoxStyle.Critical)
-    '        End If
-    '    Else
-    '        MsgBox("Please click on the treeview you want to search")
-    '    End If
-
-    'End Sub
-
     Public Sub cmdSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmdSave.Click
 
         objThis.CallFromUsercontrol = True '//8/15/05
-        Save()
+        If Save() = True Then
+            '/// Added for Addflow
+            objThis.Engine.ObjAddFlowCtl.RefreshAddFlow()
+        End If
         objThis.CallFromUsercontrol = False '//8/15/05
 
     End Sub
@@ -2009,19 +1217,6 @@ Public Class ctlMain
 
     End Sub
 
-    'Private Sub cmdSaveDesc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    'HideScriptEditor(True)
-    '    HideDescEditor()
-
-    '    'If CType(lvMappings.Items(CurRow).Tag, clsMapping).MappingDesc <> "" Then
-    '    '    lvMappings.Items(CurRow).ForeColor = HAS_DESC_COLOR
-    '    'Else
-    '    '    lvMappings.Items(CurRow).ForeColor = Color.Black
-    '    'End If
-
-    'End Sub
-
     Private Sub cmdCancelEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
         pnlScript.Visible = False
@@ -2033,670 +1228,144 @@ Public Class ctlMain
 
     End Sub
 
-    'Private Sub lvMappings_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMappings.DoubleClick
-
-    '    Dim row As Integer
-    '    Dim col As Integer
-    '    Dim objMap As clsMapping
-
-    '    Try
-    '        row = CurRow
-    '        col = CurCol
-
-    '        '//if user double click on function then we show script edit control
-    '        If row >= 0 Then
-    '            objMap = lvMappings.Items(row).Tag
-
-    '            If Not (objMap Is Nothing) Then
-    '                If objMap.HasMissingDependency = True Then
-    '                    MsgBox("**** Sorry you can not edit this mapping. *****" & vbCrLf & vbCrLf & objMap.Commment, MsgBoxStyle.Critical, MsgTitle)
-    '                    Exit Sub
-    '                End If
-
-    '                '// functions can be only entered in source
-    '                If col = 0 Then
-    '                    curEditType = modDeclares.enumDirection.DI_SOURCE
-    '                Else
-    '                    curEditType = modDeclares.enumDirection.DI_TARGET
-    '                End If
-
-    '                ShowScriptEditor(objMap)
-    '            End If '//If Not (objMap Is Nothing) Then ...
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask lvMappings_DblClick")
-    '    End Try
-
-    'End Sub
-
-    '    Private Sub lvMappings_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvMappings.MouseDown
-
-    '        Dim row, col As Integer
-    '        Dim ItemClicked As Boolean
-    '        Dim lvItm As ListViewItem
-
-    '        ItemClicked = GetListSubItemFromPoint(lvMappings, e.X, e.Y, row, col)
-    '        If ItemClicked = False Then
-    '            For Each lvItm In lvMappings.SelectedItems
-    '                lvItm.Selected = False
-    '                lvItm.Focused = False
-    '            Next
-    '        End If
-    '        If Not lvMappings.FocusedItem Is Nothing Then
-    '            lvMappings.FocusedItem.Selected = False
-    '            lvMappings.FocusedItem.Focused = False
-    '        End If
-
-    '    End Sub
-
-    '    Private Sub lvMappings_Mouseup(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvMappings.MouseUp
-
-    '        Dim row As Integer, col As Integer
-    '        Dim ItemClicked As Boolean
-    '        Dim flagOutside As Boolean
-    '        Dim objMap As clsMapping
-
-    '        Try
-    '            ItemClicked = GetListSubItemFromPoint(lvMappings, e.X, e.Y, row, col)
-
-    '            CurRow = row
-    '            CurCol = col
-    '            flagOutside = (row = -1)
-
-    '            If e.Button = Windows.Forms.MouseButtons.Right Then
-    '                If ItemClicked = True Then
-    '                    mnuDelItem.Enabled = Not flagOutside
-    '                    mnuDelSource.Enabled = Not flagOutside
-    '                    mnuDelTarget.Enabled = Not flagOutside
-
-    '                    mnuCopyMapping.Enabled = Not flagOutside
-    '                    mnuCutMapping.Enabled = Not flagOutside
-
-    '                    mnuPaste.Enabled = IsClipboardAvail
-    '                    mnuEdit.Enabled = Not flagOutside
-    '                    mnuMapDesc.Enabled = Not flagOutside
-
-    '                    If row >= 0 Then
-
-    '                        objMap = lvMappings.Items(row).Tag
-    '                        If Not (objMap Is Nothing) Then
-
-    '                            If lvMappings.Items(row).Selected = False Then
-    '                                lvMappings.Items(row).Selected = True
-    '                                lvMappings.MultiSelect = False
-    '                            End If
-
-
-    '                            If col = 0 And objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                                mnuDelSource.Enabled = False
-    '                            End If
-    '                            If col = 1 And objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
-    '                                mnuDelTarget.Enabled = False
-    '                            End If
-    '                        End If
-
-    '                        If lvMappings.SelectedItems.Count > 1 Then
-    '                            lvMappings.MultiSelect = True
-
-    '                            '//Allow Del Source/Target/row for muli select if applicable 
-    '                            mnuDelItem.Enabled = mnuDelItem.Enabled And True
-    '                            mnuDelSource.Enabled = mnuDelSource.Enabled And True
-    '                            mnuDelTarget.Enabled = mnuDelTarget.Enabled And True
-
-    '                            '//Do not allow Cut/Copy for muli select
-    '                            mnuCutMapping.Enabled = mnuCutMapping.Enabled And False
-    '                            mnuCopyMapping.Enabled = mnuCopyMapping.Enabled And False
-    '                            mnuPaste.Enabled = mnuPaste.Enabled And False
-    '                        Else
-    '                            lvMappings.MultiSelect = False
-    '                        End If
-    '                    End If
-    '                Else '//Left button up
-    '                    Debug.Write(Now)
-    '                End If
-
-    '                mnuPopup.Show(lvMappings, New Point(e.X, e.Y))
-    '            Else
-    '                lvMappings.MultiSelect = True
-    '            End If
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask lvMappings_MouseUp")
-    '        End Try
-
-    '    End Sub
-
-    '    Private Sub mnuCopyMapping_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuCopyMapping.Click
-
-    '        If CurRow >= 0 Then
-    '            objClip = GetObjCopy(objThis, lvMappings.Items(CurRow).Tag)
-    '            IsClipboardAvail = True
-    '        End If
-
-    '    End Sub
-
-    '    Private Sub mnuCopySingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopySingle.Click
-
-    '        Try
-    '            If CurRow >= 0 Then
-    '                Dim objMap As clsMapping
-    '                TempMap = New clsMapping
-
-    '                objMap = lvMappings.Items(CurRow).Tag
-    '                If CurCol = 0 Then
-    '                    '/// build clip object
-    '                    TempMap = objMap.Clone(objThis)
-    '                    TempMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    TempMap.MappingTarget = Nothing
-    '                    TempMap.TargetDataStore = ""
-    '                    TempMap.IsMapped = "0"
-    '                    '/// add to clipboard
-    '                    objClip = TempMap
-    '                Else
-    '                    '/// build clip object
-    '                    TempMap = objMap.Clone(objThis)
-    '                    TempMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    TempMap.MappingSource = Nothing
-    '                    TempMap.SourceDataStore = ""
-    '                    TempMap.IsMapped = "0"
-    '                    '/// add to clipboard
-    '                    objClip = TempMap
-    '                End If
-
-    '                IsClipboardAvail = True
-    '            End If
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask mnuCopySingle")
-    '        End Try
-
-    '    End Sub
-
-    '    Private Sub mnuCutSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCutSingle.Click
-
-    '        Try
-    '            If CurRow >= 0 Then
-    '                Dim objMap As clsMapping
-    '                TempMap = New clsMapping
-
-    '                objMap = lvMappings.Items(CurRow).Tag
-    '                If CurCol = 0 Then
-    '                    '/// build clip object
-    '                    TempMap = objMap.Clone(objThis)
-    '                    TempMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    TempMap.MappingTarget = Nothing
-    '                    TempMap.TargetDataStore = ""
-    '                    TempMap.IsMapped = "0"
-    '                    '/// add to clipboard
-    '                    objClip = TempMap
-    '                    '/// update remaining object
-    '                    lvMappings.Items(CurRow).SubItems(0).Text = " "
-    '                    objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    objMap.MappingSource = Nothing
-    '                    objMap.SourceDataStore = ""
-    '                    objMap.IsMapped = "0"
-    '                Else
-    '                    '/// build clip object
-    '                    TempMap = objMap.Clone(objThis)
-    '                    TempMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    TempMap.MappingSource = Nothing
-    '                    TempMap.SourceDataStore = ""
-    '                    TempMap.IsMapped = "0"
-    '                    '/// add to clipboard
-    '                    objClip = TempMap
-    '                    '/// update remaining object
-    '                    lvMappings.Items(CurRow).SubItems(1).Text = " "
-    '                    objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                    objMap.MappingTarget = Nothing
-    '                    objMap.TargetDataStore = ""
-    '                    objMap.IsMapped = "0"
-    '                End If
-    '                lvMappings.Items(CurRow).Tag = objMap
-    '                IsClipboardAvail = True
-    '            End If
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask mnuCutSingle")
-    '        End Try
-
-    '    End Sub
-
-    '    Private Sub mnuCutMapping_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuCutMapping.Click
-
-    '        Try
-    '            If CurRow >= 0 Then
-    '                Dim objMap As clsMapping
-
-    '                objMap = lvMappings.Items(CurRow).Tag
-
-    '                objClip = Nothing
-    '                objClip = objMap.Clone(objThis)         'new by TK 3/2/2007
-    '                lvMappings.Items.RemoveAt(CurRow)
-
-    '                IsClipboardAvail = True
-    '            End If
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask mnuCutMapping")
-    '        End Try
-
-    '    End Sub
-
-    '    Private Sub mnuPaste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPaste.Click
-
-    '        Dim CutCopyMap As clsMapping
-    '        Dim DestMap As clsMapping
-
-    '        Try
-    '            lvMappings.BeginUpdate()
-
-    '            If IsClipboardAvail = False Then Exit Sub
-
-    '            If CType(objClip, INode).Type = NODE_MAPPING Then
-    '                If CType(lvMappings.Items(CurRow).Tag, clsMapping).SourceType = enumMappingType.MAPPING_TYPE_NONE And _
-    '                CType(objClip, clsMapping).TargetType = enumMappingType.MAPPING_TYPE_NONE Then
-    '                    DestMap = CType(lvMappings.Items(CurRow).Tag, clsMapping)
-    '                    CutCopyMap = CType(objClip, clsMapping)
-    '                    If DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD And _
-    '                    CutCopyMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                        '/// Update the mapping Object  
-    '                        DestMap.MappingSource = CType(CutCopyMap.MappingSource, clsField)
-    '                        DestMap.IsMapped = "1"
-    '                        DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD
-    '                        DestMap.SourceParent = CutCopyMap.SourceParent
-    '                        DestMap.SourceDataStore = CutCopyMap.SourceDataStore
-    '                        '/// Update the ListView
-    '                        lvMappings.Items(CurRow).SubItems(0).Text = CType(CutCopyMap.MappingSource, clsField).Text
-    '                        'ResetMappingSeqNo()
-    '                        '//Fire change event
-    '                        OnChange(Me, New EventArgs)
-    '                        Exit Try
-    '                    Else
-    '                        GoTo fallthru2
-    '                    End If
-    '                ElseIf CType(lvMappings.Items(CurRow).Tag, clsMapping).TargetType = enumMappingType.MAPPING_TYPE_NONE And _
-    '                CType(objClip, clsMapping).SourceType = enumMappingType.MAPPING_TYPE_NONE Then
-    '                    DestMap = CType(lvMappings.Items(CurRow).Tag, clsMapping)
-    '                    CutCopyMap = CType(objClip, clsMapping)
-    '                    If DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD And _
-    '                    CutCopyMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                        '/// Update the mapping Object  
-    '                        DestMap.MappingTarget = CType(CutCopyMap.MappingTarget, clsField)
-    '                        DestMap.IsMapped = "1"
-    '                        DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD
-    '                        DestMap.TargetParent = CutCopyMap.TargetParent
-    '                        DestMap.TargetDataStore = CutCopyMap.TargetDataStore
-    '                        '/// Update the ListView
-    '                        lvMappings.Items(CurRow).SubItems(1).Text = CType(CutCopyMap.MappingTarget, clsField).Text
-    '                        'ResetMappingSeqNo()
-    '                        '//Fire change event
-    '                        OnChange(Me, New EventArgs)
-    '                        Exit Try
-    '                    Else
-    '                        GoTo fallthru2
-    '                    End If
-    '                Else
-    'fallthru2:          AddMapping(objClip, CurRow)
-    '                    IsClipboardAvail = True
-    '                End If
-    '            Else
-    '                If CurRow >= 0 Then
-    '                    Dim objMap As clsMapping
-    '                    objMap = lvMappings.Items(CurRow).Tag
-    '                    If CurCol = 0 Then
-    '                        lvMappings.Items(CurRow).SubItems(0).Text = CType(objClip, INode).Text
-    '                        objMap.SourceType = GetSourceTypeFromNodeType(CType(objClip, INode).Type)
-    '                        objMap.MappingSource = GetObjCopy(objThis, objClip)
-
-    '                    Else
-    '                        lvMappings.Items(CurRow).SubItems(1).Text = CType(objClip, INode).Text
-    '                        objMap.TargetType = GetSourceTypeFromNodeType(CType(objClip, INode).Type)
-    '                        objMap.MappingTarget = GetObjCopy(objThis, objClip)
-
-    '                    End If
-
-    '                    IsClipboardAvail = True
-    '                End If
-    '            End If
-
-
-    '        Catch ex As Exception
-    '            LogError(ex, "ctlTask mnuPastClick")
-    '        Finally
-    '            lvMappings.EndUpdate()
-    '        End Try
-
-    '    End Sub
-
-    'Private Sub mnuSelectMappedItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    Dim itm As ListViewItem
-    '    Dim map As clsMapping
-
-    '    lvMappings.SelectedItems.Clear()
-    '    lvMappings.MultiSelect = True
-    '    For Each itm In lvMappings.Items
-    '        map = itm.Tag
-    '        If map.IsMapped = "1" Or map.IsMapped = "2" Or map.IsMapped = "3" Then
-    '            itm.Selected = True
-    '        End If
-    '    Next
-
-    'End Sub
-
-    'Private Sub mnuSelectUnmappedItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-    '    Dim itm As ListViewItem
-    '    Dim map As clsMapping
-
-    '    lvMappings.SelectedItems.Clear()
-    '    lvMappings.MultiSelect = True
-
-    '    For Each itm In lvMappings.Items
-    '        map = itm.Tag
-    '        '//according to Kam select all unmapped items where target is blank
-    '        If map.IsMapped = "0" And (map.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE) And (map.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE) Then
-    '            itm.Selected = True
-    '        End If
-    '    Next
-
-    'End Sub
-
-    'Private Sub cmdSearchMapping_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    '    Dim itm As ListViewItem
-    '    Dim map As clsMapping
-    '    Dim i As Integer
-
-    '    '//check for new search
-    '    If lastMappingSearchText <> txtSearchMapping.Text Or lastMappingSearchPos = 0 Then
-    '        lvMappings.SelectedItems.Clear()
-    '        lastMappingSearchPos = 0
-    '    End If
-
-    '    If lastMappingSearchPos > 0 And lastMappingSearchPos < lvMappings.Items.Count - 1 Then
-    '        lastMappingSearchPos = lastMappingSearchPos + 1 '// start from next item from last found item
+#End Region
+
+#Region "Misc Functions"
+
+    Function AddToRecentlyUsedFunctionList(ByVal draggedNode As TreeNode) As Boolean
+
+        Dim ndLast As TreeNode, nd As TreeNode
+        Dim IsFound As Boolean
+        Dim objFun As clsSQFunction
+        Dim cnt As Integer
+
+        Try
+            cnt = tvFunctions.GetNodeCount(False)
+            If cnt <= 0 Then Exit Function
+
+            objFun = draggedNode.Tag
+
+            ndLast = tvFunctions.Nodes(cnt - 1)
+
+            For Each nd In ndLast.Nodes
+                If CType(nd.Tag, INode).Text = objFun.Text Then
+                    IsFound = True
+                    Exit For
+                End If
+            Next
+            '//if this function is not in the list then add it
+            If IsFound = False Then
+                Dim newNd As TreeNode
+                newNd = draggedNode.Clone
+                ndLast.Nodes.Add(newNd)
+                ndLast.Expand()
+                newNd.EnsureVisible()
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "AddToRecentlyUsedFunctList")
+            Return False
+        End Try
+
+    End Function
+
+    Function GetTypeFromText(ByVal txt As String, Optional ByVal dir As enumDirection = modDeclares.enumDirection.DI_SOURCE) As enumMappingType
+
+        If txt = "" Then
+            Return modDeclares.enumMappingType.MAPPING_TYPE_NONE
+        ElseIf txt.IndexOf("(") >= 0 Or txt.IndexOf(")") >= 0 Or txt.IndexOf(" ") >= 0 Then
+            Return modDeclares.enumMappingType.MAPPING_TYPE_FUN
+        ElseIf (txt.StartsWith("'") And txt.EndsWith("'")) Or IsNumeric(txt) Then
+            Return modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
+            'KS02 4/24/2006
+        ElseIf (txt.StartsWith("`") And txt.EndsWith("`")) Or IsNumeric(txt) Then
+            Return modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
+            'End KS02 4/24/2006
+        Else
+            If dir = modDeclares.enumDirection.DI_SOURCE Then
+                Return objCurMap.SourceType
+            Else
+                Return objCurMap.TargetType
+            End If
+        End If
+
+    End Function
+
+    Function TruncatedFieldName(ByVal txt As String) As String
+
+        txt = txt.Substring(txt.LastIndexOf(".") + 1)
+        Return txt
+
+    End Function
+
+    Private Sub txtCodeEditor_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+        ' show a block cursor of 3x16
+        ShowCustomCaret(sender, 3, 16)
+
+    End Sub
+
+    Function GetParentDSForThisNode(ByVal nd As TreeNode) As INode
+
+        Const MAX_LOOP As Integer = 200
+        Dim cnt As Integer
+
+        Try
+            If CType(nd.Tag, INode).Type = NODE_GEN Or CType(nd.Tag, INode).Type = NODE_LOOKUP Or CType(nd.Tag, INode).Type = NODE_FUN Or CType(nd.Tag, INode).Type = NODE_TEMPLATE Or CType(nd.Tag, INode).Type = NODE_VARIABLE Then
+                Return nd.TreeView.Nodes(0).Tag '//return datastore which is always first node in the treeview
+            End If
+
+            Do While (CStr(nd.Tag.type) <> NODE_SOURCEDATASTORE And _
+            CStr(nd.Tag.type) <> NODE_TARGETDATASTORE) = True And _
+            (cnt < MAX_LOOP) = True
+
+                nd = nd.Parent
+                '//new by npatel on 9/7/05
+                If Not nd Is Nothing Then
+                    If nd.Tag.type = NODE_LOOKUP Or nd.Tag.Type = NODE_GEN Or nd.Tag.type = NODE_VARIABLE Then
+                        CType(nd.Tag, clsTask).LoadDatastores()
+                        If CType(nd.Tag, clsTask).ObjSources.Count > 0 Then
+                            Return CType(nd.Tag, clsTask).ObjSources(0)
+                        Else
+                            Return Nothing
+                        End If
+                    End If
+                End If
+                cnt = cnt + 1
+            Loop
+
+            Return nd.Tag
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask GetParentDSForThisNode")
+            Return Nothing
+        End Try
+
+    End Function
+
+    'Private Sub tvFunctions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) 
+
+    '    If CType(e.Node.Tag, INode).Type = NODE_FUN Then
+    '        lblFunName.Text = e.Node.Text
+    '        ToolTip1.SetToolTip(lblFunName, lblFunName.Text)
+    '        lblFunSyntax.Text = CType(e.Node.Tag, clsSQFunction).SQFunctionSyntax
+    '        ToolTip1.SetToolTip(lblFunSyntax, lblFunSyntax.Text)
+    '        lblFunDesc.Text = CType(e.Node.Tag, clsSQFunction).SQFunctionDescription
+    '        ToolTip1.SetToolTip(lblFunDesc, lblFunDesc.Text)
     '    Else
-    '        lastMappingSearchPos = 0
+    '        lblFunName.Text = "<" & e.Node.Text & ">"
+    '        ToolTip1.SetToolTip(lblFunName, "Category : " & lblFunName.Text)
+    '        lblFunSyntax.Text = ""
+    '        ToolTip1.SetToolTip(lblFunSyntax, "")
+    '        lblFunDesc.Text = ""
+    '        ToolTip1.SetToolTip(lblFunDesc, "")
     '    End If
-
-    '    lvMappings.MultiSelect = True
-    '    lastMappingSearchText = txtSearchMapping.Text
-
-    '    For i = lastMappingSearchPos To lvMappings.Items.Count - 1
-    '        itm = lvMappings.Items(i)
-    '        map = itm.Tag
-    '        If itm.SubItems(0).Text.ToLower.IndexOf(txtSearchMapping.Text.ToLower) >= 0 Then
-    '            itm.Selected = True
-    '            lvMappings.EnsureVisible(itm.Index)
-    '            lastMappingSearchPos = itm.Index
-    '            lvMappings.Focus()
-    '            Exit For
-    '        ElseIf itm.SubItems(1).Text.ToLower.IndexOf(txtSearchMapping.Text.ToLower) >= 0 Then
-    '            itm.Selected = True
-    '            lvMappings.EnsureVisible(itm.Index)
-    '            lastMappingSearchPos = itm.Index
-    '            lvMappings.Focus()
-    '            Exit For
-    '        End If
-    '        If i >= lvMappings.Items.Count - 1 Then
-    '            If lastMappingSearchPos = 0 Then
-    '                MsgBox("No item found matching with your search criteria.", MsgBoxStyle.Information)
-    '            Else
-    '                MsgBox("You have reached at the end.", MsgBoxStyle.Information)
-    '            End If
-
-    '            lastMappingSearchPos = 0
-    '            Exit For
-    '        End If
-    '    Next
-
-    'End Sub
-
-    'Private Sub mnuEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEdit.Click
-    '    lvMappings_DoubleClick(sender, e)
-    'End Sub
-
-    'Private Sub mnuMapDesc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapDesc.Click
-
-    '    Dim row As Integer
-    '    Dim col As Integer
-    '    Dim objMap As clsMapping
-
-    '    Try
-    '        row = CurRow
-    '        col = CurCol
-
-    '        If lvMappings.SelectedItems.Count <> 1 Then
-    '            MsgBox("Please select a single mapping to edit a description", MsgBoxStyle.Information, MsgTitle)
-    '            Exit Sub
-    '        End If
-    '        '//if user double click on function then we show script edit control
-    '        If row >= 0 Then
-    '            objMap = lvMappings.Items(row).Tag
-
-    '            If Not (objMap Is Nothing) Then
-    '                If objMap.HasMissingDependency = True Then
-    '                    MsgBox("**** Sorry you can not edit this mapping. *****" & vbCrLf & vbCrLf & objMap.Commment, MsgBoxStyle.Critical, MsgTitle)
-    '                    Exit Sub
-    '                End If
-
-    '                '// functions can be only entered in source
-    '                If col = 0 Then
-    '                    curEditType = modDeclares.enumDirection.DI_SOURCE
-    '                Else
-    '                    curEditType = modDeclares.enumDirection.DI_TARGET
-    '                End If
-
-    '                ShowDescEditor(objMap)
-    '                'lvMappings.Items(row).BackColor = HAS_DESC_COLOR
-    '            End If '//If Not (objMap Is Nothing) Then ...
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask mnuMapDesc_Click")
-    '    End Try
-
-    'End Sub
-
-    'Private Sub mnuMapList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapList.Click
-
-    '    Try
-    '        Dim SrcArr As New ArrayList
-    '        Dim TgtArr As New ArrayList
-
-    '        SrcArr.Clear()
-    '        TgtArr.Clear()
-
-    '        If lvMappings.SelectedItems.Count > 0 Then
-    '            For Each lvItm As ListViewItem In lvMappings.SelectedItems
-    '                If lvItm.Tag IsNot Nothing Then
-    '                    Dim map As clsMapping = lvItm.Tag
-    '                    If map.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                        SrcArr.Add(CType(map.MappingSource, clsField).FieldName)
-    '                    End If
-    '                    If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
-    '                        TgtArr.Add(CType(map.MappingTarget, clsField).FieldName)
-    '                    End If
-    '                End If
-    '            Next
-    '            Dim frm As New frmMapList
-    '            Call frm.NewOrOpen(objThis.Project, SrcArr, TgtArr)
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask mnuMapListClick")
-    '    End Try
-
-    'End Sub
-
-    'Private Sub ToolBar1_ButtonClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolBarButtonClickEventArgs) Handles ToolBar1.ButtonClick
-
-    '    Dim ActionType As Object = e.Button.Tag
-
-    '    Try
-    '        Select Case ActionType.ToString
-    '            Case "Edit"
-    '                mnuEdit.PerformClick()
-    '            Case "Cut"
-    '                mnuCutMapping.PerformClick()
-    '            Case "Copy"
-    '                mnuCopyMapping.PerformClick()
-    '            Case "Paste"
-    '                mnuPaste.PerformClick()
-    '            Case "Delete"
-    '                DelMapping(sender, e)
-    '            Case "DelSrc"
-    '                mnuDelSource.PerformClick()
-    '            Case "DelTgt"
-    '                mnuDelTarget.PerformClick()
-    '            Case "InsUp"
-    '                mnuInsertMapping.PerformClick()
-    '            Case "InsDown"
-    '                AddNewMapping(sender, e)
-    '            Case "Up"
-    '                MoveUp(sender, e)
-    '            Case "Down"
-    '                MoveDown(sender, e)
-    '            Case "Desc"
-    '                mnuMapDesc.PerformClick()
-    '            Case "Src"
-    '                ShowHideSrc()
-    '            Case "Tgt"
-    '                ShowHideTgt()
-    '        End Select
-
-    '    Catch ex As Exception
-    '        Log("ToolBar1_ButtonClick=>" & ex.Message)
-    '    End Try
-
-    'End Sub
-
-    'Private Sub ShowHideSrc()
-
-    '    scSrc.Panel1Collapsed = Not tbShowSrc.Pushed
-
-    'End Sub
-
-    'Private Sub ShowHideTgt()
-
-    '    scTgt.Panel2Collapsed = Not tbShowTgt.Pushed
-
-    'End Sub
-
-    'Private Sub OnInsertMapping(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuInsertMapping.Click
-
-    '    Dim flagOutside As Boolean
-    '    Dim pt As Point = lvMappings.PointToClient(New Point(MousePosition.X, MousePosition.Y))
-
-    '    Try
-    '        flagOutside = (CurRow = -1)
-
-    '        If flagOutside = True Then
-    '            '//add new item at the end
-    '            AddMapping()
-    '        Else
-    '            '//add new item above the selected item
-    '            AddMapping(CurRow)
-
-    '            MarkAsModifedBelowThis(CurRow)
-
-    '            OnChange(Me, New EventArgs)
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask mnuInsMapping_Click")
-    '    End Try
-
-    'End Sub
-
-    'Private Sub OnDelItem(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelItem.Click
-
-    '    DelMapping(Me, New EventArgs)
-
-    'End Sub
-
-    'Private Sub OnDelSource(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelSource.Click
-
-    '    Dim i As Integer
-    '    Dim objMap As clsMapping
-
-    '    Try
-    '        If lvMappings.SelectedItems.Count > 0 Then
-    '            Dim curIndex As Integer
-    '            lvMappings.BeginUpdate()
-
-    '            For i = (lvMappings.SelectedItems.Count - 1) To 0 Step -1
-    '                curIndex = lvMappings.SelectedItems(i).Index
-
-    '                objMap = lvMappings.Items(curIndex).Tag
-    '                objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                objMap.MappingSource = Nothing
-    '                objMap.IsMapped = "0"
-
-    '                lvMappings.SelectedItems(i).SubItems(0).Text = " "
-    '                lvMappings.SelectedItems(i).BackColor = BACK_COLOR
-    '                lvMappings.SelectedItems(i).Font = New Font(lvMappings.Font, FontStyle.Regular)
-    '            Next
-
-    '            '//Fire change event
-    '            OnChange(Me, New EventArgs)
-
-    '        ElseIf lvMappings.SelectedItems.Count = 0 Then
-    '            MsgBox("No item to delete", MsgBoxStyle.Exclamation, MsgTitle)
-    '        Else
-    '            MsgBox("Please select an item from the list", MsgBoxStyle.Exclamation, MsgTitle)
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex)
-    '    Finally
-    '        lvMappings.EndUpdate()
-    '    End Try
-
-    'End Sub
-
-    'Private Sub OnDelTarget(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelTarget.Click
-
-    '    Dim i As Integer
-    '    Dim objMap As clsMapping
-
-    '    Try
-    '        If lvMappings.SelectedItems.Count > 0 Then
-    '            Dim curIndex As Integer
-    '            lvMappings.BeginUpdate()
-
-    '            For i = (lvMappings.SelectedItems.Count - 1) To 0 Step -1
-    '                curIndex = lvMappings.SelectedItems(i).Index
-
-    '                objMap = lvMappings.Items(curIndex).Tag
-    '                objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
-    '                objMap.MappingTarget = Nothing
-    '                objMap.IsMapped = "0"
-
-    '                lvMappings.SelectedItems(i).SubItems(1).Text = " "
-    '                lvMappings.SelectedItems(i).BackColor = BACK_COLOR
-    '                lvMappings.SelectedItems(i).Font = New Font(lvMappings.Font, FontStyle.Regular)
-    '            Next
-
-    '            '//Fire change event
-    '            OnChange(Me, New EventArgs)
-
-    '        ElseIf lvMappings.SelectedItems.Count = 0 Then
-    '            MsgBox("No item to delete", MsgBoxStyle.Exclamation, MsgTitle)
-    '        Else
-    '            MsgBox("Please select an item from the list", MsgBoxStyle.Exclamation, MsgTitle)
-    '        End If
-
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlTask mnuDelTarget_click")
-    '    Finally
-    '        lvMappings.EndUpdate()
-    '    End Try
 
     'End Sub
 
 #End Region
+
 
 #Region "Mapping"
 
@@ -3742,7 +2411,41 @@ Public Class ctlMain
 
 #End Region
 
-#Region "Misc Functions"
+    '//Switch back to mapping listview when user click on back button 
+    'Function HideScriptEditor(Optional ByVal SkipSave As Boolean = False) As Boolean
+
+    '    'If SkipSave = False Then
+    '    '    If SaveCurrentScript() = False Then
+    '    '        Exit Function
+    '    '    End If
+    '    'End If
+    '    pnlScript.Visible = False
+    '    'pnlDesc.Visible = False
+    '    'pnlSourceTarget.Visible = True
+    '    'pnlSourceTarget.BringToFront()
+
+    '    IsCodeEditorOnTop = False
+    '    IsDescEditorOnTop = False
+
+    'End Function
+
+    'Function HideDescEditor(Optional ByVal SkipSave As Boolean = False) As Boolean
+
+    '    'If SkipSave = False Then
+    '    '    If SaveMapDesc() = False Then
+    '    '        Exit Function
+    '    '    End If
+    '    'End If
+
+    '    'pnlDesc.Visible = False
+    '    pnlScript.Visible = False
+    '    'pnlSourceTarget.Visible = True
+    '    'pnlSourceTarget.BringToFront()
+
+    '    IsCodeEditorOnTop = False
+    '    IsDescEditorOnTop = False
+
+    'End Function
 
     'Function MarkAsModifedBelowThis(ByVal idx As Integer) As Boolean
 
@@ -3822,115 +2525,6 @@ Public Class ctlMain
 
     'End Function
 
-    Function GetTypeFromText(ByVal txt As String, Optional ByVal dir As enumDirection = modDeclares.enumDirection.DI_SOURCE) As enumMappingType
-
-        If txt = "" Then
-            Return modDeclares.enumMappingType.MAPPING_TYPE_NONE
-        ElseIf txt.IndexOf("(") >= 0 Or txt.IndexOf(")") >= 0 Or txt.IndexOf(" ") >= 0 Then
-            Return modDeclares.enumMappingType.MAPPING_TYPE_FUN
-        ElseIf (txt.StartsWith("'") And txt.EndsWith("'")) Or IsNumeric(txt) Then
-            Return modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
-            'KS02 4/24/2006
-        ElseIf (txt.StartsWith("`") And txt.EndsWith("`")) Or IsNumeric(txt) Then
-            Return modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
-            'End KS02 4/24/2006
-        Else
-            If dir = modDeclares.enumDirection.DI_SOURCE Then
-                Return objCurMap.SourceType
-            Else
-                Return objCurMap.TargetType
-            End If
-        End If
-
-    End Function
-
-    '//Switch back to mapping listview when user click on back button 
-    'Function HideScriptEditor(Optional ByVal SkipSave As Boolean = False) As Boolean
-
-    '    'If SkipSave = False Then
-    '    '    If SaveCurrentScript() = False Then
-    '    '        Exit Function
-    '    '    End If
-    '    'End If
-    '    pnlScript.Visible = False
-    '    'pnlDesc.Visible = False
-    '    'pnlSourceTarget.Visible = True
-    '    'pnlSourceTarget.BringToFront()
-
-    '    IsCodeEditorOnTop = False
-    '    IsDescEditorOnTop = False
-
-    'End Function
-
-    'Function HideDescEditor(Optional ByVal SkipSave As Boolean = False) As Boolean
-
-    '    'If SkipSave = False Then
-    '    '    If SaveMapDesc() = False Then
-    '    '        Exit Function
-    '    '    End If
-    '    'End If
-
-    '    'pnlDesc.Visible = False
-    '    pnlScript.Visible = False
-    '    'pnlSourceTarget.Visible = True
-    '    'pnlSourceTarget.BringToFront()
-
-    '    IsCodeEditorOnTop = False
-    '    IsDescEditorOnTop = False
-
-    'End Function
-
-    Function TruncatedFieldName(ByVal txt As String) As String
-
-        txt = txt.Substring(txt.LastIndexOf(".") + 1)
-        Return txt
-
-    End Function
-
-    Private Sub txtCodeEditor_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-        ' show a block cursor of 3x16
-        ShowCustomCaret(sender, 3, 16)
-
-    End Sub
-
-    Function GetParentDSForThisNode(ByVal nd As TreeNode) As INode
-
-        Const MAX_LOOP As Integer = 200
-        Dim cnt As Integer
-
-        Try
-            If CType(nd.Tag, INode).Type = NODE_GEN Or CType(nd.Tag, INode).Type = NODE_LOOKUP Or CType(nd.Tag, INode).Type = NODE_FUN Or CType(nd.Tag, INode).Type = NODE_TEMPLATE Or CType(nd.Tag, INode).Type = NODE_VARIABLE Then
-                Return nd.TreeView.Nodes(0).Tag '//return datastore which is always first node in the treeview
-            End If
-
-            Do While (CStr(nd.Tag.type) <> NODE_SOURCEDATASTORE And _
-            CStr(nd.Tag.type) <> NODE_TARGETDATASTORE) = True And _
-            (cnt < MAX_LOOP) = True
-
-                nd = nd.Parent
-                '//new by npatel on 9/7/05
-                If Not nd Is Nothing Then
-                    If nd.Tag.type = NODE_LOOKUP Or nd.Tag.Type = NODE_GEN Or nd.Tag.type = NODE_VARIABLE Then
-                        CType(nd.Tag, clsTask).LoadDatastores()
-                        If CType(nd.Tag, clsTask).ObjSources.Count > 0 Then
-                            Return CType(nd.Tag, clsTask).ObjSources(0)
-                        Else
-                            Return Nothing
-                        End If
-                    End If
-                End If
-                cnt = cnt + 1
-            Loop
-
-            Return nd.Tag
-
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetParentDSForThisNode")
-            Return Nothing
-        End Try
-
-    End Function
-
     'Function GetParentDSForField(ByVal FldNode As TreeNode) As String
 
     '    Try
@@ -3952,44 +2546,7 @@ Public Class ctlMain
 
     'End Function
 
-    Function AddToRecentlyUsedFunctionList(ByVal draggedNode As TreeNode) As Boolean
 
-        Dim ndLast As TreeNode, nd As TreeNode
-        Dim IsFound As Boolean
-        Dim objFun As clsSQFunction
-        Dim cnt As Integer
-
-        Try
-            cnt = tvFunctions.GetNodeCount(False)
-            If cnt <= 0 Then Exit Function
-
-            objFun = draggedNode.Tag
-
-            ndLast = tvFunctions.Nodes(cnt - 1)
-
-            For Each nd In ndLast.Nodes
-                If CType(nd.Tag, INode).Text = objFun.Text Then
-                    IsFound = True
-                    Exit For
-                End If
-            Next
-            '//if this function is not in the list then add it
-            If IsFound = False Then
-                Dim newNd As TreeNode
-                newNd = draggedNode.Clone
-                ndLast.Nodes.Add(newNd)
-                ndLast.Expand()
-                newNd.EnsureVisible()
-            End If
-
-            Return True
-
-        Catch ex As Exception
-            LogError(ex, "AddToRecentlyUsedFunctList")
-            Return False
-        End Try
-
-    End Function
 
     '//This will generate script for template. 
     '//We will generate scripts only for system templates 
@@ -4012,204 +2569,204 @@ Public Class ctlMain
 
     'End Function
 
-    Function GetScriptForMainTemplate() As String
+    'Function GetScriptForMainTemplate() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
-            Dim nd As TreeNode
-            Dim inDsNode As TreeNode = Nothing
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim nd As TreeNode
+    '        Dim inDsNode As TreeNode = Nothing
 
-            '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
+    '        '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
 
-            '//TODO : Give user selection for input datastore
-            '//Note at this moment just pick first ds but it can be any of the input datastore
-            If tvSource.GetNodeCount(False) <= 0 Then
-                GetScriptForMainTemplate = ""
-                Exit Function
-            End If
-
-
-            For Each nd In tvSource.Nodes
-                If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
-            Next
-
-            If inDsNode Is Nothing Then
-                GetScriptForMainTemplate = ""
-                Exit Function
-            End If
+    '        '//TODO : Give user selection for input datastore
+    '        '//Note at this moment just pick first ds but it can be any of the input datastore
+    '        If tvSource.GetNodeCount(False) <= 0 Then
+    '            GetScriptForMainTemplate = ""
+    '            Exit Function
+    '        End If
 
 
-            '//REPLACE INTO Target1, Target2 .... is pending
-            'sb.Append("SELECT" & vbCrLf)
-            'sb.Append("IF" & vbCrLf)
-            sb.Append("CASE" & vbCrLf)
-            sb.Append("(" & vbCrLf)
-            For Each nd In inDsNode.Nodes
-                sb.Append(vbTab & IIf(nd.Index = 0, "", ",") & "EQ(RECNAME(" & inDsNode.Text & "),'" & nd.Text & "')" & vbCrLf)
-                sb.Append(vbTab & ",CALLPROC( )" & vbCrLf)
-                sb.Append(vbCrLf)
-            Next
-            sb.Append(")" & vbCrLf)
-            'sb.Append("FROM " & inDsNode.Text)
-            GetScriptForMainTemplate = sb.ToString
+    '        For Each nd In tvSource.Nodes
+    '            If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
+    '        Next
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForMainTemplate")
-            Return ""
-        End Try
-
-    End Function
-
-    '/// version 3 Main Template
-    Function GetScriptForMainTemplateV3() As String
-
-        Try
-            Dim sb As New System.Text.StringBuilder
-            Dim nd As TreeNode
-            Dim inDsNode As TreeNode = Nothing
-
-            '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
-
-            '//TODO : Give user selection for input datastore
-            '//Note at this moment just pick first ds but it can be any of the input datastore
-            If tvSource.GetNodeCount(False) <= 0 Then
-                GetScriptForMainTemplateV3 = ""
-                Exit Function
-            End If
-
-            For Each nd In tvSource.Nodes
-                If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
-            Next
-
-            If inDsNode Is Nothing Then
-                GetScriptForMainTemplateV3 = ""
-                Exit Function
-            End If
-
-            '//REPLACE INTO Target1, Target2 .... is pending
-            'sb.Append("SELECT" & vbCrLf)
-            'sb.Append("IF" & vbCrLf)
-            sb.Append("{" & vbCrLf)
-            sb.Append("CASE RECNAME(" & inDsNode.Text & ")" & vbCrLf)
-            For Each nd In inDsNode.Nodes
-                sb.Append(TAB & "WHEN '" & nd.Text & "'" & TAB & TAB & "CALLPROC( )" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
-                'sb.Append(TAB & "DO" & vbCrLf)
-                'sb.Append(TAB & TAB & "CALLPROC( )" & vbCrLf)
-                'sb.Append(TAB & "END" & vbCrLf)
-                'sb.Append(vbCrLf)
-            Next
-            'sb.Append(")" & vbCrLf)
-            sb.Append("}")   '& inDsNode.Text
-            GetScriptForMainTemplateV3 = sb.ToString
-
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForMainTemplate")
-            Return ""
-        End Try
-
-    End Function
-
-    Private Function GetMainText() As String
-
-        Dim sb As New System.Text.StringBuilder
-        Dim sel As clsDSSelection
-        'Dim i As Integer
-        Dim taskName As String
-        Dim sDs As clsDatastore = Nothing
-        Dim nDs As clsDatastore = Nothing
-        Dim count As Integer = 0
-        Dim SrcCount As Integer = 0
-
-        Try
-            While SrcCount < objThis.Engine.Sources.Count
-
-                sDs = objThis.Engine.Sources(SrcCount + 1)
+    '        If inDsNode Is Nothing Then
+    '            GetScriptForMainTemplate = ""
+    '            Exit Function
+    '        End If
 
 
-                If SrcCount > 0 Then
-                    nDs = objThis.Engine.Sources(SrcCount)
-                    If sDs.IsLookUp = False Then
-                        sb.AppendLine("}")   '& inDsNode.Text
-                        sb.AppendLine("FROM " & nDs.DatastoreName)
-                        sb.AppendLine("UNION")
-                        sb.AppendLine("{")
-                    End If
-                End If
-                SrcCount += 1
+    '        '//REPLACE INTO Target1, Target2 .... is pending
+    '        'sb.Append("SELECT" & vbCrLf)
+    '        'sb.Append("IF" & vbCrLf)
+    '        sb.Append("CASE" & vbCrLf)
+    '        sb.Append("(" & vbCrLf)
+    '        For Each nd In inDsNode.Nodes
+    '            sb.Append(vbTab & IIf(nd.Index = 0, "", ",") & "EQ(RECNAME(" & inDsNode.Text & "),'" & nd.Text & "')" & vbCrLf)
+    '            sb.Append(vbTab & ",CALLPROC( )" & vbCrLf)
+    '            sb.Append(vbCrLf)
+    '        Next
+    '        sb.Append(")" & vbCrLf)
+    '        'sb.Append("FROM " & inDsNode.Text)
+    '        GetScriptForMainTemplate = sb.ToString
 
-                'sb.Append("CASE" & vbCrLf)
-                'sb.Append("(" & vbCrLf)
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForMainTemplate")
+    '        Return ""
+    '    End Try
 
-                'For i = 0 To sDs.ObjSelections.Count - 1
-                '    sel = sDs.ObjSelections(i)
-                '    taskName = "P_" & sel.Text
-                '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
-                '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
-                '    sb.Append(vbCrLf)
-                'Next
+    'End Function
 
-                'sb.Append(")" & vbCrLf)
+    ''/// version 3 Main Template
+    'Function GetScriptForMainTemplateV3() As String
 
-                'sb.AppendLine("{")
-                If sDs.IsLookUp = False Then
-                    sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
-                    For Each sel In sDs.ObjSelections
-                        'count += 1
-                        'If count <= objThis.Procs.Count Then
-                        '    taskName = CType(objThis.Procs(count), clsTask).TaskName
-                        'Else
-                        taskName = ""
-                        'End If
-                        For Each proc As clsTask In objThis.Engine.Procs
-                            If proc.TaskName.Contains(sel.Text) = True Then
-                                taskName = proc.TaskName
-                                Exit For
-                            End If
-                        Next
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim nd As TreeNode
+    '        Dim inDsNode As TreeNode = Nothing
 
-                        sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
-                        sb.AppendLine(TAB & "DO")
-                        sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
-                        sb.AppendLine(TAB & "END") '& vbCrLf)
-                        'sb.Append(vbCrLf)
-                    Next
-                End If
+    '        '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
 
-                'sb.Append(")" & vbCrLf)
-                'sb.AppendLine("}")   '& inDsNode.Text
-                'sb.AppendLine("FROM " & sDs.DatastoreName)
-            End While
+    '        '//TODO : Give user selection for input datastore
+    '        '//Note at this moment just pick first ds but it can be any of the input datastore
+    '        If tvSource.GetNodeCount(False) <= 0 Then
+    '            GetScriptForMainTemplateV3 = ""
+    '            Exit Function
+    '        End If
 
-            GetMainText = sb.ToString
+    '        For Each nd In tvSource.Nodes
+    '            If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
+    '        Next
 
-        Catch ex As Exception
-            LogError(ex, "ctlEngine GetMainText")
-            GetMainText = ""
-        End Try
+    '        If inDsNode Is Nothing Then
+    '            GetScriptForMainTemplateV3 = ""
+    '            Exit Function
+    '        End If
 
-    End Function
+    '        '//REPLACE INTO Target1, Target2 .... is pending
+    '        'sb.Append("SELECT" & vbCrLf)
+    '        'sb.Append("IF" & vbCrLf)
+    '        sb.Append("{" & vbCrLf)
+    '        sb.Append("CASE RECNAME(" & inDsNode.Text & ")" & vbCrLf)
+    '        For Each nd In inDsNode.Nodes
+    '            sb.Append(TAB & "WHEN '" & nd.Text & "'" & TAB & TAB & "CALLPROC( )" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
+    '            'sb.Append(TAB & "DO" & vbCrLf)
+    '            'sb.Append(TAB & TAB & "CALLPROC( )" & vbCrLf)
+    '            'sb.Append(TAB & "END" & vbCrLf)
+    '            'sb.Append(vbCrLf)
+    '        Next
+    '        'sb.Append(")" & vbCrLf)
+    '        sb.Append("}")   '& inDsNode.Text
+    '        GetScriptForMainTemplateV3 = sb.ToString
 
-    Function GetScriptForProcV3() As String
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForMainTemplate")
+    '        Return ""
+    '    End Try
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    'End Function
 
-            'sb.Append("{" & vbCrLf & vbCrLf)
-            sb.Append("CASE" & vbCrLf)
-            sb.Append(TAB & "WHEN(  )" & vbCrLf)
-            sb.Append(TAB & "DO" & vbCrLf & vbCrLf)
-            sb.Append(TAB & "END" & vbCrLf)
-            'sb.Append(vbCrLf)
-            'sb.Append("}")
+    'Function GetMainText() As String
 
-            GetScriptForProcV3 = sb.ToString
+    '    Dim sb As New System.Text.StringBuilder
+    '    Dim sel As clsDSSelection
+    '    'Dim i As Integer
+    '    Dim taskName As String
+    '    Dim sDs As clsDatastore = Nothing
+    '    Dim nDs As clsDatastore = Nothing
+    '    Dim count As Integer = 0
+    '    Dim SrcCount As Integer = 0
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForProc")
-            Return ""
-        End Try
+    '    Try
+    '        While SrcCount < objThis.Engine.Sources.Count
 
-    End Function
+    '            sDs = objThis.Engine.Sources(SrcCount + 1)
+
+
+    '            If SrcCount > 0 Then
+    '                nDs = objThis.Engine.Sources(SrcCount)
+    '                If sDs.IsLookUp = False Then
+    '                    sb.AppendLine("}")   '& inDsNode.Text
+    '                    sb.AppendLine("FROM " & nDs.DatastoreName)
+    '                    sb.AppendLine("UNION")
+    '                    sb.AppendLine("{")
+    '                End If
+    '            End If
+    '            SrcCount += 1
+
+    '            'sb.Append("CASE" & vbCrLf)
+    '            'sb.Append("(" & vbCrLf)
+
+    '            'For i = 0 To sDs.ObjSelections.Count - 1
+    '            '    sel = sDs.ObjSelections(i)
+    '            '    taskName = "P_" & sel.Text
+    '            '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
+    '            '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
+    '            '    sb.Append(vbCrLf)
+    '            'Next
+
+    '            'sb.Append(")" & vbCrLf)
+
+    '            'sb.AppendLine("{")
+    '            If sDs.IsLookUp = False Then
+    '                sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+    '                For Each sel In sDs.ObjSelections
+    '                    'count += 1
+    '                    'If count <= objThis.Procs.Count Then
+    '                    '    taskName = CType(objThis.Procs(count), clsTask).TaskName
+    '                    'Else
+    '                    taskName = ""
+    '                    'End If
+    '                    For Each proc As clsTask In objThis.Engine.Procs
+    '                        If proc.TaskName.Contains(sel.Text) = True Then
+    '                            taskName = proc.TaskName
+    '                            Exit For
+    '                        End If
+    '                    Next
+
+    '                    sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
+    '                    sb.AppendLine(TAB & "DO")
+    '                    sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
+    '                    sb.AppendLine(TAB & "END") '& vbCrLf)
+    '                    'sb.Append(vbCrLf)
+    '                Next
+    '            End If
+
+    '            'sb.Append(")" & vbCrLf)
+    '            'sb.AppendLine("}")   '& inDsNode.Text
+    '            'sb.AppendLine("FROM " & sDs.DatastoreName)
+    '        End While
+
+    '        GetMainText = sb.ToString
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlEngine GetMainText")
+    '        GetMainText = ""
+    '    End Try
+
+    'End Function
+
+    'Function GetScriptForProcV3() As String
+
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+
+    '        'sb.Append("{" & vbCrLf & vbCrLf)
+    '        sb.Append("CASE" & vbCrLf)
+    '        sb.Append(TAB & "WHEN(  )" & vbCrLf)
+    '        sb.Append(TAB & "DO" & vbCrLf & vbCrLf)
+    '        sb.Append(TAB & "END" & vbCrLf)
+    '        'sb.Append(vbCrLf)
+    '        'sb.Append("}")
+
+    '        GetScriptForProcV3 = sb.ToString
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForProc")
+    '        Return ""
+    '    End Try
+
+    'End Function
 
     'CREATE PROC P_Lookup AS SELECT
     '{
@@ -4222,175 +2779,175 @@ Public Class ctlMain
     '      END
     '}
     'FROM ;
-    Function GetScriptForLOOK() As String
+    'Function GetScriptForLOOK() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
-            Dim DSlu As clsDatastore = Nothing
-            Dim LUsel As clsDSSelection = Nothing
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim DSlu As clsDatastore = Nothing
+    '        Dim LUsel As clsDSSelection = Nothing
 
-            GetScriptForLOOK = ""
+    '        GetScriptForLOOK = ""
 
-            If objThis.ObjSources.Count <> 1 Then
-                MsgBox("You must choose ONE Source Lookup Datastore to use this template", MsgBoxStyle.OkOnly, "Lookup Template")
-                Exit Try
-            End If
+    '        If objThis.ObjSources.Count <> 1 Then
+    '            MsgBox("You must choose ONE Source Lookup Datastore to use this template", MsgBoxStyle.OkOnly, "Lookup Template")
+    '            Exit Try
+    '        End If
 
-            For Each ds As clsDatastore In objThis.ObjSources
-                If ds.IsLookUp = True Then
-                    DSlu = ds
-                End If
-            Next
-            If DSlu IsNot Nothing Then
-                If DSlu.ObjSelections.Count <> 1 Then
-                    MsgBox("You must choose ONE Datastore Selection for a Lookup", MsgBoxStyle.OkOnly, "Lookup Template")
-                    Exit Try
-                Else
-                    For Each sel As clsDSSelection In DSlu.ObjSelections
-                        LUsel = sel
-                    Next
-                End If
-            Else
-                Exit Try
-            End If
+    '        For Each ds As clsDatastore In objThis.ObjSources
+    '            If ds.IsLookUp = True Then
+    '                DSlu = ds
+    '            End If
+    '        Next
+    '        If DSlu IsNot Nothing Then
+    '            If DSlu.ObjSelections.Count <> 1 Then
+    '                MsgBox("You must choose ONE Datastore Selection for a Lookup", MsgBoxStyle.OkOnly, "Lookup Template")
+    '                Exit Try
+    '            Else
+    '                For Each sel As clsDSSelection In DSlu.ObjSelections
+    '                    LUsel = sel
+    '                Next
+    '            End If
+    '        Else
+    '            Exit Try
+    '        End If
 
-            sb.AppendLine("LOOK(" & DSlu.DsPhysicalSource & ",'   ')")
-            sb.AppendLine("IF LOOKFOUND(" & DSlu.DatastoreName & ") = TRUE")
-            sb.AppendLine("DO")
-            For Each fld As clsField In LUsel.DSSelectionFields
-                sb.AppendLine(TAB & "    = LOOKFLD(" & DSlu.DatastoreName & "," & fld.FieldName & ")")
-            Next
-            sb.AppendLine("END")
+    '        sb.AppendLine("LOOK(" & DSlu.DsPhysicalSource & ",'   ')")
+    '        sb.AppendLine("IF LOOKFOUND(" & DSlu.DatastoreName & ") = TRUE")
+    '        sb.AppendLine("DO")
+    '        For Each fld As clsField In LUsel.DSSelectionFields
+    '            sb.AppendLine(TAB & "    = LOOKFLD(" & DSlu.DatastoreName & "," & fld.FieldName & ")")
+    '        Next
+    '        sb.AppendLine("END")
 
-            GetScriptForLOOK = sb.ToString
+    '        GetScriptForLOOK = sb.ToString
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForLOOK")
-            Return ""
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForLOOK")
+    '        Return ""
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function GetSetImageTemplate() As String
+    'Function GetSetImageTemplate() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
 
-            'sb.Append("{" & vbCrLf & vbCrLf)
-            sb.AppendLine("--You will need to define a variable field V_IMAGE")
-            sb.AppendLine("--You will need to create a Procedure Called P_ROUTE")
-            sb.AppendLine("")
-            sb.AppendLine("IF CDCOP(CDCIN) = 'R' AND SETIMAGE('BEFORE') = TRUE")
-            sb.AppendLine("DO")
-            sb.AppendLine(TAB & "V_IMAGE = 'B'")
-            sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
-            sb.AppendLine("END")
-            sb.AppendLine("")
-            sb.AppendLine("IF SETIMAGE('AFTER') = TRUE")
-            sb.AppendLine("DO")
-            sb.AppendLine(TAB & "V_IMAGE = 'A'")
-            sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
-            sb.AppendLine("END")
+    '        'sb.Append("{" & vbCrLf & vbCrLf)
+    '        sb.AppendLine("--You will need to define a variable field V_IMAGE")
+    '        sb.AppendLine("--You will need to create a Procedure Called P_ROUTE")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("IF CDCOP(CDCIN) = 'R' AND SETIMAGE('BEFORE') = TRUE")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine(TAB & "V_IMAGE = 'B'")
+    '        sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
+    '        sb.AppendLine("END")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("IF SETIMAGE('AFTER') = TRUE")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine(TAB & "V_IMAGE = 'A'")
+    '        sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
+    '        sb.AppendLine("END")
 
-            GetSetImageTemplate = sb.ToString
+    '        GetSetImageTemplate = sb.ToString
 
-            '--You will need to define a variable field V_IMAGE
-            '--You will need to create a Procedure Called P_ROUTE
+    '        '--You will need to define a variable field V_IMAGE
+    '        '--You will need to create a Procedure Called P_ROUTE
 
-            '  IF  SETIMAGE('BEFORE') = TRUE       
-            '  Do
-            '      V_IMAGE = 'B'                
-            '  CALLPROC(P_ROUTE)
-            '  End
+    '        '  IF  SETIMAGE('BEFORE') = TRUE       
+    '        '  Do
+    '        '      V_IMAGE = 'B'                
+    '        '  CALLPROC(P_ROUTE)
+    '        '  End
 
-            '  IF SETIMAGE('AFTER') = TRUE                    
-            '  Do
-            '      V_IMAGE = 'A'                            
-            '      CALLPROC(P_ROUTE)
-            '  End
+    '        '  IF SETIMAGE('AFTER') = TRUE                    
+    '        '  Do
+    '        '      V_IMAGE = 'A'                            
+    '        '      CALLPROC(P_ROUTE)
+    '        '  End
 
-            'Return True
+    '        'Return True
 
-        Catch ex As Exception
-            LogError(ex, "ctlMain GetSetImageTemplate")
-            GetSetImageTemplate = ""
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlMain GetSetImageTemplate")
+    '        GetSetImageTemplate = ""
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function GetScriptForCASE() As String
+    'Function GetScriptForCASE() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
 
-            sb.AppendLine("--You will need to define a 'When condition'")
-            sb.AppendLine("--You will need to define true and false actions")
-            sb.AppendLine("")
-            sb.AppendLine("CASE")
-            sb.AppendLine("WHEN(condition)")
-            sb.AppendLine("DO")
-            sb.AppendLine("-- true_action")
-            sb.AppendLine("END")
-            sb.AppendLine("")
-            sb.AppendLine("OTHERWISE")
-            sb.AppendLine("DO")
-            sb.AppendLine("-- false_action")
-            sb.AppendLine("END")
+    '        sb.AppendLine("--You will need to define a 'When condition'")
+    '        sb.AppendLine("--You will need to define true and false actions")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("CASE")
+    '        sb.AppendLine("WHEN(condition)")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine("-- true_action")
+    '        sb.AppendLine("END")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("OTHERWISE")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine("-- false_action")
+    '        sb.AppendLine("END")
 
-            GetScriptForCASE = sb.ToString
+    '        GetScriptForCASE = sb.ToString
 
-        Catch ex As Exception
-            LogError(ex, "ctlMain GetScriptForCASE")
-            Return ""
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlMain GetScriptForCASE")
+    '        Return ""
+    '    End Try
 
-    End Function
+    'End Function
 
-    Function GetScriptForCurrentDate() As String
+    'Function GetScriptForCurrentDate() As String
 
-        Try
-            GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+    '    Try
+    '        GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForCURRENTDATE")
-            Return ""
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForCURRENTDATE")
+    '        Return ""
+    '    End Try
 
-    End Function
+    'End Function
 
-    'IF CDCOP(CDCIN) = 'R' DO                                              
-    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
-    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
-    '  'T_S2PACITP.INIT_DEP_TP_CD')                                  
-    'END
-    Function GetScriptForKeyChange() As String
+    ''IF CDCOP(CDCIN) = 'R' DO                                              
+    ''  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
+    ''  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
+    ''  'T_S2PACITP.INIT_DEP_TP_CD')                                  
+    ''END
+    'Function GetScriptForKeyChange() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
 
-            sb.AppendLine("--CDCIN is Source Datastore")
-            sb.AppendLine("--INDESC is the Source Description containing Key field")
-            sb.AppendLine("--OUTDESC is the Target Description containing Key field")
-            sb.AppendLine("--KFLDx are the Key fields")
-            sb.AppendLine("--'R' represents the 'Replace' Operation")
-            sb.AppendLine("")
-            sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
-            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
-            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
-            sb.AppendLine("--           .   .      .")
-            sb.AppendLine("--           .   .      .")
-            sb.AppendLine("--        Repeat as necessary")
-            sb.AppendLine("END")
+    '        sb.AppendLine("--CDCIN is Source Datastore")
+    '        sb.AppendLine("--INDESC is the Source Description containing Key field")
+    '        sb.AppendLine("--OUTDESC is the Target Description containing Key field")
+    '        sb.AppendLine("--KFLDx are the Key fields")
+    '        sb.AppendLine("--'R' represents the 'Replace' Operation")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
+    '        sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
+    '        sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
+    '        sb.AppendLine("--           .   .      .")
+    '        sb.AppendLine("--           .   .      .")
+    '        sb.AppendLine("--        Repeat as necessary")
+    '        sb.AppendLine("END")
 
 
-            GetScriptForKeyChange = sb.ToString
+    '        GetScriptForKeyChange = sb.ToString
 
-        Catch ex As Exception
-            LogError(ex, "ctlMain GetScriptForKeyChange")
-            Return ""
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlMain GetScriptForKeyChange")
+    '        Return ""
+    '    End Try
 
-    End Function
+    'End Function
 
     '//Switch to code edit view when user double click or select edit menu item
     'Function ShowScriptEditor(ByVal objMap As clsMapping) As Boolean
@@ -4527,8 +3084,6 @@ Public Class ctlMain
 
     'End Function
 
-#End Region
-
     'Private Sub mnuOpenStrFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuOpenStrFile.Click
 
     '    Try
@@ -4605,71 +3160,1530 @@ Public Class ctlMain
 
     'End Sub
 
-    Private Sub txtCodeEditor_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCodeEditor.TextChanged
-        Try
-            Dim ColNum As Integer
-            'Dim idx As Integer
-            ''Dim StartIdx As Integer
-            'Dim SubStr As String
+  
+    'Private Sub cbIsMain_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIsMain.CheckedChanged
 
-            If IsEventFromCode = True Then Exit Sub
+    '    Try
+    '        If IsEventFromCode = True Then Exit Try
 
-            objCurFunct.SQFunctionWithInnerText = txtCodeEditor.Text
+    '        If cbIsMain.Checked = True Then
+    '            'objCurMap.IsMapped = "1"
+    '            objThis.TaskType = enumTaskType.TASK_MAIN
+    '            'RemoveFromCollection(objThis.Engine.Procs, objThis.GUID)
+    '            'AddToCollection(objThis.Engine.Mains, objThis, objThis.GUID)
+    '        Else
+    '            'objCurMap.IsMapped = "0"
+    '            objThis.TaskType = enumTaskType.TASK_GEN
+    '            'RemoveFromCollection(objThis.Engine.Mains, objThis.GUID)
+    '            'AddToCollection(objThis.Engine.Procs, objThis, objThis.GUID)
+    '        End If
 
-            ''StartIdx = txtCodeEditor.GetFirstCharIndexOfCurrentLine()
-            'idx = txtCodeEditor.GetCharIndexFromPosition(Windows.Forms.Cursor.Position)
+    '        DoSetTaskType = True
+
+    '        'OnChange(Me, New EventArgs)
+
+    '    Catch ex As Exception
+    '        LogError(ex, "cbIsMain_CheckedChanged")
+    '    End Try
+
+    'End Sub
+    'Private Sub lvMappings_ItemDrag(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemDragEventArgs) Handles lvMappings.ItemDrag
+
+    '    DoDragDrop(e.Item, DragDropEffects.Move)
+
+    'End Sub
+
+    'Private Sub lvMappings_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragEnter
+
+    '    'See if there is a TreeNode being dragged
+    '    If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
+    '        'TreeNode found allow copy effect
+    '        e.Effect = e.AllowedEffect
+    '    ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
+    '        e.Effect = DragDropEffects.Move
+    '    End If
+
+    'End Sub
+
+    'Private Sub lvMappings_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragOver
+
+    '    lvMappings.MultiSelect = False
+
+    '    If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
+    '        '//Drag drop treeview node handle here
+    '        OnDragOverFromTreeview(sender, e)
+    '    ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
+    '        '//Drag drop listview items handle here 
+    '        e.Effect = DragDropEffects.Move
+    '        OnDragOverFromListView(sender, e)
+    '    End If
+
+    'End Sub
+
+    'Sub OnDragOverFromListView(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs)
+
+    '    Try
+    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
+    '        Dim draggedItem As ListViewItem = CType(e.Data.GetData(GetType(ListViewItem)), ListViewItem)
+    '        Dim lvItm As ListViewItem
+
+    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
+
+    '        '//just highlight the selection
+    '        If Not (lvItm Is Nothing) Then
+    '            lvItm.Focused = True
+    '        Else
+    '            Exit Sub
+    '        End If
+
+    '        Select Case draggedItem.ListView.Name
+    '            Case "lvMappings"
+    '                '//allowed only from above treeviews
+    '            Case Else
+    '                '//if dragged node came from any other tree except above treevies then dont accept
+    '                e.Effect = DragDropEffects.None
+    '                Exit Sub
+    '        End Select
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask OnDragOverFromListView")
+    '    End Try
+
+    'End Sub
+
+    'Sub OnDragOverFromTreeview(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs)
+
+    '    Try
+    '        'we only drop if drop on source or target column
+    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
+    '        Dim row, col As Integer
+    '        Dim draggedNode As TreeNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
+    '        Dim lvItm As ListViewItem
+
+    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
+    '        '//just highlight the selection
+    '        If Not (lvItm Is Nothing) Then
+    '            lvItm.Focused = True
+    '            lvItm.Selected = True
+    '        End If
+
+    '        Select Case draggedNode.TreeView.Name
+    '            Case "tvTarget", "tvSource", "tvFunctions", "tvExplorer"
+    '                '//allowed only from above treeviews
+    '            Case Else
+    '                '//if dragged node came from any other tree except above treevies then dont accept
+    '                e.Effect = DragDropEffects.None
+    '                Exit Sub
+    '        End Select
+
+    '        If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
+    '            Select Case col
+    '                Case 0 '//dragging on source
+
+    '                    '//dont allow target to be dropped on source
+    '                    If draggedNode.TreeView.Name = "tvTarget" Then
+    '                        e.Effect = DragDropEffects.None
+    '                        Exit Sub
+    '                    End If
+
+    '                    '//Source can take Field, FieldSelection, Variables, functions, 
+    '                    '//lookup, Join, variables
+    '                    '//only allow the following type of node to be drag/drop on source column
+    '                    If CType(draggedNode.Tag, INode).Type = NODE_STRUCT_SEL Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_STRUCT_FLD Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_SOURCEDSSEL Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_JOIN Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_LOOKUP Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_FUN Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_TEMPLATE Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_VARIABLE Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_LOOKUP Then
+
+    '                        e.Effect = DragDropEffects.Copy
+    '                    Else
+    '                        e.Effect = DragDropEffects.None
+    '                    End If
+
+    '                Case 1 '//dragging on target
+    '                    '//dont allow source to be dropped on target
+    '                    If draggedNode.TreeView.Name = "tvSource" Then
+    '                        e.Effect = DragDropEffects.None
+    '                        Exit Sub
+    '                    End If
+
+    '                    '//Target can take Field, FieldSelection and Variables 
+    '                    '//only allow the following type of node to be drag/drop on source column
+    '                    If CType(draggedNode.Tag, INode).Type = NODE_STRUCT_SEL Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_STRUCT_FLD Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_TARGETDSSEL Or _
+    '                        CType(draggedNode.Tag, INode).Type = NODE_VARIABLE Then
+
+    '                        e.Effect = DragDropEffects.Copy
+    '                    Else
+    '                        e.Effect = DragDropEffects.None
+    '                    End If
+    '            End Select
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask OnDragOverFromTreeView")
+    '    End Try
+
+    'End Sub
+
+    '    Private Sub lvMappings_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles lvMappings.DragDrop
+
+    '        ' Retrieve the client coordinates of the drop location.
+    '        Dim targetPoint As Point = lvMappings.PointToClient(New Point(e.X, e.Y))
+    '        Dim lvItm As ListViewItem
+    '        'Retrieve the node that was dragged.
+    '        Dim draggedNode As TreeNode = Nothing
+    '        Dim draggedListItm As ListViewItem
+
+    '        Dim DraggedObj As INode
+    '        Dim ObjDragOver As INode
+    '        Dim DraggedMap As clsMapping
+    '        Dim DestMap As clsMapping
+
+    '        Try
+    '            lvMappings.BeginUpdate()
+
+    '            lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
+
+    '            If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
+    '                '//Drag drop treeview node handle here
+    '                draggedNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
+    '            ElseIf e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", True) Then
+    '                If Not (lvItm Is Nothing) Then
+    '                    draggedListItm = CType(e.Data.GetData(GetType(ListViewItem)), ListViewItem)
+    '                    '/// If mapping item is target and dropped on item with no target, then map items together
+    '                    '/// and vise-versa  OR insert mapping item in new position.
+    '                    DraggedObj = CType(draggedListItm.Tag, INode)
+    '                    ObjDragOver = CType(lvItm.Tag, INode)
+    '                    If DraggedObj.Type = NODE_MAPPING And ObjDragOver.Type = NODE_MAPPING Then
+    '                        DraggedMap = CType(DraggedObj, clsMapping)
+    '                        DestMap = CType(ObjDragOver, clsMapping)
+    '                        If DraggedMap.SourceType = enumMappingType.MAPPING_TYPE_NONE And _
+    '                        DestMap.TargetType = enumMappingType.MAPPING_TYPE_NONE Then
+    '                            '/// Add Dragged Target Field to Destination Mapping object
+    '                            '// Then delete the mapping that was dragged
+    '                            If DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD And _
+    '                            DraggedMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                                '/// Update the mapping Object  
+    '                                DestMap.MappingTarget = CType(DraggedMap.MappingTarget, clsField)
+    '                                DestMap.IsMapped = "1"
+    '                                DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD
+    '                                DestMap.TargetParent = DraggedMap.TargetParent
+    '                                DestMap.TargetDataStore = DraggedMap.TargetDataStore
+    '                                '/// Update the ListView
+    '                                lvItm.SubItems(1) = draggedListItm.SubItems(1)
+    '                                lvMappings.Items.RemoveAt(draggedListItm.Index)
+    '                                ResetMappingSeqNo()
+    '                                '//Fire change event
+    '                                OnChange(Me, New EventArgs)
+    '                                Exit Try
+    '                            Else
+    '                                GoTo fallThru
+    '                            End If
+    '                        ElseIf DraggedMap.TargetType = enumMappingType.MAPPING_TYPE_NONE And _
+    '                        DestMap.SourceType = enumMappingType.MAPPING_TYPE_NONE Then
+    '                            '/// Add Dragged Source Field to Destination Mapping Object
+    '                            '// Then delete the mapping that was dragged
+    '                            If DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD And _
+    '                            DraggedMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                                '/// Update the Mappings
+    '                                DestMap.MappingSource = CType(DraggedMap.MappingSource, clsField)
+    '                                DestMap.IsMapped = "1"
+    '                                DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD
+    '                                DestMap.SourceParent = DraggedMap.SourceParent
+    '                                DestMap.SourceDataStore = DraggedMap.SourceDataStore
+    '                                '/// Update the Listview
+    '                                lvItm.SubItems(0) = draggedListItm.SubItems(0)
+    '                                lvMappings.Items.RemoveAt(draggedListItm.Index)
+    '                                ResetMappingSeqNo()
+    '                                '//Fire change event
+    '                                OnChange(Me, New EventArgs)
+    '                                Exit Try
+    '                            Else
+    '                                GoTo fallThru
+    '                            End If
+    '                        Else
+    '                            GoTo fallThru
+    '                        End If
+    '                    Else
+    'fallThru:               lvMappings.MultiSelect = True '// now again turnmulti select on
+    '                        '//Note: SetMappingPosition function takes new position of first item in selection. 
+    '                        '//If user dragged any item other than first in the selection then calculate new position 
+    '                        '//of first item based on move offset of entire selection
+    '                        Dim moveOffset As Integer
+    '                        moveOffset = lvItm.Index - draggedListItm.Index
+    '                        SetMappingPosition(lvMappings.SelectedItems(0).Index + moveOffset)
+    '                        Exit Try
+    '                    End If
+    '                End If
+    '            End If
+
+    '            'we only drop if drop on source or target column
+    '            Dim row, col As Integer
+
+    '            If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
+    '                Select Case col
+    '                    Case 0 '//dropped on source
+    '                        DoDropOperation(lvItm, draggedNode, modDeclares.enumDirection.DI_SOURCE, draggedNode.Tag.Type)
+    '                    Case 1 '//dropped on target
+    '                        DoDropOperation(lvItm, draggedNode, modDeclares.enumDirection.DI_TARGET, draggedNode.Tag.Type)
+    '                End Select
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask lvMappings.DragDrop")
+    '        Finally
+    '            lvMappings.EndUpdate()
+    '        End Try
+
+    '    End Sub
+
+    '//lvItm : is target item, if lvItm is nothing then we will add dragged item at the end of all list items
+    '//draggedNode : is node dragged from tvSource,tvTarget or tvFunction treeview control
+    '//              we perform different operation depending on type of node
+    'Function DoDropOperation(ByRef lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal nType As String = NODE_STRUCT_FLD) As Boolean
+
+    '    Select Case nType
+    '        Case NODE_FUN, NODE_TEMPLATE '//if SQFunction is dropped on listview
+    '            OnSQFunctionDrop(lvItm, draggedNode, dirType)
+    '        Case NODE_STRUCT_SEL, NODE_SOURCEDSSEL, NODE_TARGETDSSEL
+    '            '//if selection is dropped on listview
+    '            OnFldSelectionDrop(lvItm, draggedNode, dirType)
+    '        Case NODE_STRUCT_FLD '//if field is dropped on listview
+    '            OnFieldDrop(lvItm, draggedNode, dirType)
+    '        Case NODE_JOIN '//if join is dropped on listview
+    '            OnJoinDrop(lvItm, draggedNode, dirType)
+    '        Case NODE_LOOKUP '//if lookup is dropped on listview
+    '            OnLookupDrop(lvItm, draggedNode, dirType)
+    '        Case NODE_VARIABLE '//if variable is dropped on listview
+    '            OnVariableDrop(lvItm, draggedNode, dirType)
+    '    End Select
+
+    'End Function
+
+    '//call if SQData function is dropped on listview
+    'Function OnSQFunctionDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
+
+    '    If CType(draggedNode.Tag, clsSQFunction).IsTemplate = True Then
+    '        UpdateTemplateScript(draggedNode.Tag)
+    '    End If
+
+    '    '//Fix on 8/12/05 by npatel : removed draggedNode.tag and replaced with draggedNode
+    '    ManualMapping(lvItm, draggedNode, dirType)
+    '    AddToRecentlyUsedFunctionList(draggedNode)
+
+    'End Function
+
+    ''//call if variable is dropped on listview
+    'Function OnVariableDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
+
+    '    ManualMapping(lvItm, draggedNode, dirType)
+
+    'End Function
+
+    '//call if join is dropped on listview
+    'Function OnJoinDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
+
+    '    ManualMapping(lvItm, draggedNode, dirType)
+
+    'End Function
+
+    ''//call if lookup is dropped on listview
+    'Function OnLookupDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
+
+    '    ManualMapping(lvItm, draggedNode, dirType)
+
+    'End Function
+
+    '//call if selection is dropped on listview
+    'Function OnFldSelectionDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal pass As Integer = 1) As Boolean
+
+    '    Dim objSel As clsDSSelection
+    '    Dim objFld As clsField
+    '    Dim DataStoreName As String
+    '    Dim duplicatecnt As Integer = 0
+
+    '    Try
+    '        DataStoreName = GetParentDSForThisNode(draggedNode).Text
+    '        objSel = draggedNode.Tag
+
+    '        For Each objFld In objSel.DSSelectionFields
+    '            If Not (objFld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And cbGroupItems.Checked = False) Then
+    '                If IsDuplicateItem(objFld, dirType, False) = False Then
+    '                    '//TODO Add field and create new mapping
+    '                    If objFld.FieldName <> "" Then
+    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
+    '                    ElseIf objFld.OrgName <> "" Then
+    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.CorrectedFieldName 'GetParentDSForThisNode(draggedNode).Text & "." & _
+    '                    Else
+    '                        objFld.Text = objFld.ParentStructureName & "." & objFld.OrgName 'GetParentDSForThisNode(draggedNode).Text & "." & _
+    '                    End If
+    '                    AutoFieldMapping(objFld, dirType, DataStoreName, pass)
+    '                Else
+    '                    '//skipping field coz its already in the list
+    '                    If pass < 1 Then
+    '                        duplicatecnt = duplicatecnt + 1
+    '                    End If
+    '                End If
+    '            End If
+    '        Next
+    '        pass = pass + 1
+    '        If pass < 6 Then
+    '            Call OnFldSelectionDrop(lvItm, draggedNode, dirType, pass)
+    '        End If
+
+    '        If duplicatecnt = 1 Then
+    '            MsgBox("[" & duplicatecnt & "] duplicate item was skipped", MsgBoxStyle.Exclamation, MsgTitle)
+    '        ElseIf duplicatecnt > 1 Then
+    '            MsgBox("[" & duplicatecnt & "] duplicate items were skipped", MsgBoxStyle.Exclamation, MsgTitle)
+    '        End If
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        LogError(ex)
+    '        Return False
+    '    End Try
+
+    'End Function
+
+    '//call if single field is dropped on listview
+    'Function OnFieldDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
+
+    '    Try
+    '        Dim objfld As clsField = draggedNode.Tag
+    '        Dim GrpItmFlag As Boolean = False
+
+    '        If (objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And objfld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE) = "") Then
+    '            GroupItemDrop(lvItm, draggedNode, dirType)
+    '        Else
+    '            If dirType = modDeclares.enumDirection.DI_SOURCE Then
+    '                ManualMapping(lvItm, draggedNode, dirType, True)
+    '            Else
+    '                If IsDuplicateItem(CType(draggedNode.Tag, clsField), dirType, False) = False Then
+    '                    ManualMapping(lvItm, draggedNode, dirType, True)
+    '                Else
+    '                    MsgBox("Duplicate field was found", MsgBoxStyle.Exclamation, MsgTitle)
+    '                End If
+    '            End If
+    '        End If
+
+    '        'If objfld.Parent.Type = NODE_SOURCEDSSEL Or objfld.Parent.Type = NODE_TARGETDSSEL Then
+    '        '    CType(objfld.Parent, clsDSSelection).IsMapped = True
+    '        'End If
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        LogError(ex)
+    '        Return False
+    '    End Try
+
+    'End Function
+
+    '// call if groupitem field is dropped on listview
+    'Function GroupItemDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal pass As Integer = 1) As Boolean
+
+    '    Dim FldNodeCol As TreeNodeCollection = draggedNode.Nodes
+    '    Dim curNode As TreeNode
+    '    Dim objfld As clsField = draggedNode.Tag
+    '    Dim duplicatecnt As Integer = 0
+    '    Dim DataStoreName As String
+
+    '    Try
+    '        DataStoreName = GetParentDSForThisNode(draggedNode).Text
+    '        If DataStoreName = "" Then
+    '            DataStoreName = GetParentDSForField(draggedNode)
+    '        End If
+
+    '        '// First do Group Item Field ... Map if Group Items box checked
+    '        If Not (objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" And cbGroupItems.Checked = False) Then
+    '            If IsDuplicateItem(objfld, dirType, False) = False Then
+    '                '//TODO Add field and create new mapping
+    '                If objfld.CorrectedFieldName <> "" Then
+    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.CorrectedFieldName ' GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                ElseIf objfld.OrgName <> "" Then
+    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.OrgName 'GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                Else
+    '                    objfld.Text = objfld.ParentStructureName & "." & objfld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                End If
+    '                AutoFieldMapping(objfld, dirType, DataStoreName, pass)
+    '            Else
+    '                '//skipping field coz its already in the list
+    '                duplicatecnt = duplicatecnt + 1
+    '            End If
+    '        Else
+    '            '/// Now do the Group Item's Child fields
+    '            For Each curNode In FldNodeCol
+    '                objfld = curNode.Tag
+    '                If objfld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then
+    '                    '/// recurse if Child field is a Group Item
+    '                    GroupItemDrop(lvItm, curNode, dirType)
+    '                Else
+    '                    If IsDuplicateItem(objfld, dirType, False) = False Then
+    '                        '//TODO Add field and create new mapping
+    '                        If objfld.CorrectedFieldName <> "" Then
+    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.CorrectedFieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                        ElseIf objfld.OrgName <> "" Then
+    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.OrgName ' GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                        Else
+    '                            objfld.Text = objfld.ParentStructureName & "." & objfld.FieldName 'GetParentDSForThisNode(draggedNode).Text & "." & 
+    '                        End If
+    '                        AutoFieldMapping(objfld, dirType, DataStoreName, pass)
+    '                    Else
+    '                        '//skipping field coz its already in the list
+    '                        duplicatecnt = duplicatecnt + 1
+    '                    End If
+    '                End If
+    '            Next
+
+    '        End If
+
+    '        pass = pass + 1
+    '        If pass < 6 Then
+    '            Call GroupItemDrop(lvItm, draggedNode, dirType, pass)
+    '        End If
+
+    '        'If duplicatecnt = 1 Then
+    '        '    MsgBox("[" & duplicatecnt & "] duplicate item was skipped", MsgBoxStyle.Exclamation)
+    '        'ElseIf duplicatecnt > 1 Then
+    '        '    MsgBox("[" & duplicatecnt & "] duplicate items were skipped", MsgBoxStyle.Exclamation)
+    '        'End If
+
+    '        Return True
+    '    Catch ex As Exception
+    '        LogError(ex)
+    '        Return False
+    '    End Try
+
+    'End Function
+    'Private Sub ctlTask_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Resize
+
+    '    'pnlScript.Size = pnlSelect.Size
+    '    'pnlDesc.Size = pnlSelect.Size
+    '    'pnlScript.Location = pnlSelect.Location
+    '    'pnlDesc.Location = pnlSelect.Location
+
+    'End Sub
+
+    'Private Sub ctlTask_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    '    'lvMappings.SmallImageList = imgListSmall
+
+    'End Sub
+
+    'Private Sub Panel1_Resize(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pnlSourceTarget.Resize
+
+    '    'tvSource.Width = (pnlSourceTarget.Width / 2) - 5
+    '    'tvTarget.Left = (pnlSourceTarget.Width / 2) + 5
+    '    'tvTarget.Width = (pnlSourceTarget.Width / 2) - 5
+    '    'lblTargetCaption.Left = tvTarget.Left
+
+    'End Sub
+    'Private Sub OnCodeChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    If IsEventFromCode = True Then Exit Sub
+
+    '    objCurMap.IsModified = True
+    '    objThis.IsModified = True
+    '    cmdSave.Enabled = True
+
+    '    OnChange(Me, New EventArgs)
+
+    'End Sub
+
+    'Private Sub OnDescChange(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    '
+    '    If IsEventFromCode = True Then Exit Sub
+    '
+    '    objCurMap.IsModified = True
+    '    objThis.IsModified = True
+    '    cmdSave.Enabled = True
+    '
+    '    RaiseEvent Modified(Me, objThis)
+    '
+    'End Sub
+    'Private Sub OngbMap_resize(ByVal sender As Object, ByVal e As EventArgs) Handles gbMap.Resize
+
+    '    'lvMappings.Columns(0).Width = (lvMappings.Width / 2) - 12
+    '    'lvMappings.Columns(1).Width = (lvMappings.Width / 2) - 12
+
+    'End Sub
+    'Function SaveLastMapped() As Boolean
+
+    '    Dim ErrorMsg As String = ""
+    '    Try
+    '        If objThis.SaveLastFlds() = False Then
+    '            ErrorMsg = "An Error occured while saving Last Mapped Fields to a file."
+    '        End If
+
+    '        If ErrorMsg <> "" Then
+    '            MsgBox(ErrorMsg, MsgBoxStyle.OkOnly, MsgTitle)
+    '            Return False
+    '            Exit Function
+    '        End If
+
+    '        Return True
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask SaveLastMapped")
+    '        Return False
+    '    End Try
+
+    'End Function
+
+    '////// Modify Here. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    'Function SaveCurrentScript() As Boolean
+
+    '    Dim fieldType As modDeclares.enumMappingType
+
+    '    Try
+    '        If curEditType = modDeclares.enumDirection.DI_SOURCE Then
+    '            fieldType = GetTypeFromText(txtCodeEditor.Text, modDeclares.enumDirection.DI_SOURCE)
+    '            If txtCodeEditor.Text <> "" And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_FUN  '/// mod 12/6/07  TK
+    '            End If
+    '            Select Case fieldType
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_CONSTANT
+    '                    Dim c As New clsVariable(txtCodeEditor.Text, modDeclares.enumVariableType.VTYPE_CONST)
+
+    '                    objCurMap.MappingSource = Nothing
+    '                    objCurMap.MappingSource = c
+    '                    objCurMap.SourceType = fieldType
+    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
+    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = ImgIdxFromName(objCurMap.MappingSource.Type)
+
+    '                    objCurMap.IsModified = True
+    '                    If objCurMap.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE And objCurMap.TargetType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                        MapItem(objCurMap.SeqNo)
+    '                    End If
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FUN
+    '                    Dim sqFun As New clsSQFunction
+
+    '                    sqFun.SQFunctionName = txtCodeEditor.Text
+    '                    sqFun.SQFunctionWithInnerText = txtCodeEditor.Text
+    '                    objCurMap.SourceType = fieldType
+    '                    objCurMap.MappingSource = Nothing
+    '                    objCurMap.MappingSource = sqFun
+
+    '                    objCurMap.IsModified = True
+    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
+    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = ImgIdxFromName(objCurMap.MappingSource.Type)
+    '                    If objCurMap.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE And objCurMap.TargetType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                        MapItem(objCurMap.SeqNo)
+    '                    End If
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FIELD
+    '                    'Dim fldObj As New clsField
+
+    '                    ObjCurFld.CorrectedFieldName = TruncatedFieldName(txtCodeEditor.Text)
+    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
+    '                    ObjCurFld.Text = txtCodeEditor.Text
+    '                    objCurMap.SourceType = fieldType
+    '                    objCurMap.MappingSource = ObjCurFld
+    '                    objCurMap.IsModified = True
 
 
-            'SubStr = txtCodeEditor.Text.Substring(0, idx)
-            'ColNum = SubStr.Length - SubStr.LastIndexOf(Chr(13))
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    'lvMappings.Items(objCurMap.SeqNo).Text = txtCodeEditor.Text
+    '                    objCurMap.MappingSource = Nothing
+    '                    objCurMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    'lvMappings.Items(objCurMap.SeqNo).ImageIndex = -1
+    '                    objCurMap.IsModified = True
+    '            End Select
+    '        Else
+    '            fieldType = GetTypeFromText(txtCodeEditor.Text, modDeclares.enumDirection.DI_TARGET)
+    '            If txtCodeEditor.Text <> "" And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR
+    '            End If
+    '            If (txtCodeEditor.Text).IndexOf(".") = -1 And fieldType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Then
+    '                fieldType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR
+    '            End If
+    '            Select Case fieldType
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_FIELD
+    '                    'Dim fldObj As New clsField
 
-            Dim lineindex As Integer
-            lineindex = Me.txtCodeEditor.GetLineFromCharIndex(Me.txtCodeEditor.SelectionStart)
+    '                    ObjCurFld.CorrectedFieldName = TruncatedFieldName(txtCodeEditor.Text)
+    '                    objCurMap.IsModified = True
+    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
+    '                    ObjCurFld.Text = txtCodeEditor.Text
+    '                    objCurMap.MappingTarget = ObjCurFld
+    '                    'OnChange(lvMappings, New EventArgs)
 
-            Dim columnindex As Integer
-            columnindex = Me.txtCodeEditor.SelectionStart - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
 
-            If Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex + 1) > 1 Then
-                ColNum = Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex + 1) - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
-            Else
-                ColNum = Me.txtCodeEditor.Text.Length - Me.txtCodeEditor.GetFirstCharIndexFromLine(lineindex)
-            End If
 
-            txtColNum.Text = ColNum.ToString
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR, enumMappingType.MAPPING_TYPE_VAR
+    '                    Dim objVar As New clsVariable
 
-            'OnChange(Me, New EventArgs)
+    '                    objVar.Text = txtCodeEditor.Text
+    '                    objVar.VariableName = txtCodeEditor.Text
+    '                    objVar.CorrectedVariableName = txtCodeEditor.Text
+    '                    objCurMap.MappingTarget = objVar
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask txtCodeEditorTextChng")
-        End Try
+    '                    If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                        objVar.VariableName = CType(objCurMap.MappingTarget, clsField).FieldName
+    '                    ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
+    '                        objVar.VariableName = CType(objCurMap.MappingTarget, clsVariable).VariableName
+    '                    End If
 
-    End Sub
+    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
+    '                    objCurMap.IsModified = True
+    '                    '//fire change event
+    '                    'OnChange(lvMappings, New EventArgs)
+    '                    If (Not objCurMap.MappingSource Is Nothing) And (Not objCurMap.MappingTarget Is Nothing) Then
+    '                        MapItem(objCurMap.SeqNo)
+    '                    End If
+    '                Case modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    Dim emptyObj As New clsField
 
-    Private Sub cbIsMain_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbIsMain.CheckedChanged
+    '                    If objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_FIELD Or _
+    '                       objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                        emptyObj.FieldName = CType(objCurMap.MappingTarget, clsField).FieldName
+    '                    ElseIf objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_WORKVAR Then
+    '                        emptyObj.FieldName = CType(objCurMap.MappingTarget, clsVariable).VariableName
+    '                    End If
+    '                    objCurMap.MappingTarget = emptyObj
+    '                    objCurMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    txtCodeEditor.Text = ""
+    '                    'lvMappings.Items(objCurMap.SeqNo).SubItems(1).Text = txtCodeEditor.Text
+    '                    objCurMap.IsModified = True
+    '                    '//fire change event
+    '                    'OnChange(lvMappings, New EventArgs)
+    '                Case Else
+    '                    MsgBox("Destination can only be a Field or Variable!!", MsgBoxStyle.Critical, MsgTitle)
+    '                    Return False
+    '            End Select
+    '        End If
 
-        Try
-            If IsEventFromCode = True Then Exit Try
+    '        Return True
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask SaveCurrentScript")
+    '        Return False
+    '    End Try
 
-            If cbIsMain.Checked = True Then
-                'objCurMap.IsMapped = "1"
-                objThis.TaskType = enumTaskType.TASK_MAIN
-                'RemoveFromCollection(objThis.Engine.Procs, objThis.GUID)
-                'AddToCollection(objThis.Engine.Mains, objThis, objThis.GUID)
-            Else
-                'objCurMap.IsMapped = "0"
-                objThis.TaskType = enumTaskType.TASK_GEN
-                'RemoveFromCollection(objThis.Engine.Mains, objThis.GUID)
-                'AddToCollection(objThis.Engine.Procs, objThis, objThis.GUID)
-            End If
+    'End Function
 
-            DoSetTaskType = True
+    'Function SaveMapDesc() As Boolean
 
-            'OnChange(Me, New EventArgs)
+    '    If txtMapDesc.Text.Length > 255 Then
+    '        MsgBox("The length of your description is too long. Please Limit your descriptions to under 255 Characters", MsgBoxStyle.Information, MsgTitle)
+    '        Return False
+    '        Exit Function
+    '    End If
 
-        Catch ex As Exception
-            LogError(ex, "cbIsMain_CheckedChanged")
-        End Try
+    '    objCurMap.MappingDesc = Strings.Replace(txtMapDesc.Text, "'", "''")
+    '    Return True
 
-    End Sub
+    'End Function
+    '//Loads tasks in Listview
+    'Function LoadTaskMappings() As Boolean
+
+    '    Dim objMap As clsMapping
+
+    '    lvMappings.Items.Clear()
+
+    '    For Each objMap In objThis.ObjMappings
+    '        AddMapping(objMap, objMap.SeqNo)
+    '    Next
+
+    '    lvMappings.SelectedItems.Clear()
+
+    '    If lvMappings.Items.Count > 0 Then
+    '        lvMappings.Items(0).EnsureVisible()
+    '    End If
+
+    'End Function
+    'Private Sub tvTarget_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs)
+
+    '    tvSource.HideSelection = True
+    '    'tvTarget.BackColor = Color.Wheat
+    '    'tvSource.BackColor = BACK_COLOR
+
+    '    'tvTarget.HideSelection = False
+    '    tvSource.SelectedNode = Nothing
+
+    'End Sub
+
+    'Private Sub tvTarget_MouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs)
+
+    '    Try
+    '        If e.Button = Windows.Forms.MouseButtons.Right Then
+    '            MousePos = e.Location
+    '            'ContextMenuStrip1.Show(tvTarget.PointToScreen(e.Location), ToolStripDropDownDirection.BelowRight)
+    '            'OpenStructureFileToolStripMenuItem_Click(sender, New EventArgs)
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask tvTgt_Click")
+    '    End Try
+
+    'End Sub
+    'Private Sub lvMappings_Hover(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ListViewItemMouseHoverEventArgs) Handles lvMappings.ItemMouseHover
+
+    '    Try
+    '        Dim targetPoint As Point = Control.MousePosition
+    '        Dim row, col As Integer
+    '        Dim lvItm As ListViewItem
+    '        Dim map As clsMapping
+    '        Dim fld As clsField = Nothing
+
+    '        targetPoint = lvMappings.PointToClient(targetPoint)
+    '        lvItm = lvMappings.GetItemAt(targetPoint.X, targetPoint.Y)
+    '        map = CType(lvItm.Tag, clsMapping)
+
+    '        If GetListSubItemFromPoint(lvMappings, targetPoint.X, targetPoint.Y, row, col) = True Then
+    '            Select Case col
+    '                Case 0
+    '                    If map.MappingSource IsNot Nothing Then
+    '                        lvItm.ToolTipText = CType(map.MappingSource, INode).Text
+    '                        If CType(map.MappingSource, INode).Type = NODE_STRUCT_FLD Or _
+    '                        CType(map.MappingSource, INode).Type = MAPPING_TYPE_FIELD Then
+    '                            fld = CType(map.MappingSource, clsField)
+    '                        End If
+    '                    End If
+    '                Case 1
+    '                    If map.MappingTarget IsNot Nothing Then
+    '                        lvItm.ToolTipText = CType(map.MappingTarget, INode).Text
+    '                        If CType(map.MappingTarget, INode).Type = NODE_STRUCT_FLD Or _
+    '                        CType(map.MappingTarget, INode).Type = MAPPING_TYPE_FIELD Then
+    '                            fld = CType(map.MappingTarget, clsField)
+    '                        End If
+    '                    End If
+    '            End Select
+    '            If fld IsNot Nothing Then
+    '                txtLength.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString
+    '                txtDataType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+    '                txtReType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_RETYPE).ToString
+    '                txtExtType.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_EXTTYPE).ToString
+    '                txtInitVal.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_INITVAL).ToString
+    '                txtInvalid.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_INVALID).ToString
+    '                txtCanNull.Text = fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL).ToString
+    '            End If
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask tvsourceHover")
+    '    End Try
+
+    'End Sub
+    'Public Sub cbGroupItems_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGroupItems.CheckedChanged
+
+    '    If IsEventFromCode = True Then Exit Sub
+
+    '    objThis.IsModified = True
+
+    '    cmdSave.Enabled = True
+
+    '    If objThis.Engine IsNot Nothing Then
+    '        If cbGroupItems.Checked = True Then
+    '            objThis.Engine.MapGroupItems = True
+    '        Else
+    '            objThis.Engine.MapGroupItems = False
+    '        End If
+    '    End If
+
+    '    RaiseEvent Modified(Me, objThis)
+
+    'End Sub
+
+    'Private Sub cmdOk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    'HideScriptEditor()
+    '    'HideDescEditor(True)
+
+    'End Sub
+    'Private Sub cmdSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    If Not (tvSource.SelectedNode Is Nothing) Then
+    '        If SelectFirstMatchingNode(tvSource, colSkipNodes, txtSearchField.Text) = False Then
+    '            MsgBox("No matching node found for entered text", MsgBoxStyle.Critical)
+    '        End If
+    '    ElseIf Not (tvTarget.SelectedNode Is Nothing) Then
+    '        If SelectFirstMatchingNode(tvTarget, colSkipNodes, txtSearchField.Text) = False Then
+    '            MsgBox("No matching node found for entered text", MsgBoxStyle.Critical)
+    '        End If
+    '    Else
+    '        MsgBox("Please click on the treeview you want to search")
+    '    End If
+
+    'End Sub
+    'Private Sub cmdSaveDesc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    'HideScriptEditor(True)
+    '    HideDescEditor()
+
+    '    'If CType(lvMappings.Items(CurRow).Tag, clsMapping).MappingDesc <> "" Then
+    '    '    lvMappings.Items(CurRow).ForeColor = HAS_DESC_COLOR
+    '    'Else
+    '    '    lvMappings.Items(CurRow).ForeColor = Color.Black
+    '    'End If
+
+    'End Sub
+    'Private Sub lvMappings_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMappings.DoubleClick
+
+    '    Dim row As Integer
+    '    Dim col As Integer
+    '    Dim objMap As clsMapping
+
+    '    Try
+    '        row = CurRow
+    '        col = CurCol
+
+    '        '//if user double click on function then we show script edit control
+    '        If row >= 0 Then
+    '            objMap = lvMappings.Items(row).Tag
+
+    '            If Not (objMap Is Nothing) Then
+    '                If objMap.HasMissingDependency = True Then
+    '                    MsgBox("**** Sorry you can not edit this mapping. *****" & vbCrLf & vbCrLf & objMap.Commment, MsgBoxStyle.Critical, MsgTitle)
+    '                    Exit Sub
+    '                End If
+
+    '                '// functions can be only entered in source
+    '                If col = 0 Then
+    '                    curEditType = modDeclares.enumDirection.DI_SOURCE
+    '                Else
+    '                    curEditType = modDeclares.enumDirection.DI_TARGET
+    '                End If
+
+    '                ShowScriptEditor(objMap)
+    '            End If '//If Not (objMap Is Nothing) Then ...
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask lvMappings_DblClick")
+    '    End Try
+
+    'End Sub
+
+    '    Private Sub lvMappings_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvMappings.MouseDown
+
+    '        Dim row, col As Integer
+    '        Dim ItemClicked As Boolean
+    '        Dim lvItm As ListViewItem
+
+    '        ItemClicked = GetListSubItemFromPoint(lvMappings, e.X, e.Y, row, col)
+    '        If ItemClicked = False Then
+    '            For Each lvItm In lvMappings.SelectedItems
+    '                lvItm.Selected = False
+    '                lvItm.Focused = False
+    '            Next
+    '        End If
+    '        If Not lvMappings.FocusedItem Is Nothing Then
+    '            lvMappings.FocusedItem.Selected = False
+    '            lvMappings.FocusedItem.Focused = False
+    '        End If
+
+    '    End Sub
+
+    '    Private Sub lvMappings_Mouseup(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lvMappings.MouseUp
+
+    '        Dim row As Integer, col As Integer
+    '        Dim ItemClicked As Boolean
+    '        Dim flagOutside As Boolean
+    '        Dim objMap As clsMapping
+
+    '        Try
+    '            ItemClicked = GetListSubItemFromPoint(lvMappings, e.X, e.Y, row, col)
+
+    '            CurRow = row
+    '            CurCol = col
+    '            flagOutside = (row = -1)
+
+    '            If e.Button = Windows.Forms.MouseButtons.Right Then
+    '                If ItemClicked = True Then
+    '                    mnuDelItem.Enabled = Not flagOutside
+    '                    mnuDelSource.Enabled = Not flagOutside
+    '                    mnuDelTarget.Enabled = Not flagOutside
+
+    '                    mnuCopyMapping.Enabled = Not flagOutside
+    '                    mnuCutMapping.Enabled = Not flagOutside
+
+    '                    mnuPaste.Enabled = IsClipboardAvail
+    '                    mnuEdit.Enabled = Not flagOutside
+    '                    mnuMapDesc.Enabled = Not flagOutside
+
+    '                    If row >= 0 Then
+
+    '                        objMap = lvMappings.Items(row).Tag
+    '                        If Not (objMap Is Nothing) Then
+
+    '                            If lvMappings.Items(row).Selected = False Then
+    '                                lvMappings.Items(row).Selected = True
+    '                                lvMappings.MultiSelect = False
+    '                            End If
+
+
+    '                            If col = 0 And objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                                mnuDelSource.Enabled = False
+    '                            End If
+    '                            If col = 1 And objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE Then
+    '                                mnuDelTarget.Enabled = False
+    '                            End If
+    '                        End If
+
+    '                        If lvMappings.SelectedItems.Count > 1 Then
+    '                            lvMappings.MultiSelect = True
+
+    '                            '//Allow Del Source/Target/row for muli select if applicable 
+    '                            mnuDelItem.Enabled = mnuDelItem.Enabled And True
+    '                            mnuDelSource.Enabled = mnuDelSource.Enabled And True
+    '                            mnuDelTarget.Enabled = mnuDelTarget.Enabled And True
+
+    '                            '//Do not allow Cut/Copy for muli select
+    '                            mnuCutMapping.Enabled = mnuCutMapping.Enabled And False
+    '                            mnuCopyMapping.Enabled = mnuCopyMapping.Enabled And False
+    '                            mnuPaste.Enabled = mnuPaste.Enabled And False
+    '                        Else
+    '                            lvMappings.MultiSelect = False
+    '                        End If
+    '                    End If
+    '                Else '//Left button up
+    '                    Debug.Write(Now)
+    '                End If
+
+    '                mnuPopup.Show(lvMappings, New Point(e.X, e.Y))
+    '            Else
+    '                lvMappings.MultiSelect = True
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask lvMappings_MouseUp")
+    '        End Try
+
+    '    End Sub
+
+    '    Private Sub mnuCopyMapping_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuCopyMapping.Click
+
+    '        If CurRow >= 0 Then
+    '            objClip = GetObjCopy(objThis, lvMappings.Items(CurRow).Tag)
+    '            IsClipboardAvail = True
+    '        End If
+
+    '    End Sub
+
+    '    Private Sub mnuCopySingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCopySingle.Click
+
+    '        Try
+    '            If CurRow >= 0 Then
+    '                Dim objMap As clsMapping
+    '                TempMap = New clsMapping
+
+    '                objMap = lvMappings.Items(CurRow).Tag
+    '                If CurCol = 0 Then
+    '                    '/// build clip object
+    '                    TempMap = objMap.Clone(objThis)
+    '                    TempMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    TempMap.MappingTarget = Nothing
+    '                    TempMap.TargetDataStore = ""
+    '                    TempMap.IsMapped = "0"
+    '                    '/// add to clipboard
+    '                    objClip = TempMap
+    '                Else
+    '                    '/// build clip object
+    '                    TempMap = objMap.Clone(objThis)
+    '                    TempMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    TempMap.MappingSource = Nothing
+    '                    TempMap.SourceDataStore = ""
+    '                    TempMap.IsMapped = "0"
+    '                    '/// add to clipboard
+    '                    objClip = TempMap
+    '                End If
+
+    '                IsClipboardAvail = True
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask mnuCopySingle")
+    '        End Try
+
+    '    End Sub
+
+    '    Private Sub mnuCutSingle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCutSingle.Click
+
+    '        Try
+    '            If CurRow >= 0 Then
+    '                Dim objMap As clsMapping
+    '                TempMap = New clsMapping
+
+    '                objMap = lvMappings.Items(CurRow).Tag
+    '                If CurCol = 0 Then
+    '                    '/// build clip object
+    '                    TempMap = objMap.Clone(objThis)
+    '                    TempMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    TempMap.MappingTarget = Nothing
+    '                    TempMap.TargetDataStore = ""
+    '                    TempMap.IsMapped = "0"
+    '                    '/// add to clipboard
+    '                    objClip = TempMap
+    '                    '/// update remaining object
+    '                    lvMappings.Items(CurRow).SubItems(0).Text = " "
+    '                    objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    objMap.MappingSource = Nothing
+    '                    objMap.SourceDataStore = ""
+    '                    objMap.IsMapped = "0"
+    '                Else
+    '                    '/// build clip object
+    '                    TempMap = objMap.Clone(objThis)
+    '                    TempMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    TempMap.MappingSource = Nothing
+    '                    TempMap.SourceDataStore = ""
+    '                    TempMap.IsMapped = "0"
+    '                    '/// add to clipboard
+    '                    objClip = TempMap
+    '                    '/// update remaining object
+    '                    lvMappings.Items(CurRow).SubItems(1).Text = " "
+    '                    objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                    objMap.MappingTarget = Nothing
+    '                    objMap.TargetDataStore = ""
+    '                    objMap.IsMapped = "0"
+    '                End If
+    '                lvMappings.Items(CurRow).Tag = objMap
+    '                IsClipboardAvail = True
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask mnuCutSingle")
+    '        End Try
+
+    '    End Sub
+
+    '    Private Sub mnuCutMapping_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuCutMapping.Click
+
+    '        Try
+    '            If CurRow >= 0 Then
+    '                Dim objMap As clsMapping
+
+    '                objMap = lvMappings.Items(CurRow).Tag
+
+    '                objClip = Nothing
+    '                objClip = objMap.Clone(objThis)         'new by TK 3/2/2007
+    '                lvMappings.Items.RemoveAt(CurRow)
+
+    '                IsClipboardAvail = True
+    '            End If
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask mnuCutMapping")
+    '        End Try
+
+    '    End Sub
+
+    '    Private Sub mnuPaste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPaste.Click
+
+    '        Dim CutCopyMap As clsMapping
+    '        Dim DestMap As clsMapping
+
+    '        Try
+    '            lvMappings.BeginUpdate()
+
+    '            If IsClipboardAvail = False Then Exit Sub
+
+    '            If CType(objClip, INode).Type = NODE_MAPPING Then
+    '                If CType(lvMappings.Items(CurRow).Tag, clsMapping).SourceType = enumMappingType.MAPPING_TYPE_NONE And _
+    '                CType(objClip, clsMapping).TargetType = enumMappingType.MAPPING_TYPE_NONE Then
+    '                    DestMap = CType(lvMappings.Items(CurRow).Tag, clsMapping)
+    '                    CutCopyMap = CType(objClip, clsMapping)
+    '                    If DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD And _
+    '                    CutCopyMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                        '/// Update the mapping Object  
+    '                        DestMap.MappingSource = CType(CutCopyMap.MappingSource, clsField)
+    '                        DestMap.IsMapped = "1"
+    '                        DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD
+    '                        DestMap.SourceParent = CutCopyMap.SourceParent
+    '                        DestMap.SourceDataStore = CutCopyMap.SourceDataStore
+    '                        '/// Update the ListView
+    '                        lvMappings.Items(CurRow).SubItems(0).Text = CType(CutCopyMap.MappingSource, clsField).Text
+    '                        'ResetMappingSeqNo()
+    '                        '//Fire change event
+    '                        OnChange(Me, New EventArgs)
+    '                        Exit Try
+    '                    Else
+    '                        GoTo fallthru2
+    '                    End If
+    '                ElseIf CType(lvMappings.Items(CurRow).Tag, clsMapping).TargetType = enumMappingType.MAPPING_TYPE_NONE And _
+    '                CType(objClip, clsMapping).SourceType = enumMappingType.MAPPING_TYPE_NONE Then
+    '                    DestMap = CType(lvMappings.Items(CurRow).Tag, clsMapping)
+    '                    CutCopyMap = CType(objClip, clsMapping)
+    '                    If DestMap.SourceType = enumMappingType.MAPPING_TYPE_FIELD And _
+    '                    CutCopyMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                        '/// Update the mapping Object  
+    '                        DestMap.MappingTarget = CType(CutCopyMap.MappingTarget, clsField)
+    '                        DestMap.IsMapped = "1"
+    '                        DestMap.TargetType = enumMappingType.MAPPING_TYPE_FIELD
+    '                        DestMap.TargetParent = CutCopyMap.TargetParent
+    '                        DestMap.TargetDataStore = CutCopyMap.TargetDataStore
+    '                        '/// Update the ListView
+    '                        lvMappings.Items(CurRow).SubItems(1).Text = CType(CutCopyMap.MappingTarget, clsField).Text
+    '                        'ResetMappingSeqNo()
+    '                        '//Fire change event
+    '                        OnChange(Me, New EventArgs)
+    '                        Exit Try
+    '                    Else
+    '                        GoTo fallthru2
+    '                    End If
+    '                Else
+    'fallthru2:          AddMapping(objClip, CurRow)
+    '                    IsClipboardAvail = True
+    '                End If
+    '            Else
+    '                If CurRow >= 0 Then
+    '                    Dim objMap As clsMapping
+    '                    objMap = lvMappings.Items(CurRow).Tag
+    '                    If CurCol = 0 Then
+    '                        lvMappings.Items(CurRow).SubItems(0).Text = CType(objClip, INode).Text
+    '                        objMap.SourceType = GetSourceTypeFromNodeType(CType(objClip, INode).Type)
+    '                        objMap.MappingSource = GetObjCopy(objThis, objClip)
+
+    '                    Else
+    '                        lvMappings.Items(CurRow).SubItems(1).Text = CType(objClip, INode).Text
+    '                        objMap.TargetType = GetSourceTypeFromNodeType(CType(objClip, INode).Type)
+    '                        objMap.MappingTarget = GetObjCopy(objThis, objClip)
+
+    '                    End If
+
+    '                    IsClipboardAvail = True
+    '                End If
+    '            End If
+
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlTask mnuPastClick")
+    '        Finally
+    '            lvMappings.EndUpdate()
+    '        End Try
+
+    '    End Sub
+
+    'Private Sub mnuSelectMappedItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    Dim itm As ListViewItem
+    '    Dim map As clsMapping
+
+    '    lvMappings.SelectedItems.Clear()
+    '    lvMappings.MultiSelect = True
+    '    For Each itm In lvMappings.Items
+    '        map = itm.Tag
+    '        If map.IsMapped = "1" Or map.IsMapped = "2" Or map.IsMapped = "3" Then
+    '            itm.Selected = True
+    '        End If
+    '    Next
+
+    'End Sub
+
+    'Private Sub mnuSelectUnmappedItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    '    Dim itm As ListViewItem
+    '    Dim map As clsMapping
+
+    '    lvMappings.SelectedItems.Clear()
+    '    lvMappings.MultiSelect = True
+
+    '    For Each itm In lvMappings.Items
+    '        map = itm.Tag
+    '        '//according to Kam select all unmapped items where target is blank
+    '        If map.IsMapped = "0" And (map.SourceType <> modDeclares.enumMappingType.MAPPING_TYPE_NONE) And (map.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE) Then
+    '            itm.Selected = True
+    '        End If
+    '    Next
+
+    'End Sub
+
+    'Private Sub cmdSearchMapping_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+    '    Dim itm As ListViewItem
+    '    Dim map As clsMapping
+    '    Dim i As Integer
+
+    '    '//check for new search
+    '    If lastMappingSearchText <> txtSearchMapping.Text Or lastMappingSearchPos = 0 Then
+    '        lvMappings.SelectedItems.Clear()
+    '        lastMappingSearchPos = 0
+    '    End If
+
+    '    If lastMappingSearchPos > 0 And lastMappingSearchPos < lvMappings.Items.Count - 1 Then
+    '        lastMappingSearchPos = lastMappingSearchPos + 1 '// start from next item from last found item
+    '    Else
+    '        lastMappingSearchPos = 0
+    '    End If
+
+    '    lvMappings.MultiSelect = True
+    '    lastMappingSearchText = txtSearchMapping.Text
+
+    '    For i = lastMappingSearchPos To lvMappings.Items.Count - 1
+    '        itm = lvMappings.Items(i)
+    '        map = itm.Tag
+    '        If itm.SubItems(0).Text.ToLower.IndexOf(txtSearchMapping.Text.ToLower) >= 0 Then
+    '            itm.Selected = True
+    '            lvMappings.EnsureVisible(itm.Index)
+    '            lastMappingSearchPos = itm.Index
+    '            lvMappings.Focus()
+    '            Exit For
+    '        ElseIf itm.SubItems(1).Text.ToLower.IndexOf(txtSearchMapping.Text.ToLower) >= 0 Then
+    '            itm.Selected = True
+    '            lvMappings.EnsureVisible(itm.Index)
+    '            lastMappingSearchPos = itm.Index
+    '            lvMappings.Focus()
+    '            Exit For
+    '        End If
+    '        If i >= lvMappings.Items.Count - 1 Then
+    '            If lastMappingSearchPos = 0 Then
+    '                MsgBox("No item found matching with your search criteria.", MsgBoxStyle.Information)
+    '            Else
+    '                MsgBox("You have reached at the end.", MsgBoxStyle.Information)
+    '            End If
+
+    '            lastMappingSearchPos = 0
+    '            Exit For
+    '        End If
+    '    Next
+
+    'End Sub
+
+    'Private Sub mnuEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEdit.Click
+    '    lvMappings_DoubleClick(sender, e)
+    'End Sub
+
+    'Private Sub mnuMapDesc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapDesc.Click
+
+    '    Dim row As Integer
+    '    Dim col As Integer
+    '    Dim objMap As clsMapping
+
+    '    Try
+    '        row = CurRow
+    '        col = CurCol
+
+    '        If lvMappings.SelectedItems.Count <> 1 Then
+    '            MsgBox("Please select a single mapping to edit a description", MsgBoxStyle.Information, MsgTitle)
+    '            Exit Sub
+    '        End If
+    '        '//if user double click on function then we show script edit control
+    '        If row >= 0 Then
+    '            objMap = lvMappings.Items(row).Tag
+
+    '            If Not (objMap Is Nothing) Then
+    '                If objMap.HasMissingDependency = True Then
+    '                    MsgBox("**** Sorry you can not edit this mapping. *****" & vbCrLf & vbCrLf & objMap.Commment, MsgBoxStyle.Critical, MsgTitle)
+    '                    Exit Sub
+    '                End If
+
+    '                '// functions can be only entered in source
+    '                If col = 0 Then
+    '                    curEditType = modDeclares.enumDirection.DI_SOURCE
+    '                Else
+    '                    curEditType = modDeclares.enumDirection.DI_TARGET
+    '                End If
+
+    '                ShowDescEditor(objMap)
+    '                'lvMappings.Items(row).BackColor = HAS_DESC_COLOR
+    '            End If '//If Not (objMap Is Nothing) Then ...
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask mnuMapDesc_Click")
+    '    End Try
+
+    'End Sub
+
+    'Private Sub mnuMapList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapList.Click
+
+    '    Try
+    '        Dim SrcArr As New ArrayList
+    '        Dim TgtArr As New ArrayList
+
+    '        SrcArr.Clear()
+    '        TgtArr.Clear()
+
+    '        If lvMappings.SelectedItems.Count > 0 Then
+    '            For Each lvItm As ListViewItem In lvMappings.SelectedItems
+    '                If lvItm.Tag IsNot Nothing Then
+    '                    Dim map As clsMapping = lvItm.Tag
+    '                    If map.SourceType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                        SrcArr.Add(CType(map.MappingSource, clsField).FieldName)
+    '                    End If
+    '                    If map.TargetType = enumMappingType.MAPPING_TYPE_FIELD Then
+    '                        TgtArr.Add(CType(map.MappingTarget, clsField).FieldName)
+    '                    End If
+    '                End If
+    '            Next
+    '            Dim frm As New frmMapList
+    '            Call frm.NewOrOpen(objThis.Project, SrcArr, TgtArr)
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask mnuMapListClick")
+    '    End Try
+
+    'End Sub
+
+    'Private Sub ToolBar1_ButtonClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ToolBarButtonClickEventArgs) Handles ToolBar1.ButtonClick
+
+    '    Dim ActionType As Object = e.Button.Tag
+
+    '    Try
+    '        Select Case ActionType.ToString
+    '            Case "Edit"
+    '                mnuEdit.PerformClick()
+    '            Case "Cut"
+    '                mnuCutMapping.PerformClick()
+    '            Case "Copy"
+    '                mnuCopyMapping.PerformClick()
+    '            Case "Paste"
+    '                mnuPaste.PerformClick()
+    '            Case "Delete"
+    '                DelMapping(sender, e)
+    '            Case "DelSrc"
+    '                mnuDelSource.PerformClick()
+    '            Case "DelTgt"
+    '                mnuDelTarget.PerformClick()
+    '            Case "InsUp"
+    '                mnuInsertMapping.PerformClick()
+    '            Case "InsDown"
+    '                AddNewMapping(sender, e)
+    '            Case "Up"
+    '                MoveUp(sender, e)
+    '            Case "Down"
+    '                MoveDown(sender, e)
+    '            Case "Desc"
+    '                mnuMapDesc.PerformClick()
+    '            Case "Src"
+    '                ShowHideSrc()
+    '            Case "Tgt"
+    '                ShowHideTgt()
+    '        End Select
+
+    '    Catch ex As Exception
+    '        Log("ToolBar1_ButtonClick=>" & ex.Message)
+    '    End Try
+
+    'End Sub
+
+    'Private Sub ShowHideSrc()
+
+    '    scSrc.Panel1Collapsed = Not tbShowSrc.Pushed
+
+    'End Sub
+
+    'Private Sub ShowHideTgt()
+
+    '    scTgt.Panel2Collapsed = Not tbShowTgt.Pushed
+
+    'End Sub
+
+    'Private Sub OnInsertMapping(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuInsertMapping.Click
+
+    '    Dim flagOutside As Boolean
+    '    Dim pt As Point = lvMappings.PointToClient(New Point(MousePosition.X, MousePosition.Y))
+
+    '    Try
+    '        flagOutside = (CurRow = -1)
+
+    '        If flagOutside = True Then
+    '            '//add new item at the end
+    '            AddMapping()
+    '        Else
+    '            '//add new item above the selected item
+    '            AddMapping(CurRow)
+
+    '            MarkAsModifedBelowThis(CurRow)
+
+    '            OnChange(Me, New EventArgs)
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask mnuInsMapping_Click")
+    '    End Try
+
+    'End Sub
+
+    'Private Sub OnDelItem(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelItem.Click
+
+    '    DelMapping(Me, New EventArgs)
+
+    'End Sub
+
+    'Private Sub OnDelSource(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelSource.Click
+
+    '    Dim i As Integer
+    '    Dim objMap As clsMapping
+
+    '    Try
+    '        If lvMappings.SelectedItems.Count > 0 Then
+    '            Dim curIndex As Integer
+    '            lvMappings.BeginUpdate()
+
+    '            For i = (lvMappings.SelectedItems.Count - 1) To 0 Step -1
+    '                curIndex = lvMappings.SelectedItems(i).Index
+
+    '                objMap = lvMappings.Items(curIndex).Tag
+    '                objMap.SourceType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                objMap.MappingSource = Nothing
+    '                objMap.IsMapped = "0"
+
+    '                lvMappings.SelectedItems(i).SubItems(0).Text = " "
+    '                lvMappings.SelectedItems(i).BackColor = BACK_COLOR
+    '                lvMappings.SelectedItems(i).Font = New Font(lvMappings.Font, FontStyle.Regular)
+    '            Next
+
+    '            '//Fire change event
+    '            OnChange(Me, New EventArgs)
+
+    '        ElseIf lvMappings.SelectedItems.Count = 0 Then
+    '            MsgBox("No item to delete", MsgBoxStyle.Exclamation, MsgTitle)
+    '        Else
+    '            MsgBox("Please select an item from the list", MsgBoxStyle.Exclamation, MsgTitle)
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex)
+    '    Finally
+    '        lvMappings.EndUpdate()
+    '    End Try
+
+    'End Sub
+
+    'Private Sub OnDelTarget(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuDelTarget.Click
+
+    '    Dim i As Integer
+    '    Dim objMap As clsMapping
+
+    '    Try
+    '        If lvMappings.SelectedItems.Count > 0 Then
+    '            Dim curIndex As Integer
+    '            lvMappings.BeginUpdate()
+
+    '            For i = (lvMappings.SelectedItems.Count - 1) To 0 Step -1
+    '                curIndex = lvMappings.SelectedItems(i).Index
+
+    '                objMap = lvMappings.Items(curIndex).Tag
+    '                objMap.TargetType = modDeclares.enumMappingType.MAPPING_TYPE_NONE
+    '                objMap.MappingTarget = Nothing
+    '                objMap.IsMapped = "0"
+
+    '                lvMappings.SelectedItems(i).SubItems(1).Text = " "
+    '                lvMappings.SelectedItems(i).BackColor = BACK_COLOR
+    '                lvMappings.SelectedItems(i).Font = New Font(lvMappings.Font, FontStyle.Regular)
+    '            Next
+
+    '            '//Fire change event
+    '            OnChange(Me, New EventArgs)
+
+    '        ElseIf lvMappings.SelectedItems.Count = 0 Then
+    '            MsgBox("No item to delete", MsgBoxStyle.Exclamation, MsgTitle)
+    '        Else
+    '            MsgBox("Please select an item from the list", MsgBoxStyle.Exclamation, MsgTitle)
+    '        End If
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask mnuDelTarget_click")
+    '    Finally
+    '        lvMappings.EndUpdate()
+    '    End Try
+
+    'End Sub
 
 End Class

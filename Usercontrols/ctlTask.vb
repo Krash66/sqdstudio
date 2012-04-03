@@ -1972,7 +1972,7 @@ Public Class ctlTask
                     End If
                 End If
             End If
-
+            
             '// raise event so main form can update itself accordingly
             Save = True
             cmdSave.Enabled = False
@@ -2766,7 +2766,7 @@ Public Class ctlTask
 
     Private Sub tvFunctions_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFunctions.AfterSelect
 
-        If CType(e.Node.Tag, INode).Type = NODE_FUN Then
+        If CType(e.Node.Tag, INode).Type = NODE_FUN Or CType(e.Node.Tag, INode).Type = NODE_TEMPLATE Then
             lblFunName.Text = e.Node.Text
             ToolTip1.SetToolTip(lblFunName, lblFunName.Text)
             lblFunSyntax.Text = CType(e.Node.Tag, clsSQFunction).SQFunctionSyntax
@@ -3181,39 +3181,49 @@ fallThru:               lvMappings.MultiSelect = True '// now again turnmulti se
 
     End Sub
 
-    '//lvItm : is target item, if lvItm is nothing then we will add dragged item at the end of all list items
-    '//draggedNode : is node dragged from tvSource,tvTarget or tvFunction treeview control
-    '//              we perform different operation depending on type of node
     Function DoDropOperation(ByRef lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE, Optional ByVal nType As String = NODE_STRUCT_FLD) As Boolean
+        '//lvItm : is target item, if lvItm is nothing then we will add dragged item at the end of all list items
+        '//draggedNode : is node dragged from tvSource,tvTarget or tvFunction treeview control
+        '//              we perform different operation depending on type of node
 
-        Select Case nType
-            Case NODE_FUN, NODE_TEMPLATE '//if SQFunction is dropped on listview
-                OnSQFunctionDrop(lvItm, draggedNode, dirType)
-            Case NODE_STRUCT_SEL, NODE_SOURCEDSSEL, NODE_TARGETDSSEL
-                '//if selection is dropped on listview
-                OnFldSelectionDrop(lvItm, draggedNode, dirType)
-            Case NODE_STRUCT_FLD '//if field is dropped on listview
-                OnFieldDrop(lvItm, draggedNode, dirType)
-            Case NODE_GEN '//if join is dropped on listview
-                OnJoinDrop(lvItm, draggedNode, dirType)
-            Case NODE_LOOKUP '//if lookup is dropped on listview
-                OnLookupDrop(lvItm, draggedNode, dirType)
-            Case NODE_VARIABLE '//if variable is dropped on listview
-                OnVariableDrop(lvItm, draggedNode, dirType)
-        End Select
+        Try
+            Select Case nType
+                Case NODE_FUN, NODE_TEMPLATE '//if SQFunction is dropped on listview
+                    OnSQFunctionDrop(lvItm, draggedNode, dirType)
+                Case NODE_STRUCT_SEL, NODE_SOURCEDSSEL, NODE_TARGETDSSEL
+                    '//if selection is dropped on listview
+                    OnFldSelectionDrop(lvItm, draggedNode, dirType)
+                Case NODE_STRUCT_FLD '//if field is dropped on listview
+                    OnFieldDrop(lvItm, draggedNode, dirType)
+                Case NODE_GEN '//if join is dropped on listview
+                    OnJoinDrop(lvItm, draggedNode, dirType)
+                Case NODE_LOOKUP '//if lookup is dropped on listview
+                    OnLookupDrop(lvItm, draggedNode, dirType)
+                Case NODE_VARIABLE '//if variable is dropped on listview
+                    OnVariableDrop(lvItm, draggedNode, dirType)
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask DoDropOperation")
+        End Try
 
     End Function
 
     '//call if SQData function is dropped on listview
     Function OnSQFunctionDrop(ByVal lvItm As ListViewItem, ByVal draggedNode As TreeNode, Optional ByVal dirType As enumDirection = modDeclares.enumDirection.DI_SOURCE) As Boolean
 
-        If CType(draggedNode.Tag, clsSQFunction).IsTemplate = True Then
-            UpdateTemplateScript(draggedNode.Tag)
-        End If
+        Try
+            If CType(draggedNode.Tag, clsSQFunction).IsTemplate = True Then
+                UpdateTemplateScript(draggedNode.Tag)
+            End If
 
-        '//Fix on 8/12/05 by npatel : removed draggedNode.tag and replaced with draggedNode
-        ManualMapping(lvItm, draggedNode, dirType)
-        AddToRecentlyUsedFunctionList(draggedNode)
+            '//Fix on 8/12/05 by npatel : removed draggedNode.tag and replaced with draggedNode
+            ManualMapping(lvItm, draggedNode, dirType)
+            AddToRecentlyUsedFunctionList(draggedNode)
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask OnSQFunctionDrop")
+        End Try
 
     End Function
 
@@ -3287,7 +3297,7 @@ fallThru:               lvMappings.MultiSelect = True '// now again turnmulti se
             Return True
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlTask OnFldSelectionDrop")
             Return False
         End Try
 
@@ -3323,7 +3333,7 @@ fallThru:               lvMappings.MultiSelect = True '// now again turnmulti se
             Return True
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlTask OnFieldDrop")
             Return False
         End Try
 
@@ -3400,8 +3410,9 @@ ManualGoTo:
             'End If
 
             Return True
+
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "ctlTask OnFieldDrop")
             Return False
         End Try
 
@@ -3445,13 +3456,13 @@ ManualGoTo:
                     '//handle function differently. We will show expanded text with para place holder
                     If draggedNode.Tag.GetType.Name = GetType(clsSQFunction).Name Then
                         If draggedNode.Text = "Main" Then
-                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainText) 'GetScriptForMainTemplateV3)
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainText(objThis.Engine)) 'GetScriptForMainTemplateV3)
                         ElseIf draggedNode.Text = "Procedure" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForProcV3)
                         ElseIf draggedNode.Text = "CASE" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCASE)
                         ElseIf draggedNode.Text = "LOOK" Then
-                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK)
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForLOOK(objThis))
                         ElseIf draggedNode.Text = "CURRENTDATE" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForCurrentDate)
                         ElseIf draggedNode.Text = "MAPBEFOREkeyChng" Then
@@ -3564,6 +3575,8 @@ ManualGoTo:
                     Procs.Remove(objThis.TaskName)
                 End If
                 objThis.CallFromUsercontrol = False '//8/15/05
+                '/// Added for Addflow
+                objThis.Engine.ObjAddFlowCtl.RefreshAddFlow()
             End If
             Me.Cursor = Cursors.Default
 
@@ -5598,371 +5611,383 @@ fallthru2:          AddMapping(objClip, CurRow)
 
     End Function
 
-    '//This will generate script for template. 
-    '//We will generate scripts only for system templates 
-    '//some user defined templates will remain as it is
     Function UpdateTemplateScript(ByVal obj As clsSQFunction) As Boolean
-
-        If obj.IsTemplate = False Then Exit Function
-
-        Select Case obj.ObjTreeNode.Text
-            Case "Route" '//Main template
-                obj.SQFunctionName = GetMainText() 'changed 11/07 by TK
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-            Case "Procedure"
-                obj.SQFunctionName = GetScriptForProcV3()
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-            Case "LOOK"
-                obj.SQFunctionName = GetScriptForLOOK()
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-            Case "CASE"
-                obj.SQFunctionName = GetScriptForCase()
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-            Case "CURRENTDATE"
-                obj.SQFunctionName = GetScriptForCurrentDate()
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-            Case "MAPBEFOREkeyChng"
-                obj.SQFunctionName = GetScriptForKeyChange()
-                obj.SQFunctionWithInnerText = obj.SQFunctionName
-        End Select
-
-    End Function
-
-    Function GetScriptForMainTemplate() As String
+        '//This will generate script for template. 
+        '//We will generate scripts only for system templates 
+        '//some user defined templates will remain as it is
 
         Try
-            Dim sb As New System.Text.StringBuilder
-            Dim nd As TreeNode
-            Dim inDsNode As TreeNode = Nothing
-
-            '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
-
-            '//TODO : Give user selection for input datastore
-            '//Note at this moment just pick first ds but it can be any of the input datastore
-            If tvSource.GetNodeCount(False) <= 0 Then
-                GetScriptForMainTemplate = ""
+            If obj.IsTemplate = False Then
+                Return True
                 Exit Function
             End If
 
 
-            For Each nd In tvSource.Nodes
-                If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
-            Next
+            Select Case obj.ObjTreeNode.Text
+                Case "Route" '//Main template
+                    obj.SQFunctionName = GetMainText(objThis.Engine) 'changed 11/07 by TK
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "Procedure"
+                    obj.SQFunctionName = GetScriptForProcV3()
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "LOOK"
+                    obj.SQFunctionName = GetScriptForLOOK(objThis)
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "CASE"
+                    obj.SQFunctionName = GetScriptForCASE()
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "CURRENTDATE"
+                    obj.SQFunctionName = GetScriptForCurrentDate()
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "MAPBEFOREkeyChng"
+                    obj.SQFunctionName = GetScriptForKeyChange()
+                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+            End Select
 
-            If inDsNode Is Nothing Then
-                GetScriptForMainTemplate = ""
-                Exit Function
-            End If
-
-
-            '//REPLACE INTO Target1, Target2 .... is pending
-            'sb.Append("SELECT" & vbCrLf)
-            'sb.Append("IF" & vbCrLf)
-            sb.Append("CASE" & vbCrLf)
-            sb.Append("(" & vbCrLf)
-            For Each nd In inDsNode.Nodes
-                sb.Append(vbTab & IIf(nd.Index = 0, "", ",") & "EQ(RECNAME(" & inDsNode.Text & "),'" & nd.Text & "')" & vbCrLf)
-                sb.Append(vbTab & ",CALLPROC( )" & vbCrLf)
-                sb.Append(vbCrLf)
-            Next
-            sb.Append(")" & vbCrLf)
-            'sb.Append("FROM " & inDsNode.Text)
-            GetScriptForMainTemplate = sb.ToString
+            Return True
 
         Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForMainTemplate")
-            Return ""
+            LogError(ex, "ctlTask UpdateTemplateScript")
+            Return False
         End Try
 
     End Function
 
-    '/// version 3 Main Template
-    Function GetScriptForMainTemplateV3() As String
+    'Function GetScriptForMainTemplate() As String
 
-        Try
-            Dim sb As New System.Text.StringBuilder
-            Dim nd As TreeNode
-            Dim inDsNode As TreeNode = Nothing
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim nd As TreeNode
+    '        Dim inDsNode As TreeNode = Nothing
 
-            '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
+    '        '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
 
-            '//TODO : Give user selection for input datastore
-            '//Note at this moment just pick first ds but it can be any of the input datastore
-            If tvSource.GetNodeCount(False) <= 0 Then
-                GetScriptForMainTemplateV3 = ""
-                Exit Function
-            End If
-
-            For Each nd In tvSource.Nodes
-                If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
-            Next
-
-            If inDsNode Is Nothing Then
-                GetScriptForMainTemplateV3 = ""
-                Exit Function
-            End If
-
-            '//REPLACE INTO Target1, Target2 .... is pending
-            'sb.Append("SELECT" & vbCrLf)
-            'sb.Append("IF" & vbCrLf)
-            sb.Append("{" & vbCrLf)
-            sb.Append("CASE RECNAME(" & inDsNode.Text & ")" & vbCrLf)
-            For Each nd In inDsNode.Nodes
-                sb.Append(TAB & "WHEN '" & nd.Text & "'" & TAB & TAB & "CALLPROC( )" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
-                'sb.Append(TAB & "DO" & vbCrLf)
-                'sb.Append(TAB & TAB & "CALLPROC( )" & vbCrLf)
-                'sb.Append(TAB & "END" & vbCrLf)
-                'sb.Append(vbCrLf)
-            Next
-            'sb.Append(")" & vbCrLf)
-            sb.Append("}")   '& inDsNode.Text
-            GetScriptForMainTemplateV3 = sb.ToString
-
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForMainTemplate")
-            Return ""
-        End Try
-
-    End Function
-
-    Private Function GetMainText() As String
-
-        Dim sb As New System.Text.StringBuilder
-        Dim sel As clsDSSelection
-        'Dim i As Integer
-        Dim taskName As String
-        Dim sDs As clsDatastore = Nothing
-        Dim nDs As clsDatastore = Nothing
-        Dim count As Integer = 0
-        Dim SrcCount As Integer = 0
-
-        Try
-            While SrcCount < objThis.Engine.Sources.Count
-
-                sDs = objThis.Engine.Sources(SrcCount + 1)
+    '        '//TODO : Give user selection for input datastore
+    '        '//Note at this moment just pick first ds but it can be any of the input datastore
+    '        If tvSource.GetNodeCount(False) <= 0 Then
+    '            GetScriptForMainTemplate = ""
+    '            Exit Function
+    '        End If
 
 
-                If SrcCount > 0 Then
-                    nDs = objThis.Engine.Sources(SrcCount)
-                    If sDs.IsLookUp = False Then
-                        sb.AppendLine("}")   '& inDsNode.Text
-                        sb.AppendLine("FROM " & nDs.DatastoreName)
-                        sb.AppendLine("UNION")
-                        sb.AppendLine("{")
-                    End If
-                End If
-                SrcCount += 1
+    '        For Each nd In tvSource.Nodes
+    '            If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
+    '        Next
 
-                'sb.Append("CASE" & vbCrLf)
-                'sb.Append("(" & vbCrLf)
+    '        If inDsNode Is Nothing Then
+    '            GetScriptForMainTemplate = ""
+    '            Exit Function
+    '        End If
 
-                'For i = 0 To sDs.ObjSelections.Count - 1
-                '    sel = sDs.ObjSelections(i)
-                '    taskName = "P_" & sel.Text
-                '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
-                '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
-                '    sb.Append(vbCrLf)
-                'Next
 
-                'sb.Append(")" & vbCrLf)
+    '        '//REPLACE INTO Target1, Target2 .... is pending
+    '        'sb.Append("SELECT" & vbCrLf)
+    '        'sb.Append("IF" & vbCrLf)
+    '        sb.Append("CASE" & vbCrLf)
+    '        sb.Append("(" & vbCrLf)
+    '        For Each nd In inDsNode.Nodes
+    '            sb.Append(vbTab & IIf(nd.Index = 0, "", ",") & "EQ(RECNAME(" & inDsNode.Text & "),'" & nd.Text & "')" & vbCrLf)
+    '            sb.Append(vbTab & ",CALLPROC( )" & vbCrLf)
+    '            sb.Append(vbCrLf)
+    '        Next
+    '        sb.Append(")" & vbCrLf)
+    '        'sb.Append("FROM " & inDsNode.Text)
+    '        GetScriptForMainTemplate = sb.ToString
 
-                'sb.AppendLine("{")
-                If sDs.IsLookUp = False Then
-                    sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
-                    For Each sel In sDs.ObjSelections
-                        'count += 1
-                        'If count <= objThis.Procs.Count Then
-                        '    taskName = CType(objThis.Procs(count), clsTask).TaskName
-                        'Else
-                        taskName = ""
-                        'End If
-                        For Each proc As clsTask In objThis.Engine.Procs
-                            If proc.TaskName.Contains(sel.Text) = True Then
-                                taskName = proc.TaskName
-                                Exit For
-                            End If
-                        Next
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForMainTemplate")
+    '        Return ""
+    '    End Try
 
-                        sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
-                        sb.AppendLine(TAB & "DO")
-                        sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
-                        sb.AppendLine(TAB & "END") '& vbCrLf)
-                        'sb.Append(vbCrLf)
-                    Next
-                End If
+    'End Function
 
-                'sb.Append(")" & vbCrLf)
-                'sb.AppendLine("}")   '& inDsNode.Text
-                'sb.AppendLine("FROM " & sDs.DatastoreName)
-            End While
+    ''/// version 3 Main Template
+    'Function GetScriptForMainTemplateV3() As String
 
-            GetMainText = sb.ToString
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim nd As TreeNode
+    '        Dim inDsNode As TreeNode = Nothing
 
-        Catch ex As Exception
-            LogError(ex, "ctlEngine GetMainText")
-            GetMainText = ""
-        End Try
+    '        '//inDs = InputBox("Enter name of your input datastore", , "<Source Datastore>")
 
-    End Function
+    '        '//TODO : Give user selection for input datastore
+    '        '//Note at this moment just pick first ds but it can be any of the input datastore
+    '        If tvSource.GetNodeCount(False) <= 0 Then
+    '            GetScriptForMainTemplateV3 = ""
+    '            Exit Function
+    '        End If
 
-    Function GetScriptForProcV3() As String
+    '        For Each nd In tvSource.Nodes
+    '            If nd.GetNodeCount(True) > 0 Then inDsNode = nd : Exit For 'tvSource.Nodes(0)
+    '        Next
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    '        If inDsNode Is Nothing Then
+    '            GetScriptForMainTemplateV3 = ""
+    '            Exit Function
+    '        End If
 
-            'sb.Append("{" & vbCrLf & vbCrLf)
-            sb.Append("CASE" & vbCrLf)
-            sb.Append(TAB & "WHEN(  )" & vbCrLf)
-            sb.Append(TAB & "DO" & vbCrLf & vbCrLf)
-            sb.Append(TAB & "END" & vbCrLf)
-            'sb.Append(vbCrLf)
-            'sb.Append("}")
+    '        '//REPLACE INTO Target1, Target2 .... is pending
+    '        'sb.Append("SELECT" & vbCrLf)
+    '        'sb.Append("IF" & vbCrLf)
+    '        sb.Append("{" & vbCrLf)
+    '        sb.Append("CASE RECNAME(" & inDsNode.Text & ")" & vbCrLf)
+    '        For Each nd In inDsNode.Nodes
+    '            sb.Append(TAB & "WHEN '" & nd.Text & "'" & TAB & TAB & "CALLPROC( )" & vbCrLf) '& IIf(nd.Index = 0, "", ",")
+    '            'sb.Append(TAB & "DO" & vbCrLf)
+    '            'sb.Append(TAB & TAB & "CALLPROC( )" & vbCrLf)
+    '            'sb.Append(TAB & "END" & vbCrLf)
+    '            'sb.Append(vbCrLf)
+    '        Next
+    '        'sb.Append(")" & vbCrLf)
+    '        sb.Append("}")   '& inDsNode.Text
+    '        GetScriptForMainTemplateV3 = sb.ToString
 
-            GetScriptForProcV3 = sb.ToString
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForMainTemplate")
+    '        Return ""
+    '    End Try
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForProc")
-            Return ""
-        End Try
+    'End Function
 
-    End Function
+    'Private Function GetMainText() As String
 
-    Function GetScriptForCASE() As String
+    '    Dim sb As New System.Text.StringBuilder
+    '    Dim sel As clsDSSelection
+    '    'Dim i As Integer
+    '    Dim taskName As String
+    '    Dim sDs As clsDatastore = Nothing
+    '    Dim nDs As clsDatastore = Nothing
+    '    Dim count As Integer = 0
+    '    Dim SrcCount As Integer = 0
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    '    Try
+    '        While SrcCount < objThis.Engine.Sources.Count
 
-            sb.AppendLine("--You will need to define a 'When condition'")
-            sb.AppendLine("--You will need to define true and false actions")
-            sb.AppendLine("")
-            sb.AppendLine("CASE")
-            sb.AppendLine("WHEN(condition)")
-            sb.AppendLine("DO")
-            sb.AppendLine("-- true_action")
-            sb.AppendLine("END")
-            sb.AppendLine("")
-            sb.AppendLine("OTHERWISE")
-            sb.AppendLine("DO")
-            sb.AppendLine("-- false_action")
-            sb.AppendLine("END")
+    '            sDs = objThis.Engine.Sources(SrcCount + 1)
 
-            GetScriptForCASE = sb.ToString
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForCASE")
-            Return ""
-        End Try
+    '            If SrcCount > 0 Then
+    '                nDs = objThis.Engine.Sources(SrcCount)
+    '                If sDs.IsLookUp = False Then
+    '                    sb.AppendLine("}")   '& inDsNode.Text
+    '                    sb.AppendLine("FROM " & nDs.DatastoreName)
+    '                    sb.AppendLine("UNION")
+    '                    sb.AppendLine("{")
+    '                End If
+    '            End If
+    '            SrcCount += 1
 
-    End Function
+    '            'sb.Append("CASE" & vbCrLf)
+    '            'sb.Append("(" & vbCrLf)
 
-    Function GetScriptForCurrentDate() As String
+    '            'For i = 0 To sDs.ObjSelections.Count - 1
+    '            '    sel = sDs.ObjSelections(i)
+    '            '    taskName = "P_" & sel.Text
+    '            '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
+    '            '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
+    '            '    sb.Append(vbCrLf)
+    '            'Next
 
-        Try
-            GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+    '            'sb.Append(")" & vbCrLf)
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForCURRENTDATE")
-            Return ""
-        End Try
+    '            'sb.AppendLine("{")
+    '            If sDs.IsLookUp = False Then
+    '                sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+    '                For Each sel In sDs.ObjSelections
+    '                    'count += 1
+    '                    'If count <= objThis.Procs.Count Then
+    '                    '    taskName = CType(objThis.Procs(count), clsTask).TaskName
+    '                    'Else
+    '                    taskName = ""
+    '                    'End If
+    '                    For Each proc As clsTask In objThis.Engine.Procs
+    '                        If proc.TaskName.Contains(sel.Text) = True Then
+    '                            taskName = proc.TaskName
+    '                            Exit For
+    '                        End If
+    '                    Next
 
-    End Function
+    '                    sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
+    '                    sb.AppendLine(TAB & "DO")
+    '                    sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
+    '                    sb.AppendLine(TAB & "END") '& vbCrLf)
+    '                    'sb.Append(vbCrLf)
+    '                Next
+    '            End If
 
-    'CREATE PROC P_Lookup AS SELECT
-    '{
-    '  LOOK(LOOKUP.FILE,'AAA')
-    '  IF LOOKFOUND(LOOKUP.TABLE) = TRUE
-    '   DO
-    '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
-    '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
-    '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
-    '      END
-    '}
-    'FROM ;
-    Function GetScriptForLOOK() As String
+    '            'sb.Append(")" & vbCrLf)
+    '            'sb.AppendLine("}")   '& inDsNode.Text
+    '            'sb.AppendLine("FROM " & sDs.DatastoreName)
+    '        End While
 
-        Try
-            Dim sb As New System.Text.StringBuilder
-            Dim DSlu As clsDatastore = Nothing
-            Dim LUsel As clsDSSelection = Nothing
+    '        GetMainText = sb.ToString
 
-            GetScriptForLOOK = ""
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlEngine GetMainText")
+    '        GetMainText = ""
+    '    End Try
 
-            If objThis.ObjSources.Count <> 1 Then
-                MsgBox("You must choose ONE Source Lookup Datastore to use this template", MsgBoxStyle.OkOnly, "Lookup Template")
-                Exit Try
-            End If
+    'End Function
 
-            For Each ds As clsDatastore In objThis.ObjSources
-                If ds.IsLookUp = True Then
-                    DSlu = ds
-                End If
-            Next
-            If DSlu IsNot Nothing Then
-                If DSlu.ObjSelections.Count <> 1 Then
-                    MsgBox("You must choose ONE Datastore Selection for a Lookup", MsgBoxStyle.OkOnly, "Lookup Template")
-                    Exit Try
-                Else
-                    For Each sel As clsDSSelection In DSlu.ObjSelections
-                        LUsel = sel
-                    Next
-                End If
-            Else
-                Exit Try
-            End If
+    'Function GetScriptForProcV3() As String
 
-            sb.AppendLine("LOOK(" & DSlu.DsPhysicalSource & ",'   ')")
-            sb.AppendLine("IF LOOKFOUND(" & DSlu.DatastoreName & ") = TRUE")
-            sb.AppendLine("DO")
-            For Each fld As clsField In LUsel.DSSelectionFields
-                sb.AppendLine(TAB & "    = LOOKFLD(" & DSlu.DatastoreName & "," & fld.FieldName & ")")
-            Next
-            sb.AppendLine("END")
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
 
-            GetScriptForLOOK = sb.ToString
+    '        'sb.Append("{" & vbCrLf & vbCrLf)
+    '        sb.Append("CASE" & vbCrLf)
+    '        sb.Append(TAB & "WHEN(  )" & vbCrLf)
+    '        sb.Append(TAB & "DO" & vbCrLf & vbCrLf)
+    '        sb.Append(TAB & "END" & vbCrLf)
+    '        'sb.Append(vbCrLf)
+    '        'sb.Append("}")
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForLOOK")
-            Return ""
-        End Try
+    '        GetScriptForProcV3 = sb.ToString
 
-    End Function
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForProc")
+    '        Return ""
+    '    End Try
 
-    'IF CDCOP(CDCIN) = 'R' DO                                              
-    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
-    '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
-    '  'T_S2PACITP.INIT_DEP_TP_CD')                                  
-    'END
-    Function GetScriptForKeyChange() As String
+    'End Function
 
-        Try
-            Dim sb As New System.Text.StringBuilder
+    'Function GetScriptForCASE() As String
 
-            sb.AppendLine("")
-            sb.AppendLine("--CDCIN is Source Datastore")
-            sb.AppendLine("--INDESC is the Source Description containing Key field")
-            sb.AppendLine("--OUTDESC is the Target Description containing Key field")
-            sb.AppendLine("--KFLDx are the Key fields")
-            sb.AppendLine("--'R' represents the 'Replace' Operation")
-            sb.AppendLine("")
-            sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
-            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
-            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
-            sb.AppendLine("--           .   .      .")
-            sb.AppendLine("--           .   .      .")
-            sb.AppendLine("--        Repeat as necessary")
-            sb.AppendLine("END")
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
 
-            GetScriptForKeyChange = sb.ToString
+    '        sb.AppendLine("--You will need to define a 'When condition'")
+    '        sb.AppendLine("--You will need to define true and false actions")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("CASE")
+    '        sb.AppendLine("WHEN(condition)")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine("-- true_action")
+    '        sb.AppendLine("END")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("OTHERWISE")
+    '        sb.AppendLine("DO")
+    '        sb.AppendLine("-- false_action")
+    '        sb.AppendLine("END")
 
-        Catch ex As Exception
-            LogError(ex, "ctlTask GetScriptForKeyChange")
-            Return ""
-        End Try
+    '        GetScriptForCASE = sb.ToString
 
-    End Function
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForCASE")
+    '        Return ""
+    '    End Try
 
-    '//Switch to code edit view when user double click or select edit menu item
+    'End Function
+
+    'Function GetScriptForCurrentDate() As String
+
+    '    Try
+    '        GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForCURRENTDATE")
+    '        Return ""
+    '    End Try
+
+    'End Function
+
+    ''CREATE PROC P_Lookup AS SELECT
+    ''{
+    ''  LOOK(LOOKUP.FILE,'AAA')
+    ''  IF LOOKFOUND(LOOKUP.TABLE) = TRUE
+    ''   DO
+    ''      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+    ''      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+    ''      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+    ''      END
+    ''}
+    ''FROM ;
+    'Function GetScriptForLOOK() As String
+
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+    '        Dim DSlu As clsDatastore = Nothing
+    '        Dim LUsel As clsDSSelection = Nothing
+
+    '        GetScriptForLOOK = ""
+
+    '        If objThis.ObjSources.Count <> 1 Then
+    '            MsgBox("You must choose ONE Source Lookup Datastore to use this template", MsgBoxStyle.OkOnly, "Lookup Template")
+    '            Exit Try
+    '        End If
+
+    '        For Each ds As clsDatastore In objThis.ObjSources
+    '            If ds.IsLookUp = True Then
+    '                DSlu = ds
+    '            End If
+    '        Next
+    '        If DSlu IsNot Nothing Then
+    '            If DSlu.ObjSelections.Count <> 1 Then
+    '                MsgBox("You must choose ONE Datastore Selection for a Lookup", MsgBoxStyle.OkOnly, "Lookup Template")
+    '                Exit Try
+    '            Else
+    '                For Each sel As clsDSSelection In DSlu.ObjSelections
+    '                    LUsel = sel
+    '                Next
+    '            End If
+    '        Else
+    '            Exit Try
+    '        End If
+
+    '        sb.AppendLine("LOOK(" & DSlu.DsPhysicalSource & ",'   ')")
+    '        sb.AppendLine("IF LOOKFOUND(" & DSlu.DatastoreName & ") = TRUE")
+    '        sb.AppendLine("DO")
+    '        For Each fld As clsField In LUsel.DSSelectionFields
+    '            sb.AppendLine(TAB & "    = LOOKFLD(" & DSlu.DatastoreName & "," & fld.FieldName & ")")
+    '        Next
+    '        sb.AppendLine("END")
+
+    '        GetScriptForLOOK = sb.ToString
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForLOOK")
+    '        Return ""
+    '    End Try
+
+    'End Function
+
+    ''IF CDCOP(CDCIN) = 'R' DO                                              
+    ''  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
+    ''  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
+    ''  'T_S2PACITP.INIT_DEP_TP_CD')                                  
+    ''END
+    'Function GetScriptForKeyChange() As String
+
+    '    Try
+    '        Dim sb As New System.Text.StringBuilder
+
+    '        sb.AppendLine("")
+    '        sb.AppendLine("--CDCIN is Source Datastore")
+    '        sb.AppendLine("--INDESC is the Source Description containing Key field")
+    '        sb.AppendLine("--OUTDESC is the Target Description containing Key field")
+    '        sb.AppendLine("--KFLDx are the Key fields")
+    '        sb.AppendLine("--'R' represents the 'Replace' Operation")
+    '        sb.AppendLine("")
+    '        sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
+    '        sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
+    '        sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
+    '        sb.AppendLine("--           .   .      .")
+    '        sb.AppendLine("--           .   .      .")
+    '        sb.AppendLine("--        Repeat as necessary")
+    '        sb.AppendLine("END")
+
+    '        GetScriptForKeyChange = sb.ToString
+
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlTask GetScriptForKeyChange")
+    '        Return ""
+    '    End Try
+
+    'End Function
+
     Function ShowScriptEditor(ByVal objMap As clsMapping) As Boolean
+        '//Switch to code edit view when user double click or select edit menu item
 
         Try
             objCurMap = objMap
@@ -6239,4 +6264,5 @@ fallthru2:          AddMapping(objClip, CurRow)
     'Private Sub lvMappings_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvMappings.SelectedIndexChanged
 
     'End Sub
+
 End Class

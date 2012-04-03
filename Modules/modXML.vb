@@ -183,39 +183,37 @@ Public Module modXML
             Select Case XMLType
                 Case modDeclares.enumXMLType.XMLFOR_FIELD
                     Dim objFld As New clsField
-
-                    objFld.SetFieldAtt(xml_node.Attributes("Att").Value)
-                    objFld.FieldName = xml_node.Attributes("ID").Value
-                    objFld.OrgName = IIf(xml_node.Attributes("OrgName") Is Nothing, "", xml_node.Attributes("OrgName").Value)
-                    objFld.ParentName = xml_node.Attributes("Parent").Value
+                    With objFld
+                        .SetFieldAtt(xml_node.Attributes("Att").Value)
+                        .FieldName = xml_node.Attributes("ID").Value
+                        .OrgName = IIf(xml_node.Attributes("OrgName") Is Nothing, _
+                                       "", _
+                                       xml_node.Attributes("OrgName").Value)
+                        .ParentName = xml_node.Attributes("Parent").Value
+                    End With
                     Return objFld
                     Exit Function
 
                 Case modDeclares.enumXMLType.XMLFOR_SQFUNCTIONS
                     If xml_node.Attributes("NODETYPE").Value <> "Heading" Then
                         Dim objFun As New clsSQFunction
-
-                        If xml_node.Attributes("DESC") Is Nothing Then
-                            objFun.SQFunctionDescription = ""
-                        Else
-                            objFun.SQFunctionDescription = xml_node.Attributes("DESC").Value
-                        End If
-
-                        objFun.SQFunctionSyntax = xml_node.Attributes("SYNTAX").Value
-                        objFun.ParaCount = xml_node.Attributes("NPARM").Value
-                        objFun.SQFunctionName = xml_node.Name
-
-                        If xml_node.Attributes("NODETYPE").Value = "Template" Then
-                            objFun.IsTemplate = True
-                            Return objFun
-                        ElseIf xml_node.Attributes("NODETYPE").Value = "Func" Then
-                            Return objFun
-                        End If
+                        With objFun
+                            .SQFunctionName = xml_node.Name
+                            .SQFunctionDescription = xml_node.Attributes("DESC").Value
+                            .SQFunctionSyntax = xml_node.Attributes("SYNTAX").Value
+                            .ParaCount = xml_node.Attributes("NPARM").Value
+                            .IsTemplate = IIf(xml_node.Attributes("NODETYPE").Value = "Template", _
+                                       True, _
+                                       False)
+                        End With
+                        Return objFun
                     Else
-                        Dim objFolder As New clsFolderNode(xml_node.Name, IIf(xml_node.Name = "Templates", NODE_FO_TEMPLATE, NODE_FO_FUNCTION))
+                        Dim objFolder As New clsFolderNode(xml_node.Name, _
+                                                           IIf(xml_node.Name = "Templates", _
+                                                               NODE_FO_TEMPLATE, NODE_FO_FUNCTION))
                         Return objFolder
-                        Exit Function
                     End If
+                    Exit Function
 
                 Case modDeclares.enumXMLType.XMLFOR_SEGMENTS
                     Return Nothing

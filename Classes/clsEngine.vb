@@ -426,8 +426,10 @@ Public Class clsEngine
             End If
 
             '/// AddFlow Additions
-            Dim TC As TabControl = CType(Me.ObjTabPage.Parent, TabControl)
-            TC.TabPages.Remove(Me.ObjTabPage)
+            If Me.ObjTabPage IsNot Nothing Then
+                Dim TC As TabControl = CType(Me.ObjTabPage.Parent, TabControl)
+                TC.TabPages.Remove(Me.ObjTabPage)
+            End If
             '/////////////////////////
 
             Delete = True

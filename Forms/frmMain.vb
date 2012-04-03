@@ -573,6 +573,19 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
+        Me.ctMain = New SQDStudio.ctlMain
+        Me.ctInc = New SQDStudio.ctlInclude
+        Me.ctFolder = New SQDStudio.ctlFolderNode
+        Me.ctTask = New SQDStudio.ctlTask
+        Me.ctVar = New SQDStudio.ctlVariable
+        Me.ctEng = New SQDStudio.ctlEngine
+        Me.ctStrSel = New SQDStudio.ctlStructureSelection
+        Me.ctSys = New SQDStudio.ctlSystem
+        Me.ctConn = New SQDStudio.ctlConnection
+        Me.ctStr = New SQDStudio.ctlStructure
+        Me.ctEnv = New SQDStudio.ctlEnvironment
+        Me.ctPrj = New SQDStudio.ctlProject
+        Me.ctDs = New SQDStudio.ctlDatastore
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.tabCtrl = New System.Windows.Forms.TabControl
@@ -589,19 +602,6 @@ Public Class frmMain
         Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.ctMain = New SQDStudio.ctlMain
-        Me.ctInc = New SQDStudio.ctlInclude
-        Me.ctFolder = New SQDStudio.ctlFolderNode
-        Me.ctTask = New SQDStudio.ctlTask
-        Me.ctVar = New SQDStudio.ctlVariable
-        Me.ctEng = New SQDStudio.ctlEngine
-        Me.ctStrSel = New SQDStudio.ctlStructureSelection
-        Me.ctSys = New SQDStudio.ctlSystem
-        Me.ctConn = New SQDStudio.ctlConnection
-        Me.ctStr = New SQDStudio.ctlStructure
-        Me.ctEnv = New SQDStudio.ctlEnvironment
-        Me.ctPrj = New SQDStudio.ctlProject
-        Me.ctDs = New SQDStudio.ctlDatastore
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1983,126 +1983,6 @@ Public Class frmMain
         Me.pnlProp.Size = New System.Drawing.Size(679, 484)
         Me.pnlProp.TabIndex = 3
         '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SCmain.Location = New System.Drawing.Point(0, 27)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 515)
-        Me.SCmain.SplitterDistance = 321
-        Me.SCmain.TabIndex = 9
-        '
-        'tabCtrl
-        '
-        Me.tabCtrl.Controls.Add(Me.tpProp)
-        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tabCtrl.HotTrack = True
-        Me.tabCtrl.ImageList = Me.ImageListSmall
-        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
-        Me.tabCtrl.Name = "tabCtrl"
-        Me.tabCtrl.SelectedIndex = 0
-        Me.tabCtrl.Size = New System.Drawing.Size(691, 515)
-        Me.tabCtrl.TabIndex = 4
-        '
-        'tpProp
-        '
-        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.tpProp.Controls.Add(Me.pnlProp)
-        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tpProp.Location = New System.Drawing.Point(4, 23)
-        Me.tpProp.Name = "tpProp"
-        Me.tpProp.Size = New System.Drawing.Size(683, 488)
-        Me.tpProp.TabIndex = 0
-        Me.tpProp.Text = "Properties"
-        '
-        'cms1
-        '
-        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
-        Me.cms1.Name = "cms1"
-        Me.cms1.Size = New System.Drawing.Size(200, 208)
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem1.Text = "Add Source"
-        '
-        'AddTargetToolStripMenuItem
-        '
-        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
-        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddTargetToolStripMenuItem.Text = "Add Target"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem2.Text = "Add Lookup"
-        '
-        'AddProcedureToolStripMenuItem
-        '
-        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
-        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
-        '
-        'ToolStripMenuItem3
-        '
-        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem3.Text = "Add General Procedure"
-        '
-        'AddMainToolStripMenuItem
-        '
-        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
-        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddMainToolStripMenuItem.Text = "Add Main"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
-        '
-        'DeleteItemToolStripMenuItem
-        '
-        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
-        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
-        '
-        'UndoToolStripMenuItem
-        '
-        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.UndoToolStripMenuItem.Text = "Undo"
-        '
-        'RedoToolStripMenuItem
-        '
-        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.RedoToolStripMenuItem.Text = "Redo"
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 566)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
-        '
         'ctMain
         '
         Me.ctMain.AllowDrop = True
@@ -2125,7 +2005,7 @@ Public Class frmMain
         '
         Me.ctFolder.BackColor = System.Drawing.SystemColors.Desktop
         Me.ctFolder.ForeColor = System.Drawing.Color.White
-        Me.ctFolder.Location = New System.Drawing.Point(7, 2)
+        Me.ctFolder.Location = New System.Drawing.Point(1, 1)
         Me.ctFolder.Name = "ctFolder"
         Me.ctFolder.Size = New System.Drawing.Size(488, 344)
         Me.ctFolder.TabIndex = 10
@@ -2224,6 +2104,129 @@ Public Class frmMain
         Me.ctDs.Name = "ctDs"
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SCmain.Location = New System.Drawing.Point(0, 27)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 515)
+        Me.SCmain.SplitterDistance = 321
+        Me.SCmain.TabIndex = 9
+        '
+        'tabCtrl
+        '
+        Me.tabCtrl.Controls.Add(Me.tpProp)
+        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tabCtrl.HotTrack = True
+        Me.tabCtrl.ImageList = Me.ImageListSmall
+        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
+        Me.tabCtrl.Name = "tabCtrl"
+        Me.tabCtrl.SelectedIndex = 0
+        Me.tabCtrl.Size = New System.Drawing.Size(691, 515)
+        Me.tabCtrl.TabIndex = 4
+        '
+        'tpProp
+        '
+        Me.tpProp.AllowDrop = True
+        Me.tpProp.AutoScroll = True
+        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.tpProp.Controls.Add(Me.pnlProp)
+        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tpProp.Location = New System.Drawing.Point(4, 23)
+        Me.tpProp.Name = "tpProp"
+        Me.tpProp.Size = New System.Drawing.Size(683, 488)
+        Me.tpProp.TabIndex = 0
+        Me.tpProp.Text = "Properties"
+        Me.tpProp.UseVisualStyleBackColor = True
+        '
+        'cms1
+        '
+        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
+        Me.cms1.Name = "cms1"
+        Me.cms1.Size = New System.Drawing.Size(200, 208)
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem1.Text = "Add Source"
+        '
+        'AddTargetToolStripMenuItem
+        '
+        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
+        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddTargetToolStripMenuItem.Text = "Add Target"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem2.Text = "Add Lookup"
+        '
+        'AddProcedureToolStripMenuItem
+        '
+        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
+        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
+        '
+        'ToolStripMenuItem3
+        '
+        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem3.Text = "Add General Procedure"
+        '
+        'AddMainToolStripMenuItem
+        '
+        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
+        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddMainToolStripMenuItem.Text = "Add Main"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
+        '
+        'DeleteItemToolStripMenuItem
+        '
+        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
+        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'RedoToolStripMenuItem
+        '
+        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.RedoToolStripMenuItem.Text = "Redo"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 566)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
         '
         'frmMain
         '
@@ -2431,22 +2434,27 @@ Public Class frmMain
     '/// from user control event
     Private Sub OnRename(ByVal sender As System.Object, ByVal e As INode) Handles ctEnv.Renamed, ctPrj.Renamed, ctStr.Renamed, ctDs.Renamed, ctConn.Renamed, ctSys.Renamed, ctEng.Renamed, ctStrSel.Renamed, ctVar.Renamed, ctTask.Renamed, ctInc.Renamed, ctMain.Renamed
 
-        lblStatusMsg.Text = "Rename and Save Successful"
-        lblStatusMsg.Show()
-        IsRename = True
-        '// Created for Renaming by Tom Karasch
-        ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
-        FillProject(e.Project, True)
-        If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
-            e.ObjTreeNode.Text = e.Text
-        End If
-        'If PrevObjTreeNode IsNot Nothing Then
-        tvExplorer.SelectedNode = e.ObjTreeNode
-        'Else
-        'tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
-        'End If
-        ShowUsercontrol(tvExplorer.SelectedNode)
-        IsRename = False
+        Try
+            lblStatusMsg.Text = "Rename and Save Successful"
+            lblStatusMsg.Show()
+            IsRename = True
+            '// Created for Renaming by Tom Karasch
+            ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
+            FillProject(e.Project, True)
+            If e.Type <> NODE_SOURCEDATASTORE And e.Type <> NODE_TARGETDATASTORE Then
+                e.ObjTreeNode.Text = e.Text
+            End If
+            'If PrevObjTreeNode IsNot Nothing Then
+            tvExplorer.SelectedNode = e.ObjTreeNode
+            'Else
+            'tvExplorer.SelectedNode = SelectFirstMatchingNode(tvExplorer, NameOfNodeBefore)
+            'End If
+            ShowUsercontrol(tvExplorer.SelectedNode)
+            IsRename = False
+
+        Catch ex As Exception
+            LogError(ex, "frmMain OnRename")
+        End Try
 
     End Sub
 
@@ -2476,35 +2484,85 @@ Public Class frmMain
     Private Sub tvExplorer_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tvExplorer.DoubleClick
 
         '// Modified 1/07 by Tom Karasch
+        Try
+            If tvExplorer.SelectedNode IsNot Nothing Then
+                '//if user pressed cancel then dont open popup form
+                If SavePreviousScreen(tvExplorer.SelectedNode) = False Then
+                    Exit Sub
+                End If
+                ShowUsercontrol(tvExplorer.SelectedNode, True)
+                '//// Added For Addflow
+                If tabCtrl.SelectedIndex = 0 Then
+                    Dim nTag As INode = CType(tvExplorer.SelectedNode.Tag, INode)
+                    Select Case nTag.Type
+                        Case NODE_ENGINE
+                            '/// goto this Engine's TabPage
+                            tabCtrl.SelectedTab = CType(tvExplorer.SelectedNode.Tag, clsEngine).ObjTabPage
 
-        If Not (tvExplorer.SelectedNode Is Nothing) Then
-            '//if user pressed cancel then dont open popup form
-            If SavePreviousScreen(tvExplorer.SelectedNode) = False Then
-                Exit Sub
+                        Case NODE_GEN, NODE_MAIN, NODE_PROC
+                            '/// goto corresponding Engine Tab
+                            'Dim eng As clsEngine = nTag.Parent
+
+                            Dim task1 As clsTask = CType(nTag, clsTask)
+                            tabCtrl.SelectedTab = task1.Engine.ObjTabPage
+                            task1.Engine.ObjAddFlow.SelectedItem = task1.AFnode
+
+                        Case NODE_SOURCEDATASTORE, NODE_TARGETDATASTORE, NODE_LOOKUP
+                            'Dim eng As clsEngine = nTag.Parent
+
+                            Dim DS1 As clsDatastore = CType(nTag, clsDatastore)
+                            tabCtrl.SelectedTab = DS1.Engine.ObjTabPage
+                            DS1.Engine.ObjAddFlow.SelectedItem = DS1.AFnode
+
+                        Case NODE_SOURCEDSSEL, NODE_TARGETDSSEL
+                            Dim dsSel As clsDSSelection = CType(nTag, clsDSSelection)
+                            Dim DS As clsDatastore = dsSel.ObjDatastore
+                            tabCtrl.SelectedTab = DS.Engine.ObjTabPage
+                            DS.Engine.ObjAddFlow.SelectedItem = DS.AFnode
+
+                        Case Else
+                            '/// goto property Tab
+                            tabCtrl.SelectedIndex = 0
+                    End Select
+                Else
+                    '/// goto property Tab
+                    tabCtrl.SelectedIndex = 0
+                End If
             End If
-            ShowUsercontrol(tvExplorer.SelectedNode, True)
-        End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_DoubleClick")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
     Private Sub tvExplorer_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tvExplorer.MouseClick
 
-        ' See if this is the right button.
-        If e.Button = Windows.Forms.MouseButtons.Right Then
-            IsEventFromCode = True
-            ' Select this node.
-            Dim node_here As TreeNode = tvExplorer.GetNodeAt(e.X, e.Y)
-            tvExplorer.SelectedNode = node_here
+        Try
+            ' See if this is the right button.
+            If e.Button = Windows.Forms.MouseButtons.Right Then
+                IsEventFromCode = True
+                ' Select this node.
+                Dim node_here As TreeNode = tvExplorer.GetNodeAt(e.X, e.Y)
+                tvExplorer.SelectedNode = node_here
 
-            ' See if we got a node.
-            If node_here Is Nothing Then Exit Sub
+                ' See if we got a node.
+                If node_here Is Nothing Then Exit Sub
 
-            ShowPopupMenu(tvExplorer.SelectedNode, New Point(e.X, e.Y))
-            IsEventFromCode = False
-        Else
-            Dim node_here As TreeNode = tvExplorer.GetNodeAt(e.X, e.Y)
-            tvExplorer.SelectedNode = node_here
-        End If
+                ShowPopupMenu(tvExplorer.SelectedNode, New Point(e.X, e.Y))
+                IsEventFromCode = False
+            Else
+                Dim node_here As TreeNode = tvExplorer.GetNodeAt(e.X, e.Y)
+                tvExplorer.SelectedNode = node_here
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_MouseDown")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
@@ -2572,73 +2630,79 @@ Public Class frmMain
 
     Private Sub tvExplorer_AfterExpandAfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterExpand, tvExplorer.AfterCollapse
 
+        Try
+            If tvExplorer.SelectedNode IsNot Nothing Then
+                Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
+                Dim NodeText As String = tvExplorer.SelectedNode.Text
+                Dim NodeState As Boolean = tvExplorer.SelectedNode.IsExpanded
 
-        If tvExplorer.SelectedNode IsNot Nothing Then
-            Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
-            Dim NodeText As String = tvExplorer.SelectedNode.Text
-            Dim NodeState As Boolean = tvExplorer.SelectedNode.IsExpanded
+                Select Case Nodetype
+                    Case NODE_FO_ENVIRONMENT
+                        CurLoadedProject.ENV_FOexpanded = NodeState
 
-            Select Case Nodetype
-                Case NODE_FO_ENVIRONMENT
-                    CurLoadedProject.ENV_FOexpanded = NodeState
+                    Case NODE_ENVIRONMENT
+                        CurLoadedProject.ENVexpanded = NodeState
 
-                Case NODE_ENVIRONMENT
-                    CurLoadedProject.ENVexpanded = NodeState
+                    Case NODE_FO_CONNECTION
+                        CurLoadedProject.CONNexpanded = NodeState
 
-                Case NODE_FO_CONNECTION
-                    CurLoadedProject.CONNexpanded = NodeState
+                    Case NODE_FO_STRUCT
+                        If NodeText.Contains("Descriptions") = True Then
+                            CurLoadedProject.STRexpanded = NodeState
+                        ElseIf NodeText.EndsWith("COBOL") = True Then
+                            CurLoadedProject.COBOLexpanded = NodeState
+                        ElseIf NodeText.EndsWith("COBOLIMS") = True Then
+                            CurLoadedProject.COBOLIMSexpanded = NodeState
+                        ElseIf NodeText.EndsWith("CHeader") = True Then
+                            CurLoadedProject.Cexpanded = NodeState
+                        ElseIf NodeText.EndsWith("XMLDTD") = True Then
+                            CurLoadedProject.XMLDTDexpanded = NodeState
+                        ElseIf NodeText.EndsWith("DDL") = True Then
+                            CurLoadedProject.DDLexpanded = NodeState
+                        ElseIf NodeText.EndsWith("DML") = True Then
+                            CurLoadedProject.DMLexpanded = NodeState
+                        End If
 
-                Case NODE_FO_STRUCT
-                    If NodeText.Contains("Descriptions") = True Then
-                        CurLoadedProject.STRexpanded = NodeState
-                    ElseIf NodeText.EndsWith("COBOL") = True Then
-                        CurLoadedProject.COBOLexpanded = NodeState
-                    ElseIf NodeText.EndsWith("COBOLIMS") = True Then
-                        CurLoadedProject.COBOLIMSexpanded = NodeState
-                    ElseIf NodeText.EndsWith("CHeader") = True Then
-                        CurLoadedProject.Cexpanded = NodeState
-                    ElseIf NodeText.EndsWith("XMLDTD") = True Then
-                        CurLoadedProject.XMLDTDexpanded = NodeState
-                    ElseIf NodeText.EndsWith("DDL") = True Then
-                        CurLoadedProject.DDLexpanded = NodeState
-                    ElseIf NodeText.EndsWith("DML") = True Then
-                        CurLoadedProject.DMLexpanded = NodeState
-                    End If
+                    Case NODE_FO_SYSTEM
+                        CurLoadedProject.SYS_FOexpanded = NodeState
 
-                Case NODE_FO_SYSTEM
-                    CurLoadedProject.SYS_FOexpanded = NodeState
+                    Case NODE_SYSTEM
+                        CurLoadedProject.SYSexpanded = NodeState
 
-                Case NODE_SYSTEM
-                    CurLoadedProject.SYSexpanded = NodeState
+                    Case NODE_FO_ENGINE
+                        CurLoadedProject.ENG_FOexpanded = NodeState
 
-                Case NODE_FO_ENGINE
-                    CurLoadedProject.ENG_FOexpanded = NodeState
+                    Case NODE_ENGINE
+                        CurLoadedProject.ENGexpanded = NodeState
 
-                Case NODE_ENGINE
-                    CurLoadedProject.ENGexpanded = NodeState
+                    Case NODE_FO_SOURCEDATASTORE
+                        CurLoadedProject.SRCexpanded = NodeState
 
-                Case NODE_FO_SOURCEDATASTORE
-                    CurLoadedProject.SRCexpanded = NodeState
+                    Case NODE_SOURCEDATASTORE
+                        CurLoadedProject.SRCselExpanded = NodeState
 
-                Case NODE_SOURCEDATASTORE
-                    CurLoadedProject.SRCselExpanded = NodeState
+                    Case NODE_FO_TARGETDATASTORE
+                        CurLoadedProject.TGTexpanded = NodeState
 
-                Case NODE_FO_TARGETDATASTORE
-                    CurLoadedProject.TGTexpanded = NodeState
+                    Case NODE_FO_VARIABLE
+                        CurLoadedProject.VARexpanded = NodeState
 
-                Case NODE_FO_VARIABLE
-                    CurLoadedProject.VARexpanded = NodeState
+                    Case NODE_FO_PROC
+                        CurLoadedProject.PROCexpanded = NodeState
 
-                Case NODE_FO_PROC
-                    CurLoadedProject.PROCexpanded = NodeState
+                    Case NODE_FO_MAIN
+                        CurLoadedProject.MAINexpanded = NodeState
 
-                Case NODE_FO_MAIN
-                    CurLoadedProject.MAINexpanded = NodeState
+                    Case Else
 
-                Case Else
+                End Select
+            End If
 
-            End Select
-        End If
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_AfterExpandAfterCollapse")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
@@ -2716,176 +2780,197 @@ Public Class frmMain
     Private Sub tvExplorer_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tvExplorer.KeyDown
 
         '///OverHauled by Tom Karasch 9/06-1/07
+        Try
+            If tvExplorer.Focused = False Then Exit Sub
 
-        If tvExplorer.Focused = False Then Exit Sub
+            If e.KeyCode = Keys.Enter Then
+                tvExplorer_DoubleClick(Me, New EventArgs)
+            End If
 
-        If e.KeyCode = Keys.Enter Then
-            tvExplorer_DoubleClick(Me, New EventArgs)
-        End If
+            If e.KeyCode = Keys.F1 Then
+                Dim obj As INode
+                Dim HelpObj As INode = Nothing
+                If tvExplorer.SelectedNode Is Nothing Then
+                    ShowHelp(modHelp.HHId.H_Object_Tree)
+                Else
+                    obj = tvExplorer.SelectedNode.Tag
+                    If Not tvExplorer.SelectedNode.Parent Is Nothing Then
+                        HelpObj = tvExplorer.SelectedNode.Parent.Tag
+                    End If
 
-        If e.KeyCode = Keys.F1 Then
-            Dim obj As INode
-            Dim HelpObj As INode = Nothing
-            If tvExplorer.SelectedNode Is Nothing Then
-                ShowHelp(modHelp.HHId.H_Object_Tree)
-            Else
-                obj = tvExplorer.SelectedNode.Tag
-                If Not tvExplorer.SelectedNode.Parent Is Nothing Then
-                    HelpObj = tvExplorer.SelectedNode.Parent.Tag
-                End If
+                    '//Global procedure for all type node F1 HELP 
 
-                '//Global procedure for all type node F1 HELP 
-
-                If Not (obj Is Nothing) Then
-                    Select Case obj.Type
-                        Case NODE_PROJECT
-                            ShowHelp(modHelp.HHId.H_Project)
-                        Case NODE_ENVIRONMENT, NODE_FO_ENVIRONMENT
-                            ShowHelp(modHelp.HHId.H_Environment)
-                        Case NODE_STRUCT, NODE_FO_STRUCT
-                            Select Case HelpObj.Text
-                                Case "COBOL"
-                                    ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
-                                Case "CHeader"
-                                    ShowHelp(modHelp.HHId.H_C_Structure)
-                                Case "COBOLIMS"
-                                    ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
-                                Case "IMS"
-                                    ShowHelp(modHelp.HHId.H_Stru_IMS_Segment)
-                                Case "DDL"
-                                    ShowHelp(modHelp.HHId.H_Relational_DDL)
-                                Case "DML"
-                                    ShowHelp(modHelp.HHId.H_Relational_DML)
-                                Case "XMLDTD"
-                                    ShowHelp(modHelp.HHId.H_XML_DTD)
-                                Case "Unknown"
-                                    ShowHelp(modHelp.HHId.H_Structures)
-                                Case Else
-                                    ShowHelp(modHelp.HHId.H_Structures)
-                            End Select
-                        Case NODE_STRUCT_FLD
-                            ShowHelp(modHelp.HHId.H_Structure_Field_Attributes)
-                        Case NODE_STRUCT_SEL, NODE_FO_STRUCT_SEL
-                            Select Case CType(HelpObj, clsStructure).StructureType
-                                Case enumStructure.STRUCT_COBOL
-                                    ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
-                                Case enumStructure.STRUCT_C
-                                    ShowHelp(modHelp.HHId.H_C_Structure)
-                                Case enumStructure.STRUCT_COBOL_IMS
-                                    ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
-                                Case enumStructure.STRUCT_IMS
-                                    ShowHelp(modHelp.HHId.H_Stru_IMS_Segment)
-                                Case enumStructure.STRUCT_REL_DDL
-                                    ShowHelp(modHelp.HHId.H_Relational_DDL)
-                                Case enumStructure.STRUCT_REL_DML
-                                    ShowHelp(modHelp.HHId.H_Relational_DML)
-                                Case enumStructure.STRUCT_XMLDTD
-                                    ShowHelp(modHelp.HHId.H_XML_DTD)
-                                Case enumStructure.STRUCT_UNKNOWN
-                                    ShowHelp(modHelp.HHId.H_Structures)
-                                Case Else
-                                    ShowHelp(modHelp.HHId.H_Structures)
-                            End Select
-                        Case NODE_SYSTEM, NODE_FO_SYSTEM
-                            ShowHelp(modHelp.HHId.H_Systems)
-                        Case NODE_CONNECTION, NODE_FO_CONNECTION
-                            ShowHelp(modHelp.HHId.H_Connections)
-                        Case NODE_ENGINE, NODE_FO_ENGINE
-                            ShowHelp(modHelp.HHId.H_Engines)
-                        Case NODE_SOURCEDATASTORE, NODE_FO_SOURCEDATASTORE, NODE_SOURCEDSSEL
-                            ShowHelp(modHelp.HHId.H_Sources)
-                        Case NODE_TARGETDATASTORE, NODE_FO_TARGETDATASTORE, NODE_TARGETDSSEL
-                            ShowHelp(modHelp.HHId.H_Targets)
-                        Case NODE_VARIABLE, NODE_FO_VARIABLE
-                            ShowHelp(modHelp.HHId.H_Variables)
-                        Case NODE_PROC, NODE_FO_PROC
-                            ShowHelp(modHelp.HHId.H_Mapping_Procedures)
-                        Case NODE_GEN, NODE_FO_JOIN
-                            ShowHelp(modHelp.HHId.H_Joins)
-                        Case NODE_LOOKUP, NODE_FO_LOOKUP
-                            ShowHelp(modHelp.HHId.H_Lookups)
-                        Case NODE_MAIN, NODE_FO_MAIN
-                            ShowHelp(modHelp.HHId.H_Main_Procedure)
-                        Case NODE_MAPPING, NODE_FO_MAPPING
-                            ShowHelp(modHelp.HHId.H_MAP)
-                        Case NODE_FUN, NODE_FO_FUNCTION, NODE_FO_FUNCTION_RECENT
-                            ShowHelp(modHelp.HHId.H_Function_Reference)
-                        Case NODE_TEMPLATE, NODE_FO_TEMPLATE
-                            ShowHelp(modHelp.HHId.H_Reference)
-                        Case Else
-                            ShowHelp(modHelp.HHId.H_DATETIME)
-                    End Select
+                    If Not (obj Is Nothing) Then
+                        Select Case obj.Type
+                            Case NODE_PROJECT
+                                ShowHelp(modHelp.HHId.H_Project)
+                            Case NODE_ENVIRONMENT, NODE_FO_ENVIRONMENT
+                                ShowHelp(modHelp.HHId.H_Environment)
+                            Case NODE_STRUCT, NODE_FO_STRUCT
+                                Select Case HelpObj.Text
+                                    Case "COBOL"
+                                        ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
+                                    Case "CHeader"
+                                        ShowHelp(modHelp.HHId.H_C_Structure)
+                                    Case "COBOLIMS"
+                                        ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
+                                    Case "IMS"
+                                        ShowHelp(modHelp.HHId.H_Stru_IMS_Segment)
+                                    Case "DDL"
+                                        ShowHelp(modHelp.HHId.H_Relational_DDL)
+                                    Case "DML"
+                                        ShowHelp(modHelp.HHId.H_Relational_DML)
+                                    Case "XMLDTD"
+                                        ShowHelp(modHelp.HHId.H_XML_DTD)
+                                    Case "Unknown"
+                                        ShowHelp(modHelp.HHId.H_Structures)
+                                    Case Else
+                                        ShowHelp(modHelp.HHId.H_Structures)
+                                End Select
+                            Case NODE_STRUCT_FLD
+                                ShowHelp(modHelp.HHId.H_Structure_Field_Attributes)
+                            Case NODE_STRUCT_SEL, NODE_FO_STRUCT_SEL
+                                Select Case CType(HelpObj, clsStructure).StructureType
+                                    Case enumStructure.STRUCT_COBOL
+                                        ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
+                                    Case enumStructure.STRUCT_C
+                                        ShowHelp(modHelp.HHId.H_C_Structure)
+                                    Case enumStructure.STRUCT_COBOL_IMS
+                                        ShowHelp(modHelp.HHId.H_COBOL_Copybook__IMS_DBD)
+                                    Case enumStructure.STRUCT_IMS
+                                        ShowHelp(modHelp.HHId.H_Stru_IMS_Segment)
+                                    Case enumStructure.STRUCT_REL_DDL
+                                        ShowHelp(modHelp.HHId.H_Relational_DDL)
+                                    Case enumStructure.STRUCT_REL_DML
+                                        ShowHelp(modHelp.HHId.H_Relational_DML)
+                                    Case enumStructure.STRUCT_XMLDTD
+                                        ShowHelp(modHelp.HHId.H_XML_DTD)
+                                    Case enumStructure.STRUCT_UNKNOWN
+                                        ShowHelp(modHelp.HHId.H_Structures)
+                                    Case Else
+                                        ShowHelp(modHelp.HHId.H_Structures)
+                                End Select
+                            Case NODE_SYSTEM, NODE_FO_SYSTEM
+                                ShowHelp(modHelp.HHId.H_Systems)
+                            Case NODE_CONNECTION, NODE_FO_CONNECTION
+                                ShowHelp(modHelp.HHId.H_Connections)
+                            Case NODE_ENGINE, NODE_FO_ENGINE
+                                ShowHelp(modHelp.HHId.H_Engines)
+                            Case NODE_SOURCEDATASTORE, NODE_FO_SOURCEDATASTORE, NODE_SOURCEDSSEL
+                                ShowHelp(modHelp.HHId.H_Sources)
+                            Case NODE_TARGETDATASTORE, NODE_FO_TARGETDATASTORE, NODE_TARGETDSSEL
+                                ShowHelp(modHelp.HHId.H_Targets)
+                            Case NODE_VARIABLE, NODE_FO_VARIABLE
+                                ShowHelp(modHelp.HHId.H_Variables)
+                            Case NODE_PROC, NODE_FO_PROC
+                                ShowHelp(modHelp.HHId.H_Mapping_Procedures)
+                            Case NODE_GEN, NODE_FO_JOIN
+                                ShowHelp(modHelp.HHId.H_Joins)
+                            Case NODE_LOOKUP, NODE_FO_LOOKUP
+                                ShowHelp(modHelp.HHId.H_Lookups)
+                            Case NODE_MAIN, NODE_FO_MAIN
+                                ShowHelp(modHelp.HHId.H_Main_Procedure)
+                            Case NODE_MAPPING, NODE_FO_MAPPING
+                                ShowHelp(modHelp.HHId.H_MAP)
+                            Case NODE_FUN, NODE_FO_FUNCTION, NODE_FO_FUNCTION_RECENT
+                                ShowHelp(modHelp.HHId.H_Function_Reference)
+                            Case NODE_TEMPLATE, NODE_FO_TEMPLATE
+                                ShowHelp(modHelp.HHId.H_Reference)
+                            Case Else
+                                ShowHelp(modHelp.HHId.H_DATETIME)
+                        End Select
+                    End If
                 End If
             End If
-        End If
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_KeyDown")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
     Private Sub tvExplorer_ItemDrag(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemDragEventArgs) Handles tvExplorer.ItemDrag
 
-        Select Case CType(CType(e.Item, TreeNode).Tag, INode).Type
-            Case NODE_VARIABLE, NODE_GEN, NODE_PROC, NODE_LOOKUP, NODE_MAIN
-                'Set the drag node and initiate the DragDrop
-                DoDragDrop(e.Item, DragDropEffects.Copy)
-        End Select
+        Try
+            Select Case CType(CType(e.Item, TreeNode).Tag, INode).Type
+                Case NODE_VARIABLE, NODE_GEN, NODE_PROC, NODE_LOOKUP, NODE_MAIN, NODE_SOURCEDATASTORE, _
+                NODE_TARGETDATASTORE, NODE_SOURCEDSSEL, NODE_TARGETDSSEL
+                    'Set the drag node and initiate the DragDrop
+                    DoDragDrop(e.Item, DragDropEffects.Copy)
+
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_ItemDrag")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
     Private Sub tvExplorer_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles tvExplorer.DragOver
 
-        Dim sourceNode As TreeNode
-        Dim obj As Object, objI As INode
+        Try
+            Dim sourceNode As TreeNode
+            Dim obj As Object, objI As INode
 
-        'Get the TreeView raising the event (incase multiple on form)
+            'Get the TreeView raising the event (incase multiple on form)
 
-        '//dont allow drag and drop from other treeview
-        Dim sourceTreeview As TreeView = CType(sender, TreeView)
-        If sourceTreeview.Name <> "tvExplorer" Then
-            e.Effect = DragDropEffects.None
-            Exit Sub
-        End If
+            '//dont allow drag and drop from other treeview
+            Dim sourceTreeview As TreeView = CType(sender, TreeView)
+            If sourceTreeview.Name <> "tvExplorer" Then
+                e.Effect = DragDropEffects.None
+                Exit Sub
+            End If
 
-        'As the mouse moves over nodes, provide feedback to the user
-        'by highlighting the node that is the current drop target
-        Dim pt As Point = CType(sender, TreeView).PointToClient(New Point(e.X, e.Y))
-        Dim targetNode As TreeNode = sourceTreeview.GetNodeAt(pt)
+            'As the mouse moves over nodes, provide feedback to the user
+            'by highlighting the node that is the current drop target
+            Dim pt As Point = CType(sender, TreeView).PointToClient(New Point(e.X, e.Y))
+            Dim targetNode As TreeNode = sourceTreeview.GetNodeAt(pt)
 
-        'See if there is a TreeNode being dragged
-        If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
-            'TreeNode found allow move effect
+            'See if there is a TreeNode being dragged
+            If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
+                'TreeNode found allow move effect
 
-            sourceNode = e.Data.GetData("System.Windows.Forms.TreeNode")
-            obj = sourceNode.Tag
-            If Not (obj Is Nothing) Then
-                If Not (obj.GetType.GetInterface("INode") Is Nothing) Then
-                    objI = obj
-                    If objI.Type = CType(targetNode.Tag, INode).Type Then
-                        e.Effect = DragDropEffects.Copy
-                    Else
-                        e.Effect = DragDropEffects.None
+                sourceNode = e.Data.GetData("System.Windows.Forms.TreeNode")
+                obj = sourceNode.Tag
+                If Not (obj Is Nothing) Then
+                    If Not (obj.GetType.GetInterface("INode") Is Nothing) Then
+                        objI = obj
+                        If objI.Type = CType(targetNode.Tag, INode).Type Then
+                            e.Effect = DragDropEffects.Copy
+                        Else
+                            e.Effect = DragDropEffects.None
+                        End If
                     End If
                 End If
+            Else
+                'No TreeNode found, prevent move
+                e.Effect = DragDropEffects.None
             End If
-        Else
-            'No TreeNode found, prevent move
-            e.Effect = DragDropEffects.None
-        End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tvExplorer_DragOver")
+        Finally
+            Me.Cursor = Cursors.Default
+        End Try
 
     End Sub
 
     Private Sub tvExplorer_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles tvExplorer.DragDrop
 
         '// Modified 3/07 by Tom Karasch
-
-        Dim sourceNode As TreeNode
-        Dim NewPos As Integer
-        Dim SourceIndex, TargetIndex As Integer
-        'Get the TreeView raising the event (incase multiple on form)
-
-        '//dont allow drag and drop from other treeview
-        Dim sourceTreeview As TreeView = CType(sender, TreeView)
-
         Try
+            Dim sourceNode As TreeNode
+            Dim NewPos As Integer
+            Dim SourceIndex, TargetIndex As Integer
+            'Get the TreeView raising the event (incase multiple on form)
+
+            '//dont allow drag and drop from other treeview
+            Dim sourceTreeview As TreeView = CType(sender, TreeView)
 
             If sourceTreeview.Name <> "tvExplorer" Then
                 e.Effect = DragDropEffects.None
@@ -2919,7 +3004,7 @@ Public Class frmMain
             tvExplorer.SelectedNode = sourceNode
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmMain tvExplorer_DragDrop")
         Finally
             tvExplorer.EndUpdate()
         End Try
@@ -9283,7 +9368,9 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
         If objTopMost.IsModified = True Then
 
             If Prompt = True Then
-                ret = MsgBox("Do you want to save change(s) made to the opened form?", MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, "Save Changes")
+                ret = MsgBox("Do you want to save change(s) made to the opened form?", _
+                             MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel, _
+                             "Save Changes")
             Else
                 ret = MsgBoxResult.Yes
             End If
@@ -9314,7 +9401,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
                         Case NODE_PROC
                             DoSave = IIf(ctTask.Save(), MsgBoxResult.Yes, MsgBoxResult.No)
                         Case NODE_GEN
-                            DoSave = IIf(ctTask.Save(), MsgBoxResult.Yes, MsgBoxResult.No)
+                            DoSave = IIf(ctMain.Save(), MsgBoxResult.Yes, MsgBoxResult.No)
                         Case NODE_LOOKUP
                             DoSave = IIf(ctTask.Save(), MsgBoxResult.Yes, MsgBoxResult.No)
                         Case NODE_MAIN
@@ -9768,18 +9855,16 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
             '/// Create a pageTab Control for each Engine ///
             EnginePage = New TabPage(Eng.EngineName)
             addflowCtrl = New ctlAddFlowTab
-
-            addflowCtrl.LoadAFtab(Eng)
-
-            EnginePage.Controls.Add(addflowCtrl)
-
-            tabCtrl.TabPages.Add(EnginePage)
+            EnginePage.Tag = Eng
 
             With addflowCtrl
                 .Parent = EnginePage
                 .Dock = DockStyle.Fill
                 .Tag = Eng
             End With
+            EnginePage.Controls.Add(addflowCtrl)
+            tabCtrl.TabPages.Add(EnginePage)
+            addflowCtrl.LoadAFtab(Eng)
             '////////////////////////////////////////////////
             Eng.ObjAddFlow = addflowCtrl.tabAddFlow
             Eng.ObjTabPage = EnginePage
@@ -9798,10 +9883,6 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
             EnginePage = New TabPage(Eng.EngineName)
             addflowCtrl = New ctlAddFlowTab
 
-            Eng.ObjAddFlow = addflowCtrl.tabAddFlow
-            Eng.ObjTabPage = EnginePage
-            'addflowCtrl.LoadAFtab(Eng)
-
             With addflowCtrl
                 .Parent = EnginePage
                 .Dock = DockStyle.Fill
@@ -9809,12 +9890,12 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
             End With
 
             Eng.ObjAddFlowCtl = addflowCtrl
+            Eng.ObjAddFlow = addflowCtrl.tabAddFlow
+            Eng.ObjTabPage = EnginePage
 
             EnginePage.Controls.Add(addflowCtrl)
-
+            EnginePage.Tag = Eng
             tabCtrl.TabPages.Add(EnginePage)
-            '////////////////////////////////////////////////
-            
 
             Return True
 
@@ -9873,6 +9954,21 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
         End Try
 
     End Function
+
+    Sub tabCtrl_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabCtrl.SelectedIndexChanged
+
+        Try
+            If tabCtrl.SelectedIndex <> 0 Then
+                'SavePreviousScreen(tvExplorer.SelectedNode)
+                CType(tabCtrl.SelectedTab.Tag, clsEngine).ObjAddFlowCtl.RefreshAddFlow()
+
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain tabCtrl_SelectedIndexChanged")
+        End Try
+
+    End Sub
 
 #End Region
 

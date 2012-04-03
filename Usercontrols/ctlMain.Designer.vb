@@ -22,6 +22,7 @@ Partial Class ctlMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Me.scTask = New System.Windows.Forms.SplitContainer
         Me.gbName = New System.Windows.Forms.GroupBox
         Me.txtTaskName = New System.Windows.Forms.TextBox
@@ -54,6 +55,7 @@ Partial Class ctlMain
         Me.cmdSave = New System.Windows.Forms.Button
         Me.cmdClose = New System.Windows.Forms.Button
         Me.cmdHelp = New System.Windows.Forms.Button
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.scTask.Panel1.SuspendLayout()
         Me.scTask.Panel2.SuspendLayout()
         Me.scTask.SuspendLayout()
@@ -458,6 +460,13 @@ Partial Class ctlMain
         Me.cmdHelp.TabIndex = 11
         Me.cmdHelp.Text = "&Help"
         '
+        'ToolTip1
+        '
+        Me.ToolTip1.AutoPopDelay = 5000
+        Me.ToolTip1.InitialDelay = 500
+        Me.ToolTip1.IsBalloon = True
+        Me.ToolTip1.ReshowDelay = 10
+        '
         'ctlMain
         '
         Me.AllowDrop = True
@@ -523,5 +532,6 @@ Partial Class ctlMain
     Friend WithEvents cmdHelp As System.Windows.Forms.Button
     Friend WithEvents cbIsMain As System.Windows.Forms.CheckBox
     Friend WithEvents txtCodeEditor As System.Windows.Forms.TextBox
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
 
 End Class

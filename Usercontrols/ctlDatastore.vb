@@ -1518,6 +1518,8 @@ Public Class ctlDatastore
                 objThis.SetIsMapped()
             End If
             HiLiteMappedNodes(tvDatastoreStructures, objThis)
+            '/// Added for Addflow
+            objThis.Engine.ObjAddFlowCtl.RefreshAddFlow()
         End If
 
     End Sub

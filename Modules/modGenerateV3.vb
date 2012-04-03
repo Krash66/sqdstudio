@@ -194,9 +194,9 @@ Public Module modGenerateV3
                 GoTo ErrorGoTo
             End If
 
-            If prtJoins(RC) = False Then
-                GoTo ErrorGoTo
-            End If
+            'If prtJoins(RC) = False Then
+            '    GoTo ErrorGoTo
+            'End If
 
             If prtLookups(RC) = False Then
                 GoTo ErrorGoTo
@@ -1682,40 +1682,40 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Function prtJoins(ByRef rc As clsRcode) As Boolean
+    '    Function prtJoins(ByRef rc As clsRcode) As Boolean
 
-        Try
-            If ObjThis.Gens.Count > 0 Then
-                For Each Join As clsTask In ObjThis.Gens
-                    Join.LoadMe()
+    '        Try
+    '            If ObjThis.Gens.Count > 0 Then
+    '                For Each Join As clsTask In ObjThis.Gens
+    '                    Join.LoadMe()
 
-                    If prtJs(rc, Join) = False Then
-                        GoTo ErrorGoTo
-                    End If
-ErrorGoTo:      Next
-            End If
+    '                    If prtJs(rc, Join) = False Then
+    '                        GoTo ErrorGoTo
+    '                    End If
+    'ErrorGoTo:      Next
+    '            End If
 
-            '/// send returnPath or enumreturncode
+    '            '/// send returnPath or enumreturncode
 
-        Catch ex As Exception
-            LogError(ex, "modGenerate prtJoins")
-            rc.HasError = True
-            rc.ErrorCount += 1
-            rc.LocalErrorMsg = "Error while writing Joins"
-            If rc.ReturnCode = "" Then
-                rc.ReturnCode = ex.Message
-            End If
-            If rc.ErrorLocation = enumErrorLocation.NoErrors Then
-                rc.ErrorLocation = enumErrorLocation.ModGenJoin
-                rc.ErrorPath = pathSQD
-                rc.ObjInode = ObjThis
-            End If
-            ErrorComment(rc)
-        End Try
+    '        Catch ex As Exception
+    '            LogError(ex, "modGenerate prtJoins")
+    '            rc.HasError = True
+    '            rc.ErrorCount += 1
+    '            rc.LocalErrorMsg = "Error while writing Joins"
+    '            If rc.ReturnCode = "" Then
+    '                rc.ReturnCode = ex.Message
+    '            End If
+    '            If rc.ErrorLocation = enumErrorLocation.NoErrors Then
+    '                rc.ErrorLocation = enumErrorLocation.ModGenJoin
+    '                rc.ErrorPath = pathSQD
+    '                rc.ObjInode = ObjThis
+    '            End If
+    '            ErrorComment(rc)
+    '        End Try
 
-        prtJoins = Not rc.HasFatal
+    '        prtJoins = Not rc.HasFatal
 
-    End Function
+    'End Function
 
     Function prtJs(ByRef rc As clsRcode, ByVal Join As clsTask) As Boolean
 

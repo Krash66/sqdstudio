@@ -144,12 +144,12 @@
     <SETIMAGE NODETYPE="Func" NPARM="0" SYNTAX="SETIMAGE" DESC="With the SETIMAGE function, you set the image to either 'BEFORE' or 'AFTER', and then use the same PROC for both images. The SETIMAGE function returns FALSE if you are asking for BEFORE and the change is not an update."/>
   </CDC>
   <Templates NODETYPE="Heading">
-    <CASE NODETYPE="Template" NPARM="-1" SYNTAX="Template for CASE/OTHERWISE Function"/>
-    <Route NODETYPE="Template" NPARM="0" SYNTAX="Template for Main Routing Procedure"/>
-    <Procedure NODETYPE="Template" NPARM="0" SYNTAX="Template for Procedure"/>
+    <CASE NODETYPE="Template" NPARM="-1" SYNTAX="Template for CASE/OTHERWISE Function" DESC=""/>
+    <Route NODETYPE="Template" NPARM="0" SYNTAX="Template for Main Routing Procedure" DESC=""/>
+    <Procedure NODETYPE="Template" NPARM="0" SYNTAX="Template for Procedure" DESC=""/>
     <LOOK NODETYPE="Template" NPARM="-1" SYNTAX="LOOK(lookup_name,search_key[,search_key])" DESC="performs a search on a pre-defined lookup or join table and sets the position (pointer) of the lookup table to the row that meets the criteria of the search."/>
-    <SetImage NODETYPE="Template" NPARM="0" SYNTAX="Template for SetImage"/>
+    <SetImage NODETYPE="Template" NPARM="0" SYNTAX="Template for SetImage" DESC=""/>
     <CURRENTDATE NODETYPE="Template" NPARM="0" SYNTAX="LEFT (DATETIME(),10)" DESC="returns the current date in YYY-MM-DD format."/>
-    <MAPBEFOREkeyChng NODETYPE="Template" NPARM="0" SYNTAX="Template for MAPBEFOREkeyChng. Used when target keys can change."/>
+    <MAPBEFOREkeyChng NODETYPE="Template" NPARM="0" SYNTAX="Template for MAPBEFOREkeyChng. Used when target keys can change." DESC=""/>
   </Templates>
 </Functions>

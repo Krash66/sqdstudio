@@ -9,9 +9,26 @@
     Dim Nodesize As Integer = 65
     Dim DSnodeSize As Integer = 55
     Dim ProcNodeSize As Integer = 55
-    'Public af As AddFlow
+    Private strFileName As String = ""
+
 
 #Region "Public Functions"
+
+    Public Function RefreshAddFlow() As Boolean
+
+        Try
+            Me.tabAddFlow.Items.Clear()
+
+            ' Add Nodes to diagram
+            LoadAFNodes()
+            ' Now Add the Links
+            LoadAFLinks()
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab RefreshAddFlow")
+        End Try
+
+    End Function
 
     Public Function LoadAFtab(ByVal Eng As clsEngine) As Boolean
 
@@ -69,15 +86,15 @@
             '--- Get the Addflow node for each sourceDS
             SrcNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
             SrcNode.GradientColor = Color.LightBlue
+
             If Sds.IsLookUp = False Then
                 SrcNode.Shape.Style = ShapeStyle.DirectAccessStorage
                 SrcNode.Shape.Orientation = ShapeOrientation.so_270
             Else
                 SrcNode.Shape.Style = ShapeStyle.StoredData
                 SrcNode.Shape.Orientation = ShapeOrientation.so_0
+                SrcNode.TextColor = Color.LightGreen
             End If
-
-            'SrcNode.TextColor = Color.LightGreen
 
             SrcNode.ImageIndex = 0
             '--- Add Object as Tag of node
@@ -91,12 +108,10 @@
                 afPalette.Nodes.Add(SrcNode)
             End If
 
-
             If cnt = -1 Then
                 tabAddFlow.SelectedItem = SrcNode
             End If
-            'VertSP = VertSP + VertIncr
-
+            
             Return True
 
         Catch ex As Exception
@@ -165,9 +180,9 @@
             If Gen.TaskType = enumTaskType.TASK_GEN Then
                 If Palette = False Then
                     Gen.LoadMe()
-                    HorizSP = 20 + (HorizIncr * 2)
+                    HorizSP = 20 + HorizIncr  ' * 2)
                     If cnt > -1 Then
-                        VertSP = 20 + VertIncr + (cnt * VertIncr)
+                        VertSP = 50 + VertIncr + (cnt * VertIncr)
                     Else
                         Dim nodeCount As Integer = Gen.Engine.Gens.Count - 1
                         VertSP = 20 + VertIncr + (nodeCount * VertIncr)
@@ -197,7 +212,7 @@
                 Else
                     afPalette.Nodes.Add(ProcNode)
                 End If
-               
+
                 If cnt = -1 Then
                     tabAddFlow.SelectedItem = ProcNode
                 End If
@@ -321,28 +336,28 @@
 
 #Region "Context Menu Items"
 
-    Private Sub mnuAddSrc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddSrc.Click
+    'Private Sub mnuAddSrc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddSrc.Click
 
-        Try
-            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
-            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
+    '    Try
+    '        ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+    '        My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
 
-        Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab mnuAddSrc_Click")
-        End Try
-    End Sub
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlAddFlowTab mnuAddSrc_Click")
+    '    End Try
+    'End Sub
 
-    Private Sub mnuAddTgt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddTgt.Click
+    'Private Sub mnuAddTgt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddTgt.Click
 
-        Try
-            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
-            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
+    '    Try
+    '        ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+    '        My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
 
-        Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab mnuAddTgt_Click")
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "ctlAddFlowTab mnuAddTgt_Click")
+    '    End Try
 
-    End Sub
+    'End Sub
 
     Private Sub mnuAddLU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddLU.Click
 
@@ -446,6 +461,37 @@
         CloseTab()
     End Sub
 
+    Private Sub mnuGenScript_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenScript.Click
+
+        Try
+            Dim envObj As clsEnvironment
+            Dim strSaveDir As String
+
+            '/// Get Environment Object
+            envObj = ObjEng.ObjSystem.Environment
+            envObj.LoadMe()
+
+            '/// Get Script Directory
+            If System.IO.Directory.Exists(envObj.LocalScriptDir) = True Then
+                strSaveDir = envObj.LocalScriptDir
+            Else
+                MsgBox("Script Directory in the Environment is either not defined or cannot be accessed." & Chr(13) & _
+                "Please connect to or specify a location to generate the script. ", MsgBoxStyle.OkOnly, MsgTitle)
+                Me.Cursor = Cursors.Default
+                Exit Sub
+            End If
+
+            '/// Open new Script Gen Form
+            Dim frm As New frmScriptGen
+            frm.OpenFormEng(ObjEng, strSaveDir)
+
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuScriptEngine")
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Mouse Actions"
@@ -483,14 +529,10 @@
 
     End Sub
 
-    Private Sub tabAddFlow_MouseHover(ByVal sender As System.Object, ByVal e As EventArgs) Handles tabAddFlow.MouseHover, tabAddFlow.MouseClick   'System.Windows.Forms.Mouse
+    Private Sub tabAddFlow_MouseHoverMouseClick(ByVal sender As System.Object, ByVal e As EventArgs) Handles tabAddFlow.MouseHover, tabAddFlow.MouseClick, tabAddFlow.MouseUp   'System.Windows.Forms.Mouse  '
 
         Try
-            'Dim itm As Flow.Item = tabAddFlow.PointedItem
             tabAddFlow.SelectedItem = tabAddFlow.PointedItem
-            tabAddFlow.Refresh()
-            'cms1.AutoClose = True
-            'cms1.Close()
 
             If tabAddFlow.PointedItem IsNot Nothing Then
                 If tabAddFlow.PointedItem.Tag IsNot Nothing Then
@@ -499,7 +541,7 @@
                     Dim tv As TreeView = NodeTag.ObjTreeNode.TreeView
                     tv.SelectedNode = NodeTag.ObjTreeNode
                     txtSelected.Text = NodeTag.Text
-                    mnuDelItem.Text = "Delete Node"
+                    mnuDelItem.Text = "Delete Node > " & NodeTag.Text
                 Else
                     '/// It's a link
                     txtSelected.Text = ""
@@ -512,25 +554,21 @@
                 End If
                 ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode
                 txtSelected.Text = ObjEng.Text
-                mnuDelItem.Text = "Delete Engine"
+                mnuDelItem.Text = "Delete Engine > " & ObjEng.Text
             End If
 
-            cms1.Refresh()
-
         Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab tabAddFlow_MouseHover")
+            LogError(ex, "ctlAddFlowTab tabAddFlow_MouseHoverMouseClick")
         End Try
 
     End Sub
 
-    Private Sub tabAddFlow_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tabAddFlow.MouseDown ', tabAddFlow.MouseHover
-        'tabAddFlow.MouseDown, 
+    Private Sub tabAddFlow_MouseDownMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tabAddFlow.MouseDown, tabAddFlow.MouseClick, tabAddFlow.MouseUp ', tabAddFlow.MouseHover   'tabAddFlow.MouseDown, 
+
         Try
-            'Dim itm As Flow.Item = tabAddFlow.PointedItem
             Dim ItemSelected As Boolean
 
-            cms1.Close()
-
+            tabAddFlow.SelectedItem = tabAddFlow.PointedItem
 
             If tabAddFlow.PointedItem Is Nothing Then
                 '/// It's the Engine
@@ -544,9 +582,6 @@
                 ItemSelected = True
             End If
 
-            'tabAddFlow.Refresh()
-
-
             If e.Button = Windows.Forms.MouseButtons.Right Then
                 mnuAddMain.Visible = Not ItemSelected
                 mnuAddProcGen.Visible = Not ItemSelected
@@ -554,16 +589,17 @@
                 mnuAddLU.Visible = Not ItemSelected
                 mnuAddSrc.Visible = Not ItemSelected
                 mnuAddTgt.Visible = Not ItemSelected
+                mnuGenScript.Visible = True 'Not ItemSelected
                 mnuRedo.Enabled = True
                 mnuUndo.Enabled = True
                 mnuDelItem.Enabled = True
                 mnuCloseTab.Visible = False
             End If
-
             cms1.Refresh()
 
+
         Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab tabAddFlow_MouseDown")
+            LogError(ex, "ctlAddFlowTab tabAddFlow_MouseDownMouseClick")
         End Try
 
     End Sub
@@ -575,6 +611,15 @@
     Private Sub OpenToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OpenToolStripButton.Click
 
         Try
+            Dim ofd As OpenFileDialog = New OpenFileDialog
+
+            ofd.InitialDirectory = GetAppData()
+            ofd.Filter = "AddFlow Diagrams(*.xml)|*.xml|All Files(*.*)|*.*"
+            ofd.FileName = "*.xml"
+
+            If ofd.ShowDialog = Windows.Forms.DialogResult.OK Then
+                LoadFile(ofd.FileName)
+            End If
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab OpenToolStripButton_Click")
@@ -585,6 +630,21 @@
     Private Sub SaveToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveToolStripButton.Click
 
         Try
+            Dim sfd As SaveFileDialog = New SaveFileDialog
+
+            If (strFileName.Length > 1) Then
+                sfd.FileName = strFileName
+            Else
+                sfd.FileName = ObjEng.EngineName & ".xml"
+            End If
+
+            sfd.Filter = "AddFlow Diagrams(*.xml)|*.xml|All Files(*.*)|*.*"
+            sfd.InitialDirectory = GetAppData()
+
+            If sfd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                strFileName = sfd.FileName
+                SaveFile()
+            End If
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab SaveToolStripButton_Click")
@@ -649,6 +709,7 @@
     Private Sub UpdateDiag_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles UpdateDiag.Click
 
         Try
+            RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab UpdateDiag_Click")
@@ -660,12 +721,13 @@
 
         Try
 
+            tabAddFlow.BackColor = Color.FromKnownColor(KnownColor.InactiveCaptionText)
+
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab UpdateTree_Click")
         End Try
 
     End Sub
-
 
 #End Region
    
@@ -735,22 +797,79 @@
     Private Sub LoadAFLinks()
 
         Try
+            Dim PairCol As New Collection
+            Dim GenPairCol As New Collection
+
+            '/// Link Source to Main
             For Each main As clsTask In ObjEng.Mains
                 For Each sDS As clsDatastore In main.ObjSources
                     Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
                     sDS.AFnode.OutLinks.Add(link1, main.AFnode)
                 Next
+                '/// Get list of procs to map to, from main syntax
+                If main.ObjMappings.Count = 1 Then
+                    Dim MainMap As clsMapping = CType(main.ObjMappings(0), clsMapping)
+                    Dim mainFun As clsSQFunction = CType(MainMap.MappingSource, clsSQFunction)
+                    Dim FunText As String = mainFun.SQFunctionWithInnerText
+                    '/// see if there is a main script or not, first
+                    If (FunText.Contains("CASE") And FunText.Contains("RECNAME")) And _
+                    (FunText.Contains("CALLPROC") And FunText.Contains("WHEN")) Then
+                        If GetSrcTablesAndProcsFromMain(PairCol, FunText) = False Then
+                            MsgBox("There was an error in your Main Procedure")
+                        End If
+                    Else
+                        If GetTargetsFromGen(PairCol, FunText) = False Then
+                            MsgBox("There was an error in your Main Procedure")
+                        End If
+                    End If
+                End If
+                '/// Build Links from Main to Procs from PairCollection
+                For Each map As clsMapping In PairCol
+                    If map.MappingTarget IsNot Nothing Then
+                        Dim link2 As Link = New Link(tabAddFlow.DefLinkProp)
+                        If CType(map.MappingTarget, INode).Type = NODE_PROC Or _
+                        CType(map.MappingTarget, INode).Type = NODE_GEN Then
+                            main.AFnode.OutLinks.Add(link2, CType(map.MappingTarget, clsTask).AFnode)
+                        End If
+                    End If
+                Next
             Next
 
-            For Each Task As clsTask In ObjEng.Procs
-                For Each src As clsDatastore In Task.ObjSources
-                    For Each main As clsTask In ObjEng.Mains
-                        If main.ObjSources.Contains(src) Then
-                            Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
-                            main.AFnode.OutLinks.Add(link1, Task.AFnode)
-                        End If
-                    Next
+            '/// Build links from Gens to Procs
+            For Each gen As clsTask In ObjEng.Gens
+                For Each sDS As clsDatastore In gen.ObjSources
+                    Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
+                    sDS.AFnode.OutLinks.Add(link1, gen.AFnode)
                 Next
+                '/// Get list of procs to map to, from Logic syntax
+                If gen.ObjMappings.Count = 1 Then
+                    Dim GenMap As clsMapping = CType(gen.ObjMappings(0), clsMapping)
+                    Dim GenFun As clsSQFunction = CType(GenMap.MappingSource, clsSQFunction)
+                    Dim GenText As String = GenFun.SQFunctionWithInnerText
+                    '/// see if there is a main script or not, first
+                    If (GenText.Contains("CASE") And GenText.Contains("RECNAME")) And _
+                    (GenText.Contains("CALLPROC") And GenText.Contains("WHEN")) Then
+                        If GetSrcTablesAndProcsFromMain(GenPairCol, GenText) = False Then
+                            MsgBox("There was an error in your Main Procedure")
+                        End If
+                    Else
+                        If GetTargetsFromGen(GenPairCol, GenText) = False Then
+                            MsgBox("There was an error in Logic Procedure >>> " & gen.TaskName)
+                        End If
+                    End If
+                End If
+                For Each map As clsMapping In GenPairCol
+                    If map.MappingTarget IsNot Nothing Then
+                        Dim link2 As Link = New Link(tabAddFlow.DefLinkProp)
+                        'If CType(map.MappingTarget, INode).Type = NODE_PROC Or _
+                        'CType(map.MappingTarget, INode).Type = NODE_GEN Then
+                        gen.AFnode.OutLinks.Add(link2, CType(map.MappingTarget, clsTask).AFnode)
+                        'End If
+                    End If
+                Next
+            Next
+            '/// Build links from Mapping Procs to Targets
+            For Each Task As clsTask In ObjEng.Procs
                 For Each Tgt As clsDatastore In Task.ObjTargets
                     Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
                     Task.AFnode.OutLinks.Add(link1, Tgt.AFnode)
@@ -759,6 +878,174 @@
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab CreateAFLinks")
+        End Try
+
+    End Sub
+
+    Function GetSrcTablesAndProcsFromMain(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
+
+        Try
+            Dim pararray() As Char = " ()'" & Chr(13) & Chr(10) & Chr(12) & Chr(9)
+            Dim InTextArray() As String = Intext.Split(pararray)
+            Dim i As Integer = 0
+            Dim tempstr As String = ""
+            Dim sb As New System.Text.StringBuilder
+            Dim seglist As New Collection
+
+            '/// Split up the Text array into segments based on key words (i.e.When in the case of a Routing template)
+            For i = 0 To InTextArray.Length - 1
+                tempstr = InTextArray(i)
+                If tempstr = "WHEN" Then
+                    seglist.Add(sb.ToString)
+                    sb.Remove(0, sb.Length)
+                    sb.Append(tempstr & "~")
+                Else
+                    If tempstr <> "" Then
+                        sb.Append(tempstr & "~")
+                    End If
+                End If
+            Next
+            seglist.Add(sb.ToString)
+
+            For Each seg As String In seglist
+                If seg.Contains("WHEN") = False Then
+                    GoTo gotohere
+                End If
+                For Each srcDS As clsDatastore In ObjEng.Sources
+                    Dim NewItem As clsMapping
+                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
+                        If seg.Contains(DSsel.SelectionName & "~") Then
+                            NewItem = New clsMapping
+                            NewItem.MappingSource = DSsel
+                            PairCol.Add(NewItem)
+                            'Exit For
+                        End If
+                    Next
+                    For Each proc As clsTask In ObjEng.Procs
+                        If seg.Contains(proc.TaskName & "~") Then
+                            NewItem = New clsMapping
+                            NewItem.MappingTarget = proc
+                            PairCol.Add(NewItem)
+                            'Exit For
+                        End If
+                    Next
+                    'PairCol.Add(NewItem)
+                Next
+gotohere:   Next
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab GetSrcTablesAndProcsFromMain")
+            Return False
+        End Try
+
+    End Function
+
+    Function GetTargetsFromGen(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
+
+        Try
+            Dim pararray() As Char = " ()'" & Chr(13) & Chr(10) & Chr(12) & Chr(9)
+            Dim InTextArray() As String = Intext.Split(pararray)
+            Dim i As Integer = 0
+            Dim tempstr As String = ""
+            Dim sb As New System.Text.StringBuilder
+            Dim seglist As New Collection
+
+            For i = 0 To InTextArray.Length - 1
+                tempstr = InTextArray(i)
+                If tempstr = "IF" Or tempstr = "WHEN" Or tempstr = "OTHERWISE" Or tempstr = "LOOK" Or tempstr = "DO" Then
+                    seglist.Add(sb.ToString)
+                    sb.Remove(0, sb.Length)
+                    sb.Append(tempstr & "~")
+                Else
+                    If tempstr <> "" Then
+                        sb.Append(tempstr & "~")
+                    End If
+                End If
+            Next
+            seglist.Add(sb.ToString)
+
+            For Each seg As String In seglist
+                'If seg.Contains("WHEN") = False Then
+                '    GoTo gotohere
+                'End If
+                For Each srcDS As clsDatastore In ObjEng.Sources
+                    Dim NewItem As New clsMapping
+                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
+                        If seg.Contains(DSsel.SelectionName & "~") Then
+                            NewItem.MappingSource = DSsel
+                            Exit For
+                        End If
+                    Next
+                    For Each proc As clsTask In ObjEng.Procs
+                        If seg.Contains(proc.TaskName & "~") Then
+                            NewItem.MappingTarget = proc
+                            Exit For
+                        End If
+                    Next
+                    For Each main As clsTask In ObjEng.Mains
+                        If seg.Contains(main.TaskName) Then  '& "~"
+                            NewItem.MappingTarget = main
+                            Exit For
+                        End If
+                    Next
+                    PairCol.Add(NewItem)
+                Next
+gotohere:   Next
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab GetTargetsFromGen")
+            Return False
+        End Try
+
+    End Function
+
+    Private Sub LoadFile(ByVal strFileName As String)
+
+        Try
+            '/// Reset AddFlow
+            tabAddFlow.ResetUndoRedo()
+            tabAddFlow.Nodes.Clear()
+
+            '/// Read in New Diagram
+            Dim reader As System.Xml.XmlTextReader = New System.Xml.XmlTextReader(strFileName)
+
+            reader.WhitespaceHandling = System.Xml.WhitespaceHandling.None
+            tabAddFlow.ReadXml(reader)
+            reader.Close()
+
+            tabAddFlow.SetChangedFlag(False)
+            Me.strFileName = strFileName
+
+            '/// Create Engine from Nodes and Links
+
+
+
+            tabAddFlow.BackColor = Color.FromKnownColor(KnownColor.Control)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab LoadFile")
+        End Try
+
+    End Sub
+
+    Private Sub SaveFile()
+
+        Try
+            Cursor = Cursors.WaitCursor
+            Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
+            writer.Formatting = System.Xml.Formatting.Indented
+            tabAddFlow.WriteXml(writer)
+            writer.Close()
+            tabAddFlow.SetChangedFlag(False)
+            Cursor = Cursors.Default
+
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab SaveFile")
         End Try
 
     End Sub
@@ -860,5 +1147,470 @@
 
 #End Region
 
-    
+#Region "SrcDS Click Events"
+
+    Private Sub mnuSrcBinary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcBinary.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcBinary_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcText.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_TEXT)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcText_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcDelimited_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcDelimited.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DELIMITED)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcDelimited_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcXML.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_XML)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcXML_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcRelational_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcRelational.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_RELATIONAL)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcRelational_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcDB2LOAD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcDB2LOAD.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DB2LOAD)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcDB2LOAD_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcHSSUNLOAD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcHSSUNLOAD.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_HSSUNLOAD)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcHSSUNLOAD_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcIMSDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcIMSDB.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IMSDB)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcIMSDB_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcVSAM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcVSAM.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_VSAM)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcVSAM_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcIMSCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcIMSCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IMSCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcIMSCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcIMSCDCLE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcIMSCDCLE.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IMSCDCLE)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcIMSCDCLE_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcDB2CDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcDB2CDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DB2CDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcDB2CDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcVSAMCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcVSAMCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_VSAMCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcVSAMCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcOracleCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcOracleCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_ORACLECDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcOracleCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcUTSCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcUTSCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_UTSCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcUTSCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcIBMEvent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcIBMEvent.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IBMEVENT)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcIBMEvent_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuSrcIncludeFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSrcIncludeFile.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_INCLUDE)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuSrcIncludeFile_Click")
+        End Try
+
+    End Sub
+
+#End Region
+
+#Region "TgtDS Click Events"
+
+    Private Sub mnuTgtBinary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtBinary.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtBinary_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtText.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_TEXT)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtText_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtDelimited_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtDelimited.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DELIMITED)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtDelimited_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtXML_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtXML.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_XML)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtXML_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtRelational_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtRelational.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_RELATIONAL)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtRelational_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtDB2LOAD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtDB2LOAD.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DB2LOAD)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtDB2LOAD_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtIMSDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtIMSDB.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IMSDB)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtIMSDB_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtVSAM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtVSAM.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_VSAM)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtVSAM_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtIMSCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtIMSCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IMSCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtIMSCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtDB2CDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtDB2CDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_DB2CDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtDB2CDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtVSAMCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtVSAMCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_VSAMCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtVSAMCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtOracleCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtOracleCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_ORACLECDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtOracleCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtUTSCDC_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtUTSCDC.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_UTSCDC)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtUTSCDC_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtIBMEvent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtIBMEvent.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_IBMEVENT)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtIBMEvent_Click")
+        End Try
+
+    End Sub
+
+    Private Sub mnuTgtIncludeFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTgtIncludeFile.Click
+
+        Try
+            ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(1)
+            My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_INCLUDE)
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab mnuTgtIncludeFile_Click")
+        End Try
+
+    End Sub
+
+#End Region
+
+#Region "Link Event Handlers"
+
+    Sub AfterAddLink_Event(ByVal sender As Object, ByVal e As AfterAddLinkEventArgs) Handles tabAddFlow.AfterAddLink
+
+        Try
+            Dim OrgNode As Node = e.Link.Org
+            Dim OrgObj As INode = OrgNode.Tag
+            Dim OrgType As String = OrgObj.Type
+            Dim DstNode As Node = e.Link.Dst
+            Dim DstObj As INode = DstNode.Tag
+            Dim DstType As String = DstObj.Type
+
+            'MsgBox("OrgNode > " & OrgNode.Text & Chr(13) & _
+            '       "DstNode > " & DstNode.Text & Chr(13) & _
+            '       "OrgType >> " & OrgType & Chr(13) & _
+            '       "DstType >> " & DstType _
+            '       , MsgBoxStyle.Information)
+
+            Select Case OrgType
+                Case NODE_GEN
+                    'LinkFromNodeGen(OrgObj, DstObj)
+
+                Case NODE_LOOKUP
+
+                Case NODE_MAIN
+
+                Case NODE_PROC
+
+                Case NODE_SOURCEDATASTORE
+                    'Only allow link to Main
+                    'If DstType = NODE_MAIN Then
+                    '    If CType(DstObj, clsTask).ObjSources.Count > 0 Then
+                    '        MsgBox("Only one Source allowed per Main", MsgBoxStyle.Information)
+                    '        e.Link.Remove()
+                    '    Else
+                    '        'AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore))
+                    '    End If
+                    'Else
+                    '    Dim str As String = sender.ToString
+                    '    MsgBox("Sources Only allowed to connect to Main", MsgBoxStyle.Information)
+                    '    e.Link.Remove()
+
+                    'End If
+
+                Case NODE_TARGETDATASTORE
+                    'Only allow link to Main
+                    'If DstType = NODE_PROC Then
+                    '    If CType(DstObj, clsTask).ObjTargets.Count > 0 Then
+                    '        MsgBox("Only one Target allowed per Procedure", MsgBoxStyle.Information)
+                    '        e.Link.Remove()
+                    '    Else
+                    '        'AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore))
+                    '    End If
+                    'Else
+                    '    Dim str As String = sender.ToString
+                    '    MsgBox("Targets Only allowed to connect to Procedures", MsgBoxStyle.Information)
+                    '    e.Link.Remove()
+
+                    'End If
+            End Select
+
+
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab BeforeAddLink_Event")
+        End Try
+
+    End Sub
+
+#End Region
+
+    Function LinkFromNodeGen(ByVal OrgObj As INode, ByVal DstObj As INode) As Integer
+
+    End Function
 End Class

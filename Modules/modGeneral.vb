@@ -2285,4 +2285,291 @@ tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" 
 
 #End Region
 
+#Region "Function Templates for Procedures"
+
+    Function GetMainText(ByVal ObjEng As clsEngine) As String
+
+        Dim sb As New System.Text.StringBuilder
+        Dim sel As clsDSSelection
+        'Dim i As Integer
+        Dim taskName As String
+        Dim sDs As clsDatastore = Nothing
+        Dim nDs As clsDatastore = Nothing
+        Dim count As Integer = 0
+        Dim SrcCount As Integer = 0
+
+        Try
+            While SrcCount < ObjEng.Sources.Count
+
+                sDs = ObjEng.Sources(SrcCount + 1)
+
+
+                If SrcCount > 0 Then
+                    nDs = ObjEng.Sources(SrcCount)
+                    If sDs.IsLookUp = False Then
+                        sb.AppendLine("}")   '& inDsNode.Text
+                        sb.AppendLine("FROM " & nDs.DatastoreName)
+                        sb.AppendLine("UNION")
+                        sb.AppendLine("{")
+                    End If
+                End If
+                SrcCount += 1
+
+                'sb.Append("CASE" & vbCrLf)
+                'sb.Append("(" & vbCrLf)
+
+                'For i = 0 To sDs.ObjSelections.Count - 1
+                '    sel = sDs.ObjSelections(i)
+                '    taskName = "P_" & sel.Text
+                '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
+                '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
+                '    sb.Append(vbCrLf)
+                'Next
+
+                'sb.Append(")" & vbCrLf)
+
+                'sb.AppendLine("{")
+                If sDs.IsLookUp = False Then
+                    sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+                    For Each sel In sDs.ObjSelections
+                        'count += 1
+                        'If count <= objThis.Procs.Count Then
+                        '    taskName = CType(objThis.Procs(count), clsTask).TaskName
+                        'Else
+                        taskName = ""
+                        'End If
+                        For Each proc As clsTask In ObjEng.Procs
+                            If proc.TaskName.Contains(sel.Text) = True Then
+                                taskName = proc.TaskName
+                                Exit For
+                            End If
+                        Next
+
+                        sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
+                        sb.AppendLine(TAB & "DO")
+                        sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
+                        sb.AppendLine(TAB & "END") '& vbCrLf)
+                        'sb.Append(vbCrLf)
+                    Next
+                End If
+
+                'sb.Append(")" & vbCrLf)
+                'sb.AppendLine("}")   '& inDsNode.Text
+                'sb.AppendLine("FROM " & sDs.DatastoreName)
+            End While
+
+            GetMainText = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetMainText")
+            GetMainText = ""
+        End Try
+
+    End Function
+
+    Function GetScriptForProcV3() As String
+
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            'sb.Append("{" & vbCrLf & vbCrLf)
+            sb.Append("CASE" & vbCrLf)
+            sb.Append(TAB & "WHEN(  )" & vbCrLf)
+            sb.Append(TAB & "DO" & vbCrLf & vbCrLf)
+            sb.Append(TAB & "END" & vbCrLf)
+            'sb.Append(vbCrLf)
+            'sb.Append("}")
+
+            GetScriptForProcV3 = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetScriptForProc")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetScriptForLOOK(ByVal Task As clsTask) As String
+
+        'CREATE PROC P_Lookup AS SELECT
+        '{
+        '  LOOK(LOOKUP.FILE,'AAA')
+        '  IF LOOKFOUND(LOOKUP.TABLE) = TRUE
+        '   DO
+        '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+        '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+        '      DESIRE_FIELD =  LOOKFLD(LOOKUP.TABLE,FIELD_NAME)
+        '      END
+        '}
+        'FROM ;
+        Try
+            Dim sb As New System.Text.StringBuilder
+            Dim DSlu As clsDatastore = Nothing
+            Dim LUsel As clsDSSelection = Nothing
+
+            GetScriptForLOOK = ""
+
+            If Task.ObjSources.Count <> 1 Then
+                MsgBox("You must choose ONE Source Lookup Datastore to use this template", MsgBoxStyle.OkOnly, "Lookup Template")
+                Exit Try
+            End If
+
+            For Each ds As clsDatastore In Task.ObjSources
+                If ds.IsLookUp = True Then
+                    DSlu = ds
+                End If
+            Next
+            If DSlu IsNot Nothing Then
+                If DSlu.ObjSelections.Count <> 1 Then
+                    MsgBox("You must choose ONE Datastore Selection for a Lookup", MsgBoxStyle.OkOnly, "Lookup Template")
+                    Exit Try
+                Else
+                    For Each sel As clsDSSelection In DSlu.ObjSelections
+                        LUsel = sel
+                    Next
+                End If
+            Else
+                Exit Try
+            End If
+
+            sb.AppendLine("LOOK(" & DSlu.DsPhysicalSource & ",'   ')")
+            sb.AppendLine("IF LOOKFOUND(" & DSlu.DatastoreName & ") = TRUE")
+            sb.AppendLine("DO")
+            For Each fld As clsField In LUsel.DSSelectionFields
+                sb.AppendLine(TAB & "    = LOOKFLD(" & DSlu.DatastoreName & "," & fld.FieldName & ")")
+            Next
+            sb.AppendLine("END")
+
+            GetScriptForLOOK = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetScriptForLOOK")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetScriptForCASE() As String
+
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            sb.AppendLine("--You will need to define a 'When condition'")
+            sb.AppendLine("--You will need to define true and false actions")
+            sb.AppendLine("")
+            sb.AppendLine("CASE")
+            sb.AppendLine("WHEN(condition)")
+            sb.AppendLine("DO")
+            sb.AppendLine("-- true_action")
+            sb.AppendLine("END")
+            sb.AppendLine("")
+            sb.AppendLine("OTHERWISE")
+            sb.AppendLine("DO")
+            sb.AppendLine("-- false_action")
+            sb.AppendLine("END")
+
+            GetScriptForCASE = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "ctlMain GetScriptForCASE")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetSetImageTemplate() As String
+
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            'sb.Append("{" & vbCrLf & vbCrLf)
+            sb.AppendLine("--You will need to define a variable field V_IMAGE")
+            sb.AppendLine("--You will need to create a Procedure Called P_ROUTE")
+            sb.AppendLine("")
+            sb.AppendLine("IF CDCOP(CDCIN) = 'R' AND SETIMAGE('BEFORE') = TRUE")
+            sb.AppendLine("DO")
+            sb.AppendLine(TAB & "V_IMAGE = 'B'")
+            sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
+            sb.AppendLine("END")
+            sb.AppendLine("")
+            sb.AppendLine("IF SETIMAGE('AFTER') = TRUE")
+            sb.AppendLine("DO")
+            sb.AppendLine(TAB & "V_IMAGE = 'A'")
+            sb.AppendLine(TAB & "CALLPROC(P_ROUTE)")
+            sb.AppendLine("END")
+
+            GetSetImageTemplate = sb.ToString
+
+            '--You will need to define a variable field V_IMAGE
+            '--You will need to create a Procedure Called P_ROUTE
+
+            '  IF  SETIMAGE('BEFORE') = TRUE       
+            '  Do
+            '      V_IMAGE = 'B'                
+            '  CALLPROC(P_ROUTE)
+            '  End
+
+            '  IF SETIMAGE('AFTER') = TRUE                    
+            '  Do
+            '      V_IMAGE = 'A'                            
+            '      CALLPROC(P_ROUTE)
+            '  End
+
+            'Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlMain GetSetImageTemplate")
+            GetSetImageTemplate = ""
+        End Try
+
+    End Function
+
+    Function GetScriptForCurrentDate() As String
+
+        Try
+            GetScriptForCurrentDate = "LEFT(DATETIME(),10)"
+
+        Catch ex As Exception
+            LogError(ex, "ctlTask GetScriptForCURRENTDATE")
+            Return ""
+        End Try
+
+    End Function
+
+    Function GetScriptForKeyChange() As String
+
+        'IF CDCOP(CDCIN) = 'R' DO                                              
+        '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.AP_ID), 'T_S2PACITP.AP_ID')     
+        '  MAP_BEFORE(CDCBEFORE(CDCIN.S2PACITP.INIT_DEP_TP_CD),                
+        '  'T_S2PACITP.INIT_DEP_TP_CD')                                  
+        'END
+        Try
+            Dim sb As New System.Text.StringBuilder
+
+            sb.AppendLine("--CDCIN is Source Datastore")
+            sb.AppendLine("--INDESC is the Source Description containing Key field")
+            sb.AppendLine("--OUTDESC is the Target Description containing Key field")
+            sb.AppendLine("--KFLDx are the Key fields")
+            sb.AppendLine("--'R' represents the 'Replace' Operation")
+            sb.AppendLine("")
+            sb.AppendLine("IF CDCOP(CDCIN) = 'R' DO")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD1), 'OUTDESC.KFLD1')")
+            sb.AppendLine("      MAP_BEFORE(CDCBEFORE(CDCIN.INDESC.KFLD2), 'OUTDESC.KFLD2')")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--           .   .      .")
+            sb.AppendLine("--        Repeat as necessary")
+            sb.AppendLine("END")
+
+
+            GetScriptForKeyChange = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetScriptForKeyChange")
+            GetScriptForKeyChange = ""
+        End Try
+
+    End Function
+
+#End Region
+
 End Module

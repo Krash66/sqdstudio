@@ -234,7 +234,6 @@ Public Class clsSQFunction
                     SQFunctionWithInnerText = SQFunctionSyntax
                 Else
                     Dim tmpStr As String = Value
-
                     tmpStr = tmpStr & "("
                     For i As Integer = 1 To ParaCount
                         If i < ParaCount Then
@@ -245,7 +244,6 @@ Public Class clsSQFunction
                     If Value = "LOOP" Or Value = "IF" Then
                         tmpStr = tmpStr & vbCrLf & "DO" & vbCrLf & vbCrLf & "END"
                     End If
-
                     SQFunctionWithInnerText = tmpStr
                 End If
             End If
@@ -302,4 +300,5 @@ Public Class clsSQFunction
         SQFunctionName = Text
         '   SQFunctionId = GetNodeId(Me)  '// commented out by TK and KS 11/3/06
     End Sub
+
 End Class
