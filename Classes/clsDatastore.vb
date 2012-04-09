@@ -611,7 +611,8 @@ Public Class clsDatastore
                 End If
 
                 '/// AddFlow Additions
-                Me.AFnode.Links.Clear()
+                Me.AFnode.InLinks.Clear()
+                Me.AFnode.OutLinks.Clear()
                 Me.AFnode.Remove()
 
             End If

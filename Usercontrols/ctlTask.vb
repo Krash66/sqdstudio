@@ -1872,8 +1872,8 @@ Public Class ctlTask
                                 lvMappings.Refresh()
                                 Dim NewFunct As New clsSQFunction
                                 With NewFunct
-                                    .SQFunctionName = GetScriptForKeyChange()
-                                    .SQFunctionWithInnerText = .SQFunctionName
+                                    .SQFunctionName = "MAPBEFOREkeyChng"
+                                    .SQFunctionWithInnerText = GetScriptForKeyChange()
                                 End With
                                 CType(lvMappings.Items(0).Tag, clsMapping).MappingSource = NewFunct
                                 curEditType = modDeclares.enumDirection.DI_SOURCE
@@ -5622,27 +5622,23 @@ fallthru2:          AddMapping(objClip, CurRow)
                 Exit Function
             End If
 
-
             Select Case obj.ObjTreeNode.Text
                 Case "Route" '//Main template
                     obj.SQFunctionName = GetMainText(objThis.Engine) 'changed 11/07 by TK
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
                 Case "Procedure"
                     obj.SQFunctionName = GetScriptForProcV3()
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
                 Case "LOOK"
                     obj.SQFunctionName = GetScriptForLOOK(objThis)
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
                 Case "CASE"
                     obj.SQFunctionName = GetScriptForCASE()
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
                 Case "CURRENTDATE"
                     obj.SQFunctionName = GetScriptForCurrentDate()
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
                 Case "MAPBEFOREkeyChng"
                     obj.SQFunctionName = GetScriptForKeyChange()
-                    obj.SQFunctionWithInnerText = obj.SQFunctionName
+                Case "SetImage"
+                    obj.SQFunctionName = GetSetImageTemplate()
             End Select
+            obj.SQFunctionWithInnerText = obj.SQFunctionName
 
             Return True
 

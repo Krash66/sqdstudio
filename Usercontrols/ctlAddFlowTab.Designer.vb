@@ -107,11 +107,11 @@ Partial Class ctlAddFlowTab
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabAddFlow.AutoScroll = True
-        Me.tabAddFlow.AutoScrollMinSize = New System.Drawing.Size(670, 455)
         Me.tabAddFlow.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.tabAddFlow.BackColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.tabAddFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.tabAddFlow.CanDrawNode = False
+        Me.tabAddFlow.CanMultiLink = False
         Me.tabAddFlow.CanReflexLink = False
         Me.tabAddFlow.CanSizeNode = False
         Me.tabAddFlow.ContextMenuStrip = Me.cms1
@@ -149,10 +149,13 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.DefNodeProp.YSizeable = False
         Me.tabAddFlow.DefNodeProp.ZOrder = -1
         Me.tabAddFlow.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.tabAddFlow.InteractiveEventsOnly = False
+        Me.tabAddFlow.JumpSize = Lassalle.Flow.JumpSize.Large
         Me.tabAddFlow.LinkHandleSize = Lassalle.Flow.HandleSize.Medium
         Me.tabAddFlow.Location = New System.Drawing.Point(3, 28)
         Me.tabAddFlow.MultiSel = False
         Me.tabAddFlow.Name = "tabAddFlow"
+        Me.tabAddFlow.ScrollbarsDisplayMode = Lassalle.Flow.ScrollbarsDisplayMode.SizeOfDiagramOnly
         Me.tabAddFlow.SelectionHandleSize = Lassalle.Flow.HandleSize.Medium
         Me.tabAddFlow.Size = New System.Drawing.Size(674, 459)
         Me.tabAddFlow.TabIndex = 3
@@ -614,6 +617,7 @@ Partial Class ctlAddFlowTab
         Me.UpdateTree.Name = "UpdateTree"
         Me.UpdateTree.Size = New System.Drawing.Size(138, 22)
         Me.UpdateTree.Text = "Update Tree from Diagram"
+        Me.UpdateTree.Visible = False
         '
         'toolStripSeparator2
         '

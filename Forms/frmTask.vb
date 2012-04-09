@@ -403,15 +403,15 @@ Public Class frmTask
                 Me.Text = "Mapping Procedure Properties"
                 Me.Label1.Text = "Mapping Procedure Definition"
                 Me.gbTaskProp.Text = "Mapping Procedure Properties"
-                NamePrefix = "P_Proc"
+                NamePrefix = "M_Proc"
             Case modDeclares.enumTaskType.TASK_GEN
-                Me.Text = "General Procedure Properties"
-                Me.Label1.Text = "General Procedure Definition"
-                Me.gbTaskProp.Text = "General Procedure Properties"
+                Me.Text = "Logic Procedure Properties"
+                Me.Label1.Text = "Logic Procedure Definition"
+                Me.gbTaskProp.Text = "Logic Procedure Properties"
                 Me.tvTarget.Visible = False
                 'Me.Label6.Visible = False
                 'me.tvSource.Width = 476
-                NamePrefix = "P_Proc"
+                NamePrefix = "L_Proc"
             Case modDeclares.enumTaskType.TASK_LOOKUP
                 Me.Text = "LookUp Properties"
                 Me.Label1.Text = "LookUp Definition"
@@ -754,7 +754,11 @@ doAgain:
                 e.Node.Checked = True
                 NodeText = CType(e.Node.Tag, INode).Text
                 NodeText = Strings.Right(NodeText, NodeText.Length - 2)
-                txtTaskName.Text = "P_" & NodeText
+                If objThis.TaskType = enumTaskType.TASK_GEN Then
+                    txtTaskName.Text = "L_" & NodeText
+                Else
+                    txtTaskName.Text = "P_" & NodeText
+                End If
                 IsEventFromCode = False
             End If
         End If
@@ -770,7 +774,7 @@ doAgain:
                 ShowHelp(modHelp.HHId.H_Add_Main_Procedures)
             Case "Mapping Procedure Properties"
                 ShowHelp(modHelp.HHId.H_Add_Mapping_Procedures)
-            Case "General Procedure Properties"
+            Case "Logic Procedure Properties"
                 ShowHelp(modHelp.HHId.H_Add_General_Procedure)
             Case "LookUp Properties"
                 ShowHelp(modHelp.HHId.H_Lookups)

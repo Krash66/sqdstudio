@@ -180,7 +180,7 @@ Public Class ctlMain
         Try
             Select Case Type
                 Case enumTaskType.TASK_GEN
-                    gbName.Text = "General Procedure"
+                    gbName.Text = "Logic Procedure"
                 Case enumTaskType.TASK_LOOKUP
                     gbName.Text = "LookUp"
                 Case enumTaskType.TASK_MAIN
@@ -1067,7 +1067,7 @@ Public Class ctlMain
             If e.Data.GetDataPresent("System.Windows.Forms.TreeNode", True) Then
                 Dim draggedNode As TreeNode = CType(e.Data.GetData(GetType(TreeNode)), TreeNode)
                 '//Only accept nodes with INOde interface
-                If Not (draggedNode.Tag.GetType.GetInterface("INode") Is Nothing) Then
+                If draggedNode.Tag.GetType.GetInterface("INode") IsNot Nothing Then
                     '//handle function differently. We will show expanded text with para place holder
                     If draggedNode.Tag.GetType.Name = GetType(clsSQFunction).Name Then
                         If draggedNode.Text = "Route" Then
@@ -1136,7 +1136,8 @@ Public Class ctlMain
             If IsEventFromCode = True Then Exit Sub
 
             objCurFunct.SQFunctionWithInnerText = txtCodeEditor.Text
-
+            Windows.Forms.Cursor.Show()
+            
             ''StartIdx = txtCodeEditor.GetFirstCharIndexOfCurrentLine()
             'idx = txtCodeEditor.GetCharIndexFromPosition(Windows.Forms.Cursor.Position)
 
@@ -1157,6 +1158,7 @@ Public Class ctlMain
             End If
 
             txtColNum.Text = ColNum.ToString
+            txtCodeEditor.ScrollToCaret()
 
             'OnChange(Me, New EventArgs)
 
@@ -1300,11 +1302,11 @@ Public Class ctlMain
 
     End Function
 
-    Private Sub txtCodeEditor_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-        ' show a block cursor of 3x16
-        ShowCustomCaret(sender, 3, 16)
+    'Private Sub txtCodeEditor_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+    '    ' show a block cursor of 3x16
+    '    ShowCustomCaret(sender, 3, 16)
 
-    End Sub
+    'End Sub
 
     Function GetParentDSForThisNode(ByVal nd As TreeNode) As INode
 

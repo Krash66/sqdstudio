@@ -202,9 +202,7 @@ Public Module modXML
                             .SQFunctionDescription = xml_node.Attributes("DESC").Value
                             .SQFunctionSyntax = xml_node.Attributes("SYNTAX").Value
                             .ParaCount = xml_node.Attributes("NPARM").Value
-                            .IsTemplate = IIf(xml_node.Attributes("NODETYPE").Value = "Template", _
-                                       True, _
-                                       False)
+                            .IsTemplate = IIf(xml_node.Attributes("NODETYPE").Value = "Template", True, False)
                         End With
                         Return objFun
                     Else

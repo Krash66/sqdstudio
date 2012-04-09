@@ -2915,7 +2915,8 @@ Public Class frmMain
 
         Try
             Dim sourceNode As TreeNode
-            Dim obj As Object, objI As INode
+            Dim obj As Object
+            Dim objI As INode
 
             'Get the TreeView raising the event (incase multiple on form)
 
@@ -2937,8 +2938,8 @@ Public Class frmMain
 
                 sourceNode = e.Data.GetData("System.Windows.Forms.TreeNode")
                 obj = sourceNode.Tag
-                If Not (obj Is Nothing) Then
-                    If Not (obj.GetType.GetInterface("INode") Is Nothing) Then
+                If obj IsNot Nothing Then
+                    If obj.GetType.GetInterface("INode") IsNot Nothing Then
                         objI = obj
                         If objI.Type = CType(targetNode.Tag, INode).Type Then
                             e.Effect = DragDropEffects.Copy
@@ -3325,7 +3326,7 @@ Public Class frmMain
                     End If
 
 
-                    If Not (obj Is Nothing) Then
+                    If obj IsNot Nothing Then
                         '// if the task is a valid task then add a node to the tree 
                         '//under the proper folder
                         cNode = AddNode(cNode, obj.Type, obj)
@@ -3334,7 +3335,8 @@ Public Class frmMain
                         '//properly in the treeview
                         obj.SeqNo = cNode.Index '//store position
                         CType(obj, clsTask).SaveSeqNo()
-                        If Not (cNode Is Nothing) Then
+
+                        If cNode IsNot Nothing Then
                             '// if it's a valid object, 
                             '//then make it the currently selected node in the tree
                             tvExplorer.SelectedNode = cNode

@@ -9,7 +9,11 @@
     Dim Nodesize As Integer = 65
     Dim DSnodeSize As Integer = 55
     Dim ProcNodeSize As Integer = 55
+    Dim LogicNodeSizeH As Integer = 85
+    Dim LogicNodeSizeV As Integer = 55
     Private strFileName As String = ""
+    Private IsEventFromCode As Boolean
+
 
 
 #Region "Public Functions"
@@ -17,12 +21,16 @@
     Public Function RefreshAddFlow() As Boolean
 
         Try
+            IsEventFromCode = True
+
             Me.tabAddFlow.Items.Clear()
 
             ' Add Nodes to diagram
             LoadAFNodes()
             ' Now Add the Links
             LoadAFLinks()
+
+            IsEventFromCode = False
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab RefreshAddFlow")
@@ -47,10 +55,10 @@
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Can_!.ico")
 
             ' Add Nodes to diagram
-            LoadAFNodes()
-            ' Now Add the Links
-            LoadAFLinks()
-
+            'LoadAFNodes()
+            '' Now Add the Links
+            'LoadAFLinks()
+            RefreshAddFlow()
             'LoadPalette()
 
             Return True
@@ -85,15 +93,17 @@
 
             '--- Get the Addflow node for each sourceDS
             SrcNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
-            SrcNode.GradientColor = Color.LightBlue
+            'SrcNode.InLinkable = False
 
             If Sds.IsLookUp = False Then
+                SrcNode.GradientColor = Color.LightBlue
                 SrcNode.Shape.Style = ShapeStyle.DirectAccessStorage
                 SrcNode.Shape.Orientation = ShapeOrientation.so_270
             Else
-                SrcNode.Shape.Style = ShapeStyle.StoredData
-                SrcNode.Shape.Orientation = ShapeOrientation.so_0
-                SrcNode.TextColor = Color.LightGreen
+                SrcNode.GradientColor = Color.LightGreen
+                SrcNode.Shape.Style = ShapeStyle.DirectAccessStorage
+                SrcNode.Shape.Orientation = ShapeOrientation.so_270
+                'SrcNode.TextColor = Color.LightGreen
             End If
 
             SrcNode.ImageIndex = 0
@@ -144,7 +154,7 @@
             '--- Get the Addflow node for each Main Proc
             MainNode = New Node(HorizSP, VertSP, Nodesize, Nodesize, NodeText, tabAddFlow.DefNodeProp)
             MainNode.GradientColor = Color.LightGreen
-            MainNode.Shape.Style = ShapeStyle.Pentagon
+            MainNode.Shape.Style = ShapeStyle.Preparation
             MainNode.Shape.Orientation = ShapeOrientation.so_90
             'MainNode.TextColor = Color.Crimson
 
@@ -185,7 +195,7 @@
                         VertSP = 50 + VertIncr + (cnt * VertIncr)
                     Else
                         Dim nodeCount As Integer = Gen.Engine.Gens.Count - 1
-                        VertSP = 20 + VertIncr + (nodeCount * VertIncr)
+                        VertSP = 50 + VertIncr + (nodeCount * VertIncr)
                     End If
                 Else
                     HorizSP = 5
@@ -196,9 +206,9 @@
                 NodeText = Gen.TaskName
 
                 '--- Get the Addflow node for each Procedure
-                ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
+                ProcNode = New Node(HorizSP, VertSP, LogicNodeSizeH, LogicNodeSizeV, NodeText, tabAddFlow.DefNodeProp)
                 ProcNode.GradientColor = Color.LightYellow
-                ProcNode.Shape.Style = ShapeStyle.Process
+                ProcNode.Shape.Style = ShapeStyle.Ellipse
                 'ProcNode.TextColor = Color.Red
 
                 ProcNode.ImageIndex = 2
@@ -251,7 +261,7 @@
                 '--- Get the Addflow node for each Procedure
                 ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
                 ProcNode.GradientColor = Color.LightCyan
-                ProcNode.Shape.Style = ShapeStyle.Merge
+                ProcNode.Shape.Style = ShapeStyle.AlternateProcess
                 'ProcNode.TextColor = Color.Red
 
                 ProcNode.ImageIndex = 2
@@ -302,6 +312,8 @@
 
             '--- Get the Addflow node for each targetDS
             TgtNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
+            'TgtNode.OutLinkable = False
+
             TgtNode.GradientColor = Color.LightCoral
             TgtNode.Shape.Style = ShapeStyle.DirectAccessStorage
             TgtNode.Shape.Orientation = ShapeOrientation.so_270
@@ -364,6 +376,7 @@
         Try
             ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(0)
             My.Forms.frmMain.DoDatastoreAction(enumAction.ACTION_NEW, enumDatastore.DS_BINARY, , , True)
+            RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab mnuAddLU_Click")
@@ -376,6 +389,7 @@
         Try
             ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(3)
             My.Forms.frmMain.DoTaskAction(enumAction.ACTION_NEW)
+            RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab mnuAddProcMap_Click")
@@ -388,6 +402,7 @@
         Try
             ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(3)
             My.Forms.frmMain.DoTaskAction(enumAction.ACTION_NEW, enumTaskType.TASK_GEN)
+            RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab mnuAddProcGen_Click")
@@ -400,6 +415,7 @@
         Try
             ObjEng.ObjTreeNode.TreeView.SelectedNode = ObjEng.ObjTreeNode.Nodes(4)
             My.Forms.frmMain.DoTaskAction(enumAction.ACTION_NEW, enumTaskType.TASK_MAIN)
+            RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab mnuAddMain_Click")
@@ -529,7 +545,7 @@
 
     End Sub
 
-    Private Sub tabAddFlow_MouseHoverMouseClick(ByVal sender As System.Object, ByVal e As EventArgs) Handles tabAddFlow.MouseHover, tabAddFlow.MouseClick, tabAddFlow.MouseUp   'System.Windows.Forms.Mouse  '
+    Private Sub tabAddFlow_MouseHoverMouseClick(ByVal sender As System.Object, ByVal e As EventArgs) Handles tabAddFlow.MouseHover, tabAddFlow.MouseUp   'System.Windows.Forms.Mouse  ', tabAddFlow.MouseClick
 
         Try
             tabAddFlow.SelectedItem = tabAddFlow.PointedItem
@@ -563,8 +579,7 @@
 
     End Sub
 
-    Private Sub tabAddFlow_MouseDownMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tabAddFlow.MouseDown, tabAddFlow.MouseClick, tabAddFlow.MouseUp ', tabAddFlow.MouseHover   'tabAddFlow.MouseDown, 
-
+    Private Sub tabAddFlow_MouseDownMouseClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tabAddFlow.MouseUp  'tabAddFlow.MouseClick ',  ', tabAddFlow.MouseHover   'tabAddFlow.MouseDown, 
         Try
             Dim ItemSelected As Boolean
 
@@ -800,27 +815,28 @@
             Dim PairCol As New Collection
             Dim GenPairCol As New Collection
 
-            '/// Link Source to Main
             For Each main As clsTask In ObjEng.Mains
+                '/// Link Source to Main
                 For Each sDS As clsDatastore In main.ObjSources
                     Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
                     sDS.AFnode.OutLinks.Add(link1, main.AFnode)
                 Next
+
                 '/// Get list of procs to map to, from main syntax
                 If main.ObjMappings.Count = 1 Then
                     Dim MainMap As clsMapping = CType(main.ObjMappings(0), clsMapping)
                     Dim mainFun As clsSQFunction = CType(MainMap.MappingSource, clsSQFunction)
                     Dim FunText As String = mainFun.SQFunctionWithInnerText
                     '/// see if there is a main script or not, first
-                    If (FunText.Contains("CASE") And FunText.Contains("RECNAME")) And _
-                    (FunText.Contains("CALLPROC") And FunText.Contains("WHEN")) Then
+                    If FunText.Contains("CASE") Or FunText.Contains("RECNAME") Or _
+                    FunText.Contains("CALLPROC") Or FunText.Contains("WHEN") Then
                         If GetSrcTablesAndProcsFromMain(PairCol, FunText) = False Then
                             MsgBox("There was an error in your Main Procedure")
                         End If
                     Else
-                        If GetTargetsFromGen(PairCol, FunText) = False Then
-                            MsgBox("There was an error in your Main Procedure")
-                        End If
+                        'If GetTargetsFromGen(PairCol, FunText) = False Then
+                        '    MsgBox("There was an error in your Logic Procedure(s)")
+                        'End If
                     End If
                 End If
                 '/// Build Links from Main to Procs from PairCollection
@@ -835,39 +851,52 @@
                 Next
             Next
 
-            '/// Build links from Gens to Procs
+            ''/// Build links from Gens to Procs
             For Each gen As clsTask In ObjEng.Gens
-                For Each sDS As clsDatastore In gen.ObjSources
-                    Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
-                    sDS.AFnode.OutLinks.Add(link1, gen.AFnode)
-                Next
                 '/// Get list of procs to map to, from Logic syntax
                 If gen.ObjMappings.Count = 1 Then
                     Dim GenMap As clsMapping = CType(gen.ObjMappings(0), clsMapping)
                     Dim GenFun As clsSQFunction = CType(GenMap.MappingSource, clsSQFunction)
                     Dim GenText As String = GenFun.SQFunctionWithInnerText
                     '/// see if there is a main script or not, first
-                    If (GenText.Contains("CASE") And GenText.Contains("RECNAME")) And _
-                    (GenText.Contains("CALLPROC") And GenText.Contains("WHEN")) Then
-                        If GetSrcTablesAndProcsFromMain(GenPairCol, GenText) = False Then
-                            MsgBox("There was an error in your Main Procedure")
-                        End If
-                    Else
-                        If GetTargetsFromGen(GenPairCol, GenText) = False Then
-                            MsgBox("There was an error in Logic Procedure >>> " & gen.TaskName)
-                        End If
+                    'If GenText.Contains("CASE") Or GenText.Contains("RECNAME") Or _
+                    'GenText.Contains("CALLPROC") Or GenText.Contains("WHEN") Then
+                    '    If GetSrcTablesAndProcsFromMain(GenPairCol, GenText) = False Then
+                    '        MsgBox("There was an error in your Main Procedure")
+                    '    End If
+                    'Else
+                    If GetTargetsFromGen(GenPairCol, GenText) = False Then
+                        MsgBox("There was an error in Logic Procedure >>> " & gen.TaskName)
                     End If
+                    'End If
                 End If
                 For Each map As clsMapping In GenPairCol
+                    '/// Targets are datastores
                     If map.MappingTarget IsNot Nothing Then
                         Dim link2 As Link = New Link(tabAddFlow.DefLinkProp)
                         'If CType(map.MappingTarget, INode).Type = NODE_PROC Or _
                         'CType(map.MappingTarget, INode).Type = NODE_GEN Then
-                        gen.AFnode.OutLinks.Add(link2, CType(map.MappingTarget, clsTask).AFnode)
+                        gen.AFnode.OutLinks.Add(link2, CType(map.MappingTarget, clsDatastore).AFnode)
+                        'End If
+                    End If
+                    '/// SOurces are Procs
+                    If map.MappingSource IsNot Nothing Then
+                        Dim link3 As Link = New Link(tabAddFlow.DefLinkProp)
+                        'If CType(map.MappingTarget, INode).Type = NODE_PROC Or _
+                        'CType(map.MappingTarget, INode).Type = NODE_GEN Then
+                        gen.AFnode.OutLinks.Add(link3, CType(map.MappingSource, clsTask).AFnode)
                         'End If
                     End If
                 Next
+                '/// map SrcDS to Gens not referenced in Main and where src has no link
+                For Each sDS As clsDatastore In gen.ObjSources
+                    If sDS.AFnode.OutLinks.Count < 1 Then
+                        Dim link1 As Link = New Link(tabAddFlow.DefLinkProp)
+                        sDS.AFnode.OutLinks.Add(link1, gen.AFnode)
+                    End If
+                Next
             Next
+
             '/// Build links from Mapping Procs to Targets
             For Each Task As clsTask In ObjEng.Procs
                 For Each Tgt As clsDatastore In Task.ObjTargets
@@ -885,53 +914,26 @@
     Function GetSrcTablesAndProcsFromMain(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
 
         Try
-            Dim pararray() As Char = " ()'" & Chr(13) & Chr(10) & Chr(12) & Chr(9)
-            Dim InTextArray() As String = Intext.Split(pararray)
-            Dim i As Integer = 0
-            Dim tempstr As String = ""
-            Dim sb As New System.Text.StringBuilder
-            Dim seglist As New Collection
+            Dim NewItem As clsMapping
 
-            '/// Split up the Text array into segments based on key words (i.e.When in the case of a Routing template)
-            For i = 0 To InTextArray.Length - 1
-                tempstr = InTextArray(i)
-                If tempstr = "WHEN" Then
-                    seglist.Add(sb.ToString)
-                    sb.Remove(0, sb.Length)
-                    sb.Append(tempstr & "~")
-                Else
-                    If tempstr <> "" Then
-                        sb.Append(tempstr & "~")
+            For Each srcDS As clsDatastore In ObjEng.Sources
+                For Each DSsel As clsDSSelection In srcDS.ObjSelections
+                    If Intext.Contains(Quote(DSsel.SelectionName, "'")) Then
+                        NewItem = New clsMapping
+                        NewItem.MappingSource = DSsel
+                        PairCol.Add(NewItem)
+                        'Exit For
                     End If
+                Next
+            Next
+            For Each proc As clsTask In ObjEng.Procs
+                If Intext.Contains("CALLPROC(" & proc.TaskName & ")") Then
+                    NewItem = New clsMapping
+                    NewItem.MappingTarget = proc
+                    PairCol.Add(NewItem)
+                    'Exit For
                 End If
             Next
-            seglist.Add(sb.ToString)
-
-            For Each seg As String In seglist
-                If seg.Contains("WHEN") = False Then
-                    GoTo gotohere
-                End If
-                For Each srcDS As clsDatastore In ObjEng.Sources
-                    Dim NewItem As clsMapping
-                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
-                        If seg.Contains(DSsel.SelectionName & "~") Then
-                            NewItem = New clsMapping
-                            NewItem.MappingSource = DSsel
-                            PairCol.Add(NewItem)
-                            'Exit For
-                        End If
-                    Next
-                    For Each proc As clsTask In ObjEng.Procs
-                        If seg.Contains(proc.TaskName & "~") Then
-                            NewItem = New clsMapping
-                            NewItem.MappingTarget = proc
-                            PairCol.Add(NewItem)
-                            'Exit For
-                        End If
-                    Next
-                    'PairCol.Add(NewItem)
-                Next
-gotohere:   Next
 
             Return True
 
@@ -942,57 +944,89 @@ gotohere:   Next
 
     End Function
 
+    '    Function GetSrcTablesAndProcsFromMain(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
+
+    '        Try
+    '            Dim pararray() As Char = Chr(13) & Chr(10) & Chr(12) '& Chr(9)  '" ()'" & 
+    '            Dim InTextArray() As String = Intext.Split(pararray)
+    '            Dim i As Integer = 0
+    '            Dim tempstr As String = ""
+    '            Dim sb As New System.Text.StringBuilder
+    '            Dim seglist As New Collection
+
+    '            '/// Split up the Text array into segments based on key words (i.e.When in the case of a Routing template)
+    '            For i = 0 To InTextArray.Length - 1
+    '                tempstr = InTextArray(i)
+    '                If tempstr = "WHEN" Then
+    '                    seglist.Add(sb.ToString)
+    '                    sb.Remove(0, sb.Length)
+    '                    sb.Append(tempstr & "~")
+    '                Else
+    '                    If tempstr <> "" Then
+    '                        sb.Append(tempstr & "~")
+    '                    End If
+    '                End If
+    '            Next
+    '            seglist.Add(sb.ToString)
+
+    '            For Each seg As String In seglist
+    '                If seg.Contains("WHEN") = False Then
+    '                    GoTo gotohere
+    '                End If
+    '                For Each srcDS As clsDatastore In ObjEng.Sources
+    '                    Dim NewItem As clsMapping
+    '                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
+    '                        If seg.Contains(DSsel.SelectionName & "~") Then
+    '                            NewItem = New clsMapping
+    '                            NewItem.MappingSource = DSsel
+    '                            PairCol.Add(NewItem)
+    '                            'Exit For
+    '                        End If
+    '                    Next
+    '                    For Each proc As clsTask In ObjEng.Procs
+    '                        If seg.Contains(proc.TaskName & "~") Then
+    '                            NewItem = New clsMapping
+    '                            NewItem.MappingTarget = proc
+    '                            PairCol.Add(NewItem)
+    '                            'Exit For
+    '                        End If
+    '                    Next
+    '                    'PairCol.Add(NewItem)
+    '                Next
+    'gotohere:   Next
+
+    '            Return True
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlAddFlowTab GetSrcTablesAndProcsFromMain")
+    '            Return False
+    '        End Try
+
+    '    End Function
+
     Function GetTargetsFromGen(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
 
         Try
-            Dim pararray() As Char = " ()'" & Chr(13) & Chr(10) & Chr(12) & Chr(9)
-            Dim InTextArray() As String = Intext.Split(pararray)
-            Dim i As Integer = 0
-            Dim tempstr As String = ""
-            Dim sb As New System.Text.StringBuilder
-            Dim seglist As New Collection
+            Dim NewItem As clsMapping
 
-            For i = 0 To InTextArray.Length - 1
-                tempstr = InTextArray(i)
-                If tempstr = "IF" Or tempstr = "WHEN" Or tempstr = "OTHERWISE" Or tempstr = "LOOK" Or tempstr = "DO" Then
-                    seglist.Add(sb.ToString)
-                    sb.Remove(0, sb.Length)
-                    sb.Append(tempstr & "~")
-                Else
-                    If tempstr <> "" Then
-                        sb.Append(tempstr & "~")
+            For Each tgtDS As clsDatastore In ObjEng.Targets
+                For Each DSsel As clsDSSelection In tgtDS.ObjSelections
+                    If Intext.Contains(Quote(DSsel.SelectionName, "'")) Then
+                        NewItem = New clsMapping
+                        NewItem.MappingTarget = DSsel.ObjDatastore
+                        PairCol.Add(NewItem)
+                        'Exit For
                     End If
+                Next
+            Next
+            For Each proc As clsTask In ObjEng.Procs
+                If Intext.Contains("CALLPROC(" & proc.TaskName & ")") Then
+                    NewItem = New clsMapping
+                    NewItem.MappingSource = proc
+                    PairCol.Add(NewItem)
+                    'Exit For
                 End If
             Next
-            seglist.Add(sb.ToString)
-
-            For Each seg As String In seglist
-                'If seg.Contains("WHEN") = False Then
-                '    GoTo gotohere
-                'End If
-                For Each srcDS As clsDatastore In ObjEng.Sources
-                    Dim NewItem As New clsMapping
-                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
-                        If seg.Contains(DSsel.SelectionName & "~") Then
-                            NewItem.MappingSource = DSsel
-                            Exit For
-                        End If
-                    Next
-                    For Each proc As clsTask In ObjEng.Procs
-                        If seg.Contains(proc.TaskName & "~") Then
-                            NewItem.MappingTarget = proc
-                            Exit For
-                        End If
-                    Next
-                    For Each main As clsTask In ObjEng.Mains
-                        If seg.Contains(main.TaskName) Then  '& "~"
-                            NewItem.MappingTarget = main
-                            Exit For
-                        End If
-                    Next
-                    PairCol.Add(NewItem)
-                Next
-gotohere:   Next
 
             Return True
 
@@ -1002,6 +1036,67 @@ gotohere:   Next
         End Try
 
     End Function
+
+    '    Function GetTargetsFromGen(ByRef PairCol As Collection, ByVal Intext As String) As Boolean
+
+    '        Try
+    '            Dim pararray() As Char = " ()'" & Chr(13) & Chr(10) & Chr(12) & Chr(9)
+    '            Dim InTextArray() As String = Intext.Split(pararray)
+    '            Dim i As Integer = 0
+    '            Dim tempstr As String = ""
+    '            Dim sb As New System.Text.StringBuilder
+    '            Dim seglist As New Collection
+
+    '            For i = 0 To InTextArray.Length - 1
+    '                tempstr = InTextArray(i)
+    '                If tempstr = "IF" Or tempstr = "WHEN" Or tempstr = "OTHERWISE" Or tempstr = "LOOK" Or tempstr = "DO" Then
+    '                    seglist.Add(sb.ToString)
+    '                    sb.Remove(0, sb.Length)
+    '                    sb.Append(tempstr & "~")
+    '                Else
+    '                    If tempstr <> "" Then
+    '                        sb.Append(tempstr & "~")
+    '                    End If
+    '                End If
+    '            Next
+    '            seglist.Add(sb.ToString)
+
+    '            For Each seg As String In seglist
+    '                'If seg.Contains("WHEN") = False Then
+    '                '    GoTo gotohere
+    '                'End If
+    '                For Each srcDS As clsDatastore In ObjEng.Sources
+    '                    Dim NewItem As New clsMapping
+    '                    For Each DSsel As clsDSSelection In srcDS.ObjSelections
+    '                        If seg.Contains(DSsel.SelectionName & "~") Then
+    '                            NewItem.MappingSource = DSsel
+    '                            Exit For
+    '                        End If
+    '                    Next
+    '                    For Each proc As clsTask In ObjEng.Procs
+    '                        If seg.Contains(proc.TaskName & "~") Then
+    '                            NewItem.MappingTarget = proc
+    '                            Exit For
+    '                        End If
+    '                    Next
+    '                    For Each main As clsTask In ObjEng.Mains
+    '                        If seg.Contains(main.TaskName) Then  '& "~"
+    '                            NewItem.MappingTarget = main
+    '                            Exit For
+    '                        End If
+    '                    Next
+    '                    PairCol.Add(NewItem)
+    '                Next
+    'gotohere:   Next
+
+    '            Return True
+
+    '        Catch ex As Exception
+    '            LogError(ex, "ctlAddFlowTab GetTargetsFromGen")
+    '            Return False
+    '        End Try
+
+    '    End Function
 
     Private Sub LoadFile(ByVal strFileName As String)
 
@@ -1541,9 +1636,11 @@ gotohere:   Next
 
 #Region "Link Event Handlers"
 
-    Sub AfterAddLink_Event(ByVal sender As Object, ByVal e As AfterAddLinkEventArgs) Handles tabAddFlow.AfterAddLink
+    Sub tabAddFlow_AfterAddLink(ByVal sender As Object, ByVal e As AfterAddLinkEventArgs) Handles tabAddFlow.AfterAddLink
 
         Try
+            If IsEventFromCode = True Then Exit Sub
+
             Dim OrgNode As Node = e.Link.Org
             Dim OrgObj As INode = OrgNode.Tag
             Dim OrgType As String = OrgObj.Type
@@ -1559,58 +1656,206 @@ gotohere:   Next
 
             Select Case OrgType
                 Case NODE_GEN
-                    'LinkFromNodeGen(OrgObj, DstObj)
+                    'allow links to Tgts, procs
+                    If DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    ElseIf DstType = NODE_PROC Then
+                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
+                            CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to link to this node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
 
                 Case NODE_LOOKUP
+                    'Only allow link to Main or Gen
+                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
+                        'Only one src per main or Gen
+                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
+                            MsgBox("Only one Source Lookup allowed per Main or Logic procedure", MsgBoxStyle.Information)
+                            e.Link.Remove()
+                        Else
+                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
+                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                                CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            End If
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
 
                 Case NODE_MAIN
+                    'allow links to Gens, Procs, Tgts
+                    If DstType = NODE_GEN Or DstType = NODE_PROC Then
+                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
+                            CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    ElseIf DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
 
                 Case NODE_PROC
+                    'allow links to Tgts
+                    If DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
 
                 Case NODE_SOURCEDATASTORE
-                    'Only allow link to Main
-                    'If DstType = NODE_MAIN Then
-                    '    If CType(DstObj, clsTask).ObjSources.Count > 0 Then
-                    '        MsgBox("Only one Source allowed per Main", MsgBoxStyle.Information)
-                    '        e.Link.Remove()
-                    '    Else
-                    '        'AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore))
-                    '    End If
-                    'Else
-                    '    Dim str As String = sender.ToString
-                    '    MsgBox("Sources Only allowed to connect to Main", MsgBoxStyle.Information)
-                    '    e.Link.Remove()
-
-                    'End If
+                    'Only allow link to Main or Gen
+                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
+                        'Only one src per main or Gen
+                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
+                            MsgBox("Only one Source allowed per Main or Logic procedure", MsgBoxStyle.Information)
+                            e.Link.Remove()
+                        Else
+                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
+                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                                CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            End If
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
 
                 Case NODE_TARGETDATASTORE
-                    'Only allow link to Main
-                    'If DstType = NODE_PROC Then
-                    '    If CType(DstObj, clsTask).ObjTargets.Count > 0 Then
-                    '        MsgBox("Only one Target allowed per Procedure", MsgBoxStyle.Information)
-                    '        e.Link.Remove()
-                    '    Else
-                    '        'AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore))
-                    '    End If
-                    'Else
-                    '    Dim str As String = sender.ToString
-                    '    MsgBox("Targets Only allowed to connect to Procedures", MsgBoxStyle.Information)
-                    '    e.Link.Remove()
+                    'Don't allow Target to outLink
+                    MsgBox("Not Allowed to draw links out from Targets" & Chr(13) & "Draw links to Targets", MsgBoxStyle.Information)
+                    e.Link.Remove()
 
-                    'End If
             End Select
 
-
-
         Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab BeforeAddLink_Event")
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterAddLink")
         End Try
 
     End Sub
 
-#End Region
+    Function AddLink_TaskToTarget(ByVal DstObj As clsDatastore, ByVal OrgObj As clsTask) As Boolean
 
-    Function LinkFromNodeGen(ByVal OrgObj As INode, ByVal DstObj As INode) As Integer
+        Try
+            If OrgObj.TaskType = enumTaskType.TASK_PROC Then
+                OrgObj.ObjTargets.Add(DstObj)
+
+            ElseIf OrgObj.TaskType = enumTaskType.TASK_GEN Or OrgObj.TaskType = enumTaskType.TASK_MAIN Then
+                Dim InsStr1 As String = "-- Added Target into this Procedure to use in a function"
+                Dim InsStr2 As String = "       '" & DstObj.DatastoreName & "'"
+
+                If OrgObj.ObjMappings.Count = 1 Then
+                    Dim map As clsMapping = OrgObj.ObjMappings(0)
+                    Dim mapsrc As clsSQFunction = map.MappingSource
+                    Dim sb As New System.Text.StringBuilder
+                    sb.Append(mapsrc.SQFunctionWithInnerText)
+                    sb.AppendLine(InsStr1)
+                    sb.AppendLine(InsStr2)
+                    mapsrc.SQFunctionWithInnerText = sb.ToString
+                    mapsrc.SQFunctionName = mapsrc.SQFunctionWithInnerText
+                Else
+                    Dim map As New clsMapping
+                    Dim mapsrc As New clsSQFunction
+                    Dim sb As New System.Text.StringBuilder
+                    'sb.Append(mapsrc.SQFunctionWithInnerText)
+                    sb.AppendLine(InsStr1)
+                    sb.AppendLine(InsStr1)
+                    mapsrc.SQFunctionWithInnerText = sb.ToString
+                    mapsrc.SQFunctionName = mapsrc.SQFunctionWithInnerText
+                    map.MappingSource = mapsrc
+                    map.MappingTarget = Nothing
+                    map.TargetType = enumMappingType.MAPPING_TYPE_NONE
+                    OrgObj.ObjMappings.Add(map)
+                End If
+                'OrgObj.IsModified = True
+                OrgObj.Save()
+
+            Else
+                Return False
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab AddLink_TaskToTarget")
+            Return False
+        End Try
 
     End Function
+
+    Function AddLink_TaskToTask(ByVal DstObj As clsTask, ByVal OrgObj As clsTask) As Boolean
+
+        Try
+            Dim InsStr1 As String = "-- Added Procedure to use in a function"
+            Dim InsStr2 As String = "       CALLPROC(" & DstObj.TaskName & ")"
+
+            If OrgObj.ObjMappings.Count = 1 Then
+                Dim map As clsMapping = OrgObj.ObjMappings(0)
+                Dim mapsrc As clsSQFunction = map.MappingSource
+                Dim sb As New System.Text.StringBuilder
+                sb.Append(mapsrc.SQFunctionWithInnerText)
+                sb.AppendLine(InsStr1)
+                sb.AppendLine(InsStr2)
+                mapsrc.SQFunctionWithInnerText = sb.ToString
+                mapsrc.SQFunctionName = mapsrc.SQFunctionWithInnerText
+            Else
+                Dim map As New clsMapping
+                Dim mapsrc As New clsSQFunction
+                Dim sb As New System.Text.StringBuilder
+                'sb.Append(mapsrc.SQFunctionWithInnerText)
+                sb.AppendLine(InsStr1)
+                sb.AppendLine(InsStr2)
+                mapsrc.SQFunctionWithInnerText = sb.ToString
+                mapsrc.SQFunctionName = mapsrc.SQFunctionWithInnerText
+                map.MappingSource = mapsrc
+                map.MappingTarget = Nothing
+                map.TargetType = enumMappingType.MAPPING_TYPE_NONE
+                OrgObj.ObjMappings.Add(map)
+            End If
+            OrgObj.Save()
+
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab AddLink_TaskToTask")
+            Return False
+        End Try
+
+    End Function
+
+    Function AddLink_SrcToTask(ByVal DstObj As clsTask, ByVal OrgObj As clsDatastore) As Boolean
+
+        Try
+            DstObj.ObjTargets.Add(OrgObj)
+            DstObj.IsModified = True
+            DstObj.Save()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab AddLink_SrcToTask")
+            Return False
+        End Try
+
+    End Function
+
+#End Region
+
 End Class

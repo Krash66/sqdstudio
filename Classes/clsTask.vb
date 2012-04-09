@@ -400,7 +400,8 @@ Public Class clsTask
                 End If
 
                 '/// AddFlow Additions
-                Me.AFnode.Links.Clear()
+                Me.AFnode.InLinks.Clear()
+                Me.AFnode.OutLinks.Clear()
                 Me.AFnode.Remove()
 
             End If
@@ -1234,7 +1235,7 @@ Public Class clsTask
                 mainFunc = CType(sFld, clsSQFunction)
                 mainFunc.SQFunctionWithInnerText = GetMainText()
                 mainFunc.SQFunctionSyntax = mainFunc.SQFunctionWithInnerText
-                mainFunc.SQFunctionName = mainFunc.SQFunctionWithInnerText
+                'mainFunc.SQFunctionName = mainFunc.SQFunctionSyntax
 
                 objMap.MappingSource = mainFunc
                 objMap.MappingTarget = Nothing
@@ -1330,7 +1331,7 @@ Public Class clsTask
                     retObj = New clsSQFunction
                     '//some fake id so we wont get an weird error bcoz of no id
                     CType(retObj, clsSQFunction).SQFunctionId = ID
-                    CType(retObj, clsSQFunction).SQFunctionName = Text
+                    CType(retObj, clsSQFunction).SQFunctionName = ID
                     CType(retObj, clsSQFunction).SQFunctionWithInnerText = Text
                     CType(retObj, clsSQFunction).Parent = Me
                 Case modDeclares.enumMappingType.MAPPING_TYPE_JOIN
