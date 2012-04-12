@@ -15,25 +15,33 @@
     Private IsEventFromCode As Boolean
 
 
-
 #Region "Public Functions"
 
-    Public Function RefreshAddFlow() As Boolean
+    Public Function RefreshAddFlow(Optional ByVal reload As Boolean = False) As Boolean
 
         Try
             IsEventFromCode = True
 
             Me.tabAddFlow.Items.Clear()
 
+            '************************************************************
+            '*** Add Logic here to use existing XML diagram if unchanged
+            'If ObjEng.IsDiagramChanged = True And System.IO.File.Exists(Me.ObjEng.CurAddFlowDiagPath) = True Then
+            '    ObjEng.LoadAddFlowXML()
+            'Else
             ' Add Nodes to diagram
             LoadAFNodes()
             ' Now Add the Links
             LoadAFLinks()
+            'End If
+            '************************************************************
 
             IsEventFromCode = False
+            Return True
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab RefreshAddFlow")
+            Return False
         End Try
 
     End Function
@@ -46,22 +54,15 @@
 
             ObjEng = Eng
 
-            'af = tabAddFlow
-
             '' Create the collection of images that will be used for nodes
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Copy of Can_!.ico")
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Microsoft Access Macro Shortcut (.mam).ico")
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Microsoft Access Macro Shortcut (.mam).ico")
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Can_!.ico")
 
-            ' Add Nodes to diagram
-            'LoadAFNodes()
-            '' Now Add the Links
-            'LoadAFLinks()
-            RefreshAddFlow()
             'LoadPalette()
 
-            Return True
+            Return RefreshAddFlow()
 
         Catch ex As Exception
             LogError(ex, "frmMain FillAddFlowFromEngine")
@@ -447,6 +448,91 @@
                     End Select
                 Else
                     '/// It's a link
+                    '**************
+                    'insert logic to update Nodes attached to Link before it is deleted
+                    '****************
+                    'Dim typ As System.Type = itm.GetType
+                    'Dim lTyp As System.Type = Link
+                    'If System.Type.Equals( Then
+                    Dim OrgNode As Node = CType(itm, Link).Org
+                    Dim OrgObj As INode = OrgNode.Tag
+                    Dim OrgType As String = OrgObj.Type
+                    Dim DstNode As Node = CType(itm, Link).Dst
+                    Dim DstObj As INode = DstNode.Tag
+                    Dim DstType As String = DstObj.Type
+
+                    Select Case OrgType
+                        '/// Targets cannot originate links
+                        Case NODE_SOURCEDATASTORE, NODE_LOOKUP
+                            If DstType = NODE_MAIN Or DstType = NODE_GEN Then
+                                CType(DstObj, clsTask).ObjSources.Remove(OrgObj)
+                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                                DstObj.Save()
+                            Else
+                                '/// nothing necessary
+                            End If
+
+                        Case NODE_MAIN
+                            If DstType = NODE_PROC Or DstType = NODE_GEN Then
+                                Dim mp As clsMapping = CType(OrgObj, clsTask).ObjMappings(0)
+                                If CType(mp.MappingSource, INode).Type = NODE_FUN Then
+                                    Dim fun As clsSQFunction = CType(mp.MappingSource, clsSQFunction)
+                                    If fun.SQFunctionWithInnerText.Contains(DstObj.Text) = True Then
+                                        Dim sb As New System.Text.StringBuilder
+                                        sb.Append(fun.SQFunctionWithInnerText)
+                                        sb.Replace("CALLPROC(" & DstObj.Text & ")", "-- Procedure Call Removed")
+                                        fun.SQFunctionWithInnerText = sb.ToString
+                                        fun.SQFunctionName = fun.SQFunctionWithInnerText
+                                        CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                                        OrgObj.Save()
+                                    End If
+                                End If
+                            Else
+                                '/// nothing necessary
+                            End If
+
+                        Case NODE_GEN
+                            If DstType = NODE_PROC Or DstType = NODE_GEN Then
+                                Dim mp As clsMapping = CType(OrgObj, clsTask).ObjMappings(0)
+                                If CType(mp.MappingSource, INode).Type = NODE_FUN Then
+                                    Dim fun As clsSQFunction = CType(mp.MappingSource, clsSQFunction)
+                                    If fun.SQFunctionWithInnerText.Contains(DstObj.Text) = True Then
+                                        Dim sb As New System.Text.StringBuilder
+                                        sb.Append(fun.SQFunctionWithInnerText)
+                                        sb.Replace("CALLPROC(" & DstObj.Text & ")", "-- Procedure Call Removed")
+                                        fun.SQFunctionWithInnerText = sb.ToString
+                                        fun.SQFunctionName = fun.SQFunctionWithInnerText
+                                        CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                                        OrgObj.Save()
+                                    End If
+                                End If
+                            Else
+                                '/// nothing necessary
+                            End If
+
+                        Case NODE_PROC
+                            If DstType = NODE_PROC Or DstType = NODE_GEN Then
+                                Dim mp As clsMapping = CType(OrgObj, clsTask).ObjMappings(0)
+                                If CType(mp.MappingSource, INode).Type = NODE_FUN Then
+                                    Dim fun As clsSQFunction = CType(mp.MappingSource, clsSQFunction)
+                                    If fun.SQFunctionWithInnerText.Contains(DstObj.Text) = True Then
+                                        Dim sb As New System.Text.StringBuilder
+                                        sb.Append(fun.SQFunctionWithInnerText)
+                                        sb.Replace("CALLPROC(" & DstObj.Text & ")", "-- Procedure Call Removed")
+                                        fun.SQFunctionWithInnerText = sb.ToString
+                                        fun.SQFunctionName = fun.SQFunctionWithInnerText
+                                        CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                                        OrgObj.Save()
+                                    End If
+                                End If
+                            ElseIf DstType = NODE_TARGETDATASTORE Then
+                                CType(OrgObj, clsTask).ObjTargets.Remove(DstObj)
+                                CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                                OrgObj.Save()
+                            Else
+                                '/// nothing necessary
+                            End If
+                    End Select
                     tabAddFlow.DeleteSel()
                 End If
             Else
@@ -467,6 +553,8 @@
 
     Private Sub mnuUndo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUndo.Click
         tabAddFlow.Undo()
+        tabAddFlow.BackColor = Color.FromKnownColor(KnownColor.Control)
+
     End Sub
 
     Private Sub mnuRedo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuRedo.Click
@@ -658,7 +746,7 @@
 
             If sfd.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 strFileName = sfd.FileName
-                SaveFile()
+                SaveFile(strFileName)
             End If
 
         Catch ex As Exception
@@ -725,6 +813,7 @@
 
         Try
             RefreshAddFlow()
+            tabAddFlow.BackColor = Color.FromKnownColor(KnownColor.InactiveCaptionText)
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab UpdateDiag_Click")
@@ -1098,7 +1187,7 @@
 
     '    End Function
 
-    Private Sub LoadFile(ByVal strFileName As String)
+    Sub LoadFile(ByVal strFileName As String)
 
         Try
             '/// Reset AddFlow
@@ -1117,8 +1206,6 @@
 
             '/// Create Engine from Nodes and Links
 
-
-
             tabAddFlow.BackColor = Color.FromKnownColor(KnownColor.Control)
 
         Catch ex As Exception
@@ -1127,7 +1214,7 @@
 
     End Sub
 
-    Private Sub SaveFile()
+    Sub SaveFile(ByVal strFileName As String)
 
         Try
             Cursor = Cursors.WaitCursor
@@ -1659,12 +1746,12 @@
                     'allow links to Tgts, procs
                     If DstType = NODE_TARGETDATASTORE Then
                         If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
                             CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
                         End If
                     ElseIf DstType = NODE_PROC Then
                         If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
-                            CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
                             CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
                         End If
                     Else
@@ -1682,7 +1769,7 @@
                         Else
                             If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
                                 CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                                CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
                             End If
                         End If
                     Else
@@ -1694,12 +1781,12 @@
                     'allow links to Gens, Procs, Tgts
                     If DstType = NODE_GEN Or DstType = NODE_PROC Then
                         If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
-                            CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
                             CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
                         End If
                     ElseIf DstType = NODE_TARGETDATASTORE Then
                         If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
                             CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
                         End If
                     Else
@@ -1711,7 +1798,7 @@
                     'allow links to Tgts
                     If DstType = NODE_TARGETDATASTORE Then
                         If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
                             CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
                         End If
                     Else
@@ -1729,7 +1816,7 @@
                         Else
                             If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
                                 CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                                CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
                             End If
                         End If
                     Else
@@ -1755,11 +1842,11 @@
         Try
             If OrgObj.TaskType = enumTaskType.TASK_PROC Then
                 OrgObj.ObjTargets.Add(DstObj)
+                Return OrgObj.Save()
 
             ElseIf OrgObj.TaskType = enumTaskType.TASK_GEN Or OrgObj.TaskType = enumTaskType.TASK_MAIN Then
                 Dim InsStr1 As String = "-- Added Target into this Procedure to use in a function"
                 Dim InsStr2 As String = "       '" & DstObj.DatastoreName & "'"
-
                 If OrgObj.ObjMappings.Count = 1 Then
                     Dim map As clsMapping = OrgObj.ObjMappings(0)
                     Dim mapsrc As clsSQFunction = map.MappingSource
@@ -1784,13 +1871,11 @@
                     OrgObj.ObjMappings.Add(map)
                 End If
                 'OrgObj.IsModified = True
-                OrgObj.Save()
+                Return OrgObj.Save()
 
             Else
                 Return False
             End If
-
-            Return True
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab AddLink_TaskToTarget")
@@ -1828,10 +1913,8 @@
                 map.TargetType = enumMappingType.MAPPING_TYPE_NONE
                 OrgObj.ObjMappings.Add(map)
             End If
-            OrgObj.Save()
 
-
-            Return True
+            Return OrgObj.Save()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab AddLink_TaskToTask")
@@ -1845,9 +1928,8 @@
         Try
             DstObj.ObjTargets.Add(OrgObj)
             DstObj.IsModified = True
-            DstObj.Save()
 
-            Return True
+            Return DstObj.Save()
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab AddLink_SrcToTask")
@@ -1857,5 +1939,27 @@
     End Function
 
 #End Region
+
+    Private Sub tabAddFlow_AfterEdit(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.AfterMove, tabAddFlow.AfterStretch
+
+        Try
+            Me.ObjEng.IsDiagramChanged = True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
+        End Try
+
+    End Sub
+
+    Private Sub tabAddFlow_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.LostFocus
+
+        Try
+            Me.ObjEng.SaveAddFlowXML()
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
+        End Try
+
+    End Sub
 
 End Class

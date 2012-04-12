@@ -4983,7 +4983,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '/// Temporary location to fill AddFlow Diagram ///
             '**************************************************
 
-
+            obj.IsDiagramChanged = False
             FillEngine = FillAddFlowFromEngine(obj)
 
 
@@ -6995,36 +6995,41 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     Private Sub mnuCloseAllProjects_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCloseAllProjects.Click
 
-        If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
-            If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-            If Not CurLoadedProject Is Nothing Then
-                CurLoadedProject.Save()
-                'CurLoadedProject.SaveToRegistry()
-                CurLoadedProject.SaveToXML()
-                CurLoadedProject = Nothing
+        Try
+            If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
+                If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+                If CurLoadedProject IsNot Nothing Then
+                    CurLoadedProject.Save()
+                    'CurLoadedProject.SaveToRegistry()
+                    CurLoadedProject.SaveToXML()
+                    ResetTabs()
+                    CurLoadedProject = Nothing
+                End If
+                tvExplorer.Nodes(0).Remove()
+                HideAllUC()
+                ctFolder.Clear()
+            ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
+                If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+                If CurLoadedProject IsNot Nothing Then
+                    CurLoadedProject.Save()
+                    'CurLoadedProject.SaveToRegistry()
+                    CurLoadedProject.SaveToXML()
+                    ResetTabs()
+                    CurLoadedProject = Nothing
+                End If
+                For Each nd As TreeNode In tvExplorer.Nodes
+                    nd = tvExplorer.Nodes(0) 'with out this it wont remove the nodes in an order and causes an exception. 
+                    nd.Remove()
+                Next
+                HideAllUC()
+                ctFolder.Clear()
             End If
-            tvExplorer.Nodes(0).Remove()
+            cnn.Close()
             HideAllUC()
-            ctFolder.Clear()
-        ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
-            If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-            If Not CurLoadedProject Is Nothing Then
-                CurLoadedProject.Save()
-                'CurLoadedProject.SaveToRegistry()
-                CurLoadedProject.SaveToXML()
-                CurLoadedProject = Nothing
-            End If
-            Dim nd As TreeNode
-            For Each nd In tvExplorer.Nodes
-                nd = tvExplorer.Nodes(0) 'with out this it wont remove the nodes in an order and causes an exception. 
-                nd.Remove()
-            Next
-            HideAllUC()
-            ctFolder.Clear()
-        End If
-        cnn.Close()
-        ResetTabs()
-        HideAllUC()
+
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuCloseAllProjects_Click")
+        End Try
 
     End Sub
 
@@ -7104,31 +7109,37 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
     Private Sub mnuCloseProject_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuCloseProject.Click, mnuCloseProj.Click
 
-        If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
-            If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-            tvExplorer.Nodes(0).Remove()
-
-            ctFolder.Clear()
-            HideAllUC()
-        ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
-            If tvExplorer.SelectedNode Is Nothing Then
-                MsgBox("Please select project from treeview", MsgBoxStyle.OkOnly, MsgTitle)
-                Exit Sub
-            Else
+        Try
+            If tvExplorer.GetNodeCount(False) = 1 Then '//if one project loaded then just close it
                 If DoSave() = MsgBoxResult.Cancel Then Exit Sub
-                GetTopLevelNode(tvExplorer.SelectedNode).Remove()
+                ResetTabs()
+                tvExplorer.Nodes(0).Remove()
+                ctFolder.Clear()
+                HideAllUC()
+            ElseIf tvExplorer.GetNodeCount(False) > 1 Then '//if mulitple projects loaded then force user to select one
+                If tvExplorer.SelectedNode Is Nothing Then
+                    MsgBox("Please select project from treeview", MsgBoxStyle.OkOnly, MsgTitle)
+                    Exit Sub
+                Else
+                    If DoSave() = MsgBoxResult.Cancel Then Exit Sub
+                    ResetTabs()
+                    GetTopLevelNode(tvExplorer.SelectedNode).Remove()
+                End If
             End If
-        End If
 
-        If CurLoadedProject IsNot Nothing Then
-            CurLoadedProject.Save()
-            'CurLoadedProject.SaveToRegistry()
-            CurLoadedProject.SaveToXML()
-            CurLoadedProject = Nothing
-        End If
-        cnn.Close()
-        ResetTabs()
-        'HideAllUC()
+            If CurLoadedProject IsNot Nothing Then
+                CurLoadedProject.Save()
+                'CurLoadedProject.SaveToRegistry()
+                CurLoadedProject.SaveToXML()
+                CurLoadedProject = Nothing
+            End If
+            cnn.Close()
+            HideAllUC()
+
+
+        Catch ex As Exception
+            LogError(ex, "frmMain mnuCloseProject_Click")
+        End Try
 
     End Sub
 
@@ -9648,6 +9659,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
                 tran.Commit()
 
+                taskMain.Engine.IsDiagramChanged = True
                 FillAddFlowFromEngine(taskMain.Engine)
 
             Catch OE As Odbc.OdbcException
@@ -9942,13 +9954,13 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
     Function ResetTabs() As Boolean
 
         Try
-            Dim NumPages As Integer = tabCtrl.TabPages.Count
-            Dim i As Integer = NumPages - 1
-
-            While i > 0
-                tabCtrl.TabPages.RemoveAt(i)
-                i -= 1
-            End While
+            For Each env As clsEnvironment In CurLoadedProject.Environments
+                For Each sys As clsSystem In env.Systems
+                    For Each eng As clsEngine In sys.Engines
+                        Me.tabCtrl.TabPages.Remove(eng.ObjTabPage)
+                    Next
+                Next
+            Next
 
         Catch ex As Exception
             LogError(ex, "frmMain ResetTabs")
@@ -9963,7 +9975,6 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
             If tabCtrl.SelectedIndex <> 0 Then
                 'SavePreviousScreen(tvExplorer.SelectedNode)
                 CType(tabCtrl.SelectedTab.Tag, clsEngine).ObjAddFlowCtl.RefreshAddFlow()
-
             End If
 
         Catch ex As Exception

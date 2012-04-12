@@ -19,10 +19,6 @@ Public Class clsEngine
     Private m_Main As String = ""
     Private m_IsLoaded As Boolean = False
     Private m_EngVersion As String
-    '/// AddFlow additions
-    Private m_ObjAddFlow As AddFlow
-    Private m_ObjTabPage As TabPage
-    Private m_ObjAddFlowCtl As ctlAddFlowTab
 
     Public Sources As New Collection
     Public Targets As New Collection
@@ -40,12 +36,16 @@ Public Class clsEngine
     Public EXEdir As String = ""
     Public BATdir As String = ""
     Public CDCdir As String = ""
-
-
     '/// File writing for Non-Metadata Property values
     Dim fsEng As System.IO.FileStream
     Dim objWriteEng As System.IO.StreamWriter
     Dim objReadEng As System.IO.StreamReader
+    '/// AddFlow additions
+    Private m_ObjAddFlow As AddFlow
+    Private m_ObjTabPage As TabPage
+    Private m_ObjAddFlowCtl As ctlAddFlowTab
+    Private m_CurAddFlowDiagPath As String
+    Private m_IsDiagramChanged As Boolean
 
 #Region "INode Implementation"
 
@@ -320,7 +320,8 @@ Public Class clsEngine
 
             tran.Commit()
 
-            Save = True
+            Save = SaveAddFlowXML()
+
 
         Catch OE As Odbc.OdbcException
             LogODBCError(OE, "clsEngine Save", sql)
@@ -600,7 +601,7 @@ Public Class clsEngine
             Me.GetQuotedText & ",'" & _
             FixStr(Me.EngineDescription) & "')"
 
-           
+
             'End If
             cmd.CommandText = sql
             Log(sql)
@@ -757,9 +758,12 @@ Public Class clsEngine
                         Me.BATdir = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                     Case "CDCDIR"
                         Me.CDCdir = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
+                    Case "ADDFLOWPATH"
+                        Me.CurAddFlowDiagPath = GetStr(GetVal(dr("ENGINEATTRBVALUE")))
                 End Select
             Next
 
+            Me.IsDiagramChanged = False
             Me.IsLoaded = True
 
             Return True
@@ -973,6 +977,31 @@ Public Class clsEngine
         End Set
     End Property
 
+    Public Property CurAddFlowDiagPath() As String
+        Get
+            If m_CurAddFlowDiagPath = "" Then
+                m_CurAddFlowDiagPath = GetAppProj() & _
+                Me.Project.ProjectName & "." & _
+                Me.ObjSystem.Environment.EnvironmentName & "." & _
+                Me.ObjSystem.SystemName & "." & _
+                Me.EngineName & ".current.xml"
+            End If
+            Return m_CurAddFlowDiagPath
+        End Get
+        Set(ByVal value As String)
+            m_CurAddFlowDiagPath = value
+        End Set
+    End Property
+
+    Public Property IsDiagramChanged() As Boolean
+        Get
+            Return m_IsDiagramChanged
+        End Get
+        Set(ByVal value As Boolean)
+            m_IsDiagramChanged = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Methods"
@@ -1015,7 +1044,7 @@ Public Class clsEngine
             LogError(ex, "clsEngine findDupNames")
             Return False
         End Try
-       
+
     End Function
 
     Function InsertATTR(Optional ByRef INcmd As System.Data.Odbc.OdbcCommand = Nothing) As Boolean
@@ -1033,7 +1062,7 @@ Public Class clsEngine
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 15
+            For i As Integer = 0 To 16
                 Select Case i
                     Case 0
                         Attrib = "COMMITEVERY"
@@ -1087,6 +1116,9 @@ Public Class clsEngine
                     Case 15
                         Attrib = "CDCDIR"
                         Value = Me.CDCdir
+                    Case 16
+                        Attrib = "ADDFLOWPATH"
+                        Value = Me.CurAddFlowDiagPath
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblEnginesATTR & _
@@ -1149,6 +1181,45 @@ Public Class clsEngine
         Catch ex As Exception
             LogError(ex, "clsEngine DeleteATTR", sql)
             DeleteATTR = False
+        End Try
+
+    End Function
+
+    Function SaveAddFlowXML() As Boolean
+
+        Try
+            If IsDiagramChanged = False Then
+                Return True
+                Exit Function
+            End If
+
+            Me.ObjAddFlowCtl.SaveFile(Me.CurAddFlowDiagPath)
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsEngine SaveAddFlow")
+            Return False
+        End Try
+
+    End Function
+
+    Function LoadAddFlowXML() As Boolean
+
+        Try
+            If IsDiagramChanged = False Then
+                Return True
+                Exit Function
+            End If
+
+            '/// Load Addflow Diagram from File if it didn't change
+            Me.ObjAddFlowCtl.LoadFile(Me.CurAddFlowDiagPath)
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsEngine LoadAddFlow")
+            Return False
         End Try
 
     End Function

@@ -107,6 +107,7 @@ Partial Class ctlAddFlowTab
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabAddFlow.AutoScroll = True
+        Me.tabAddFlow.AutoScrollMinSize = New System.Drawing.Size(670, 455)
         Me.tabAddFlow.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.tabAddFlow.BackColor = System.Drawing.SystemColors.InactiveCaptionText
         Me.tabAddFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -155,7 +156,6 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.Location = New System.Drawing.Point(3, 28)
         Me.tabAddFlow.MultiSel = False
         Me.tabAddFlow.Name = "tabAddFlow"
-        Me.tabAddFlow.ScrollbarsDisplayMode = Lassalle.Flow.ScrollbarsDisplayMode.SizeOfDiagramOnly
         Me.tabAddFlow.SelectionHandleSize = Lassalle.Flow.HandleSize.Medium
         Me.tabAddFlow.Size = New System.Drawing.Size(674, 459)
         Me.tabAddFlow.TabIndex = 3
