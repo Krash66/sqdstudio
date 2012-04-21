@@ -3371,7 +3371,7 @@ Public Class frmMain
                         obj = frm.EditObj(cNode.Parent, CType(tempobj, INode))
                     End If
 
-                    If Not (obj Is Nothing) Then
+                    If obj IsNot Nothing Then
                         '// if the task is a valid task then update node on the tree 
                         '//under the proper folder
                         UpdateNode(tempnode, obj)
@@ -3380,7 +3380,7 @@ Public Class frmMain
                         '//properly in the treeview
                         CType(obj, clsTask).SaveSeqNo()
 
-                        If Not (cNode Is Nothing) Then
+                        If cNode IsNot Nothing Then
                             '// if it's a valid object, 
                             '//then make it the currently selected node in the tree
                             tvExplorer.SelectedNode = tempnode
@@ -4014,7 +4014,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
             ShowUsercontrol(cNode, MsgClear)
             tvExplorer.SelectedNode = cNode
+            '****************************************************
+            '/// Temporary location to Clear AddFlow Diagrams ///
+            '****************************************************
 
+
+            ResetTabs()
             '//Now add and process each environment 
             'If obj.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText
@@ -4113,6 +4118,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Catch ex As Exception
             LogError(ex, "fillEnv")
         End Try
+       
+
         '///////////////////////////////////////////////
         '//Now add connections
         '///////////////////////////////////////////////
@@ -4596,13 +4603,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         '//Now add engines
         '///////////////////////////////////////////////
         Try
-            '****************************************************
-            '/// Temporary location to Clear AddFlow Diagrams ///
-            '****************************************************
-
-
-            ResetTabs()
-
+            
 
 
 
@@ -5019,6 +5020,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             obj.TaskName = GetVal(dr.Item("TaskName"))
             obj.TaskType = GetVal(dr.Item("TaskType"))
             obj.TaskDescription = GetStr(GetVal(dr("TASKDESCRIPTION")))
+            obj.Hloc = GetVal(dr("CREATED_USER_ID"))
+            obj.Vloc = GetVal(dr("UPDATED_USER_ID"))
 
             Select Case obj.TaskType
                 'Case modDeclares.enumTaskType.TASK_JOIN, modDeclares.enumTaskType.TASK_LOOKUP
@@ -7445,6 +7448,9 @@ ProjSkip:
 
                         Case NODE_ENGINE
                             Success = FillEngineFromClipboard(cNode, destObj)
+                            'If Success = True Then
+                            '    Success = FillAddFlowFromEngine(destObj)
+                            'End If
 
                         Case NODE_CONNECTION
                             Success = FillConnFromClipboard(cNode, destObj)
@@ -7457,21 +7463,39 @@ ProjSkip:
 
                         Case NODE_SOURCEDATASTORE
                             Success = FillDataStoreFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_TARGETDATASTORE
                             Success = FillDataStoreFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_PROC
                             Success = FillTasksFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_GEN
                             Success = FillTasksFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_LOOKUP
                             Success = FillTasksFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_MAIN
                             Success = FillTasksFromClipboard(cNode, destObj)
+                            If Success = True Then
+                                Success = AddAFnode(destObj.Parent, destObj)
+                            End If
 
                         Case NODE_VARIABLE
                             Success = FillVarFromClipboard(cNode, destObj)
@@ -8524,8 +8548,13 @@ ProjSkip:
                     Exit Function
                 End If
             Next
+            '**************************************************
+            '/// Temporary location to fill AddFlow Diagram ///
+            '**************************************************
 
-            FillEngineFromClipboard = True
+            obj.IsDiagramChanged = False
+            FillEngineFromClipboard = FillAddFlowFromEngine(obj)
+
 
         Catch ex As Exception
             LogError(ex, "frmMain FillEngineFromClipboard...Tasks")
@@ -9882,6 +9911,8 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
             '////////////////////////////////////////////////
             Eng.ObjAddFlow = addflowCtrl.tabAddFlow
             Eng.ObjTabPage = EnginePage
+
+            Return True
 
         Catch ex As Exception
             LogError(ex, "frmMain FillAddFlowFromEngine")

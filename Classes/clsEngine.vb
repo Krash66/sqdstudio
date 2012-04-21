@@ -185,13 +185,13 @@ Public Class clsEngine
 
                 'Dim NewGen As clsTask
                 '//clone all procs under Engine
-                For Each gen As clsTask In Me.Gens
-                    'gen.LoadMe()
-                    Dim NewGen As New clsTask
-                    NewGen = gen.Clone(obj, True, cmd)
-                    NewGen.Engine = obj
-                    AddToCollection(obj.Procs, NewGen, NewGen.GUID)
-                Next
+                'For Each gen As clsTask In Me.Gens
+                '    'gen.LoadMe()
+                '    Dim NewGen As New clsTask
+                '    NewGen = gen.Clone(obj, True, cmd)
+                '    NewGen.Engine = obj
+                '    AddToCollection(obj.Procs, NewGen, NewGen.GUID)
+                'Next
                 'Dim NewJon As clsTask
                 ''//clone all joins under Engine
                 'For Each jon As clsTask In Me.Gens

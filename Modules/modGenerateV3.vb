@@ -5117,7 +5117,7 @@ ErrorGoTo:
 
     Function RunSQData(ByVal pathPRC As String, Optional ByVal InEng As clsEngine = Nothing) As String
 
-        '//run out exe with command line args so it produces meta data in XML format
+        '//run out exe with command line args so Runs the Engine in SQData
         Try
             'Dim TempPath As String = GetAppTemp()
             Dim fsERR As System.IO.FileStream
@@ -5170,7 +5170,7 @@ ErrorGoTo:
             si.RedirectStandardOutput = False
             si.RedirectStandardError = True
 
-            '// Create a new process to Model new Description Files
+            '// Create a new process to Run SQData
             Using myProcess As New System.Diagnostics.Process()
                 myProcess.StartInfo = si
 

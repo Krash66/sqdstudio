@@ -40,7 +40,8 @@ Public Class clsTask
 
     '/// AddFlow additions
     Private m_AFnode As Node
-    'Public InLinks As Collection
+    Private m_Hloc As Integer
+    Private m_Vloc As Integer
     'Public OutLinks As Collection
 
 
@@ -134,6 +135,9 @@ Public Class clsTask
             obj.Engine = NewParent
             obj.LastSrcFld = Me.LastSrcFld
             obj.LastTgtFld = Me.LastTgtFld
+            obj.Hloc = Me.Hloc
+            obj.Vloc = Me.Vloc
+
             'obj.Parent = NewParent 'Me.Parent
 
             '// Make sure All items are loaded first
@@ -458,7 +462,10 @@ Public Class clsTask
             '/////////////////////////////////////////////////////////////////////////
             If Cascade = True Then
                 If ObjMappings.Count > 0 Then
-                    AddNewMappings(cmd)
+                    If AddNewMappings(cmd) = False Then
+                        tran.Rollback()
+                        Exit Try
+                    End If
                 End If
             End If
 
@@ -791,6 +798,34 @@ Public Class clsTask
         Set(ByVal value As Node)
             m_AFnode = value
         End Set
+    End Property
+
+    Public Property Hloc() As Integer
+        Get
+            Return m_Hloc
+        End Get
+        Set(ByVal value As Integer)
+            m_Hloc = value
+        End Set
+    End Property
+
+    Public Property Vloc() As Integer
+        Get
+            Return m_Vloc
+        End Get
+        Set(ByVal value As Integer)
+            m_Vloc = value
+        End Set
+    End Property
+
+    Public ReadOnly Property HasLocation() As Boolean
+        Get
+            If Hloc > 0 And Vloc > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
     End Property
 
 #End Region
@@ -1330,8 +1365,8 @@ Public Class clsTask
                 Case modDeclares.enumMappingType.MAPPING_TYPE_FUN
                     retObj = New clsSQFunction
                     '//some fake id so we wont get an weird error bcoz of no id
-                    CType(retObj, clsSQFunction).SQFunctionId = ID
-                    CType(retObj, clsSQFunction).SQFunctionName = ID
+                    CType(retObj, clsSQFunction).SQFunctionId = Text
+                    CType(retObj, clsSQFunction).SQFunctionName = Text 'ID
                     CType(retObj, clsSQFunction).SQFunctionWithInnerText = Text
                     CType(retObj, clsSQFunction).Parent = Me
                 Case modDeclares.enumMappingType.MAPPING_TYPE_JOIN
@@ -2013,6 +2048,46 @@ Public Class clsTask
     '    End Try
 
     'End Function
+
+    '/// Added for Addflow
+    Function UpdateTaskLocation() As Boolean
+
+        Dim cmd As New Odbc.OdbcCommand
+        Dim tran As Odbc.OdbcTransaction = Nothing
+        Dim sql As String = ""
+
+        Try
+            cmd.Connection = cnn
+            tran = cnn.BeginTransaction()
+            cmd.Transaction = tran
+
+            sql = "Update " & Me.Project.tblTasks & _
+            " set CREATED_USER_ID='" & Me.Hloc.ToString & "', UPDATED_USER_ID='" & Me.Vloc.ToString & "'" & _
+            " where TaskType=" & Me.TaskType & _
+            " AND TaskName=" & Me.GetQuotedText & _
+            " AND EngineName=" & Me.Engine.GetQuotedText & _
+            " AND SystemName=" & Me.Engine.ObjSystem.GetQuotedText & _
+            " AND EnvironmentName=" & Me.Environment.GetQuotedText & _
+            " AND ProjectName=" & Me.Project.GetQuotedText
+
+            cmd.CommandText = sql
+            Log(sql)
+            cmd.ExecuteNonQuery()
+            tran.Commit()
+
+            UpdateTaskLocation = True
+
+        Catch OE As Odbc.OdbcException
+            LogODBCError(OE, "clsTask UpdateTaskLocation", sql)
+            tran.Rollback()
+            UpdateTaskLocation = False
+        Catch ex As Exception
+            LogError(ex, "clsTask UpdateTaskLocation")
+            tran.Rollback()
+            UpdateTaskLocation = False
+        End Try
+
+    End Function
 
 #End Region
 

@@ -71,18 +71,27 @@
 
     End Function
 
+#End Region
+
+#Region "Public Add Node Functions"
+
     Public Function AddSDS(ByRef Sds As clsDatastore, Optional ByVal cnt As Integer = -1, Optional ByVal Palette As Boolean = False) As Boolean
 
         Try
             If Palette = False Then
-                HorizSP = 20
                 Sds.LoadMe()
                 Sds.LoadItems()
-                If cnt > -1 Then
-                    VertSP = 20 + (cnt * VertIncr)
+                If Sds.HasLocation = True Then
+                    HorizSP = Sds.Hloc
+                    VertSP = Sds.Vloc
                 Else
-                    Dim nodeCount As Integer = Sds.Engine.Sources.Count - 1
-                    VertSP = 20 + (nodeCount * VertIncr)
+                    HorizSP = 20
+                    If cnt > -1 Then
+                        VertSP = 20 + (cnt * VertIncr)
+                    Else
+                        Dim nodeCount As Integer = Sds.Engine.Sources.Count - 1
+                        VertSP = 20 + (nodeCount * VertIncr)
+                    End If
                 End If
             Else
                 HorizSP = 5
@@ -122,7 +131,7 @@
             If cnt = -1 Then
                 tabAddFlow.SelectedItem = SrcNode
             End If
-            
+
             Return True
 
         Catch ex As Exception
@@ -137,12 +146,17 @@
         Try
             If Palette = False Then
                 Main.LoadMe()
-                HorizSP = 20 + HorizIncr
-                If cnt > -1 Then
-                    VertSP = 20 + (cnt * VertIncr)
+                If Main.HasLocation = True Then
+                    HorizSP = Main.Hloc
+                    VertSP = Main.Vloc
                 Else
-                    Dim nodeCount As Integer = Main.Engine.Mains.Count - 1
-                    VertSP = 20 + (nodeCount * VertIncr)
+                    HorizSP = 20 + HorizIncr
+                    If cnt > -1 Then
+                        VertSP = 20 + (cnt * VertIncr)
+                    Else
+                        Dim nodeCount As Integer = Main.Engine.Mains.Count - 1
+                        VertSP = 20 + (nodeCount * VertIncr)
+                    End If
                 End If
             Else
                 HorizSP = 5
@@ -191,12 +205,17 @@
             If Gen.TaskType = enumTaskType.TASK_GEN Then
                 If Palette = False Then
                     Gen.LoadMe()
-                    HorizSP = 20 + HorizIncr  ' * 2)
-                    If cnt > -1 Then
-                        VertSP = 50 + VertIncr + (cnt * VertIncr)
+                    If Gen.HasLocation = True Then
+                        HorizSP = Gen.Hloc
+                        VertSP = Gen.Vloc
                     Else
-                        Dim nodeCount As Integer = Gen.Engine.Gens.Count - 1
-                        VertSP = 50 + VertIncr + (nodeCount * VertIncr)
+                        HorizSP = 30 + HorizIncr ' * 2
+                        If cnt > -1 Then
+                            VertSP = 50 + VertIncr + (cnt * VertIncr)
+                        Else
+                            Dim nodeCount As Integer = Gen.Engine.Gens.Count - 1
+                            VertSP = 50 + VertIncr + (nodeCount * VertIncr)
+                        End If
                     End If
                 Else
                     HorizSP = 5
@@ -204,30 +223,31 @@
                 End If
 
                 Dim ProcNode As New Node
-                NodeText = Gen.TaskName
 
-                '--- Get the Addflow node for each Procedure
-                ProcNode = New Node(HorizSP, VertSP, LogicNodeSizeH, LogicNodeSizeV, NodeText, tabAddFlow.DefNodeProp)
-                ProcNode.GradientColor = Color.LightYellow
-                ProcNode.Shape.Style = ShapeStyle.Ellipse
-                'ProcNode.TextColor = Color.Red
+                    NodeText = Gen.TaskName
 
-                ProcNode.ImageIndex = 2
-                '--- Add Object as Tag of node
-                ProcNode.Tag = Gen
-                '--- Add Node to Proc object
-                Gen.AFnode = ProcNode
-                '--- Add the node to the Diagram
-                If Palette = False Then
-                    tabAddFlow.Nodes.Add(ProcNode)
-                Else
-                    afPalette.Nodes.Add(ProcNode)
+                    '--- Get the Addflow node for each Procedure
+                    ProcNode = New Node(HorizSP, VertSP, LogicNodeSizeH, LogicNodeSizeV, NodeText, tabAddFlow.DefNodeProp)
+                    ProcNode.GradientColor = Color.LightYellow
+                    ProcNode.Shape.Style = ShapeStyle.Ellipse
+                    'ProcNode.TextColor = Color.Red
+
+                    ProcNode.ImageIndex = 2
+                    '--- Add Object as Tag of node
+                    ProcNode.Tag = Gen
+                    '--- Add Node to Proc object
+                    Gen.AFnode = ProcNode
+                    '--- Add the node to the Diagram
+                    If Palette = False Then
+                        tabAddFlow.Nodes.Add(ProcNode)
+                    Else
+                        afPalette.Nodes.Add(ProcNode)
+                    End If
+
+                    If cnt = -1 Then
+                        tabAddFlow.SelectedItem = ProcNode
+                    End If
                 End If
-
-                If cnt = -1 Then
-                    tabAddFlow.SelectedItem = ProcNode
-                End If
-            End If
 
             Return True
 
@@ -244,43 +264,48 @@
             If Proc.TaskType <> enumTaskType.TASK_GEN And Proc.TaskType <> enumTaskType.TASK_MAIN Then
                 If Palette = False Then
                     Proc.LoadMe()
-                    HorizSP = 20 + (HorizIncr * 3)
-                    If cnt > -1 Then
-                        VertSP = 20 + (cnt * VertIncr)
+                    If Proc.HasLocation = True Then
+                        HorizSP = Proc.Hloc
+                        VertSP = Proc.Vloc
                     Else
-                        Dim nodeCount As Integer = (Proc.Engine.Procs.Count - Proc.Engine.Gens.Count) - 1
-                        VertSP = 20 + (nodeCount * VertIncr)
+                        HorizSP = 20 + (HorizIncr * 3)
+                        If cnt > -1 Then
+                            VertSP = 20 + (cnt * VertIncr)
+                        Else
+                            Dim nodeCount As Integer = (Proc.Engine.Procs.Count - Proc.Engine.Gens.Count) - 1
+                            VertSP = 20 + (nodeCount * VertIncr)
+                        End If
                     End If
                 Else
                     HorizSP = 5
                     VertSP = 20 + (3 * VertIncr)
                 End If
 
-                Dim ProcNode As New Node
-                NodeText = Proc.TaskName
+                    Dim ProcNode As New Node
+                    NodeText = Proc.TaskName
 
-                '--- Get the Addflow node for each Procedure
-                ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
-                ProcNode.GradientColor = Color.LightCyan
-                ProcNode.Shape.Style = ShapeStyle.AlternateProcess
-                'ProcNode.TextColor = Color.Red
+                    '--- Get the Addflow node for each Procedure
+                    ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
+                    ProcNode.GradientColor = Color.LightCyan
+                    ProcNode.Shape.Style = ShapeStyle.AlternateProcess
+                    'ProcNode.TextColor = Color.Red
 
-                ProcNode.ImageIndex = 2
-                '--- Add Object as Tag of node
-                ProcNode.Tag = Proc
-                '--- Add Node to Proc object
-                Proc.AFnode = ProcNode
-                '--- Add the node to the Diagram
-                If Palette = False Then
-                    tabAddFlow.Nodes.Add(ProcNode)
-                Else
-                    afPalette.Nodes.Add(ProcNode)
+                    ProcNode.ImageIndex = 2
+                    '--- Add Object as Tag of node
+                    ProcNode.Tag = Proc
+                    '--- Add Node to Proc object
+                    Proc.AFnode = ProcNode
+                    '--- Add the node to the Diagram
+                    If Palette = False Then
+                        tabAddFlow.Nodes.Add(ProcNode)
+                    Else
+                        afPalette.Nodes.Add(ProcNode)
+                    End If
+
+                    If cnt = -1 Then
+                        tabAddFlow.SelectedItem = ProcNode
+                    End If
                 End If
-
-                If cnt = -1 Then
-                    tabAddFlow.SelectedItem = ProcNode
-                End If
-            End If
 
             Return True
 
@@ -296,47 +321,52 @@
         Try
             If Palette = False Then
                 Tds.LoadMe()
-                HorizSP = 20 + (HorizIncr * 4)
-                If cnt > -1 Then
-                    VertSP = 20 + (cnt * VertIncr)
+                If Tds.HasLocation = True Then
+                    HorizSP = Tds.Hloc
+                    VertSP = Tds.Vloc
                 Else
-                    Dim nodeCount As Integer = Tds.Engine.Targets.Count - 1
-                    VertSP = 20 + (nodeCount * VertIncr)
+                    HorizSP = 20 + (HorizIncr * 4)
+                    If cnt > -1 Then
+                        VertSP = 20 + (cnt * VertIncr)
+                    Else
+                        Dim nodeCount As Integer = Tds.Engine.Targets.Count - 1
+                        VertSP = 20 + (nodeCount * VertIncr)
+                    End If
                 End If
             Else
                 HorizSP = 5
                 VertSP = 20 + (4 * VertIncr)
             End If
 
-            Dim TgtNode As New Node
-            NodeText = Tds.DatastoreName
+                Dim TgtNode As New Node
+                NodeText = Tds.DatastoreName
 
-            '--- Get the Addflow node for each targetDS
-            TgtNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
-            'TgtNode.OutLinkable = False
+                '--- Get the Addflow node for each targetDS
+                TgtNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
+                'TgtNode.OutLinkable = False
 
-            TgtNode.GradientColor = Color.LightCoral
-            TgtNode.Shape.Style = ShapeStyle.DirectAccessStorage
-            TgtNode.Shape.Orientation = ShapeOrientation.so_270
-            'TgtNode.TextColor = Color.LightSkyBlue
-            'TgtNode.Gradient = True
-            TgtNode.ImageIndex = 3
-            '--- Add Object as Tag of node
-            TgtNode.Tag = Tds
-            '--- Add Node to Proc object
-            Tds.AFnode = TgtNode
-            '--- Add the node to the Diagram
-            If Palette = False Then
-                tabAddFlow.Nodes.Add(TgtNode)
-            Else
-                afPalette.Nodes.Add(TgtNode)
-            End If
+                TgtNode.GradientColor = Color.LightCoral
+                TgtNode.Shape.Style = ShapeStyle.DirectAccessStorage
+                TgtNode.Shape.Orientation = ShapeOrientation.so_270
+                'TgtNode.TextColor = Color.LightSkyBlue
+                'TgtNode.Gradient = True
+                TgtNode.ImageIndex = 3
+                '--- Add Object as Tag of node
+                TgtNode.Tag = Tds
+                '--- Add Node to Proc object
+                Tds.AFnode = TgtNode
+                '--- Add the node to the Diagram
+                If Palette = False Then
+                    tabAddFlow.Nodes.Add(TgtNode)
+                Else
+                    afPalette.Nodes.Add(TgtNode)
+                End If
 
-            If cnt = -1 Then
-                tabAddFlow.SelectedItem = TgtNode
-            End If
+                If cnt = -1 Then
+                    tabAddFlow.SelectedItem = TgtNode
+                End If
 
-            Return True
+                Return True
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab AddTDS")
@@ -598,7 +628,7 @@
 
 #End Region
 
-#Region "Mouse Actions"
+#Region "Addflow Event Handlers"
 
     Private Sub tabAddFlow_MouseDoubleClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles tabAddFlow.MouseDoubleClick
 
@@ -707,6 +737,166 @@
 
     End Sub
 
+    Sub tabAddFlow_AfterAddLink(ByVal sender As Object, ByVal e As AfterAddLinkEventArgs) Handles tabAddFlow.AfterAddLink
+
+        Try
+            If IsEventFromCode = True Then Exit Sub
+
+            Dim OrgNode As Node = e.Link.Org
+            Dim OrgObj As INode = OrgNode.Tag
+            Dim OrgType As String = OrgObj.Type
+            Dim DstNode As Node = e.Link.Dst
+            Dim DstObj As INode = DstNode.Tag
+            Dim DstType As String = DstObj.Type
+
+            'MsgBox("OrgNode > " & OrgNode.Text & Chr(13) & _
+            '       "DstNode > " & DstNode.Text & Chr(13) & _
+            '       "OrgType >> " & OrgType & Chr(13) & _
+            '       "DstType >> " & DstType _
+            '       , MsgBoxStyle.Information)
+
+            Select Case OrgType
+                Case NODE_GEN
+                    'allow links to Tgts, procs
+                    If DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    ElseIf DstType = NODE_PROC Then
+                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
+                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to link to this node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
+
+                Case NODE_LOOKUP
+                    'Only allow link to Main or Gen
+                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
+                        'Only one src per main or Gen
+                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
+                            MsgBox("Only one Source Lookup allowed per Main or Logic procedure", MsgBoxStyle.Information)
+                            e.Link.Remove()
+                        Else
+                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
+                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            End If
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
+
+                Case NODE_MAIN
+                    'allow links to Gens, Procs, Tgts
+                    If DstType = NODE_GEN Or DstType = NODE_PROC Then
+                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
+                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    ElseIf DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
+
+                Case NODE_PROC
+                    'allow links to Tgts
+                    If DstType = NODE_TARGETDATASTORE Then
+                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
+                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
+
+                Case NODE_SOURCEDATASTORE
+                    'Only allow link to Main or Gen
+                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
+                        'Only one src per main or Gen
+                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
+                            MsgBox("Only one Source allowed per Main or Logic procedure", MsgBoxStyle.Information)
+                            e.Link.Remove()
+                        Else
+                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
+                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
+                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
+                            End If
+                        End If
+                    Else
+                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
+                        e.Link.Remove()
+                    End If
+
+                Case NODE_TARGETDATASTORE
+                    'Don't allow Target to outLink
+                    MsgBox("Not Allowed to draw links out from Targets" & Chr(13) & "Draw links to Targets", MsgBoxStyle.Information)
+                    e.Link.Remove()
+
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterAddLink")
+        End Try
+
+    End Sub
+
+    Private Sub tabAddFlow_AfterEdit(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.AfterMove, tabAddFlow.AfterStretch
+
+        Try
+            Me.ObjEng.IsDiagramChanged = True
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
+        End Try
+
+    End Sub
+
+    Private Sub tabAddFlow_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.LostFocus
+
+        Try
+            Me.ObjEng.SaveAddFlowXML()
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
+        End Try
+
+    End Sub
+
+    Private Sub tabAddFlow_AfterMove(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.AfterMove
+
+        Try
+            If tabAddFlow.SelectedItem.Tag IsNot Nothing Then
+                If CType(tabAddFlow.SelectedItem.Tag, INode).Type = NODE_SOURCEDATASTORE Or _
+                    CType(tabAddFlow.SelectedItem.Tag, INode).Type = NODE_TARGETDATASTORE Then
+
+                    CType(tabAddFlow.SelectedItem.Tag, clsDatastore).Vloc = CType(tabAddFlow.SelectedItem, Node).Location.Y
+                    CType(tabAddFlow.SelectedItem.Tag, clsDatastore).Hloc = CType(tabAddFlow.SelectedItem, Node).Location.X
+                    CType(tabAddFlow.SelectedItem.Tag, clsDatastore).DeleteATTR()
+                    CType(tabAddFlow.SelectedItem.Tag, clsDatastore).InsertATTR()
+                Else
+                    CType(tabAddFlow.SelectedItem.Tag, clsTask).Vloc = CType(tabAddFlow.SelectedItem, Node).Location.Y
+                    CType(tabAddFlow.SelectedItem.Tag, clsTask).Hloc = CType(tabAddFlow.SelectedItem, Node).Location.X
+                    CType(tabAddFlow.SelectedItem.Tag, clsTask).UpdateTaskLocation()
+                End If
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterMove")
+        End Try
+
+    End Sub
+
 #End Region
 
 #Region "Toolbar Actions"
@@ -787,7 +977,7 @@
                 tabAddFlow.Zoom.X = tabAddFlow.Zoom.X - 0.1
                 tabAddFlow.Zoom.Y = tabAddFlow.Zoom.Y - 0.1
             End If
-            
+
             tabAddFlow.Refresh()
 
         Catch ex As Exception
@@ -834,7 +1024,7 @@
     End Sub
 
 #End Region
-   
+
 #Region "Helper Functions"
 
     Private Sub CloseTab()
@@ -1721,121 +1911,7 @@
 
 #End Region
 
-#Region "Link Event Handlers"
-
-    Sub tabAddFlow_AfterAddLink(ByVal sender As Object, ByVal e As AfterAddLinkEventArgs) Handles tabAddFlow.AfterAddLink
-
-        Try
-            If IsEventFromCode = True Then Exit Sub
-
-            Dim OrgNode As Node = e.Link.Org
-            Dim OrgObj As INode = OrgNode.Tag
-            Dim OrgType As String = OrgObj.Type
-            Dim DstNode As Node = e.Link.Dst
-            Dim DstObj As INode = DstNode.Tag
-            Dim DstType As String = DstObj.Type
-
-            'MsgBox("OrgNode > " & OrgNode.Text & Chr(13) & _
-            '       "DstNode > " & DstNode.Text & Chr(13) & _
-            '       "OrgType >> " & OrgType & Chr(13) & _
-            '       "DstType >> " & DstType _
-            '       , MsgBoxStyle.Information)
-
-            Select Case OrgType
-                Case NODE_GEN
-                    'allow links to Tgts, procs
-                    If DstType = NODE_TARGETDATASTORE Then
-                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
-                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
-                        End If
-                    ElseIf DstType = NODE_PROC Then
-                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
-                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
-                        End If
-                    Else
-                        MsgBox("Not Allowed to link to this node", MsgBoxStyle.Information)
-                        e.Link.Remove()
-                    End If
-
-                Case NODE_LOOKUP
-                    'Only allow link to Main or Gen
-                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
-                        'Only one src per main or Gen
-                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
-                            MsgBox("Only one Source Lookup allowed per Main or Logic procedure", MsgBoxStyle.Information)
-                            e.Link.Remove()
-                        Else
-                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
-                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
-                            End If
-                        End If
-                    Else
-                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
-                        e.Link.Remove()
-                    End If
-
-                Case NODE_MAIN
-                    'allow links to Gens, Procs, Tgts
-                    If DstType = NODE_GEN Or DstType = NODE_PROC Then
-                        If AddLink_TaskToTask(CType(DstObj, clsTask), CType(OrgObj, clsTask)) = True Then
-                            'CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
-                        End If
-                    ElseIf DstType = NODE_TARGETDATASTORE Then
-                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
-                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
-                        End If
-                    Else
-                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
-                        e.Link.Remove()
-                    End If
-
-                Case NODE_PROC
-                    'allow links to Tgts
-                    If DstType = NODE_TARGETDATASTORE Then
-                        If AddLink_TaskToTarget(CType(DstObj, clsDatastore), CType(OrgObj, clsTask)) = True Then
-                            'CType(DstObj, clsDatastore).AFnode.DrawColor = Color.Red
-                            CType(OrgObj, clsTask).AFnode.DrawColor = Color.Red
-                        End If
-                    Else
-                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
-                        e.Link.Remove()
-                    End If
-
-                Case NODE_SOURCEDATASTORE
-                    'Only allow link to Main or Gen
-                    If DstType = NODE_MAIN Or DstType = NODE_GEN Then
-                        'Only one src per main or Gen
-                        If CType(DstObj, clsTask).ObjSources.Count > 0 Then
-                            MsgBox("Only one Source allowed per Main or Logic procedure", MsgBoxStyle.Information)
-                            e.Link.Remove()
-                        Else
-                            If AddLink_SrcToTask(CType(DstObj, clsTask), CType(OrgObj, clsDatastore)) = True Then
-                                CType(DstObj, clsTask).AFnode.DrawColor = Color.Red
-                                'CType(OrgObj, clsDatastore).AFnode.DrawColor = Color.Red
-                            End If
-                        End If
-                    Else
-                        MsgBox("Not Allowed to draw links to this Type of Node", MsgBoxStyle.Information)
-                        e.Link.Remove()
-                    End If
-
-                Case NODE_TARGETDATASTORE
-                    'Don't allow Target to outLink
-                    MsgBox("Not Allowed to draw links out from Targets" & Chr(13) & "Draw links to Targets", MsgBoxStyle.Information)
-                    e.Link.Remove()
-
-            End Select
-
-        Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterAddLink")
-        End Try
-
-    End Sub
+#Region "Link Adds"
 
     Function AddLink_TaskToTarget(ByVal DstObj As clsDatastore, ByVal OrgObj As clsTask) As Boolean
 
@@ -1939,27 +2015,5 @@
     End Function
 
 #End Region
-
-    Private Sub tabAddFlow_AfterEdit(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.AfterMove, tabAddFlow.AfterStretch
-
-        Try
-            Me.ObjEng.IsDiagramChanged = True
-
-        Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
-        End Try
-
-    End Sub
-
-    Private Sub tabAddFlow_LostFocus(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tabAddFlow.LostFocus
-
-        Try
-            Me.ObjEng.SaveAddFlowXML()
-
-        Catch ex As Exception
-            LogError(ex, "ctlAddFlowTab tabAddFlow_AfterEdit")
-        End Try
-
-    End Sub
 
 End Class

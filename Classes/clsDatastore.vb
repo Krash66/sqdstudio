@@ -66,6 +66,8 @@ Public Class clsDatastore
 
     '/// AddFlow Additions
     Private m_AFnode As Node
+    Private m_Hloc As Integer
+    Private m_Vloc As Integer
     'Public InLinks As Collection
     'Public OutLinks As Collection
 
@@ -191,6 +193,8 @@ Public Class clsDatastore
             obj.IfNullNum = Me.IfNullNum
             obj.InValidChar = Me.InValidChar
             obj.InValidNum = Me.InValidNum
+            obj.Hloc = Me.Hloc
+            obj.Vloc = Me.Vloc
 
 
             obj.IsModified = Me.IsModified
@@ -816,6 +820,10 @@ Public Class clsDatastore
                         Me.IsLookUp = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
                     Case "ISKEYCHNG"
                         Me.IsKeyChng = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "HLOC"
+                        Me.Hloc = GetVal(dr("DATASTOREATTRBVALUE"))   ')   'GetStr(
+                    Case "VLOC"
+                        Me.Vloc = GetVal(dr("DATASTOREATTRBVALUE"))
                 End Select
             Next
 
@@ -1220,6 +1228,34 @@ Public Class clsDatastore
         Set(ByVal value As Node)
             m_AFnode = value
         End Set
+    End Property
+
+    Public Property Hloc() As Integer
+        Get
+            Return m_Hloc
+        End Get
+        Set(ByVal value As Integer)
+            m_Hloc = value
+        End Set
+    End Property
+
+    Public Property Vloc() As Integer
+        Get
+            Return m_Vloc
+        End Get
+        Set(ByVal value As Integer)
+            m_Vloc = value
+        End Set
+    End Property
+
+    Public ReadOnly Property HasLocation() As Boolean
+        Get
+            If Hloc > 0 And Vloc > 0 Then
+                Return True
+            Else
+                Return False
+            End If
+        End Get
     End Property
 
 #End Region
@@ -2500,7 +2536,7 @@ NextSel:        '// next selection
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 24
+            For i As Integer = 0 To 26
                 Select Case i
                     Case 0
                         Attrib = "COLUMNDELIMITER"
@@ -2577,6 +2613,13 @@ NextSel:        '// next selection
                     Case 24
                         Attrib = "ISKEYCHNG"
                         Value = Me.IsKeyChng
+                    Case 25
+                        Attrib = "HLOC"
+                        Value = Me.Hloc
+                    Case 26
+                        Attrib = "VLOC"
+                        Value = Me.Vloc
+
                         'Case 11
                         'Attrib = "ONCMMTKEY"
                         'Value = Me.IsCmmtKey
