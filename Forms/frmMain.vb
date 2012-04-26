@@ -7015,14 +7015,23 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                 If DoSave() = MsgBoxResult.Cancel Then Exit Sub
                 If CurLoadedProject IsNot Nothing Then
                     CurLoadedProject.Save()
-                    'CurLoadedProject.SaveToRegistry()
                     CurLoadedProject.SaveToXML()
+                    'CurLoadedProject.SaveToRegistry()   
                     ResetTabs()
                     CurLoadedProject = Nothing
                 End If
                 For Each nd As TreeNode In tvExplorer.Nodes
-                    nd = tvExplorer.Nodes(0) 'with out this it wont remove the nodes in an order and causes an exception. 
-                    nd.Remove()
+                    'with out this it wont remove the nodes in an order and causes an exception. 
+                    'nd = tvExplorer.Nodes(0)
+                    'each node must have it's Addflow Tab(s) removed
+                    If nd.Tag IsNot Nothing Then
+                        If CType(nd.Tag, INode).Type = NODE_PROJECT Then
+                            CurLoadedProject = CType(nd.Tag, clsProject)
+                            If ResetTabs() = True Then
+                                nd.Remove()
+                            End If
+                        End If
+                    End If
                 Next
                 HideAllUC()
                 ctFolder.Clear()
@@ -7138,6 +7147,11 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End If
             cnn.Close()
             HideAllUC()
+
+            If tvExplorer.Nodes.Count > 0 Then
+                tvExplorer.SelectedNode = tvExplorer.Nodes(0)
+                ShowUsercontrol(tvExplorer.SelectedNode)
+            End If
 
 
         Catch ex As Exception
@@ -9954,23 +9968,17 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
     Function AddAFnode(ByVal ObjEng As clsEngine, ByVal oNewNode As INode) As Boolean
 
         Try
-            
             Select Case oNewNode.Type
                 Case NODE_LOOKUP, NODE_SOURCEDATASTORE
                     ObjEng.ObjAddFlowCtl.AddSDS(CType(oNewNode, clsDatastore))
-
                 Case NODE_MAIN
                     ObjEng.ObjAddFlowCtl.AddMain(CType(oNewNode, clsTask))
-
                 Case NODE_GEN
                     ObjEng.ObjAddFlowCtl.AddGen(CType(oNewNode, clsTask))
-
                 Case NODE_PROC
                     ObjEng.ObjAddFlowCtl.AddProc(CType(oNewNode, clsTask))
-
                 Case NODE_TARGETDATASTORE
                     ObjEng.ObjAddFlowCtl.AddTDS(CType(oNewNode, clsDatastore))
-
             End Select
 
             Return True
@@ -9992,6 +10000,8 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                     Next
                 Next
             Next
+
+            Return True
 
         Catch ex As Exception
             LogError(ex, "frmMain ResetTabs")

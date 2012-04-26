@@ -168,7 +168,7 @@ Partial Class ctlAddFlowTab
         Me.cms1.Name = "cms1"
         Me.cms1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.cms1.ShowImageMargin = False
-        Me.cms1.Size = New System.Drawing.Size(175, 274)
+        Me.cms1.Size = New System.Drawing.Size(175, 252)
         '
         'mnuAddSrc
         '
@@ -180,118 +180,118 @@ Partial Class ctlAddFlowTab
         'mnuSrcBinary
         '
         Me.mnuSrcBinary.Name = "mnuSrcBinary"
-        Me.mnuSrcBinary.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcBinary.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcBinary.Text = "Binary"
         '
         'mnuSrcText
         '
         Me.mnuSrcText.Name = "mnuSrcText"
-        Me.mnuSrcText.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcText.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcText.Text = "Text"
         '
         'mnuSrcDelimited
         '
         Me.mnuSrcDelimited.Name = "mnuSrcDelimited"
-        Me.mnuSrcDelimited.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcDelimited.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcDelimited.Text = "Delimited"
         '
         'mnuSrcXML
         '
         Me.mnuSrcXML.Name = "mnuSrcXML"
-        Me.mnuSrcXML.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcXML.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcXML.Text = "XML"
         '
         'mnuSrcRelational
         '
         Me.mnuSrcRelational.Name = "mnuSrcRelational"
-        Me.mnuSrcRelational.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcRelational.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcRelational.Text = "Relational"
         '
         'mnuSrcDB2LOAD
         '
         Me.mnuSrcDB2LOAD.Name = "mnuSrcDB2LOAD"
-        Me.mnuSrcDB2LOAD.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcDB2LOAD.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcDB2LOAD.Text = "DB2LOAD"
         '
         'mnuSrcHSSUNLOAD
         '
         Me.mnuSrcHSSUNLOAD.Name = "mnuSrcHSSUNLOAD"
-        Me.mnuSrcHSSUNLOAD.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcHSSUNLOAD.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcHSSUNLOAD.Text = "HSSUNLOAD"
         '
         'mnuSrcIMSDB
         '
         Me.mnuSrcIMSDB.Name = "mnuSrcIMSDB"
-        Me.mnuSrcIMSDB.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcIMSDB.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcIMSDB.Text = "IMS DB"
         '
         'mnuSrcVSAM
         '
         Me.mnuSrcVSAM.Name = "mnuSrcVSAM"
-        Me.mnuSrcVSAM.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcVSAM.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcVSAM.Text = "VSAM"
         '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator5.Size = New System.Drawing.Size(142, 6)
         '
         'mnuSrcIMSCDC
         '
         Me.mnuSrcIMSCDC.Name = "mnuSrcIMSCDC"
-        Me.mnuSrcIMSCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcIMSCDC.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcIMSCDC.Text = "IMS CDC"
         '
         'mnuSrcIMSCDCLE
         '
         Me.mnuSrcIMSCDCLE.Name = "mnuSrcIMSCDCLE"
-        Me.mnuSrcIMSCDCLE.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcIMSCDCLE.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcIMSCDCLE.Text = "IMS CDC LE"
         '
         'mnuSrcDB2CDC
         '
         Me.mnuSrcDB2CDC.Name = "mnuSrcDB2CDC"
-        Me.mnuSrcDB2CDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcDB2CDC.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcDB2CDC.Text = "DB2 CDC"
         '
         'mnuSrcVSAMCDC
         '
         Me.mnuSrcVSAMCDC.Name = "mnuSrcVSAMCDC"
-        Me.mnuSrcVSAMCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcVSAMCDC.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcVSAMCDC.Text = "VSAM CDC"
         '
         'mnuSrcOracleCDC
         '
         Me.mnuSrcOracleCDC.Name = "mnuSrcOracleCDC"
-        Me.mnuSrcOracleCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcOracleCDC.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcOracleCDC.Text = "Oracle CDC"
         '
         'mnuSrcUTSCDC
         '
         Me.mnuSrcUTSCDC.Name = "mnuSrcUTSCDC"
-        Me.mnuSrcUTSCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcUTSCDC.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcUTSCDC.Text = "UTSCDC"
         '
         'ToolStripSeparator6
         '
         Me.ToolStripSeparator6.Name = "ToolStripSeparator6"
-        Me.ToolStripSeparator6.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator6.Size = New System.Drawing.Size(142, 6)
         '
         'mnuSrcIBMEvent
         '
         Me.mnuSrcIBMEvent.Name = "mnuSrcIBMEvent"
-        Me.mnuSrcIBMEvent.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcIBMEvent.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcIBMEvent.Text = "IBM Event"
         '
         'ToolStripSeparator7
         '
         Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
-        Me.ToolStripSeparator7.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator7.Size = New System.Drawing.Size(142, 6)
         '
         'mnuSrcIncludeFile
         '
         Me.mnuSrcIncludeFile.Name = "mnuSrcIncludeFile"
-        Me.mnuSrcIncludeFile.Size = New System.Drawing.Size(152, 22)
+        Me.mnuSrcIncludeFile.Size = New System.Drawing.Size(145, 22)
         Me.mnuSrcIncludeFile.Text = "Include File"
         '
         'mnuAddTgt
@@ -304,106 +304,106 @@ Partial Class ctlAddFlowTab
         'mnuTgtBinary
         '
         Me.mnuTgtBinary.Name = "mnuTgtBinary"
-        Me.mnuTgtBinary.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtBinary.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtBinary.Text = "Binary"
         '
         'mnuTgtText
         '
         Me.mnuTgtText.Name = "mnuTgtText"
-        Me.mnuTgtText.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtText.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtText.Text = "Text"
         '
         'mnuTgtDelimited
         '
         Me.mnuTgtDelimited.Name = "mnuTgtDelimited"
-        Me.mnuTgtDelimited.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtDelimited.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtDelimited.Text = "Delimited"
         '
         'mnuTgtXML
         '
         Me.mnuTgtXML.Name = "mnuTgtXML"
-        Me.mnuTgtXML.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtXML.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtXML.Text = "XML"
         '
         'mnuTgtRelational
         '
         Me.mnuTgtRelational.Name = "mnuTgtRelational"
-        Me.mnuTgtRelational.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtRelational.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtRelational.Text = "Relational"
         '
         'mnuTgtDB2LOAD
         '
         Me.mnuTgtDB2LOAD.Name = "mnuTgtDB2LOAD"
-        Me.mnuTgtDB2LOAD.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtDB2LOAD.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtDB2LOAD.Text = "DB2LOAD"
         '
         'mnuTgtIMSDB
         '
         Me.mnuTgtIMSDB.Name = "mnuTgtIMSDB"
-        Me.mnuTgtIMSDB.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtIMSDB.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtIMSDB.Text = "IMS DB"
         '
         'mnuTgtVSAM
         '
         Me.mnuTgtVSAM.Name = "mnuTgtVSAM"
-        Me.mnuTgtVSAM.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtVSAM.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtVSAM.Text = "VSAM"
         '
         'ToolStripSeparator8
         '
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
-        Me.ToolStripSeparator8.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator8.Size = New System.Drawing.Size(137, 6)
         '
         'mnuTgtIMSCDC
         '
         Me.mnuTgtIMSCDC.Name = "mnuTgtIMSCDC"
-        Me.mnuTgtIMSCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtIMSCDC.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtIMSCDC.Text = "IMS CDC"
         '
         'mnuTgtDB2CDC
         '
         Me.mnuTgtDB2CDC.Name = "mnuTgtDB2CDC"
-        Me.mnuTgtDB2CDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtDB2CDC.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtDB2CDC.Text = "DB2 CDC"
         '
         'mnuTgtVSAMCDC
         '
         Me.mnuTgtVSAMCDC.Name = "mnuTgtVSAMCDC"
-        Me.mnuTgtVSAMCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtVSAMCDC.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtVSAMCDC.Text = "VSAM CDC"
         '
         'mnuTgtOracleCDC
         '
         Me.mnuTgtOracleCDC.Name = "mnuTgtOracleCDC"
-        Me.mnuTgtOracleCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtOracleCDC.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtOracleCDC.Text = "Oracle CDC"
         '
         'mnuTgtUTSCDC
         '
         Me.mnuTgtUTSCDC.Name = "mnuTgtUTSCDC"
-        Me.mnuTgtUTSCDC.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtUTSCDC.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtUTSCDC.Text = "UTSCDC"
         '
         'ToolStripSeparator9
         '
         Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(137, 6)
         '
         'mnuTgtIBMEvent
         '
         Me.mnuTgtIBMEvent.Name = "mnuTgtIBMEvent"
-        Me.mnuTgtIBMEvent.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtIBMEvent.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtIBMEvent.Text = "IBM Event"
         '
         'ToolStripSeparator10
         '
         Me.ToolStripSeparator10.Name = "ToolStripSeparator10"
-        Me.ToolStripSeparator10.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator10.Size = New System.Drawing.Size(137, 6)
         '
         'mnuTgtIncludeFile
         '
         Me.mnuTgtIncludeFile.Name = "mnuTgtIncludeFile"
-        Me.mnuTgtIncludeFile.Size = New System.Drawing.Size(152, 22)
+        Me.mnuTgtIncludeFile.Size = New System.Drawing.Size(140, 22)
         Me.mnuTgtIncludeFile.Text = "Include File"
         '
         'mnuAddLU
