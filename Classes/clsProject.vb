@@ -658,7 +658,8 @@ Public Class clsProject
                 If testName.Equals(readName, StringComparison.CurrentCultureIgnoreCase) = True Then
                     NameValid = False
                     If InReg = False Then
-                        MsgBox("The new Project name you have chosen already exists," & (Chr(13)) & "Please enter a different Project Name", MsgBoxStyle.Information, MsgTitle)
+                        MsgBox("The new Project name you have chosen already exists," & (Chr(13)) & _
+                               "Please enter a different Project Name", MsgBoxStyle.Information, MsgTitle)
                     End If
                     Exit While
                 End If

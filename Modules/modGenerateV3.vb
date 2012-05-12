@@ -2515,8 +2515,7 @@ errorgoto:
                     Case DS_ACCESSMETHOD_IP
                         DSname = "tcp://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
                     Case DS_ACCESSMETHOD_MQSERIES
-                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                        Strings.Left(DSname, 3) = "dD:" Then
+                        If Strings.Left(DSname.ToUpper, 3) = "DD:" Then  'Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or Strings.Left(DSname, 3) = "dD:"
                             DSname = ds.DsPhysicalSource
                         Else
                             If MQstr.Trim = "" Then
@@ -2530,6 +2529,7 @@ errorgoto:
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
                     Case Else
+                        '*************** CDCStore ??? ***********************
                         DSname = ds.DsPhysicalSource
                 End Select
 

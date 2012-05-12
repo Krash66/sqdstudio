@@ -298,7 +298,7 @@ Public Class clsSQFunction
     Public Sub New(ByVal Text As String)
         m_GUID = GetNewId()
         SQFunctionName = Text
-        '   SQFunctionId = GetNodeId(Me)  '// commented out by TK and KS 11/3/06
+        'SQFunctionId = GetNodeId(Me)  '// commented out by TK and KS 11/3/06
     End Sub
 
 End Class

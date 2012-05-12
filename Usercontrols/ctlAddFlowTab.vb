@@ -6,11 +6,11 @@
     Private Const HorizIncr As Integer = 110
     Private Const VertIncr As Integer = 90
     Dim NodeText As String
-    Dim Nodesize As Integer = 65
-    Dim DSnodeSize As Integer = 55
-    Dim ProcNodeSize As Integer = 55
-    Dim LogicNodeSizeH As Integer = 85
-    Dim LogicNodeSizeV As Integer = 55
+    Dim Nodesize As Integer = 70
+    Dim DSnodeSize As Integer = 60
+    Dim ProcNodeSize As Integer = 60
+    Dim LogicNodeSizeH As Integer = 90
+    Dim LogicNodeSizeV As Integer = 60
     Private strFileName As String = ""
     Private IsEventFromCode As Boolean
 
@@ -24,6 +24,9 @@
 
             Me.tabAddFlow.Items.Clear()
 
+            If ObjEng Is Nothing Then
+                ObjEng = Me.Tag
+            End If
             '************************************************************
             '*** Add Logic here to use existing XML diagram if unchanged
             'If ObjEng.IsDiagramChanged = True And System.IO.File.Exists(Me.ObjEng.CurAddFlowDiagPath) = True Then
@@ -60,7 +63,7 @@
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Microsoft Access Macro Shortcut (.mam).ico")
             'af.Images.Add("C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\images\Can_!.ico")
 
-            'LoadPalette()
+            LoadPalette()
 
             Return RefreshAddFlow()
 
@@ -224,30 +227,30 @@
 
                 Dim ProcNode As New Node
 
-                    NodeText = Gen.TaskName
+                NodeText = Gen.TaskName
 
-                    '--- Get the Addflow node for each Procedure
-                    ProcNode = New Node(HorizSP, VertSP, LogicNodeSizeH, LogicNodeSizeV, NodeText, tabAddFlow.DefNodeProp)
-                    ProcNode.GradientColor = Color.LightYellow
-                    ProcNode.Shape.Style = ShapeStyle.Ellipse
-                    'ProcNode.TextColor = Color.Red
+                '--- Get the Addflow node for each Procedure
+                ProcNode = New Node(HorizSP, VertSP, LogicNodeSizeH, LogicNodeSizeV, NodeText, tabAddFlow.DefNodeProp)
+                ProcNode.GradientColor = Color.LightYellow
+                ProcNode.Shape.Style = ShapeStyle.Decision
+                'ProcNode.TextColor = Color.Red
 
-                    ProcNode.ImageIndex = 2
-                    '--- Add Object as Tag of node
-                    ProcNode.Tag = Gen
-                    '--- Add Node to Proc object
-                    Gen.AFnode = ProcNode
-                    '--- Add the node to the Diagram
-                    If Palette = False Then
-                        tabAddFlow.Nodes.Add(ProcNode)
-                    Else
-                        afPalette.Nodes.Add(ProcNode)
-                    End If
-
-                    If cnt = -1 Then
-                        tabAddFlow.SelectedItem = ProcNode
-                    End If
+                ProcNode.ImageIndex = 2
+                '--- Add Object as Tag of node
+                ProcNode.Tag = Gen
+                '--- Add Node to Proc object
+                Gen.AFnode = ProcNode
+                '--- Add the node to the Diagram
+                If Palette = False Then
+                    tabAddFlow.Nodes.Add(ProcNode)
+                Else
+                    afPalette.Nodes.Add(ProcNode)
                 End If
+
+                If cnt = -1 Then
+                    tabAddFlow.SelectedItem = ProcNode
+                End If
+            End If
 
             Return True
 
@@ -281,31 +284,31 @@
                     VertSP = 20 + (3 * VertIncr)
                 End If
 
-                    Dim ProcNode As New Node
-                    NodeText = Proc.TaskName
+                Dim ProcNode As New Node
+                NodeText = Proc.TaskName
 
-                    '--- Get the Addflow node for each Procedure
-                    ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
-                    ProcNode.GradientColor = Color.LightCyan
-                    ProcNode.Shape.Style = ShapeStyle.AlternateProcess
-                    'ProcNode.TextColor = Color.Red
+                '--- Get the Addflow node for each Procedure
+                ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
+                ProcNode.GradientColor = Color.LightCyan
+                ProcNode.Shape.Style = ShapeStyle.AlternateProcess
+                'ProcNode.TextColor = Color.Red
 
-                    ProcNode.ImageIndex = 2
-                    '--- Add Object as Tag of node
-                    ProcNode.Tag = Proc
-                    '--- Add Node to Proc object
-                    Proc.AFnode = ProcNode
-                    '--- Add the node to the Diagram
-                    If Palette = False Then
-                        tabAddFlow.Nodes.Add(ProcNode)
-                    Else
-                        afPalette.Nodes.Add(ProcNode)
-                    End If
-
-                    If cnt = -1 Then
-                        tabAddFlow.SelectedItem = ProcNode
-                    End If
+                ProcNode.ImageIndex = 2
+                '--- Add Object as Tag of node
+                ProcNode.Tag = Proc
+                '--- Add Node to Proc object
+                Proc.AFnode = ProcNode
+                '--- Add the node to the Diagram
+                If Palette = False Then
+                    tabAddFlow.Nodes.Add(ProcNode)
+                Else
+                    afPalette.Nodes.Add(ProcNode)
                 End If
+
+                If cnt = -1 Then
+                    tabAddFlow.SelectedItem = ProcNode
+                End If
+            End If
 
             Return True
 
@@ -338,35 +341,35 @@
                 VertSP = 20 + (4 * VertIncr)
             End If
 
-                Dim TgtNode As New Node
-                NodeText = Tds.DatastoreName
+            Dim TgtNode As New Node
+            NodeText = Tds.DatastoreName
 
-                '--- Get the Addflow node for each targetDS
-                TgtNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
-                'TgtNode.OutLinkable = False
+            '--- Get the Addflow node for each targetDS
+            TgtNode = New Node(HorizSP, VertSP, DSnodeSize, DSnodeSize, NodeText, tabAddFlow.DefNodeProp)
+            'TgtNode.OutLinkable = False
 
-                TgtNode.GradientColor = Color.LightCoral
-                TgtNode.Shape.Style = ShapeStyle.DirectAccessStorage
-                TgtNode.Shape.Orientation = ShapeOrientation.so_270
-                'TgtNode.TextColor = Color.LightSkyBlue
-                'TgtNode.Gradient = True
-                TgtNode.ImageIndex = 3
-                '--- Add Object as Tag of node
-                TgtNode.Tag = Tds
-                '--- Add Node to Proc object
-                Tds.AFnode = TgtNode
-                '--- Add the node to the Diagram
-                If Palette = False Then
-                    tabAddFlow.Nodes.Add(TgtNode)
-                Else
-                    afPalette.Nodes.Add(TgtNode)
-                End If
+            TgtNode.GradientColor = Color.LightCoral
+            TgtNode.Shape.Style = ShapeStyle.DirectAccessStorage
+            TgtNode.Shape.Orientation = ShapeOrientation.so_270
+            'TgtNode.TextColor = Color.LightSkyBlue
+            'TgtNode.Gradient = True
+            TgtNode.ImageIndex = 3
+            '--- Add Object as Tag of node
+            TgtNode.Tag = Tds
+            '--- Add Node to Proc object
+            Tds.AFnode = TgtNode
+            '--- Add the node to the Diagram
+            If Palette = False Then
+                tabAddFlow.Nodes.Add(TgtNode)
+            Else
+                afPalette.Nodes.Add(TgtNode)
+            End If
 
-                If cnt = -1 Then
-                    tabAddFlow.SelectedItem = TgtNode
-                End If
+            If cnt = -1 Then
+                tabAddFlow.SelectedItem = TgtNode
+            End If
 
-                Return True
+            Return True
 
         Catch ex As Exception
             LogError(ex, "ctlAddFlowTab AddTDS")
@@ -1426,81 +1429,81 @@
 
 #Region "Palette"
 
-    'Private Sub LoadPalette()
+    Private Sub LoadPalette()
 
-    '    Try
+        Try
 
-    '        '/// Add Source to Palette
-    '        Dim NewSDS As New clsDatastore
-    '        With NewSDS
-    '            .DatastoreType = enumDatastore.DS_BINARY
-    '            .DsDirection = DS_DIRECTION_SOURCE
-    '        End With
-    '        AddSDS(NewSDS, 0, True)
+            '/// Add Source to Palette
+            Dim NewSDS As New clsDatastore
+            With NewSDS
+                .DatastoreType = enumDatastore.DS_BINARY
+                .DsDirection = DS_DIRECTION_SOURCE
+            End With
+            AddSDS(NewSDS, 0, True)
 
-    '        '/// Add Main to Palette
-    '        Dim NewMain As New clsTask
-    '        With NewMain
-    '            .TaskType = enumTaskType.TASK_MAIN
-    '        End With
-    '        AddMain(NewMain, 0, True)
+            '/// Add Main to Palette
+            Dim NewMain As New clsTask
+            With NewMain
+                .TaskType = enumTaskType.TASK_MAIN
+            End With
+            AddMain(NewMain, 0, True)
 
-    '        '/// Add General Proc to Palette
-    '        Dim NewGen As New clsTask
-    '        With NewGen
-    '            .TaskType = enumTaskType.TASK_GEN
-    '        End With
-    '        AddGen(NewGen, 0, True)
+            '/// Add General Proc to Palette
+            Dim NewGen As New clsTask
+            With NewGen
+                .TaskType = enumTaskType.TASK_GEN
+            End With
+            AddGen(NewGen, 0, True)
 
-    '        '/// Add Mapping Proc
-    '        Dim NewProc As New clsTask
-    '        With NewProc
-    '            .TaskType = enumTaskType.TASK_PROC
-    '        End With
-    '        AddProc(NewProc, 0, True)
+            '/// Add Mapping Proc
+            Dim NewProc As New clsTask
+            With NewProc
+                .TaskType = enumTaskType.TASK_PROC
+            End With
+            AddProc(NewProc, 0, True)
 
-    '        '/// Add Target to Palette
-    '        Dim NewTGT As New clsDatastore
-    '        With NewTGT
-    '            .DsDirection = DS_DIRECTION_TARGET
-    '            .DatastoreType = enumDatastore.DS_BINARY
-    '        End With
-    '        AddTDS(NewTGT, 0, True)
+            '/// Add Target to Palette
+            Dim NewTGT As New clsDatastore
+            With NewTGT
+                .DsDirection = DS_DIRECTION_TARGET
+                .DatastoreType = enumDatastore.DS_BINARY
+            End With
+            AddTDS(NewTGT, 0, True)
 
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlAddFlowTab LoadPalette")
-    '    End Try
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab LoadPalette")
+        End Try
 
-    'End Sub
+    End Sub
 
-    'Private Sub afPalette_AfterSelect(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles afPalette.AfterSelect
+    Private Sub afPalette_AfterSelect(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles afPalette.AfterSelect
 
-    '    Try
-    '        Dim itm As Node = afPalette.SelectedItem
+        Try
+            Dim itm As Node = afPalette.SelectedItem
 
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlAddFlowTab afPalette_AfterSelect")
-    '    End Try
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab afPalette_AfterSelect")
+        End Try
 
-    'End Sub
+    End Sub
 
-    'Private Sub afPalette_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles afPalette.MouseDown
+    Private Sub afPalette_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles afPalette.MouseDown
 
-    '    Try
-    '        afPalette.SelectedItem = afPalette.PointedItem
-    '        afPalette.Refresh()
+        Try
+            afPalette.SelectedItem = afPalette.PointedItem
+            afPalette.Refresh()
 
-    '        If afPalette.PointedItem IsNot Nothing Then
-    '            Windows.Forms.Clipboard.Clear()
-    '            Windows.Forms.Clipboard.SetDataObject(afPalette.PointedItem)
+            If afPalette.PointedItem IsNot Nothing Then
+                Windows.Forms.Clipboard.Clear()
+                Windows.Forms.Clipboard.SetDataObject(afPalette.PointedItem)
 
-    '        End If
+            End If
 
-    '    Catch ex As Exception
-    '        LogError(ex, "ctlAddFlowTab afPalette_MouseDown")
-    '    End Try
+        Catch ex As Exception
+            LogError(ex, "ctlAddFlowTab afPalette_MouseDown")
+        End Try
 
-    'End Sub
+    End Sub
 
     'Private Sub mnuPaste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuPaste.Click
 

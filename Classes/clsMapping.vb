@@ -458,6 +458,8 @@ Public Class clsMapping
                     Return " "
                 Else
                     '//Other than Field all are string type
+
+                    '//////// Put elseif here for Functions
                     Return CType(Me.MappingSource, INode).Text
                 End If
             Else

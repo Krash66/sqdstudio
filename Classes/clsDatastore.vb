@@ -1984,9 +1984,9 @@ Public Class clsDatastore
                     Log(strSql)
                     cmd.ExecuteNonQuery()
 
-
-                    selOld.ObjSelection.ObjDSselections.Remove(selOld.Key)
-
+                    If selOld.ObjSelection.ObjDSselections.Contains(selOld.Key) = True Then
+                        selOld.ObjSelection.ObjDSselections.Remove(selOld.Key)
+                    End If
                 End If
             Next
 

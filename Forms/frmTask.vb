@@ -296,7 +296,7 @@ Public Class frmTask
                         End If
                     Next
                 Else
-                    If NamePrefix = "P_Proc" Then
+                    If NamePrefix = "M_Proc" Or NamePrefix = "L_Proc" Then
                         If objThis.Engine Is Nothing Then
                             For Each TestProc As clsTask In EnvObj.Procedures
                                 If TestProc.TaskName = NewName Then

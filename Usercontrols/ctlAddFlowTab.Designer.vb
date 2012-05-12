@@ -129,12 +129,11 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.DefLinkProp.StartCap = System.Drawing.Drawing2D.LineCap.Round
         Me.tabAddFlow.DefLinkProp.Tag = Nothing
         Me.tabAddFlow.DefLinkProp.ZOrder = -1
-        Me.tabAddFlow.DefNodeProp.Alignment = Lassalle.Flow.Alignment.CenterTOP
         Me.tabAddFlow.DefNodeProp.BackMode = Lassalle.Flow.BackMode.Opaque
-        Me.tabAddFlow.DefNodeProp.DrawColor = System.Drawing.SystemColors.InactiveCaption
+        Me.tabAddFlow.DefNodeProp.DrawColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.tabAddFlow.DefNodeProp.DrawWidth = 5
-        Me.tabAddFlow.DefNodeProp.FillColor = System.Drawing.SystemColors.MenuHighlight
-        Me.tabAddFlow.DefNodeProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tabAddFlow.DefNodeProp.FillColor = System.Drawing.SystemColors.InactiveCaption
+        Me.tabAddFlow.DefNodeProp.Font = New System.Drawing.Font("Arial Narrow", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tabAddFlow.DefNodeProp.Gradient = True
         Me.tabAddFlow.DefNodeProp.GradientColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.tabAddFlow.DefNodeProp.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical
@@ -145,7 +144,7 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.DefNodeProp.Rect = CType(resources.GetObject("resource.Rect"), System.Drawing.RectangleF)
         Me.tabAddFlow.DefNodeProp.Shape = New Lassalle.Flow.Shape(Lassalle.Flow.ShapeStyle.Octogon, Lassalle.Flow.ShapeOrientation.so_0)
         Me.tabAddFlow.DefNodeProp.Tag = Nothing
-        Me.tabAddFlow.DefNodeProp.TextColor = System.Drawing.SystemColors.Info
+        Me.tabAddFlow.DefNodeProp.TextColor = System.Drawing.SystemColors.ControlText
         Me.tabAddFlow.DefNodeProp.XSizeable = False
         Me.tabAddFlow.DefNodeProp.YSizeable = False
         Me.tabAddFlow.DefNodeProp.ZOrder = -1
@@ -606,6 +605,7 @@ Partial Class ctlAddFlowTab
         Me.UpdateDiag.Name = "UpdateDiag"
         Me.UpdateDiag.Size = New System.Drawing.Size(138, 22)
         Me.UpdateDiag.Text = "Update Diagram from Tree"
+        Me.UpdateDiag.Visible = False
         '
         'ToolStripSeparator3
         '

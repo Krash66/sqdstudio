@@ -145,7 +145,7 @@
   </CDC>
   <Templates NODETYPE="Heading">
     <CASE NODETYPE="Template" NPARM="-1" SYNTAX="Template for CASE/OTHERWISE Function" DESC=""/>
-    <Route NODETYPE="Template" NPARM="0" SYNTAX="Template for Main Routing Procedure" DESC=""/>
+    <Route NODETYPE="Template" NPARM="0" SYNTAX="Template for Main Routing Procedure" DESC="Main Routing Procedure for an Engine."/>
     <LOOK NODETYPE="Template" NPARM="-1" SYNTAX="LOOK(lookup_name,search_key[,search_key])" DESC="performs a search on a pre-defined lookup or join table and sets the position (pointer) of the lookup table to the row that meets the criteria of the search."/>
     <SetImage NODETYPE="Template" NPARM="0" SYNTAX="Template for SetImage" DESC=""/>
     <CURRENTDATE NODETYPE="Template" NPARM="0" SYNTAX="LEFT (DATETIME(),10)" DESC="returns the current date in YYYY-MM-DD format."/>

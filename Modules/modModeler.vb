@@ -1125,10 +1125,11 @@ nextgoto3:  Next
             Else
                 OutLen = ""
             End If
+
             Select Case ModType
 
                 Case "H"
-                    Select Case InType
+                    Select Case InType.ToUpper()
                         Case "CHAR", "VARCHAR", "VARCHAR2", "NUMERIC", "DATE", "TIMESTAMP", "TIME", "TEXTNUM", "ZONE", "XMLCDATA"
                             GetOutFldType = "char"
                         Case "BINARY"
@@ -1144,18 +1145,20 @@ nextgoto3:  Next
                     End Select
 
                 Case "DB2DDL"
-                    Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
+                    Select Case InType.ToUpper()
+                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA", "char", "nchar", "NCHAR"
                             GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR2"
+                        Case "VARCHAR2", "varchar2"
                             GetOutFldType = "VARCHAR" & OutLen
-                        Case "VARCHAR"
+                        Case "VARCHAR", "nvarchar", "NVARCHAR", "VARBINARY"
                             If fldLen > 2 Then
                                 GetOutFldType = "VARCHAR(" & (fldLen - 2).ToString & ")"
+                            ElseIf fldLen < 0 Then
+                                GetOutFldType = "VARCHAR(8000)"
                             Else
                                 GetOutFldType = "VARCHAR" & OutLen
                             End If
-                        Case "DATE"
+                        Case "DATE", "DATETIME", "SMALLDATETIME"
                             GetOutFldType = "DATE"
                         Case "TIMESTAMP"
                             GetOutFldType = "TIMESTAMP"
@@ -1163,56 +1166,77 @@ nextgoto3:  Next
                             GetOutFldType = "TIME"
                             'Case "BINARY"
                             '    GetOutFldType = "BINARY" & OutLen
-                        Case "INTEGER"
-                            GetOutFldType = "INTEGER" & OutLen
-                        Case "SMALLINT"
-                            GetOutFldType = "SMALLINT"
-                        Case "NUMERIC", "DECIMAL"
+                        Case "INTEGER", "INT", "int", "integer", "SMALLINT", _
+                        "smallint", "tinyint", "TINYINT", "bit", "BIT", "bigint", "BIGINT"
+                            GetOutFldType = "INTEGER" '& OutLen
+                        Case "SMALLMONEY", "smallmoney"
+                            GetOutFldType = "DECIMAL(11,4)"
+                        Case "MONEY", "money"
+                            GetOutFldType = "DECIMAL(20,4)"
+                        Case "NUMERIC", "DECIMAL", "numeric", "decimal"
                             GetOutFldType = "DECIMAL" & OutLen
+                        Case "UNIQUEIDENTIFIER", "uniqueidentifier"
+                            GetOutFldType = "VARCHAR(128)" '& OutLen
                         Case Else
                             GetOutFldType = InType & OutLen
                     End Select
 
                 Case "ORADDL"
-                    Select Case InType
-                        Case "CHAR", "TEXTNUM", "ZONE", "XMLCDATA"
+                    Select Case InType.ToUpper()
+                        Case "CHAR", "TEXTNUM", "ZONE", "XMLCDATA", "char", "nchar", "NCHAR"
                             GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR"
-                            GetOutFldType = "VARCHAR" & OutLen
-                        Case "VARCHAR2"
+                        Case "VARCHAR", "varchar", "nvarchar", "NVARCHAR", "VARBINARY"
+                            If fldLen < 0 Then
+                                GetOutFldType = "VARCHAR(8000)"
+                            Else
+                                GetOutFldType = "VARCHAR" & OutLen
+                            End If
+                        Case "VARCHAR2", "varchar2"
                             GetOutFldType = "VARCHAR2" & OutLen
-                        Case "DATE"
+                        Case "DATE", "date", "DATETIME", "SMALLDATETIME"
                             GetOutFldType = "DATE"
-                        Case "TIMESTAMP", "TIME"
+                        Case "TIMESTAMP", "TIME", "time", "timestamp"
                             GetOutFldType = "TIMESTAMP"
-                        Case "BINARY"
+                        Case "BINARY", "binary"
                             GetOutFldType = "RAW" & OutLen
-                        Case "NUMERIC", "DECIMAL", "SMALLINT", "INTEGER"
+                        Case "NUMERIC", "DECIMAL", "numeric", "decimal"
                             GetOutFldType = "NUMBER" & OutLen
+                        Case "SMALLMONEY", "smallmoney"
+                            GetOutFldType = "NUMBER(11,4)"
+                        Case "MONEY", "money"
+                            GetOutFldType = "NUMBER(20,4)"
+                        Case "INTEGER", "INT", "int", "integer", "SMALLINT", _
+                        "smallint", "tinyint", "TINYINT", "bit", "BIT", "bigint", "BIGINT"
+                            GetOutFldType = "NUMBER"
+                        Case "UNIQUEIDENTIFIER", "uniqueidentifier"
+                            GetOutFldType = "VARCHAR(128)" '& OutLen
                         Case Else
                             GetOutFldType = InType & OutLen
                     End Select
 
                 Case "SQLDDL"
-                    Select Case InType
-                        'Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA"
-                        '    GetOutFldType = "CHAR" & OutLen
-                        'Case "VARCHAR", "VARCHAR2"
-                        '    GetOutFldType = "VARCHAR" & OutLen
-                        'Case "NUMERIC"
-                        '    GetOutFldType = "NUMERIC" & OutLen
-                        'Case "DATE", "TIMESTAMP", "TIME"
-                        '    GetOutFldType = "DATETIME"
-                        'Case "INTEGER"
-                        '    GetOutFldType = "INT"
-                        '    'Case "BINARY"
-                        '    '    GetOutFldType = "BINARY" & OutLen
-                        'Case "DECIMAL"
-                        '    GetOutFldType = "DECIMAL" & OutLen
-                        'Case "SMALLINT"
-                        '    GetOutFldType = "SMALLINT" & OutLen
-
-                        Case "text"
+                    Select Case InType.ToUpper()
+                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA", "char", "binary"
+                            GetOutFldType = "char" & OutLen
+                        Case "VARCHAR", "VARCHAR2", "varchar", "varchar2"
+                            If fldLen = -1 Then
+                                GetOutFldType = "varchar(max)" '& OutLen
+                            Else
+                                GetOutFldType = "varchar" & OutLen
+                            End If
+                        Case "NUMERIC", "numeric"
+                            GetOutFldType = "numeric" & OutLen
+                        Case "DATE", "TIMESTAMP", "TIME", "date", "time", "timestamp"
+                            GetOutFldType = "datetime"
+                        Case "INTEGER", "INT", "int", "integer"
+                            GetOutFldType = "int"
+                            'Case "BINARY"
+                            '    GetOutFldType = "BINARY" & OutLen
+                        Case "DECIMAL", "decimal"
+                            GetOutFldType = "decimal" & OutLen
+                        Case "SMALLINT", "smallint"
+                            GetOutFldType = "smallint" '& OutLen
+                        Case "text", "TEXT"
                             GetOutFldType = InType  '"[" &  & "]"
                         Case Else
                             GetOutFldType = InType & OutLen  '"[" &  & "]"

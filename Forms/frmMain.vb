@@ -1552,9 +1552,11 @@ Public Class frmMain
         '
         'MenuItem9
         '
+        Me.MenuItem9.Enabled = False
         Me.MenuItem9.Index = 7
         Me.MenuItem9.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuMapAsBinary, Me.mnuMapAsText, Me.mnuMapAsDelimited, Me.mnuMapAsXML, Me.mnuMapAsRelational, Me.mnuMapAsVSAM, Me.mnuMapAsIMS, Me.mnuMapAsDB2LOAD, Me.mnuMapAsHSSUNLOAD, Me.mnuMapAsIBMEvent, Me.MenuItem36, Me.mnuMapAsIMSCDC, Me.mnuMapAsDB2CDC, Me.mnuMapAsVSAMCDC, Me.mnuMapAsXMLCDC, Me.mnuMapAsTriggerCDC, Me.mnuMapAsOraCDC, Me.mnuMapAsSQDCDC, Me.MenuItem4, Me.mnuMapAsIMSLE, Me.mnuMapAsIMSLEBat})
         Me.MenuItem9.Text = "Map As"
+        Me.MenuItem9.Visible = False
         '
         'mnuMapAsBinary
         '
@@ -1783,7 +1785,7 @@ Public Class frmMain
         'mnuAddGen
         '
         Me.mnuAddGen.Index = 1
-        Me.mnuAddGen.Text = "Add General Procedure"
+        Me.mnuAddGen.Text = "Add Logic Procedure"
         '
         'mnuDelTask
         '
@@ -2289,6 +2291,7 @@ Public Class frmMain
             ctInc.Location = ctPrj.Location
 
 
+
         Catch ex As Exception
             LogError(ex, "frmMain InitUI")
         End Try
@@ -2595,7 +2598,7 @@ Public Class frmMain
                 Else
                     ShowUsercontrol(e.Node)
                 End If
-                If Not (tvExplorer.SelectedNode Is Nothing) Then
+                If tvExplorer.SelectedNode IsNot Nothing Then
                     EnableTreeActionButton(True)
                     ShowStatusMessage("Selected node : [" & CType(tvExplorer.SelectedNode.Tag, INode).Key.Replace("-", "->") & "]")
                     '// AddFlow Additions ///////////
@@ -2941,10 +2944,14 @@ Public Class frmMain
                 If obj IsNot Nothing Then
                     If obj.GetType.GetInterface("INode") IsNot Nothing Then
                         objI = obj
-                        If objI.Type = CType(targetNode.Tag, INode).Type Then
-                            e.Effect = DragDropEffects.Copy
+                        If targetNode IsNot Nothing Then
+                            If objI.Type = CType(targetNode.Tag, INode).Type Then
+                                e.Effect = DragDropEffects.Copy
+                            Else
+                                e.Effect = DragDropEffects.None
+                            End If
                         Else
-                            e.Effect = DragDropEffects.None
+                            e.Effect = DragDropEffects.Copy
                         End If
                     End If
                 End If
@@ -3915,7 +3922,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
 
                     End If
 
-                    If Not (obj Is Nothing) Then
+                    If obj IsNot Nothing Then
                         '//If the new datastore is valid, add it as a child 
                         '//of the engine and index it properly for it's position in the tree
                         'If obj.Engine IsNot Nothing Then
@@ -9614,6 +9621,8 @@ ReName1:            If destObj.Engine.FindDupNames(destObj) = True Then
 
                         FillDataStoreFromClipboard(cNode, destObj, cmd)
 
+                        '/// Addflow
+                        AddAFnode(destObj.Engine, destObj)
 
                         task.SeqNo = i  '// added 11/13/2006 by TK and KS
                         task.TaskName = "P_" & selNew.Text
@@ -9662,6 +9671,9 @@ renameTask:             If task.Engine.FindDupNames(task) = True Then
                         task.SeqNo = pNode.Index '//store position
                         task.SaveSeqNo(cmd)
                         pNode.Expand()
+
+                        '/// Addflow
+                        AddAFnode(task.Engine, task)
                     End If
                 Next
 
@@ -9700,10 +9712,13 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                 taskMain.SaveSeqNo(cmd)
                 pNode.Expand()
 
+                '/// Addflow
+                AddAFnode(taskMain.Engine, taskMain)
+
                 tran.Commit()
 
                 taskMain.Engine.IsDiagramChanged = True
-                FillAddFlowFromEngine(taskMain.Engine)
+                'FillAddFlowFromEngine(taskMain.Engine)
 
             Catch OE As Odbc.OdbcException
                 tran.Rollback()
@@ -9980,6 +9995,7 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
                 Case NODE_TARGETDATASTORE
                     ObjEng.ObjAddFlowCtl.AddTDS(CType(oNewNode, clsDatastore))
             End Select
+            ObjEng.ObjAddFlowCtl.RefreshAddFlow()
 
             Return True
 
