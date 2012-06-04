@@ -1224,15 +1224,13 @@ Public Module modGeneral
 
             pNode.Text = obj.Text
 
-            UpdateParentNodeLabel(pNode)
-
             '// test to see if it's a Datastore Node then add strSelections under that node
             If (tempobj.Type = NODE_SOURCEDATASTORE) Or (tempobj.Type = NODE_TARGETDATASTORE) Then
                 objDS = CType(pNode.Tag, clsDatastore)
                 pNode.Text = objDS.DsPhysicalSource
                 objDS.SetDSselParents()
                 AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
-
+                'pNode = objDS.ObjTreeNode
             End If
 
             '// if DS selection then see if parent is a datastrore and not a structure
@@ -1242,6 +1240,10 @@ Public Module modGeneral
                 objDS = CType(obj, clsDatastore)
                 objDS.SetDSselParents()
                 AddDSstructuresToTree(objDS.ObjTreeNode, objDS)
+                pNode = objDS.ObjTreeNode
+                UpdateParentNodeCount(pNode)
+            Else
+                UpdateParentNodeLabel(pNode)
             End If
 
             pNode.Tag = obj

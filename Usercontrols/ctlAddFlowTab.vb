@@ -289,6 +289,12 @@
 
                 '--- Get the Addflow node for each Procedure
                 ProcNode = New Node(HorizSP, VertSP, ProcNodeSize, ProcNodeSize, NodeText, tabAddFlow.DefNodeProp)
+                If Proc.ismapped = False Then
+                    ProcNode.DrawColor = Color.Red
+                Else
+                    ProcNode.DrawColor = Color.FromKnownColor(KnownColor.GradientInactiveCaption)
+                End If
+
                 ProcNode.GradientColor = Color.LightCyan
                 ProcNode.Shape.Style = ShapeStyle.AlternateProcess
                 'ProcNode.TextColor = Color.Red
@@ -1095,8 +1101,7 @@
 
         Try
             Dim PairCol As New Collection
-            Dim GenPairCol As New Collection
-
+            
             For Each main As clsTask In ObjEng.Mains
                 '/// Link Source to Main
                 For Each sDS As clsDatastore In main.ObjSources
@@ -1135,6 +1140,8 @@
 
             ''/// Build links from Gens to Procs
             For Each gen As clsTask In ObjEng.Gens
+                Dim GenPairCol As New Collection
+
                 '/// Get list of procs to map to, from Logic syntax
                 If gen.ObjMappings.Count = 1 Then
                     Dim GenMap As clsMapping = CType(gen.ObjMappings(0), clsMapping)
@@ -2016,6 +2023,18 @@
         End Try
 
     End Function
+
+#End Region
+
+#Region "Help"
+
+    Private Sub ctlAddFlowTab_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles tabAddFlow.KeyDown
+
+        If e.KeyCode = Keys.F1 Then
+            ShowHelp(modHelp.HHId.H_AddFlowControl)
+        End If
+
+    End Sub
 
 #End Region
 

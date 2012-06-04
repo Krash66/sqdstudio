@@ -308,6 +308,13 @@ Module modHelp
         H_Proc_Move_Down = 3880
         H_Proc_Function_Tree = 3890
         H_Proc_Mapping_Win = 3900
+        H_AddFlowControl = 4000
+        H_AddFlowAddSource = 4100
+        H_AddFlowAddTarget = 4200
+        H_AddFlowAddMappingProcs = 4300
+        H_AddFlowAddLogicProcs = 4400
+        H_AddFlowAddMain = 4500
+        H_AddFlowLinks = 4600
     End Enum
 
     Private Declare Function HTMLHelp_BaseCall Lib "hhctrl.ocx" Alias "HtmlHelpA" _

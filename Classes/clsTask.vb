@@ -2089,6 +2089,44 @@ Public Class clsTask
 
     End Function
 
+    Function IsMapped() As Boolean
+
+        Try
+            Dim fldcnt As Integer = 0
+            Dim mapcnt As Integer = 0
+
+            '/// see if this proc has ANY targets
+            If ObjTargets.Count = 0 Then
+                IsMapped = False
+                Exit Try
+            End If
+
+            '/// get a count of all the target fields
+            For Each tgt As clsDatastore In ObjTargets
+                For Each sel As clsDSSelection In tgt.ObjSelections
+                    fldcnt = fldcnt + sel.DSSelectionFields.Count
+                Next
+            Next
+            '/// get a count of the mappings that have a target AND a source field
+            For Each map As clsMapping In Me.ObjMappings
+                If map.IsMapped = True Then
+                    mapcnt += 1
+                End If
+            Next
+
+            If fldcnt = mapcnt Then
+                IsMapped = True
+            Else
+                IsMapped = False
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "clsTask IsMapped")
+            IsMapped = False
+        End Try
+
+    End Function
+
 #End Region
 
     Public Sub New()

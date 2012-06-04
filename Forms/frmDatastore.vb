@@ -997,7 +997,7 @@ Public Class frmDatastore
 
     Public Event Modified(ByVal sender As System.Object, ByVal e As INode)
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, cmbOperationType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged '// modified by TK 1/2011
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged '// modified by TK 1/2011 cmbOperationType.SelectedIndexChanged, 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
         RaiseEvent Modified(Me, objThis)
@@ -1052,7 +1052,10 @@ Public Class frmDatastore
                         NewSrcName = "CDCIN" & Count.ToString
                     End If
                 End If
-                NewTgtName = objThis.DsDirection & "_" & "DS" & Count.ToString
+
+                'NewTgtName = objThis.DsDirection & "_" & "DS" & Count.ToString
+                NewTgtName = ""  'objThis.DsDirection & "_" & "DS" & Count.ToString
+
 
                 If objThis.Engine IsNot Nothing Then
                     If objThis.DsDirection = "S" Then
@@ -1160,6 +1163,12 @@ Public Class frmDatastore
                 Exit Sub
             End If
 
+            If objThis.OperationType = "" Then
+                MsgBox("An Operation Type must be chosen" & Chr(13) & "Please chose an Operation Type", _
+                       MsgBoxStyle.OkOnly, "Missing Operation Type")
+                DialogResult = Windows.Forms.DialogResult.Retry
+                Exit Sub
+            End If
 
             '//save structure selections too 
             If SaveCurrentSelection() = False Then
@@ -2014,7 +2023,9 @@ doAgain:
                 cmbOperationType.Items.Add(New Mylist("Delete", DS_OPERATION_DELETE))
                 cmbOperationType.Items.Add(New Mylist("Change", DS_OPERATION_CHANGE))
                 cmbOperationType.Items.Add(New Mylist("Modify", DS_OPERATION_MODIFY))
-                cmbOperationType.Items.Add(New Mylist("Replace", DS_OPERATION_REPLACE))
+                If objThis.DatastoreType <> enumDatastore.DS_RELATIONAL Then
+                    cmbOperationType.Items.Add(New Mylist("Replace", DS_OPERATION_REPLACE))
+                End If
 
             Case Else
                 cmbOperationType.Items.Clear()
@@ -2591,6 +2602,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         End Select
         IsEventFromCode = False
+
     End Sub
 
     Sub SetCombos()
@@ -2693,14 +2705,16 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 Next
             Next
 
-            MsgBox("At least one Key Field must be set in any Relational Target Datastore." & Chr(13) & _
-            "No key fields have been set in this Datastore. Please set at least one key field.", _
-            MsgBoxStyle.Exclamation, "Please Set a key field")
-
+            If objThis.OperationType <> DS_OPERATION_INSERT Then
+                MsgBox("At least one Key Field must be set in any Relational Target Datastore." & Chr(13) & _
+                       "No key fields have been set in this Datastore. Please set at least one key field.", _
+                       MsgBoxStyle.Exclamation, "Please Set a key field")
+            End If
+            
             HasKeyForRel = False
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore HasKeyForRel")
+            LogError(ex, "frmDatastore HasKeyForRel")
             Return False
         End Try
 
@@ -2720,7 +2734,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             OnChange(Me, New EventArgs)
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore cmbColDelimiter_SelectedIndexChanged")
+            LogError(ex, "frmDatastore cmbColDelimiter_SelectedIndexChanged")
         End Try
 
     End Sub
@@ -2739,7 +2753,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             OnChange(Me, New EventArgs)
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore cmbRowDelimiter_SelectedIndexChanged")
+            LogError(ex, "frmDatastore cmbRowDelimiter_SelectedIndexChanged")
         End Try
 
     End Sub
@@ -2758,7 +2772,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             OnChange(Me, New EventArgs)
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore cmbTextQualifier_SelectedIndexChanged")
+            LogError(ex, "frmDatastore cmbTextQualifier_SelectedIndexChanged")
         End Try
 
     End Sub
@@ -2814,7 +2828,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbColDelimiter.EndUpdate()
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore setColCombo")
+            LogError(ex, "frmDatastore setColCombo")
         End Try
 
     End Sub
@@ -2861,7 +2875,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbRowDelimiter.EndUpdate()
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore setRowCombo")
+            LogError(ex, "frmDatastore setRowCombo")
         End Try
 
     End Sub
@@ -2914,7 +2928,19 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbTextQualifier.EndUpdate()
 
         Catch ex As Exception
-            LogError(ex, "ctlDatastore setTextCombo")
+            LogError(ex, "frmDatastore setTextCombo")
+        End Try
+
+    End Sub
+
+    Private Sub cmbOperationType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOperationType.SelectedIndexChanged
+
+        Try
+            objThis.OperationType = CType(cmbOperationType.SelectedItem, Mylist).Name
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "frmDatastore cmbOperationType_SelectedIndexChanged")
         End Try
 
     End Sub

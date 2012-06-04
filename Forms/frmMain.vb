@@ -2411,7 +2411,7 @@ Public Class frmMain
 
             ToolBar1.Buttons(enumToolBarButtons.TB_SAVE).Enabled = False
 
-            If Not prevNode Is Nothing Then
+            If prevNode IsNot Nothing Then
                 UpdateNode(prevNode, e)
             End If
 
@@ -8993,7 +8993,14 @@ ProjSkip:
                 tran.Commit()
 
                 cNode.Nodes.Clear()
+                Dim tNode As TreeNode = cNode.Parent
                 cNode.Remove()
+
+                '*** update the parent node's counter (if exists) ***
+                '*** Added 3.5.1.1 may 2012
+                UpdateParentNodeCount(tNode)
+                '****************************************************
+
                 ctFolder.Clear()
                 DoRecursiveDelete = True
                 HideAllUC()

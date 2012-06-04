@@ -741,7 +741,7 @@ doAgain:
                     NodeText = CType(nd.Tag, INode).Text
                 Next
                 NodeText = Strings.Right(NodeText, NodeText.Length - 2)
-                txtTaskName.Text = "P_" & NodeText
+                txtTaskName.Text = "M_" & NodeText
                 e.Node.Checked = False
             Else
                 IsEventFromCode = True
@@ -757,7 +757,7 @@ doAgain:
                 If objThis.TaskType = enumTaskType.TASK_GEN Then
                     txtTaskName.Text = "L_" & NodeText
                 Else
-                    txtTaskName.Text = "P_" & NodeText
+                    txtTaskName.Text = "M_" & NodeText
                 End If
                 IsEventFromCode = False
             End If
