@@ -422,7 +422,7 @@ Public Class frmTask
                 NamePrefix = "L_LookUp"
         End Select
 
-        SetDefaultName(NamePrefix)
+        'SetDefaultName(NamePrefix)
 
         txtTaskName.SelectAll()
 
@@ -700,7 +700,7 @@ doAgain:
             DialogResult = Windows.Forms.DialogResult.OK
 
         Catch ex As Exception
-            LogError(ex)
+            LogError(ex, "frmTask cmdOK_click")
             DialogResult = Windows.Forms.DialogResult.Retry
         End Try
 
@@ -709,61 +709,75 @@ doAgain:
     '/// After checking Sources
     Private Sub tv_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSource.AfterCheck
 
-        If e.Node.Checked = True Then
-            If CType(e.Node.Tag, INode).IsFolderNode = True Then
-                '//if we come here means parent node is checked. 
-                '//If unchecked then fine but if checked then unchek all children which fource Rule1
-                Dim nd As TreeNode
-                '//uncheck children so only parent nodde remain selected
-                For Each nd In e.Node.Nodes
-                    nd.Checked = True
-                Next
-                e.Node.Checked = False
+        Try
+            If e.Node.Checked = True Then
+                If CType(e.Node.Tag, INode).IsFolderNode = True Then
+                    '//if we come here means parent node is checked. 
+                    '//If unchecked then fine but if checked then unchek all children which fource Rule1
+                    Dim nd As TreeNode
+                    '//uncheck children so only parent nodde remain selected
+                    For Each nd In e.Node.Nodes
+                        nd.Checked = True
+                    Next
+                    e.Node.Checked = False
+                End If
             End If
-        End If
 
-        OnChange(Me, New EventArgs)
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "frmTask tv_AfterCheck")
+        End Try
 
     End Sub
 
     '/// After checking Targets
     Private Sub tv_AfterCheckTarget(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvTarget.AfterCheck
 
-        If IsEventFromCode = True Then Exit Sub
-        Dim NodeText As String = ""
-        If e.Node.Checked = True Then
-            If CType(e.Node.Tag, INode).IsFolderNode = True Then
-                '//if we come here means parent node is checked. 
-                '//If unchecked then fine but if checked then unchek all children which fource Rule1
-                '//uncheck children so only parent nodde remain selected
-                For Each nd As TreeNode In e.Node.Nodes
-                    nd.Checked = True
-                    NodeText = CType(nd.Tag, INode).Text
-                Next
-                NodeText = Strings.Right(NodeText, NodeText.Length - 2)
-                txtTaskName.Text = "M_" & NodeText
-                e.Node.Checked = False
-            Else
-                IsEventFromCode = True
-                For Each nd As TreeNode In tvTarget.Nodes
-                    nd.Checked = False
-                    'For Each chnd As TreeNode In nd.Nodes
-                    '    chnd.Checked = False
-                    'Next
-                Next
-                e.Node.Checked = True
-                NodeText = CType(e.Node.Tag, INode).Text
-                NodeText = Strings.Right(NodeText, NodeText.Length - 2)
-                If objThis.TaskType = enumTaskType.TASK_GEN Then
-                    txtTaskName.Text = "L_" & NodeText
+        Try
+            If IsEventFromCode = True Then Exit Sub
+            Dim NodeText As String = ""
+            If e.Node.Checked = True Then
+                If CType(e.Node.Tag, INode).IsFolderNode = True Then
+                    '//if we come here means parent node is checked. 
+                    '//If unchecked then fine but if checked then unchek all children which fource Rule1
+                    '//uncheck children so only parent nodde remain selected
+                    For Each nd As TreeNode In e.Node.Nodes
+                        nd.Checked = True
+                        NodeText = CType(nd.Tag, INode).Text
+                    Next
+                    If txtTaskName.Text = "" Then
+                        NodeText = Strings.Right(NodeText, NodeText.Length - 2)
+                        txtTaskName.Text = "M_" & NodeText
+                    End If
+                    e.Node.Checked = False
                 Else
-                    txtTaskName.Text = "M_" & NodeText
+                    IsEventFromCode = True
+                    For Each nd As TreeNode In tvTarget.Nodes
+                        nd.Checked = False
+                        'For Each chnd As TreeNode In nd.Nodes
+                        '    chnd.Checked = False
+                        'Next
+                    Next
+                    e.Node.Checked = True
+                    If txtTaskName.Text = "" Then
+                        NodeText = CType(e.Node.Tag, INode).Text
+                        NodeText = Strings.Right(NodeText, NodeText.Length - 2)
+                        If objThis.TaskType = enumTaskType.TASK_GEN Then
+                            txtTaskName.Text = "L_" & NodeText
+                        Else
+                            txtTaskName.Text = "M_" & NodeText
+                        End If
+                    End If
+                    IsEventFromCode = False
                 End If
-                IsEventFromCode = False
             End If
-        End If
 
-        OnChange(Me, New EventArgs)
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "frmTask tv_AfterCheckTarget")
+        End Try
 
     End Sub
 

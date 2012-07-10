@@ -15,6 +15,18 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_061CD20C73444338AC4B41ADFA0F6E85"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_07229ACCA8D74053A3AF15694ADC0BA7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0E895E7C7E814DE9B7C7B9860616E64C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -41,6 +53,12 @@
         {
         "MsmKey" = "8:_2A60219F6E173AF2F7C9DD418F64776C"
         "OwnerKey" = "8:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2DAC658115514869A734BEC41961E18F"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -100,6 +118,18 @@
         "Entry"
         {
         "MsmKey" = "8:_51396A84C3A14EA3A31D7E73766065B8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_52F26455C9034B0D8E351690807DEE5E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_723B47DD4F0B4CCA99F1AF89136CB220"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -201,7 +231,25 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A1B83D9FCB9B43599818E7061C762C6E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A50FAFF5EA344E1A90FC4D1C42161524"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A89B330C233F4FAD8A0C81E91E713F70"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B02D12F1C3024ADEBEB50208DD89E9F6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -213,6 +261,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B62054DB21EC45E798FF134AF0CA03BF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C3B1C14FDE2B4B4E93F4DF7689DC8719"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -220,6 +274,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C5942D08C2C64E8A86A8AC1FC7755F43"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CC37664B60CA4EFFA6188B699116CAEC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -274,6 +334,12 @@
         "Entry"
         {
         "MsmKey" = "8:_F3680E8B328F4E3D901E91660F6CE648"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F442CEF68B5545CAAC7416411C92843F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -483,6 +549,46 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_061CD20C73444338AC4B41ADFA0F6E85"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\COMPANY_DDL.ddl"
+            "TargetName" = "8:COMPANY_DDL.ddl"
+            "Tag" = "8:"
+            "Folder" = "8:_F39FDDDF694546C8980BD140B5D61BE8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_07229ACCA8D74053A3AF15694ADC0BA7"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\SQDTSTDB.dbd"
+            "TargetName" = "8:SQDTSTDB.dbd"
+            "Tag" = "8:"
+            "Folder" = "8:_8C0F3F5D9942435190FB955C667806A2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E895E7C7E814DE9B7C7B9860616E64C"
             {
             "SourcePath" = "8:..\\readme - Temp.txt"
@@ -625,6 +731,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2DAC658115514869A734BEC41961E18F"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\DEPTMENT_DDL.ddl"
+            "TargetName" = "8:DEPTMENT_DDL.ddl"
+            "Tag" = "8:"
+            "Folder" = "8:_F39FDDDF694546C8980BD140B5D61BE8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_30FA2363A7BA34C264DA8FDEE6696A1D"
@@ -829,6 +955,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_52F26455C9034B0D8E351690807DEE5E"
+            {
+            "SourcePath" = "8:..\\README-SAMPLE.txt"
+            "TargetName" = "8:README-SAMPLE.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_8BA574F1FFFB481C9E1A96761BB89D33"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_723B47DD4F0B4CCA99F1AF89136CB220"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\VENDOR_DDL.ddl"
+            "TargetName" = "8:VENDOR_DDL.ddl"
+            "Tag" = "8:"
+            "Folder" = "8:_F39FDDDF694546C8980BD140B5D61BE8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_73122B2115BD4FFF84D4C2140621F762"
             {
             "SourcePath" = "8:..\\readme - Metadata.txt"
@@ -982,6 +1148,46 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1B83D9FCB9B43599818E7061C762C6E"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\COMPANY.cob"
+            "TargetName" = "8:COMPANY.cob"
+            "Tag" = "8:"
+            "Folder" = "8:_7F48D2164EC444FFA7A6D7990A1739BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A50FAFF5EA344E1A90FC4D1C42161524"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\EMPLOYEE_DDL.ddl"
+            "TargetName" = "8:EMPLOYEE_DDL.ddl"
+            "Tag" = "8:"
+            "Folder" = "8:_F39FDDDF694546C8980BD140B5D61BE8"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A89B330C233F4FAD8A0C81E91E713F70"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\ORCL_meta_drop.ddl"
@@ -995,6 +1201,26 @@
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
             "Permanent" = "11:TRUE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B02D12F1C3024ADEBEB50208DD89E9F6"
+            {
+            "SourcePath" = "8:..\\Sample.mdb"
+            "TargetName" = "8:Sample.mdb"
+            "Tag" = "8:"
+            "Folder" = "8:_8BA574F1FFFB481C9E1A96761BB89D33"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -1033,6 +1259,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B62054DB21EC45E798FF134AF0CA03BF"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\DEPTMENT.cob"
+            "TargetName" = "8:DEPTMENT.cob"
+            "Tag" = "8:"
+            "Folder" = "8:_7F48D2164EC444FFA7A6D7990A1739BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3B1C14FDE2B4B4E93F4DF7689DC8719"
             {
             "SourcePath" = "8:..\\logo.BMP"
@@ -1066,6 +1312,26 @@
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
             "Permanent" = "11:TRUE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC37664B60CA4EFFA6188B699116CAEC"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\EMPLOYEE.cob"
+            "TargetName" = "8:EMPLOYEE.cob"
+            "Tag" = "8:"
+            "Folder" = "8:_7F48D2164EC444FFA7A6D7990A1739BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
@@ -1275,6 +1541,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F442CEF68B5545CAAC7416411C92843F"
+            {
+            "SourcePath" = "8:..\\bin\\supporting files\\VENDOR.cob"
+            "TargetName" = "8:VENDOR.cob"
+            "Tag" = "8:"
+            "Folder" = "8:_7F48D2164EC444FFA7A6D7990A1739BA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1319,6 +1605,61 @@
                             "Property" = "8:_86DDD64C299A436E8DFF53DC69175866"
                                 "Folders"
                                 {
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_8BA574F1FFFB481C9E1A96761BB89D33"
+                            {
+                            "Name" = "8:SQDataSample"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_84F342844D904163AEEC0F6112F26117"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7F48D2164EC444FFA7A6D7990A1739BA"
+                                    {
+                                    "Name" = "8:Copybooks"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_9B2CEBE7B39A4D25BB743933ED5D65EE"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_859B4E86E7DD4EF1935FCD5120B8B175"
+                                    {
+                                    "Name" = "8:BatchFiles"
+                                    "AlwaysCreate" = "11:TRUE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_683E8447E82245CBB7199021366A13CB"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_8C0F3F5D9942435190FB955C667806A2"
+                                    {
+                                    "Name" = "8:DBDs"
+                                    "AlwaysCreate" = "11:TRUE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_246CF97548B246F1B5A42B37C6AC8982"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F39FDDDF694546C8980BD140B5D61BE8"
+                                    {
+                                    "Name" = "8:DDLs"
+                                    "AlwaysCreate" = "11:TRUE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_40E051AC9CAE4BAF9DE1E67BBDA020CF"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                             "{9EF0B969-E518-4E46-987F-47570745A589}:_94455CD8D34E41E9B97229A754375941"
@@ -1408,19 +1749,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Design Studio"
-        "ProductCode" = "8:{96AB3063-23E7-43D0-B5FC-EA4EBD062899}"
-        "PackageCode" = "8:{D69212C1-EB41-42E4-9A97-721A66831228}"
+        "ProductCode" = "8:{6ED491DB-4E1A-4174-A7C1-3119204CFCC0}"
+        "PackageCode" = "8:{48825D81-4AC7-4A27-BA89-A2200A28BA6F}"
         "UpgradeCode" = "8:{ECBC2F4A-B3CB-4E3A-A724-5337F324CFB9}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.51.1000"
+        "ProductVersion" = "8:3.51.4000"
         "Manufacturer" = "8:SQData"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
         "Title" = "8:SQDStudio Setup"
-        "Subject" = "8:Studio version 3.5.1.1"
+        "Subject" = "8:Studio version 3.5.1.4 (all)"
         "ARPCONTACT" = "8:SQData"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
@@ -1528,6 +1869,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3C427DB666894983A487D244FE8D3B2B"
+            {
+            "Name" = "8:SQDataSample"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_8BA574F1FFFB481C9E1A96761BB89D33"
+            "Folder" = "8:_51E326FBA49B4786BD3D4BFA8EB227C7"
+            "WorkingFolder" = "8:_16901173D342441A8F38FB02975B0731"
+            "Icon" = "8:_51396A84C3A14EA3A31D7E73766065B8"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3F97BB4889A44D97849B39028BA60F50"
             {
             "Name" = "8:Design Studio Data Folder"
@@ -2063,7 +2418,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3A8DA5A2DDCD43CBBBAB11D7A49191EA"
             {
-            "SourcePath" = "8:..\\obj\\Debug\\Design Studio.exe"
+            "SourcePath" = "8:..\\obj\\Release\\Design Studio.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"

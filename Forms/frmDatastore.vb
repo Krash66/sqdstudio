@@ -1163,7 +1163,7 @@ Public Class frmDatastore
                 Exit Sub
             End If
 
-            If objThis.OperationType = "" Then
+            If objThis.DsDirection = DS_DIRECTION_TARGET And objThis.OperationType = "" Then
                 MsgBox("An Operation Type must be chosen" & Chr(13) & "Please chose an Operation Type", _
                        MsgBoxStyle.OkOnly, "Missing Operation Type")
                 DialogResult = Windows.Forms.DialogResult.Retry

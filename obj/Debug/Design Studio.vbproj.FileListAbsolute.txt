@@ -100,6 +100,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmReport.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmRplcDescRet.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptGen.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptImport.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructSelection.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructure.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmSystem.resources

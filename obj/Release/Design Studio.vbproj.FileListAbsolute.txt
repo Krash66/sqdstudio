@@ -126,3 +126,4 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.PrnFlow.DLL
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.XMLFlow.DLL
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlAddFlowTab.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptImport.resources

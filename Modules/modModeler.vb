@@ -19,7 +19,8 @@ Module modModeler
 
     Private success As Boolean = True
     Dim InObj As INode = Nothing
-    Dim InType As String
+    Dim InInodeType As String
+    Dim InStructureType As String
     Dim OutPath As String = ""
     Dim NameModl As String = ""
     Dim TableName As String = ""
@@ -51,10 +52,11 @@ Module modModeler
 #Region "Main Processes"
 
     Public Function ModelStructure(ByVal Obj As INode, ByVal TypeToModl As String, ByVal ModName As String, ByVal ModPath As String) As String
+
         Try
             Log("********* Modeler Start *********")
             '/// set module-wide variables
-            InType = Obj.Type
+            InInodeType = Obj.Type
             NameModl = ModName
             OutType = TypeToModl
             FileExt = getFileExt()
@@ -78,13 +80,14 @@ Module modModeler
 
             If success Then
                 '/// determine input object
-                Select Case InType
+                Select Case InInodeType
                     Case NODE_STRUCT
                         ObjStr = CType(Obj, clsStructure)
                         TableName = ObjStr.StructureName
                         ObjStr.LoadMe()
                         ObjStr.LoadItems()
-                        If ObjStr.StructureType = enumStructure.STRUCT_REL_DML Then
+                        InStructureType = ObjStr.StructureType
+                        If InStructureType = enumStructure.STRUCT_REL_DML Then
                             idx = ObjStr.fPath1.LastIndexOf(".")
                             Len = ObjStr.fPath1.Length
                             SchemaName = Strings.Left(ObjStr.fPath1, idx)
@@ -95,7 +98,8 @@ Module modModeler
                         TableName = ObjSel.ObjStructure.StructureName
                         ObjSel.LoadMe()
                         ObjSel.LoadItems()
-                        If ObjSel.ObjStructure.StructureType = enumStructure.STRUCT_REL_DML Then
+                        InStructureType = ObjSel.ObjStructure.StructureType
+                        If InStructureType = enumStructure.STRUCT_REL_DML Then
                             idx = ObjSel.ObjStructure.fPath1.LastIndexOf(".")
                             Len = ObjSel.ObjStructure.fPath1.Length
                             SchemaName = Strings.Left(ObjSel.ObjStructure.fPath1, idx)
@@ -106,6 +110,7 @@ Module modModeler
                         TableName = ObjDSSel.SelectionName
                         ObjDSSel.LoadMe()
                         ObjDSSel.LoadItems()
+                        InStructureType = ObjDSSel.ObjStructure.StructureType
                     Case Else
                         success = False
                         GoTo ErrorGoTo
@@ -124,6 +129,8 @@ Module modModeler
                         success = objModelORADDL()
                     Case "SQLDDL"
                         success = objModelSQLDDL()
+                    Case "SQDDDL"
+                        success = objModelSQDDDL()
                     Case "H"
                         success = objModelC()
                     Case "DTD"
@@ -144,11 +151,11 @@ Module modModeler
 
             If success Then
                 Return FullPathModl
-                Log("********* Modeler Finish *********")
+                Log("********* Modeler Finished *********")
             Else
 ErrorGoTo:      '/// on errors
                 Return ""
-                Log("********* Modeler Finish with Errors *********")
+                Log("********* Modeler Finished with Errors *********")
             End If
 
         Catch ex As Exception
@@ -166,7 +173,7 @@ ErrorGoTo:      '/// on errors
         Try
             Log("********* Modeler Start *********")
             '/// set module-wide variables
-            InType = typeIn
+            InInodeType = typeIn
             NameModl = ModName
             OutType = TypeToModl
             FileExt = getFileExt()
@@ -315,6 +322,7 @@ ErrorGoTo2:     '/// on errors
 
         Try
             Dim fldLen As Integer
+            Dim fldScl As Integer
             Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
             Dim FORKey As String
             Dim NameFld As String
@@ -335,8 +343,9 @@ ErrorGoTo2:     '/// on errors
                     NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-                OutAttr = GetOutFldType(fldattr, "DB2DDL", fldLen)
+                OutAttr = GetOutFldType(fldattr, "DB2DDL", fldLen, fldScl)
 
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
@@ -364,6 +373,7 @@ nextgoto:   Next
 
         Try
             Dim fldLen As Integer
+            Dim fldScl As Integer
             Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
             Dim FORKey As String
             Dim NameFld As String
@@ -384,8 +394,9 @@ nextgoto:   Next
                     NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-                OutAttr = GetOutFldType(fldattr, "ORADDL", fldLen)
+                OutAttr = GetOutFldType(fldattr, "ORADDL", fldLen, fldScl)
 
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
@@ -413,6 +424,7 @@ nextgoto:   Next
 
         Try
             Dim fldLen As Integer
+            Dim fldScl As Integer
             Dim FORcreate As String
             Dim FORKey As String
             Dim NameFld As String
@@ -440,8 +452,9 @@ nextgoto:   Next
                     NameFld = "," & RDash(fld.FieldName & "  ")   '"[" & fld.FieldName & "] "
                 End If
                 fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-                OutAttr = GetOutFldType(fldattr, "SQLDDL", fldLen)
+                OutAttr = GetOutFldType(fldattr, "SQLDDL", fldLen, fldScl)
 
                 If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
                 fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
@@ -464,6 +477,57 @@ nextgoto:   Next
 
     End Function
 
+    Function objModelSQDDDL() As Boolean
+
+        Try
+            Dim fldLen As Integer
+            Dim fldScl As Integer
+            Dim FORcreate As String = String.Format("{0}{1}{2}", "CREATE ", "TABLE ", RDash(TableName))
+            Dim FORKey As String
+            Dim NameFld As String
+            Dim fldattr As String
+            Dim OutAttr As String
+            Dim first As Boolean = True
+
+            objWriteOut.WriteLine(FORcreate)
+            wBracket(OpenClose.OPEN, True)
+
+            For Each fld As clsField In FldArray
+                '/// skip groupitems
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE) = "GROUPITEM" Then GoTo nextgoto
+                If first = True Then
+                    NameFld = " " & RDash(fld.FieldName)
+                    first = False
+                Else
+                    NameFld = "," & RDash(fld.FieldName)
+                End If
+                fldLen = fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH)
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
+                fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
+                OutAttr = GetOutFldType(fldattr, "SQDDDL", fldLen, fldScl)
+
+
+                If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Or _
+                fld.GetFieldAttr(enumFieldAttributes.ATTR_CANNULL) = "No" Then
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}{3,-12}", " ", NameFld, OutAttr, "NOT NULL")
+                Else
+                    FORKey = String.Format("{0,4}{1,-36}{2,-20}", " ", NameFld, OutAttr)
+                End If
+                objWriteOut.WriteLine(FORKey)
+nextgoto:   Next
+
+            wBracket(OpenClose.CLOSE, False)
+            wSemiLine()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "modModeler objModelDB2DDL")
+            Return False
+        End Try
+
+    End Function
+
 #End Region
 
 #Region "C"
@@ -472,6 +536,7 @@ nextgoto:   Next
 
         Try
             Dim fldLen As String
+            Dim fldScl As Integer
             Dim FORcreate As String = String.Format("{0}{1}", "struct ", TableName)
             Dim FORfld As String
             Dim NameFld As String
@@ -494,8 +559,9 @@ nextgoto:   Next
                 Else
                     OutLen = "(" & fldLen & ")"
                 End If
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-                OutAttr = GetOutFldType(fldattr, "H", fldLen)
+                OutAttr = GetOutFldType(fldattr, "H", fldLen, fldScl)
 
                 FORfld = String.Format("{0,4}{1,-20}{2,30}{3,6}", " ", OutAttr, NameFld, OutLen)
 
@@ -582,6 +648,7 @@ nextgoto1:  Next
 
         Try
             Dim fldLen As String
+            Dim fldScl As Integer
             Dim FORinfile As String = String.Format("{0}{1}{2}", "INFILE ", "'" & RDash(TableName) & ".dat' ", Chr(34) & "FIX 39" & Chr(34))
             Dim FORInto As String = String.Format("{0}{1}", "INTO TABLE ", RDash(TableName))
             Dim FORfld As String
@@ -606,8 +673,9 @@ nextgoto1:  Next
                     NameFld = "," & RDash(fld.FieldName)
                 End If
                 fldLen = "(" & Pos.ToString & ":" & fld.GetFieldAttr(enumFieldAttributes.ATTR_LENGTH).ToString & ")"
+                fldScl = fld.GetFieldAttr(enumFieldAttributes.ATTR_SCALE)
                 fldattr = fld.GetFieldAttr(enumFieldAttributes.ATTR_DATATYPE).ToString
-                OutAttr = GetOutFldType(fldattr, "ORADDL", 0)
+                OutAttr = GetOutFldType(fldattr, "ORADDL", 0, fldScl)
 
                 FORfld = String.Format("{0,4}{1,-36}{2,-30}{3}", " ", NameFld, "POSITION" & fldLen, OutAttr)
 
@@ -1093,7 +1161,7 @@ nextgoto3:  Next
             Select Case OutType
                 Case "DTD"
                     getFileExt = ".dtd"
-                Case "DB2DDL", "ORADDL"
+                Case "DB2DDL", "ORADDL", "SQDDDL"
                     getFileExt = ".ddl"
                 Case "H"
                     getFileExt = ".h"
@@ -1116,17 +1184,18 @@ nextgoto3:  Next
 
     End Function
 
-    Function GetOutFldType(ByVal InType As String, ByVal ModType As String, ByVal fldLen As Integer) As String
+    Function GetOutFldType(ByVal InType As String, ByVal OutType As String, ByVal fldLen As Integer, ByVal fldScale As Integer) As String
 
         Try
-            Dim OutLen As String
+            Dim OutSuffix As String
             If fldLen > 0 Then
-                OutLen = "(" & fldLen.ToString & ")"
+                OutSuffix = "(" & fldLen.ToString & ")"
             Else
-                OutLen = ""
+                OutSuffix = ""
             End If
+            GetOutFldType = ""
 
-            Select Case ModType
+            Select Case OutType
 
                 Case "H"
                     Select Case InType.ToUpper()
@@ -1141,107 +1210,243 @@ nextgoto3:  Next
                         Case "DECIMAL"
                             GetOutFldType = "double"
                         Case Else
-                            GetOutFldType = InType
+                            GetOutFldType = "char"
                     End Select
 
                 Case "DB2DDL"
+                    ' binary()    varbinary()  Image()    BLOB()      BFILE()   char   nchar()  nvarchar()   varchar()
+                    ' varchar()   NTEXT()      TEXT()     CLOB()    DBCLOB()   NCLOB()
+                    ' DateTime()  smalldatetime()    timestamp()   DATE     DATETIME2()   DateTimeOffset()  TIME()
+                    ' TIMESTAMP WITH TIME ZONE
+                    ' bigint()    bit()    decimal      Int()    money()  number(p,s)  numeric()   smallint()   smallmoney()
+                    ' tinyint()   FLOAT()   REAL()  DECFLOAT(16)   DECFLOAT(34)    DOUBLE
+                    ' uniqueID()   DISTINCT (any DB2 data type)      GRAPHIC()   LONG VARGRAPHIC   ROWID()  VARGRAPHIC(n)   Xml()
+
                     Select Case InType.ToUpper()
-                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA", "char", "nchar", "NCHAR"
-                            GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR2", "varchar2"
-                            GetOutFldType = "VARCHAR" & OutLen
-                        Case "VARCHAR", "nvarchar", "NVARCHAR", "VARBINARY"
+                        Case "CHAR", "BINARY", "XMLCDATA", "NCHAR"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "VARCHAR2"
+                            GetOutFldType = "VARCHAR" & OutSuffix
+                        Case "VARCHAR", "NVARCHAR"
                             If fldLen > 2 Then
                                 GetOutFldType = "VARCHAR(" & (fldLen - 2).ToString & ")"
                             ElseIf fldLen < 0 Then
                                 GetOutFldType = "VARCHAR(8000)"
                             Else
-                                GetOutFldType = "VARCHAR" & OutLen
+                                GetOutFldType = "VARCHAR" & OutSuffix
                             End If
-                        Case "DATE", "DATETIME", "SMALLDATETIME"
-                            GetOutFldType = "DATE"
+                        Case "VARBINARY"
+                            GetOutFldType = "VARBINARY" & OutSuffix
+                        Case "BLOB", "IMAGE", "BFILE"
+                            GetOutFldType = "BLOB" & OutSuffix
+                        Case "CLOB", "TEXT", "NTEXT"
+                            GetOutFldType = "CLOB" & OutSuffix
+                        Case "DBCLOB"
+                            GetOutFldType = "DBCLOB" & OutSuffix
                         Case "TIMESTAMP"
                             GetOutFldType = "TIMESTAMP"
+                        Case "DATE"
+                            GetOutFldType = "DATE"
+                        Case "DATETIME"
+                            GetOutFldType = "DATETIME   <<< DataType unknown to DB2"
+                        Case "SMALLDATETIME"
+                            GetOutFldType = "SMALLDATETIME   <<< DataType unknown to DB2"
+                        Case "DATETIME2"
+                            GetOutFldType = "DATETIME2   <<< DataType unknown to DB2"
+                        Case "DATETIMEOFFSET"
+                            GetOutFldType = "DATETIMEOFFSET   <<< DataType unknown to DB2"
                         Case "TIME"
                             GetOutFldType = "TIME"
-                            'Case "BINARY"
-                            '    GetOutFldType = "BINARY" & OutLen
-                        Case "INTEGER", "INT", "int", "integer", "SMALLINT", _
-                        "smallint", "tinyint", "TINYINT", "bit", "BIT", "bigint", "BIGINT"
+                        Case "TIMESTAMP WITH TIMEZONE"
+                            GetOutFldType = "TIMESTAMP WITH TIMEZONE   <<< DataType unknown to DB2"
+                        Case "BIGINT"
+                            GetOutFldType = "BIGINT" '& OutLen
+                        Case "INTEGER", "INT"
                             GetOutFldType = "INTEGER" '& OutLen
-                        Case "SMALLMONEY", "smallmoney"
+                        Case "SMALLINT", "TINYINT", "BIT"
+                            GetOutFldType = "SMALLINT" '& OutLen
+                        Case "SMALLMONEY"
                             GetOutFldType = "DECIMAL(11,4)"
-                        Case "MONEY", "money"
+                        Case "MONEY"
                             GetOutFldType = "DECIMAL(20,4)"
-                        Case "NUMERIC", "DECIMAL", "numeric", "decimal"
-                            GetOutFldType = "DECIMAL" & OutLen
-                        Case "UNIQUEIDENTIFIER", "uniqueidentifier"
-                            GetOutFldType = "VARCHAR(128)" '& OutLen
+                        Case "DECIMAL", "TEXTNUM", "ZONE", "NUMBER"
+                            If InStructureType = enumStructure.STRUCT_COBOL Or InStructureType = enumStructure.STRUCT_COBOL_IMS Or _
+                            InStructureType = enumStructure.STRUCT_IMS Then
+                                fldLen = (fldLen * 2) - 1
+                            End If
+                            OutSuffix = "(" & fldLen.ToString & "," & fldScale.ToString & ")"
+                            GetOutFldType = "DECIMAL" & OutSuffix
+                        Case "NUMERIC"
+                            GetOutFldType = "DECIMAL(38)" ' & OutSuffix
+                        Case "FLOAT"
+                            GetOutFldType = "FLOAT" ' & OutSuffix
+                        Case "REAL"
+                            GetOutFldType = "REAL" ' & OutSuffix
+                        Case "DECFLOAT(16)"
+                            GetOutFldType = "DECFLOAT(16)"
+                        Case "DECFLOAT(34)"
+                            GetOutFldType = "DECFLOAT(34)"
+                        Case "DOUBLE"
+                            GetOutFldType = "DOUBLE"
+                        Case "UNIQUEIDENTIFIER", "ROWID"
+                            GetOutFldType = "ROWID"
+                        Case "GRAPHIC"
+                            GetOutFldType = "GRAPHIC" & OutSuffix
+                        Case "LONG VARGRAPHIC"
+                            GetOutFldType = "LONG VARGRAPHIC" '& OutSuffix
+                        Case "VARGRAPHIC"
+                            GetOutFldType = "VARGRAPHIC" & OutSuffix
+                        Case "XML"
+                            GetOutFldType = "XML" '& OutSuffix
                         Case Else
-                            GetOutFldType = InType & OutLen
+                            GetOutFldType = InType & OutSuffix
                     End Select
 
                 Case "ORADDL"
                     Select Case InType.ToUpper()
-                        Case "CHAR", "TEXTNUM", "ZONE", "XMLCDATA", "char", "nchar", "NCHAR"
-                            GetOutFldType = "CHAR" & OutLen
-                        Case "VARCHAR", "varchar", "nvarchar", "NVARCHAR", "VARBINARY"
+                        Case "CHAR", "TEXTNUM", "ZONE", "XMLCDATA", "NCHAR"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "VARCHAR", "NVARCHAR", "VARBINARY"
                             If fldLen < 0 Then
                                 GetOutFldType = "VARCHAR(8000)"
                             Else
-                                GetOutFldType = "VARCHAR" & OutLen
+                                GetOutFldType = "VARCHAR" & OutSuffix
                             End If
-                        Case "VARCHAR2", "varchar2"
-                            GetOutFldType = "VARCHAR2" & OutLen
-                        Case "DATE", "date", "DATETIME", "SMALLDATETIME"
+                        Case "VARCHAR2"
+                            GetOutFldType = "VARCHAR2" & OutSuffix
+                        Case "DATE", "DATETIME"
                             GetOutFldType = "DATE"
-                        Case "TIMESTAMP", "TIME", "time", "timestamp"
+                        Case "TIMESTAMP"
                             GetOutFldType = "TIMESTAMP"
-                        Case "BINARY", "binary"
-                            GetOutFldType = "RAW" & OutLen
-                        Case "NUMERIC", "DECIMAL", "numeric", "decimal"
-                            GetOutFldType = "NUMBER" & OutLen
-                        Case "SMALLMONEY", "smallmoney"
+                        Case "SMALLDATETIME"
+                            GetOutFldType = "SMALLDATETIME   <<< DataType unknown to Oracle"
+                        Case "TIME"
+                            GetOutFldType = "TIME   <<< DataType unknown to Oracle"
+                        Case "BINARY"
+                            GetOutFldType = "RAW" & OutSuffix
+                        Case "NUMERIC", "DECIMAL", "NUMBER"
+                            If InStructureType = enumStructure.STRUCT_COBOL Or InStructureType = enumStructure.STRUCT_COBOL_IMS Or _
+                            InStructureType = enumStructure.STRUCT_IMS Then
+                                fldLen = (fldLen * 2) - 1
+                            End If
+                            OutSuffix = "(" & fldLen.ToString & "," & fldScale.ToString & ")"
+                            GetOutFldType = "NUMBER" & OutSuffix
+                        Case "SMALLMONEY"
                             GetOutFldType = "NUMBER(11,4)"
-                        Case "MONEY", "money"
+                        Case "MONEY"
                             GetOutFldType = "NUMBER(20,4)"
-                        Case "INTEGER", "INT", "int", "integer", "SMALLINT", _
-                        "smallint", "tinyint", "TINYINT", "bit", "BIT", "bigint", "BIGINT"
+                        Case "INTEGER", "INT", "SMALLINT", "TINYINT", "BIT", "BIGINT"
                             GetOutFldType = "NUMBER"
-                        Case "UNIQUEIDENTIFIER", "uniqueidentifier"
+                        Case "UNIQUEIDENTIFIER"
                             GetOutFldType = "VARCHAR(128)" '& OutLen
+                        Case "GRAPHIC"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "LONG VARGRAPHIC"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "VARGRAPHIC"
+                            GetOutFldType = "VARCHAR" & OutSuffix
                         Case Else
-                            GetOutFldType = InType & OutLen
+                            GetOutFldType = InType & OutSuffix
                     End Select
 
                 Case "SQLDDL"
-                    Select Case InType.ToUpper()
-                        Case "CHAR", "TEXTNUM", "ZONE", "BINARY", "XMLCDATA", "char", "binary"
-                            GetOutFldType = "char" & OutLen
-                        Case "VARCHAR", "VARCHAR2", "varchar", "varchar2"
+                    Select Case InType.ToUpper().Trim
+                        Case "CHAR", "XMLCDATA", "TEXTNUM", "ZONE"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "BINARY"
+                            GetOutFldType = "BINARY" & OutSuffix
+                        Case "VARCHAR2"
+                            fldLen = (fldLen * 2)
+                            OutSuffix = "(" & fldLen.ToString & ")"
+                            GetOutFldType = "VARCHAR" & OutSuffix
+                        Case "VARCHAR"
                             If fldLen = -1 Then
-                                GetOutFldType = "varchar(max)" '& OutLen
+                                GetOutFldType = "VARCHAR(max)" '& OutLen
                             Else
-                                GetOutFldType = "varchar" & OutLen
+                                GetOutFldType = "VARCHAR" & OutSuffix
                             End If
-                        Case "NUMERIC", "numeric"
-                            GetOutFldType = "numeric" & OutLen
-                        Case "DATE", "TIMESTAMP", "TIME", "date", "time", "timestamp"
-                            GetOutFldType = "datetime"
-                        Case "INTEGER", "INT", "int", "integer"
-                            GetOutFldType = "int"
-                            'Case "BINARY"
-                            '    GetOutFldType = "BINARY" & OutLen
-                        Case "DECIMAL", "decimal"
-                            GetOutFldType = "decimal" & OutLen
-                        Case "SMALLINT", "smallint"
-                            GetOutFldType = "smallint" '& OutLen
-                        Case "text", "TEXT"
+                        Case "TEXT"
                             GetOutFldType = InType  '"[" &  & "]"
+                        Case "BLOB", "IMAGE", "BFILE", "CLOB", "DBCLOB", "NCLOB"
+                            GetOutFldType = "IMAGE" '& OutSuffix
+                        Case "DATE", "TIMESTAMP", "TIME", "DATETIME", "SMALLDATETIME", "DATETIME2", "DATETIMEOFFSET"
+                            GetOutFldType = InType
+                        Case "TIMESTAMP WITH TIMEZONE"
+                            GetOutFldType = "TIMESTAMP WITH TIMEZONE  <<< DataType unknown to MSSQLserver"
+                        Case "INTEGER", "INT"
+                            GetOutFldType = "INTEGER"
+                        Case "DECIMAL", "DOUBLE", "NUMERIC"
+                            If InStructureType = enumStructure.STRUCT_COBOL Or InStructureType = enumStructure.STRUCT_COBOL_IMS Or _
+                            InStructureType = enumStructure.STRUCT_IMS Then
+                                fldLen = (fldLen * 2) - 1
+                            End If
+                            OutSuffix = "(" & fldLen.ToString & "," & fldScale.ToString & ")"
+                            GetOutFldType = "DECIMAL" & OutSuffix
+                        Case "SMALLINT"
+                            GetOutFldType = "SMALLINT" '& OutLen
+                        Case "TINYINT"
+                            GetOutFldType = "TINYINT" '& OutLen
+                        Case "BIT"
+                            GetOutFldType = "BIT" '& OutLen
+                        Case "BIGINT"
+                            GetOutFldType = "BIGINT" '& OutLen
+                        Case "MONEY"
+                            GetOutFldType = "MONEY" '& OutLen
+                        Case "SMALLMONEY"
+                            GetOutFldType = "SMALLMONEY" '& OutLen
+                        Case "REAL"
+                            GetOutFldType = "REAL" '& OutLen
+                        Case "FLOAT", "DECFLOAT(16)", "DECFLOAT(34)"
+                            GetOutFldType = "FLOAT" '& OutLen
+                        Case "UNIQUEIDENTIFIER"
+                            GetOutFldType = "UNIQUEIDENTIFIER"
+                        Case "GRAPHIC"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "LONG VARGRAPHIC"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "VARGRAPHIC"
+                            GetOutFldType = "VARCHAR" & OutSuffix
+                        Case "ROWID"
+                            GetOutFldType = "VARCHAR(19)" ' & OutSuffix
                         Case Else
-                            GetOutFldType = InType & OutLen  '"[" &  & "]"
+                            GetOutFldType = InType & OutSuffix  '"[" &  & "]"
                     End Select
 
+                Case "SQDDDL"
+                    Select Case InType.ToUpper()
+                        Case "CHAR", "BINARY", "XMLCDATA", "NCHAR", "NCLOB", "CLOB", "DBCLOB", "TEXT", "NTEXT", "GRAPHIC", _
+                        "LONG VARGRAPHIC", "TEXTNUM", "ZONE"
+                            GetOutFldType = "CHAR" & OutSuffix
+                        Case "VARCHAR", "VARCHAR2"
+                            GetOutFldType = "VARCHAR" & OutSuffix
+                        Case "DECIMAL", "NUMERIC", "NUMBER"
+                            If InStructureType = enumStructure.STRUCT_COBOL Or InStructureType = enumStructure.STRUCT_COBOL_IMS Or _
+                            InStructureType = enumStructure.STRUCT_IMS Then
+                                fldLen = (fldLen * 2) - 1
+                            End If
+                            OutSuffix = "(" & fldLen.ToString & "," & fldScale.ToString & ")"
+                            GetOutFldType = "DECIMAL" & OutSuffix
+                        Case "MONEY"
+                            GetOutFldType = "DECIMAL(20,4)" '& OutSuffix
+                        Case "SMALLMONEY"
+                            GetOutFldType = "DECIMAL(11,4)" '& OutSuffix
+                        Case "BINARY"
+                            GetOutFldType = "BINARY" & OutSuffix
+                        Case "TIMESTAMP"
+                            GetOutFldType = "TIMESTAMP" '& OutSuffix
+                        Case "DATE", "TIME", "DATETIME"
+                            GetOutFldType = "DATE" '& OutSuffix
+                        Case "INTEGER", "INT"
+                            GetOutFldType = "INTEGER" '& OutSuffix
+                        Case "SMALLINT", "TINYINT", "BIT"
+                            GetOutFldType = "SMALLINT" '& OutSuffix
+                        Case "INTEGER", "INT"
+                            GetOutFldType = "INTEGER"
+                        Case "BIGINT"
+                            GetOutFldType = "INTEGER(20)"
+                        Case Else
+                            GetOutFldType = InType & OutSuffix  '"[" &  & "]"
+                    End Select
                 Case Else
                     GetOutFldType = ""
             End Select

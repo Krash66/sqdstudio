@@ -115,6 +115,12 @@ Public Module modGeneral
             Return sName
         End Function
 
+        Public ReadOnly Property Text() As String
+            Get
+                Return ItemData.ToString
+            End Get
+        End Property
+
     End Class
 
 #End Region

@@ -886,6 +886,10 @@ Public Class ctlEngine
             objThis.DTDLib = txtDTDLib.Text
             objThis.DDLLib = txtDDLLib.Text
             objThis.Main = txtMain.Text
+            objThis.EXEdir = txtEXE.Text
+            objThis.BATdir = txtBAT.Text
+            objThis.CDCdir = txtCDC.Text
+
             'objThis.EngVersion = cmbEngVer.Text
 
 

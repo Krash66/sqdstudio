@@ -19,6 +19,11 @@ Public Class CRODBCHelper
     Private m_ODBCNativeError As Integer
     Private m_ODBCMessage As String
 
+    'Private Const ODBC32Path As String = "%windir%\SysWOW64\"  c:\windows\SysWOW64\
+
+
+
+
     Private Declare Function SQLFreeHandle Lib "odbc32.dll" (ByVal handleType As Short, _
     ByVal Handle As Integer) As Short
 

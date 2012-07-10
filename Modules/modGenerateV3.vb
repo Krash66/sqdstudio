@@ -127,8 +127,8 @@ Public Module modGenerateV3
             End If
 
             If UseEXEpath = True Then
-                ParserPath = ObjThis.EXEdir & "sqdparse.exe"
-                EnginePath = ObjThis.EXEdir & "sqdata.exe"
+                ParserPath = ObjThis.EXEdir & "\sqdparse.exe"
+                EnginePath = ObjThis.EXEdir & "\sqdata.exe"
             Else
                 If EngObj.EngVersion <> "" Then
                     ParserPath = GetAppPath() & "sqdparse.exe" 'EngObj.EngVersion & "\" & 
