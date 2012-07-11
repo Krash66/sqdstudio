@@ -13,13 +13,22 @@ Public Class ctlDatastore
     Dim IsNewObj As Boolean
     Dim prevfld As clsField
     Dim KeyForRel As Boolean = True
+    Dim check4key As Boolean = False
 
     Private Const SplitSrc As Integer = 361
     Private Const SplitTgt As Integer = 284
     Private Const SplitSrcNoDel As Integer = 298
     Private Const SplitTgtNoDel As Integer = 221
     Private Pnt As Point
-    
+    Friend WithEvents lblHostName As System.Windows.Forms.Label
+    Friend WithEvents txtHostName As System.Windows.Forms.TextBox
+    Friend WithEvents gbMultiDesc As System.Windows.Forms.GroupBox
+    Friend WithEvents scDescriptions As System.Windows.Forms.SplitContainer
+    Friend WithEvents btnMTD As System.Windows.Forms.Button
+    Friend WithEvents txtMTD As System.Windows.Forms.TextBox
+    Friend WithEvents cbUseFile As System.Windows.Forms.CheckBox
+    Friend WithEvents btnSelDesc As System.Windows.Forms.Button
+
     Private lvItem As ListViewItem
 
 #Region " Windows Form Designer generated code "
@@ -85,7 +94,6 @@ Public Class ctlDatastore
     Friend WithEvents tvDatastoreStructures As System.Windows.Forms.TreeView
     Friend WithEvents txtDatastoreName As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtPoll As System.Windows.Forms.TextBox
     Friend WithEvents txtFieldDesc As System.Windows.Forms.TextBox
     Friend WithEvents A4 As System.Windows.Forms.Label
     Friend WithEvents Label18 As System.Windows.Forms.Label
@@ -126,16 +134,11 @@ Public Class ctlDatastore
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents rbLU As System.Windows.Forms.RadioButton
     Friend WithEvents gbTarget As System.Windows.Forms.GroupBox
-    Friend WithEvents txtRestart As System.Windows.Forms.TextBox
-    Friend WithEvents lblRestart As System.Windows.Forms.Label
-    Friend WithEvents lblPoll As System.Windows.Forms.Label
     Friend WithEvents cbKeyChng As System.Windows.Forms.CheckBox
 
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ctlDatastore))
-        Me.lblPoll = New System.Windows.Forms.Label
-        Me.txtPoll = New System.Windows.Forms.TextBox
         Me.cmbDatastoreType = New System.Windows.Forms.ComboBox
         Me.Label15 = New System.Windows.Forms.Label
         Me.txtUOW = New System.Windows.Forms.TextBox
@@ -185,10 +188,10 @@ Public Class ctlDatastore
         Me.tvFields = New System.Windows.Forms.TreeView
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.gbProp = New System.Windows.Forms.GroupBox
+        Me.lblHostName = New System.Windows.Forms.Label
+        Me.txtHostName = New System.Windows.Forms.TextBox
         Me.rbLU = New System.Windows.Forms.RadioButton
         Me.gbExtProps = New System.Windows.Forms.GroupBox
-        Me.txtRestart = New System.Windows.Forms.TextBox
-        Me.lblRestart = New System.Windows.Forms.Label
         Me.gbSource = New System.Windows.Forms.GroupBox
         Me.cbIfNullNum = New System.Windows.Forms.ComboBox
         Me.Label19 = New System.Windows.Forms.Label
@@ -204,6 +207,12 @@ Public Class ctlDatastore
         Me.cbIfSpaceChar = New System.Windows.Forms.ComboBox
         Me.gbStruct = New System.Windows.Forms.GroupBox
         Me.scDS = New System.Windows.Forms.SplitContainer
+        Me.scDescriptions = New System.Windows.Forms.SplitContainer
+        Me.gbMultiDesc = New System.Windows.Forms.GroupBox
+        Me.btnSelDesc = New System.Windows.Forms.Button
+        Me.cbUseFile = New System.Windows.Forms.CheckBox
+        Me.btnMTD = New System.Windows.Forms.Button
+        Me.txtMTD = New System.Windows.Forms.TextBox
         Me.gbTarget = New System.Windows.Forms.GroupBox
         Me.cbKeyChng = New System.Windows.Forms.CheckBox
         Me.gbDel = New System.Windows.Forms.GroupBox
@@ -221,6 +230,10 @@ Public Class ctlDatastore
         Me.scDS.Panel1.SuspendLayout()
         Me.scDS.Panel2.SuspendLayout()
         Me.scDS.SuspendLayout()
+        Me.scDescriptions.Panel1.SuspendLayout()
+        Me.scDescriptions.Panel2.SuspendLayout()
+        Me.scDescriptions.SuspendLayout()
+        Me.gbMultiDesc.SuspendLayout()
         Me.gbTarget.SuspendLayout()
         Me.gbDel.SuspendLayout()
         Me.gbField.SuspendLayout()
@@ -234,25 +247,6 @@ Public Class ctlDatastore
         Me.SplitContainer6.SuspendLayout()
         Me.gbFldDesc.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'lblPoll
-        '
-        Me.lblPoll.AutoSize = True
-        Me.lblPoll.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPoll.Location = New System.Drawing.Point(302, 39)
-        Me.lblPoll.Name = "lblPoll"
-        Me.lblPoll.Size = New System.Drawing.Size(27, 14)
-        Me.lblPoll.TabIndex = 0
-        Me.lblPoll.Text = "Poll"
-        Me.lblPoll.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'txtPoll
-        '
-        Me.txtPoll.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPoll.Location = New System.Drawing.Point(335, 36)
-        Me.txtPoll.Name = "txtPoll"
-        Me.txtPoll.Size = New System.Drawing.Size(83, 20)
-        Me.txtPoll.TabIndex = 14
         '
         'cmbDatastoreType
         '
@@ -323,17 +317,17 @@ Public Class ctlDatastore
         'txtException
         '
         Me.txtException.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtException.Location = New System.Drawing.Point(60, 67)
+        Me.txtException.Location = New System.Drawing.Point(72, 37)
         Me.txtException.MaxLength = 128
         Me.txtException.Name = "txtException"
-        Me.txtException.Size = New System.Drawing.Size(185, 20)
+        Me.txtException.Size = New System.Drawing.Size(173, 20)
         Me.txtException.TabIndex = 3
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(3, 70)
+        Me.Label7.Location = New System.Drawing.Point(6, 40)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 14)
         Me.Label7.TabIndex = 0
@@ -436,7 +430,7 @@ Public Class ctlDatastore
         '
         Me.Label8.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(6, 177)
+        Me.Label8.Location = New System.Drawing.Point(6, 172)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(70, 28)
         Me.Label8.TabIndex = 0
@@ -447,12 +441,12 @@ Public Class ctlDatastore
         Me.txtDatastoreDesc.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDatastoreDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDatastoreDesc.Location = New System.Drawing.Point(82, 174)
+        Me.txtDatastoreDesc.Location = New System.Drawing.Point(82, 169)
         Me.txtDatastoreDesc.MaxLength = 255
         Me.txtDatastoreDesc.Multiline = True
         Me.txtDatastoreDesc.Name = "txtDatastoreDesc"
         Me.txtDatastoreDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtDatastoreDesc.Size = New System.Drawing.Size(306, 36)
+        Me.txtDatastoreDesc.Size = New System.Drawing.Size(307, 36)
         Me.txtDatastoreDesc.TabIndex = 9
         '
         'cmbCharacterCode
@@ -521,7 +515,7 @@ Public Class ctlDatastore
         Me.tvDatastoreStructures.HideSelection = False
         Me.tvDatastoreStructures.Location = New System.Drawing.Point(6, 16)
         Me.tvDatastoreStructures.Name = "tvDatastoreStructures"
-        Me.tvDatastoreStructures.Size = New System.Drawing.Size(382, 152)
+        Me.tvDatastoreStructures.Size = New System.Drawing.Size(383, 147)
         Me.tvDatastoreStructures.TabIndex = 10
         '
         'txtDatastoreName
@@ -537,7 +531,7 @@ Public Class ctlDatastore
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(3, 44)
+        Me.Label3.Location = New System.Drawing.Point(5, 45)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(34, 14)
         Me.Label3.TabIndex = 0
@@ -603,7 +597,7 @@ Public Class ctlDatastore
         Me.lvFieldAttrs.HideSelection = False
         Me.lvFieldAttrs.Location = New System.Drawing.Point(0, 0)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(569, 163)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(569, 161)
         Me.lvFieldAttrs.TabIndex = 23
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -759,7 +753,7 @@ Public Class ctlDatastore
         Me.tvFields.Location = New System.Drawing.Point(3, 19)
         Me.tvFields.Name = "tvFields"
         Me.tvFields.SelectedImageIndex = 0
-        Me.tvFields.Size = New System.Drawing.Size(242, 220)
+        Me.tvFields.Size = New System.Drawing.Size(242, 218)
         Me.tvFields.StateImageList = Me.ImageList1
         Me.tvFields.TabIndex = 22
         '
@@ -773,13 +767,13 @@ Public Class ctlDatastore
         'gbProp
         '
         Me.gbProp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.gbProp.Controls.Add(Me.lblHostName)
+        Me.gbProp.Controls.Add(Me.txtHostName)
         Me.gbProp.Controls.Add(Me.Label3)
         Me.gbProp.Controls.Add(Me.txtDatastoreName)
         Me.gbProp.Controls.Add(Me.Label15)
         Me.gbProp.Controls.Add(Me.cmbDatastoreType)
-        Me.gbProp.Controls.Add(Me.txtException)
         Me.gbProp.Controls.Add(Me.txtPortOrMQMgr)
-        Me.gbProp.Controls.Add(Me.Label7)
         Me.gbProp.Controls.Add(Me.Label2)
         Me.gbProp.Controls.Add(Me.lblPortorMQMgr)
         Me.gbProp.Controls.Add(Me.txtPhysicalSource)
@@ -793,6 +787,23 @@ Public Class ctlDatastore
         Me.gbProp.TabIndex = 0
         Me.gbProp.TabStop = False
         Me.gbProp.Text = "Datastore Properties"
+        '
+        'lblHostName
+        '
+        Me.lblHostName.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHostName.Location = New System.Drawing.Point(4, 63)
+        Me.lblHostName.Name = "lblHostName"
+        Me.lblHostName.Size = New System.Drawing.Size(48, 30)
+        Me.lblHostName.TabIndex = 10
+        Me.lblHostName.Text = "Host Name"
+        '
+        'txtHostName
+        '
+        Me.txtHostName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtHostName.Location = New System.Drawing.Point(60, 67)
+        Me.txtHostName.Name = "txtHostName"
+        Me.txtHostName.Size = New System.Drawing.Size(185, 20)
+        Me.txtHostName.TabIndex = 9
         '
         'rbLU
         '
@@ -808,14 +819,12 @@ Public Class ctlDatastore
         '
         'gbExtProps
         '
-        Me.gbExtProps.Controls.Add(Me.txtRestart)
-        Me.gbExtProps.Controls.Add(Me.lblRestart)
         Me.gbExtProps.Controls.Add(Me.txtUOW)
-        Me.gbExtProps.Controls.Add(Me.lblPoll)
         Me.gbExtProps.Controls.Add(Me.chkSkipChangeCheck)
         Me.gbExtProps.Controls.Add(Me.lblUOW)
-        Me.gbExtProps.Controls.Add(Me.txtPoll)
         Me.gbExtProps.Controls.Add(Me.chkIMSPathData)
+        Me.gbExtProps.Controls.Add(Me.txtException)
+        Me.gbExtProps.Controls.Add(Me.Label7)
         Me.gbExtProps.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbExtProps.ForeColor = System.Drawing.Color.White
         Me.gbExtProps.Location = New System.Drawing.Point(3, 103)
@@ -824,23 +833,6 @@ Public Class ctlDatastore
         Me.gbExtProps.TabIndex = 0
         Me.gbExtProps.TabStop = False
         Me.gbExtProps.Text = "Extended Properties"
-        '
-        'txtRestart
-        '
-        Me.txtRestart.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtRestart.Location = New System.Drawing.Point(60, 36)
-        Me.txtRestart.Name = "txtRestart"
-        Me.txtRestart.Size = New System.Drawing.Size(236, 20)
-        Me.txtRestart.TabIndex = 19
-        '
-        'lblRestart
-        '
-        Me.lblRestart.AutoSize = True
-        Me.lblRestart.Location = New System.Drawing.Point(6, 39)
-        Me.lblRestart.Name = "lblRestart"
-        Me.lblRestart.Size = New System.Drawing.Size(48, 13)
-        Me.lblRestart.TabIndex = 18
-        Me.lblRestart.Text = "Restart"
         '
         'gbSource
         '
@@ -986,18 +978,17 @@ Public Class ctlDatastore
         '
         'gbStruct
         '
-        Me.gbStruct.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbStruct.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.gbStruct.Controls.Add(Me.tvDatastoreStructures)
         Me.gbStruct.Controls.Add(Me.txtDatastoreDesc)
         Me.gbStruct.Controls.Add(Me.Label8)
+        Me.gbStruct.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbStruct.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbStruct.ForeColor = System.Drawing.Color.White
-        Me.gbStruct.Location = New System.Drawing.Point(433, 3)
+        Me.gbStruct.Location = New System.Drawing.Point(0, 0)
         Me.gbStruct.Name = "gbStruct"
         Me.gbStruct.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.gbStruct.Size = New System.Drawing.Size(394, 216)
+        Me.gbStruct.Size = New System.Drawing.Size(395, 211)
         Me.gbStruct.TabIndex = 0
         Me.gbStruct.TabStop = False
         Me.gbStruct.Text = "Descriptions"
@@ -1013,9 +1004,9 @@ Public Class ctlDatastore
         '
         'scDS.Panel1
         '
+        Me.scDS.Panel1.Controls.Add(Me.scDescriptions)
         Me.scDS.Panel1.Controls.Add(Me.gbTarget)
         Me.scDS.Panel1.Controls.Add(Me.gbSource)
-        Me.scDS.Panel1.Controls.Add(Me.gbStruct)
         Me.scDS.Panel1.Controls.Add(Me.gbDel)
         Me.scDS.Panel1.Controls.Add(Me.gbExtProps)
         Me.scDS.Panel1.Controls.Add(Me.gbProp)
@@ -1025,9 +1016,93 @@ Public Class ctlDatastore
         '
         Me.scDS.Panel2.Controls.Add(Me.gbField)
         Me.scDS.Size = New System.Drawing.Size(833, 626)
-        Me.scDS.SplitterDistance = 361
+        Me.scDS.SplitterDistance = 363
         Me.scDS.TabIndex = 0
         Me.scDS.TabStop = False
+        '
+        'scDescriptions
+        '
+        Me.scDescriptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.scDescriptions.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+        Me.scDescriptions.IsSplitterFixed = True
+        Me.scDescriptions.Location = New System.Drawing.Point(432, 3)
+        Me.scDescriptions.Name = "scDescriptions"
+        Me.scDescriptions.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'scDescriptions.Panel1
+        '
+        Me.scDescriptions.Panel1.Controls.Add(Me.gbStruct)
+        '
+        'scDescriptions.Panel2
+        '
+        Me.scDescriptions.Panel2.Controls.Add(Me.gbMultiDesc)
+        Me.scDescriptions.Size = New System.Drawing.Size(395, 262)
+        Me.scDescriptions.SplitterDistance = 211
+        Me.scDescriptions.TabIndex = 23
+        '
+        'gbMultiDesc
+        '
+        Me.gbMultiDesc.Controls.Add(Me.btnSelDesc)
+        Me.gbMultiDesc.Controls.Add(Me.cbUseFile)
+        Me.gbMultiDesc.Controls.Add(Me.btnMTD)
+        Me.gbMultiDesc.Controls.Add(Me.txtMTD)
+        Me.gbMultiDesc.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMultiDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMultiDesc.ForeColor = System.Drawing.Color.White
+        Me.gbMultiDesc.Location = New System.Drawing.Point(0, 0)
+        Me.gbMultiDesc.Name = "gbMultiDesc"
+        Me.gbMultiDesc.Size = New System.Drawing.Size(395, 47)
+        Me.gbMultiDesc.TabIndex = 22
+        Me.gbMultiDesc.TabStop = False
+        Me.gbMultiDesc.Text = "Multi-Table Description File"
+        '
+        'btnSelDesc
+        '
+        Me.btnSelDesc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSelDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelDesc.ForeColor = System.Drawing.Color.Black
+        Me.btnSelDesc.Location = New System.Drawing.Point(331, 19)
+        Me.btnSelDesc.Name = "btnSelDesc"
+        Me.btnSelDesc.Size = New System.Drawing.Size(58, 23)
+        Me.btnSelDesc.TabIndex = 3
+        Me.btnSelDesc.Text = "Select"
+        Me.ToolTip1.SetToolTip(Me.btnSelDesc, "Select Descriptions" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Contained in file")
+        Me.btnSelDesc.UseVisualStyleBackColor = True
+        '
+        'cbUseFile
+        '
+        Me.cbUseFile.AutoSize = True
+        Me.cbUseFile.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.cbUseFile.Location = New System.Drawing.Point(4, 23)
+        Me.cbUseFile.Name = "cbUseFile"
+        Me.cbUseFile.Size = New System.Drawing.Size(72, 17)
+        Me.cbUseFile.TabIndex = 2
+        Me.cbUseFile.Text = "Use File"
+        Me.cbUseFile.UseVisualStyleBackColor = True
+        '
+        'btnMTD
+        '
+        Me.btnMTD.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnMTD.ForeColor = System.Drawing.Color.Black
+        Me.btnMTD.Location = New System.Drawing.Point(297, 19)
+        Me.btnMTD.Name = "btnMTD"
+        Me.btnMTD.Size = New System.Drawing.Size(28, 23)
+        Me.btnMTD.TabIndex = 1
+        Me.btnMTD.Text = "..."
+        Me.btnMTD.UseVisualStyleBackColor = True
+        '
+        'txtMTD
+        '
+        Me.txtMTD.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtMTD.BackColor = System.Drawing.SystemColors.Window
+        Me.txtMTD.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMTD.Location = New System.Drawing.Point(82, 21)
+        Me.txtMTD.Name = "txtMTD"
+        Me.txtMTD.ReadOnly = True
+        Me.txtMTD.Size = New System.Drawing.Size(210, 20)
+        Me.txtMTD.TabIndex = 0
         '
         'gbTarget
         '
@@ -1069,7 +1144,7 @@ Public Class ctlDatastore
         Me.gbDel.ForeColor = System.Drawing.Color.White
         Me.gbDel.Location = New System.Drawing.Point(3, 300)
         Me.gbDel.Name = "gbDel"
-        Me.gbDel.Size = New System.Drawing.Size(830, 57)
+        Me.gbDel.Size = New System.Drawing.Size(824, 57)
         Me.gbDel.TabIndex = 0
         Me.gbDel.TabStop = False
         Me.gbDel.Text = "File Properties"
@@ -1082,7 +1157,7 @@ Public Class ctlDatastore
         Me.gbField.ForeColor = System.Drawing.Color.White
         Me.gbField.Location = New System.Drawing.Point(0, 0)
         Me.gbField.Name = "gbField"
-        Me.gbField.Size = New System.Drawing.Size(833, 261)
+        Me.gbField.Size = New System.Drawing.Size(833, 259)
         Me.gbField.TabIndex = 0
         Me.gbField.TabStop = False
         Me.gbField.Text = "Field Properties"
@@ -1100,7 +1175,7 @@ Public Class ctlDatastore
         'SplitContainer5.Panel2
         '
         Me.SplitContainer5.Panel2.Controls.Add(Me.gbAtt)
-        Me.SplitContainer5.Size = New System.Drawing.Size(827, 242)
+        Me.SplitContainer5.Size = New System.Drawing.Size(827, 240)
         Me.SplitContainer5.SplitterDistance = 248
         Me.SplitContainer5.TabIndex = 0
         Me.SplitContainer5.TabStop = False
@@ -1112,7 +1187,7 @@ Public Class ctlDatastore
         Me.gbFldname.ForeColor = System.Drawing.Color.White
         Me.gbFldname.Location = New System.Drawing.Point(0, 0)
         Me.gbFldname.Name = "gbFldname"
-        Me.gbFldname.Size = New System.Drawing.Size(248, 242)
+        Me.gbFldname.Size = New System.Drawing.Size(248, 240)
         Me.gbFldname.TabIndex = 0
         Me.gbFldname.TabStop = False
         Me.gbFldname.Text = "Field Names"
@@ -1124,7 +1199,7 @@ Public Class ctlDatastore
         Me.gbAtt.ForeColor = System.Drawing.Color.White
         Me.gbAtt.Location = New System.Drawing.Point(0, 0)
         Me.gbAtt.Name = "gbAtt"
-        Me.gbAtt.Size = New System.Drawing.Size(575, 242)
+        Me.gbAtt.Size = New System.Drawing.Size(575, 240)
         Me.gbAtt.TabIndex = 0
         Me.gbAtt.TabStop = False
         Me.gbAtt.Text = "Field Attributes"
@@ -1145,8 +1220,8 @@ Public Class ctlDatastore
         'SplitContainer6.Panel2
         '
         Me.SplitContainer6.Panel2.Controls.Add(Me.gbFldDesc)
-        Me.SplitContainer6.Size = New System.Drawing.Size(569, 223)
-        Me.SplitContainer6.SplitterDistance = 163
+        Me.SplitContainer6.Size = New System.Drawing.Size(569, 221)
+        Me.SplitContainer6.SplitterDistance = 161
         Me.SplitContainer6.TabIndex = 0
         '
         'gbFldDesc
@@ -1189,6 +1264,11 @@ Public Class ctlDatastore
         Me.scDS.Panel1.ResumeLayout(False)
         Me.scDS.Panel2.ResumeLayout(False)
         Me.scDS.ResumeLayout(False)
+        Me.scDescriptions.Panel1.ResumeLayout(False)
+        Me.scDescriptions.Panel2.ResumeLayout(False)
+        Me.scDescriptions.ResumeLayout(False)
+        Me.gbMultiDesc.ResumeLayout(False)
+        Me.gbMultiDesc.PerformLayout()
         Me.gbTarget.ResumeLayout(False)
         Me.gbTarget.PerformLayout()
         Me.gbDel.ResumeLayout(False)
@@ -1238,7 +1318,7 @@ Public Class ctlDatastore
 
     End Sub
 
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtPoll.TextChanged, txtDatastoreName.TextChanged, cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, txtRestart.TextChanged, cbKeyChng.CheckedChanged, cmbOperationType.SelectedIndexChanged 'cmbColDelimiter.SelectedIndexChanged, cmbRowDelimiter.SelectedIndexChanged, cmbTextQualifier.SelectedIndexChanged '// modified by TK and KS 11/6/2006
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkIMSPathData.CheckedChanged, chkSkipChangeCheck.CheckedChanged, cmbAccessMethod.SelectedIndexChanged, cmbCharacterCode.SelectedIndexChanged, cmbDatastoreType.SelectedIndexChanged, txtDatastoreDesc.TextChanged, txtException.TextChanged, txtPhysicalSource.TextChanged, txtPortOrMQMgr.TextChanged, txtUOW.TextChanged, txtDatastoreName.TextChanged, cmbListViewCombo.SelectedIndexChanged, txtListViewText.TextChanged, cbKeyChng.CheckedChanged, cmbOperationType.SelectedIndexChanged 'cmbColDelimiter.SelectedIndexChanged, cmbRowDelimiter.SelectedIndexChanged, cmbTextQualifier.SelectedIndexChanged '// modified by TK and KS 11/6/2006
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -1264,7 +1344,7 @@ Public Class ctlDatastore
             End If
             gbSource.Visible = True
             gbTarget.Visible = False
-            gbStruct.Height = SplitSrcNoDel - 5
+            'gbStruct.Height = SplitSrcNoDel - 5
         Else
             If objThis.DatastoreType = enumDatastore.DS_DELIMITED Then
                 gbDel.Visible = True
@@ -1276,7 +1356,7 @@ Public Class ctlDatastore
             gbSource.Visible = False
             gbTarget.Visible = True
             gbTarget.Location = gbSource.Location
-            gbStruct.Height = SplitTgtNoDel - 5
+            'gbStruct.Height = SplitTgtNoDel - 5
         End If
         txtListViewText.Visible = False
         cmbListViewCombo.Visible = False
@@ -1342,15 +1422,16 @@ Public Class ctlDatastore
         End If
         cmbDatastoreType.Items.Add(New Mylist("IMSDB", enumDatastore.DS_IMSDB))
         cmbDatastoreType.Items.Add(New Mylist("VSAM", enumDatastore.DS_VSAM))
+        cmbDatastoreType.Items.Add(New Mylist("UTSCDC", enumDatastore.DS_UTSCDC))
         cmbDatastoreType.Items.Add(New Mylist("IMSCDC", enumDatastore.DS_IMSCDC))
         If objThis.DsDirection = DS_DIRECTION_SOURCE Then
             cmbDatastoreType.Items.Add(New Mylist("IMSCDC LE", enumDatastore.DS_IMSCDCLE))
         End If
         cmbDatastoreType.Items.Add(New Mylist("DB2CDC", enumDatastore.DS_DB2CDC))
         cmbDatastoreType.Items.Add(New Mylist("VSAMCDC", enumDatastore.DS_VSAMCDC))
-        cmbDatastoreType.Items.Add(New Mylist("IBM Event", enumDatastore.DS_IBMEVENT))
+        'cmbDatastoreType.Items.Add(New Mylist("IBM Event", enumDatastore.DS_IBMEVENT))
         cmbDatastoreType.Items.Add(New Mylist("OracleCDC", enumDatastore.DS_ORACLECDC))
-        cmbDatastoreType.Items.Add(New Mylist("UTSCDC", enumDatastore.DS_UTSCDC))
+
         '
         'cmbDatastoreType.Items.Add(New Mylist("XML CDC", enumDatastore.DS_XMLCDC))
         'cmbDatastoreType.Items.Add(New Mylist("Trigger based CDC", enumDatastore.DS_TRBCDC))
@@ -1402,9 +1483,10 @@ Public Class ctlDatastore
             End If
             gbSource.Visible = True
             gbTarget.Visible = False
-            gbStruct.Height = SplitSrcNoDel - 5
-            gbStruct.Update()
-            gbStruct.Refresh()
+            'gbStruct.Height = SplitSrcNoDel - 5
+            scDescriptions.Height = SplitSrcNoDel - 5
+            'gbStruct.Update()
+            'gbStruct.Refresh()
             cmbCharacterCode.Enabled = True
             txtException.Enabled = True
         Else
@@ -1420,25 +1502,25 @@ Public Class ctlDatastore
             gbSource.Visible = False
             gbTarget.Visible = True
             gbTarget.Location = gbSource.Location
-            gbStruct.Height = SplitTgtNoDel - 5
-            gbStruct.Update()
-            gbStruct.Refresh()
+            'gbStruct.Height = SplitTgtNoDel - 5
+            scDescriptions.Height = SplitTgtNoDel - 5
+            'gbStruct.Update()
+            'gbStruct.Refresh()
             cmbCharacterCode.Enabled = False
             txtException.Enabled = True
-
         End If
 
         If objThis.DsDirection = DS_DIRECTION_SOURCE Then
             gbExtProps.Enabled = True
         Else
             gbExtProps.Enabled = False
-            txtPoll.Text = ""
+            'txtPoll.Text = ""
         End If
         '//AccessMethod is Enable for all except Relational,IMS,VSAM
-        cmbAccessMethod.Enabled = Not (DatastoreType = enumDatastore.DS_RELATIONAL Or _
-        DatastoreType = enumDatastore.DS_VSAM Or _
+        cmbAccessMethod.Enabled = Not (DatastoreType = enumDatastore.DS_VSAM Or _
         DatastoreType = enumDatastore.DS_IMSDB Or _
         DatastoreType = enumDatastore.DS_INCLUDE)
+        'DatastoreType = enumDatastore.DS_RELATIONAL Or _
 
         SetAccessCombo(DatastoreType)
 
@@ -1490,7 +1572,7 @@ Public Class ctlDatastore
                                   DatastoreType = enumDatastore.DS_IMSCDC Or _
                                   DatastoreType = modDeclares.enumDatastore.DS_DB2CDC)
 
-        SetPoll()
+        'SetPoll()
 
         '//added by npatel on 9/6/05
         SetListItemByValue(cmbDatastoreType, objThis.DatastoreType, False)
@@ -1577,7 +1659,7 @@ Public Class ctlDatastore
 
     End Sub
 
-    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkIMSPathData.KeyDown, chkSkipChangeCheck.KeyDown, cmbAccessMethod.KeyDown, cmbColDelimiter.KeyDown, cmbOperationType.KeyDown, cmbRowDelimiter.KeyDown, cmbTextQualifier.KeyDown, tvDatastoreStructures.KeyDown, txtDatastoreDesc.KeyDown, txtPoll.KeyDown, txtUOW.KeyDown, txtDatastoreName.KeyDown
+    Public Sub MyCTL_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles chkIMSPathData.KeyDown, chkSkipChangeCheck.KeyDown, cmbAccessMethod.KeyDown, cmbColDelimiter.KeyDown, cmbOperationType.KeyDown, cmbRowDelimiter.KeyDown, cmbTextQualifier.KeyDown, tvDatastoreStructures.KeyDown, txtDatastoreDesc.KeyDown, txtUOW.KeyDown, txtDatastoreName.KeyDown
 
         Select Case e.KeyCode
             Case Keys.Escape
@@ -1659,7 +1741,7 @@ Public Class ctlDatastore
     Private Sub cmbAccessMethod_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbAccessMethod.SelectedIndexChanged
 
         SetPortOrMQ()
-        SetPoll()
+        'SetPoll()
 
     End Sub
 
@@ -1986,56 +2068,58 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     Sub SetPortOrMQ()
 
-        txtPortOrMQMgr.Enabled = ((cmbAccessMethod.Enabled = True) And (cmbAccessMethod.Text = "IP"))
-        lblPortorMQMgr.Enabled = ((cmbAccessMethod.Enabled = True) And (cmbAccessMethod.Text = "IP"))
+        txtPortOrMQMgr.Enabled = ((cmbAccessMethod.Enabled = True) And ((cmbAccessMethod.Text = "TCP/IP") Or _
+                                                                        (cmbAccessMethod.Text = "CDC Store")))
+        lblPortorMQMgr.Enabled = ((cmbAccessMethod.Enabled = True) And ((cmbAccessMethod.Text = "TCP/IP") Or _
+                                                                        (cmbAccessMethod.Text = "CDC Store")))
 
     End Sub
 
-    Sub SetPoll()
+    'Sub SetPoll()
 
-        txtPoll.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
-                          objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
-                          objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
-                          cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                          objThis.DatastoreType = enumDatastore.DS_UTSCDC
-        If txtPoll.Enabled = False Then
-            txtPoll.Text = ""
-        End If
+    '    txtPoll.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
+    '                      cmbAccessMethod.Text = "VSAM CDCStore") Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_UTSCDC
+    '    If txtPoll.Enabled = False Then
+    '        txtPoll.Text = ""
+    '    End If
 
-        lblPoll.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
-                            objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
-                            objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
-                            cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                            objThis.DatastoreType = enumDatastore.DS_UTSCDC
+    '    lblPoll.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
+    '                        cmbAccessMethod.Text = "VSAM CDCStore") Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
-        txtRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
-                          objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
-                          objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
-                          objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
-                          cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                          objThis.DatastoreType = enumDatastore.DS_UTSCDC
-        If txtRestart.Enabled = False Then
-            txtRestart.Text = ""
-        End If
+    '    txtRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
+    '                      cmbAccessMethod.Text = "VSAM CDCStore") Or _
+    '                      objThis.DatastoreType = enumDatastore.DS_UTSCDC
+    '    If txtRestart.Enabled = False Then
+    '        txtRestart.Text = ""
+    '    End If
 
-        lblRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
-                            objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
-                            objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
-                            objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
-                            cmbAccessMethod.Text = "VSAM CDCStore") Or _
-                            objThis.DatastoreType = enumDatastore.DS_UTSCDC
+    '    lblRestart.Enabled = ((objThis.DatastoreType = enumDatastore.DS_VSAMCDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_SUBVAR Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_ORACLECDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_IMSCDCLE Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_IMSCDC Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_DB2CDC) And _
+    '                        cmbAccessMethod.Text = "VSAM CDCStore") Or _
+    '                        objThis.DatastoreType = enumDatastore.DS_UTSCDC
 
-    End Sub
+    'End Sub
 
     Sub SetAccessCombo(ByVal DStype As enumDatastore)
 
@@ -2046,18 +2130,44 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     cmbAccessMethod.Items.Clear()
                     cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
                     cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
+                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
                     cmbAccessMethod.SelectedIndex = 0
 
-                Case enumDatastore.DS_DB2CDC, enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
-                enumDatastore.DS_ORACLECDC, enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR
+                Case enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
+                enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR
                     cmbAccessMethod.Items.Clear()
+                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
                     cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
                     cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
-                    cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
-                    cmbAccessMethod.Items.Add(New Mylist("SQD CDCStore", DS_ACCESSMETHOD_SQDCDC))
+                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+                    'cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
+
                     cmbAccessMethod.SelectedIndex = 0
+
+                    'added July 2012
+                Case enumDatastore.DS_DB2CDC
+                    cmbAccessMethod.Items.Clear()
+                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                    cmbAccessMethod.SelectedIndex = 0
+
+                Case enumDatastore.DS_RELATIONAL
+                    cmbAccessMethod.Items.Clear()
+                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
+                    'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                    'cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+
+                    cmbAccessMethod.SelectedIndex = 0
+
+                Case enumDatastore.DS_ORACLECDC
+                    cmbAccessMethod.Items.Clear()
+                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
+                    'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+
+                    cmbAccessMethod.SelectedIndex = 0
+
                 Case Else
                     cmbAccessMethod.Items.Clear()
             End Select
@@ -2065,7 +2175,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbAccessMethod.Items.Clear()
             cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
             cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-            cmbAccessMethod.Items.Add(New Mylist("IP", DS_ACCESSMETHOD_IP))
+            cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
             cmbAccessMethod.SelectedIndex = 0
         End If
 
@@ -2103,37 +2213,6 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         If IsNewObj = True Then cmbOperationType.SelectedIndex = 0
         SetListItemByValue(cmbOperationType, objThis.OperationType, False)
-
-    End Sub
-
-    Private Sub cmbOperationType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOperationType.SelectedIndexChanged
-
-        Try
-            Select Case CType(cmbOperationType.SelectedItem, Mylist).Name
-                Case "", "Insert", "Replace"
-                    cbKeyChng.Enabled = False
-                Case "Update", "Delete", "Change", "Modify"
-                    cbKeyChng.Enabled = True
-            End Select
-
-        Catch ex As Exception
-            LogError(ex, "ctlDatastore cmbOperationType_SelectedIndexChanged")
-        End Try
-
-    End Sub
-
-    Private Sub cbKeyChng_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbKeyChng.CheckedChanged
-
-        Try
-            If cbKeyChng.Checked = True Then
-                objThis.IsKeyChng = "1"
-            Else
-                objThis.IsKeyChng = "0"
-            End If
-
-        Catch ex As Exception
-            LogError(ex, "ctlDatastore cbKeyChng_CheckedChanged")
-        End Try
 
     End Sub
 
@@ -2180,6 +2259,39 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
         Catch ex As Exception
             LogError(ex, "ctlDatastore SetCharCodeCombo")
+        End Try
+
+    End Sub
+
+    Private Sub cmbOperationType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOperationType.SelectedIndexChanged
+
+        Try
+            Select Case CType(cmbOperationType.SelectedItem, Mylist).Name
+                Case "", "Insert", "Replace"
+                    check4key = False               'added 7/2012 by TK
+                    cbKeyChng.Enabled = False
+                Case "Update", "Delete", "Change", "Modify"
+                    check4key = True                'added 7/2012 by TK
+                    cbKeyChng.Enabled = True
+            End Select
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore cmbOperationType_SelectedIndexChanged")
+        End Try
+
+    End Sub
+
+    Private Sub cbKeyChng_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbKeyChng.CheckedChanged
+
+        Try
+            If cbKeyChng.Checked = True Then
+                objThis.IsKeyChng = "1"
+            Else
+                objThis.IsKeyChng = "0"
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore cbKeyChng_CheckedChanged")
         End Try
 
     End Sub
@@ -2698,9 +2810,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
 
     Private Sub tvFields_Afterclick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeNodeMouseClickEventArgs) Handles tvFields.NodeMouseClick, tvFields.NodeMouseDoubleClick
 
-        If prevFld IsNot Nothing Then
-            If prevFld.FieldDescModified = True Then
-                prevFld.FieldDesc = txtFieldDesc.Text
+        If prevfld IsNot Nothing Then
+            If prevfld.FieldDescModified = True Then
+                prevfld.FieldDesc = txtFieldDesc.Text
             End If
         End If
         HiLiteFieldDescNodes(tvFields.TopNode, True, tvFields)
@@ -2775,10 +2887,11 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             End If
 
             If objThis.DsDirection = DS_DIRECTION_TARGET Or objThis.IsLookUp = True Then
-                If objThis.DatastoreType = enumDatastore.DS_RELATIONAL Then
+                If (objThis.DatastoreType = enumDatastore.DS_RELATIONAL Or objThis.DatastoreType = enumDatastore.DS_IMSDB Or objThis.DatastoreType = enumDatastore.DS_VSAM) And check4key = True Then
                     KeyForRel = HasKeyForRel()
                 End If
             End If
+            '?????? Make them set a key???????
             'If KeyForRel = False Then
             '    Exit Try
             'End If
@@ -2984,9 +3097,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         StartLoad()
 
         '// added by KS and TK 11/6/2006
-        If (txtPoll.Text.Trim = "") Then
-            txtPoll.Text = "0"
-        End If
+        'If (txtPoll.Text.Trim = "") Then
+        '    txtPoll.Text = "0"
+        'End If
 
         objThis.DatastoreType = DatastoreType
 
@@ -3024,19 +3137,26 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         txtPhysicalSource.Text = objThis.DsPhysicalSource
         txtException.Text = objThis.ExceptionDatastore
         txtUOW.Text = objThis.DsUOW
-        txtPoll.Text = objThis.Poll  '// add by TK 12/22/09
-        txtRestart.Text = objThis.Restart
+        'txtPoll.Text = objThis.Poll  '// add by TK 12/22/09
+        'txtRestart.Text = objThis.Restart
+
+        '//// Added 7/2012 by TK
+        txtMTD.Text = objThis.MTDfile
+        txtHostName.Text = objThis.DsHostName
+        cbUseFile.Checked = objThis.UseMTD
+
 
         If cmbAccessMethod.Enabled = True Then
             SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
         End If
         SetListItemByValue(cmbCharacterCode, objThis.DsCharacterCode, False)
 
-        If objThis.DsAccessMethod = DS_ACCESSMETHOD_IP Then
+        If objThis.DsAccessMethod = DS_ACCESSMETHOD_IP Or objThis.DsAccessMethod = DS_ACCESSMETHOD_CDCSTORE Then
             txtPortOrMQMgr.Text = objThis.DsPort
         ElseIf objThis.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Then
             txtPortOrMQMgr.Text = objThis.DsQueMgr
         End If
+
 
         If objThis.DsDirection = DS_DIRECTION_TARGET Then
             SetListItemByValue(cmbOperationType, objThis.OperationType, False)
@@ -3308,7 +3428,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 Dim Itm As Mylist
                 Itm = cmbAccessMethod.SelectedItem
                 If (Itm Is Nothing) = False Then
-                    If Itm.ItemData = DS_ACCESSMETHOD_IP Then
+                    If Itm.ItemData = DS_ACCESSMETHOD_IP Or Itm.ItemData = DS_ACCESSMETHOD_CDCSTORE Then
                         objThis.DsPort = txtPortOrMQMgr.Text
                     ElseIf Itm.ItemData = DS_ACCESSMETHOD_MQSERIES Then
                         objThis.DsQueMgr = txtPortOrMQMgr.Text
@@ -3326,8 +3446,13 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             objThis.DsUOW = txtUOW.Text   '/// Save UOW
             objThis.DsPhysicalSource = txtPhysicalSource.Text  '/// Save Physical Name
             objThis.ExceptionDatastore = txtException.Text   '/// Save Exception Datastore
-            objThis.Restart = txtRestart.Text   '/// Save Restart Que
-            objThis.Poll = txtPoll.Text  '// Save Poll Number
+            'objThis.Restart = txtRestart.Text   '/// Save Restart Que
+            'objThis.Poll = txtPoll.Text  '// Save Poll Number
+
+            '/// Added 7/2012  by TK
+            objThis.UseMTD = cbUseFile.Checked
+            objThis.DsHostName = txtHostName.Text.Trim
+            objThis.DsHostName = txtHostName.Text.Trim
 
 
             'objThis.IsCmmtKey = IIf(chkCmmtKey.Checked, "1", "0") '// added by TK and KS 11/6/2006
@@ -3728,7 +3853,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 Next
             Next
 
-            MsgBox("At least one Key Field must be set in any Relational Target Datastore." & Chr(13) & _
+            MsgBox("At least one Key Field must be set in any Relational, IMSDB or VSAM Target Datastore." & Chr(13) & _
             "No key fields have been set in this Datastore. Please set at least one key field.", _
             MsgBoxStyle.Exclamation, "Please Set a key field")
 
@@ -3759,7 +3884,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         Catch ex As Exception
             LogError(ex, "ctlDatastore txtFieldDesc_TextChanged")
         End Try
-        
+
 
     End Sub
 
@@ -3768,6 +3893,106 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
         If prevfld IsNot Nothing Then
             prevfld.FieldDesc = txtFieldDesc.Text
         End If
+
+    End Sub
+
+    Private Sub txtMTD_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMTD.TextChanged
+
+        Try
+            objThis.MTDfile = txtMTD.Text.Trim
+
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore txtMTD_TextChanged")
+        End Try
+
+    End Sub
+
+    Private Sub btnMTD_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMTD.Click
+
+        Try
+            Dim strFilter As String = "SQL Description File(*.sql)|*.sql|DDL Description File(*.ddl)|*.ddl|All files (*.*)|*.*"
+
+            dlgOpen.InitialDirectory = objThis.Environment.LocalDDLDir
+
+            dlgOpen.Filter = strFilter
+            If modGeneral.GetExtensionFromFilePath(txtMTD.Text.ToUpper) = "SQL" Then
+                dlgOpen.FilterIndex = 0
+            ElseIf modGeneral.GetExtensionFromFilePath(txtMTD.Text.ToUpper) = "DDL" Then
+                dlgOpen.FilterIndex = 1
+            Else
+                dlgOpen.FilterIndex = 2
+            End If
+
+            dlgOpen.FileName = txtMTD.Text
+
+
+            If dlgOpen.ShowDialog() = DialogResult.OK Then
+                txtMTD.Text = dlgOpen.FileName
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore btnMTD_Click")
+        End Try
+
+    End Sub
+
+    Private Sub txtHostName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtHostName.TextChanged
+
+        Try
+            If System.IO.Directory.Exists(txtHostName.Text.Trim) = True Then
+                If SaveCurrentSelection() = True Then
+
+                End If
+                objThis.DsHostName = txtHostName.Text.Trim
+            End If
+
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore txtHostName_TextChanged")
+        End Try
+
+    End Sub
+
+    Private Sub cbUseFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbUseFile.CheckedChanged
+
+        Try
+            If cbUseFile.Checked = True Then
+                objThis.UseMTD = True
+            Else
+                objThis.UseMTD = False
+            End If
+
+            OnChange(Me, New EventArgs)
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore cbUseFile_CheckedChanged")
+        End Try
+
+    End Sub
+
+    Private Sub btnSelDesc_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelDesc.Click
+
+        Try
+            Dim frm As frmDS_MTDdescriptions    '/// MTDform
+            Dim col As New Collection
+
+            frm = New frmDS_MTDdescriptions
+
+            Me.SaveCurrentSelection()
+
+            col = frm.EditObj(objThis)
+
+            If col IsNot Nothing Then
+                objThis.DescList = col
+                OnChange(Me, New EventArgs)
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "ctlDatastore btnSelDesc_Click")
+        End Try
 
     End Sub
 

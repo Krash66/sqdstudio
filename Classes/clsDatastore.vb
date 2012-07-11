@@ -9,6 +9,9 @@ Public Class clsDatastore
     Public OldObjSelections As New ArrayList '//Old DS selections, this is helpful when doing Save operation, we can compare old selection and new selection and perform insert/delete/update based on difference
     Public ObjSelections As New ArrayList '//Array of DS selections within Datastore
     Public ObjMissingMapList As New ArrayList '// array of DSSel that are mapped and no longer part of ME
+    '/// Added July 2012 by TK
+    Public DescList As New Collection  '// List of Descriptions for Multi-Table Description File 
+
     Private m_IsModified As Boolean
     Private m_ObjTreeNode As TreeNode
     Private m_GUID As String
@@ -20,6 +23,11 @@ Public Class clsDatastore
     Private m_DatastoreName As String = ""
     Private m_DatastoreType As enumDatastore
     Private m_DsPhysicalSource As String = ""
+    '/// Added July 2012
+    Private m_HostName As String = ""
+    Private m_MTD As String = ""
+    Private m_UseMTD As Boolean = False
+
     Private m_ExceptionDatastore As String = ""
     Private m_DsQueMgr As String = ""
     Private m_DsPort As String = ""
@@ -321,6 +329,8 @@ Public Class clsDatastore
                 Save = False
                 Exit Try
             End If
+
+            Me.SaveToXML()
 
             tran.Commit()
 
@@ -824,8 +834,17 @@ Public Class clsDatastore
                         Me.Hloc = GetVal(dr("DATASTOREATTRBVALUE"))   ')   'GetStr(
                     Case "VLOC"
                         Me.Vloc = GetVal(dr("DATASTOREATTRBVALUE"))
+                    Case "HOSTNAME"
+                        Me.DsHostName = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "MTDFILE"
+                        Me.MTDfile = GetStr(GetVal(dr("DATASTOREATTRBVALUE")))
+                    Case "USEMTD"
+                        Me.UseMTD = GetVal(dr("DATASTOREATTRBVALUE"))
+
                 End Select
             Next
+
+            RetrieveFromXML()
 
             Me.IsLoaded = True
 
@@ -979,6 +998,16 @@ Public Class clsDatastore
         End Get
         Set(ByVal Value As String)
             m_DsPhysicalSource = Value
+        End Set
+    End Property
+
+    '/// added by TK 7/2012
+    Public Property DsHostName() As String
+        Get
+            Return m_HostName
+        End Get
+        Set(ByVal value As String)
+            m_HostName = value
         End Set
     End Property
 
@@ -1256,6 +1285,26 @@ Public Class clsDatastore
                 Return False
             End If
         End Get
+    End Property
+
+    '/// Added July 2012 by TK
+    Public Property MTDfile() As String
+        Get
+            Return m_MTD
+        End Get
+        Set(ByVal value As String)
+            m_MTD = value
+        End Set
+    End Property
+
+    '/// Added July 2012 by TK
+    Public Property UseMTD() As Boolean
+        Get
+            Return m_UseMTD
+        End Get
+        Set(ByVal value As Boolean)
+            m_UseMTD = value
+        End Set
     End Property
 
 #End Region
@@ -2536,7 +2585,7 @@ NextSel:        '// next selection
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 26
+            For i As Integer = 0 To 29
                 Select Case i
                     Case 0
                         Attrib = "COLUMNDELIMITER"
@@ -2619,6 +2668,15 @@ NextSel:        '// next selection
                     Case 26
                         Attrib = "VLOC"
                         Value = Me.Vloc
+                    Case 27
+                        Attrib = "HOSTNAME"
+                        Value = Me.DsHostName
+                    Case 28
+                        Attrib = "MTDFILE"
+                        Value = Me.MTDfile
+                    Case 29
+                        Attrib = "USEMTD"
+                        Value = Me.UseMTD
 
                         'Case 11
                         'Attrib = "ONCMMTKEY"
@@ -2719,5 +2777,79 @@ NextSel:        '// next selection
     Public Sub New()
         m_GUID = GetNewId()
     End Sub
+
+#Region "XML"
+
+    '// New 7/2012 for Multi-Table Descriptions
+    Function SaveToXML() As Boolean
+
+        Try
+            '*** Path to Project XML file
+            Dim DSXMLFullPath As String = GetAppProj() & Me.Project.ProjectName & "." & Me.Environment.EnvironmentName & "." & _
+            Me.Engine.ObjSystem.SystemName & "." & Me.Engine.EngineName & "." & Me.DatastoreName & ".List.xml"
+            '*** New XML writer for XML file
+            Dim XMLwrite As New Xml.XmlTextWriter(DSXMLFullPath, System.Text.Encoding.UTF8)
+
+            '*** define doctype and formatting and Open XML file
+            XMLwrite.Formatting = Formatting.Indented
+            XMLwrite.WriteStartDocument()
+            XMLwrite.WriteStartElement("Datastore", Me.DatastoreName, DSXMLFullPath)
+            '*** write Data
+            For Each DescName As String In Me.DescList
+                XMLwrite.WriteElementString("DescName", DescName)
+            Next
+
+            '*** write closing element and close file
+            XMLwrite.WriteEndElement()
+            XMLwrite.WriteEndDocument()
+            XMLwrite.Close()
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsDatastore SaveToXML")
+            Return False
+        End Try
+
+    End Function
+
+    '// New 7/2012 for Multi-Table Descriptions
+    Function RetrieveFromXML() As Boolean
+
+        Try
+            Dim curNode As XmlNode
+            '*** Path to Project XML file
+            Dim DSXMLFullPath As String = GetAppProj() & Me.Project.ProjectName & "." & Me.Environment.EnvironmentName & "." & _
+            Me.Engine.ObjSystem.SystemName & "." & Me.Engine.EngineName & "." & Me.DatastoreName & ".List.xml"
+
+            If System.IO.File.Exists(DSXMLFullPath) = False Then
+                Return True
+                Exit Try
+            End If
+
+            '*** New XML Doc for XML file
+            Dim XMLDoc As New Xml.XmlDocument
+            XMLDoc.Load(DSXMLFullPath)
+
+            If XMLDoc.HasChildNodes = True Then
+                curNode = XMLDoc.LastChild
+                Dim TempStr As String = ""
+                For Each nd As XmlNode In curNode.ChildNodes
+                    If nd.InnerText <> "" And nd.Name = "DescName" Then
+                        Me.DescList.Add(nd.InnerText, nd.InnerText)
+                    End If
+                Next
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "clsDatastore RetrieveFromXML")
+            Return False
+        End Try
+
+    End Function
+
+#End Region
 
 End Class

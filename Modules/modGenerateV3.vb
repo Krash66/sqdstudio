@@ -2491,7 +2491,7 @@ errorgoto:
                                 DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
-                    Case DS_ACCESSMETHOD_SQDCDC
+                    Case DS_ACCESSMETHOD_CDCSTORE
                         DSname = "cdc:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = ds.DsPhysicalSource
@@ -2524,7 +2524,7 @@ errorgoto:
                                 DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
-                    Case DS_ACCESSMETHOD_SQDCDC
+                    Case DS_ACCESSMETHOD_CDCSTORE
                         DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
@@ -2759,7 +2759,7 @@ ErrorGoTo:
                                 EXname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.ExceptionDatastore '& "#" & MQstr.Trim & "@MQS"
                             End If
                         End If
-                    Case DS_ACCESSMETHOD_SQDCDC
+                    Case DS_ACCESSMETHOD_CDCSTORE
                         EXname = "cdc://" & AccessHost & "/" & ds.ExceptionDatastore & "/" & ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
                     Case DS_ACCESSMETHOD_VSAM
                         EXname = "vsam://" & AccessHost & "/" & ds.ExceptionDatastore

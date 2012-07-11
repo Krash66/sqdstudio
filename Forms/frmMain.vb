@@ -13,6 +13,8 @@ Public Class frmMain
     Friend WithEvents mnuModelSQDDDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelDSSelSQDDDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuModelSSSQDDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuAddSQDCDC As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuAddOraCDC As System.Windows.Forms.MenuItem
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -242,7 +244,6 @@ Public Class frmMain
     Friend WithEvents MenuItem5 As System.Windows.Forms.MenuItem
     Friend WithEvents tbLog As System.Windows.Forms.ToolBarButton
     Friend WithEvents lblStatusMsg As System.Windows.Forms.Label
-    Friend WithEvents mnuAddDSIBMEvent As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem9 As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem11 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsBinary As System.Windows.Forms.MenuItem
@@ -254,7 +255,6 @@ Public Class frmMain
     Friend WithEvents mnuMapAsIMS As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsDB2LOAD As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsHSSUNLOAD As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuMapAsIBMEvent As System.Windows.Forms.MenuItem
     Friend WithEvents MenuItem36 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsIMSCDC As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsDB2CDC As System.Windows.Forms.MenuItem
@@ -285,9 +285,6 @@ Public Class frmMain
     Friend WithEvents SCmain As System.Windows.Forms.SplitContainer
     Friend WithEvents s7 As System.Windows.Forms.ToolBarButton
     Friend WithEvents tbToggle As System.Windows.Forms.ToolBarButton
-    Friend WithEvents mnuAddOraCDC As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuAddSQDCDC As System.Windows.Forms.MenuItem
-    Friend WithEvents MenuItem16 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddIMSLE As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsOraCDC As System.Windows.Forms.MenuItem
     Friend WithEvents mnuMapAsSQDCDC As System.Windows.Forms.MenuItem
@@ -486,10 +483,6 @@ Public Class frmMain
         Me.mnuAddIMSLE = New System.Windows.Forms.MenuItem
         Me.mnuAddDSDB2CDC = New System.Windows.Forms.MenuItem
         Me.mnuAddDSVSAMCDC = New System.Windows.Forms.MenuItem
-        Me.mnuAddOraCDC = New System.Windows.Forms.MenuItem
-        Me.mnuAddSQDCDC = New System.Windows.Forms.MenuItem
-        Me.MenuItem16 = New System.Windows.Forms.MenuItem
-        Me.mnuAddDSIBMEvent = New System.Windows.Forms.MenuItem
         Me.MenuItem17 = New System.Windows.Forms.MenuItem
         Me.mnuIncludeDS = New System.Windows.Forms.MenuItem
         Me.mnuLU = New System.Windows.Forms.MenuItem
@@ -508,7 +501,6 @@ Public Class frmMain
         Me.mnuMapAsIMS = New System.Windows.Forms.MenuItem
         Me.mnuMapAsDB2LOAD = New System.Windows.Forms.MenuItem
         Me.mnuMapAsHSSUNLOAD = New System.Windows.Forms.MenuItem
-        Me.mnuMapAsIBMEvent = New System.Windows.Forms.MenuItem
         Me.MenuItem36 = New System.Windows.Forms.MenuItem
         Me.mnuMapAsIMSCDC = New System.Windows.Forms.MenuItem
         Me.mnuMapAsDB2CDC = New System.Windows.Forms.MenuItem
@@ -610,6 +602,8 @@ Public Class frmMain
         Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.mnuAddOraCDC = New System.Windows.Forms.MenuItem
+        Me.mnuAddSQDCDC = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1436,7 +1430,7 @@ Public Class frmMain
         '
         Me.mnuAddDS.DefaultItem = True
         Me.mnuAddDS.Index = 0
-        Me.mnuAddDS.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddDSBinary, Me.MenuItem23, Me.mnuAddDSDelimited, Me.mnuAddDSXML, Me.mnuAddDSRelational, Me.mnuAddDSDB2LOAD, Me.mnuAddDSHSSUNLOAD, Me.mnuAddDSIMS, Me.mnuAddDSVSAM, Me.MenuItem45, Me.mnuAddDSIMSCDC, Me.mnuAddIMSLE, Me.mnuAddDSDB2CDC, Me.mnuAddDSVSAMCDC, Me.mnuAddOraCDC, Me.mnuAddSQDCDC, Me.MenuItem16, Me.mnuAddDSIBMEvent, Me.MenuItem17, Me.mnuIncludeDS})
+        Me.mnuAddDS.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuAddDSBinary, Me.MenuItem23, Me.mnuAddDSDelimited, Me.mnuAddDSXML, Me.mnuAddDSRelational, Me.mnuAddDSIMS, Me.mnuAddDSVSAM, Me.mnuAddDSDB2LOAD, Me.mnuAddDSHSSUNLOAD, Me.MenuItem45, Me.mnuAddDSIMSCDC, Me.mnuAddIMSLE, Me.mnuAddDSDB2CDC, Me.mnuAddDSVSAMCDC, Me.mnuAddSQDCDC, Me.mnuAddOraCDC, Me.MenuItem17, Me.mnuIncludeDS})
         Me.mnuAddDS.Text = "Add Datastore"
         '
         'mnuAddDSBinary
@@ -1466,22 +1460,22 @@ Public Class frmMain
         '
         'mnuAddDSDB2LOAD
         '
-        Me.mnuAddDSDB2LOAD.Index = 5
+        Me.mnuAddDSDB2LOAD.Index = 7
         Me.mnuAddDSDB2LOAD.Text = "DB2LOAD"
         '
         'mnuAddDSHSSUNLOAD
         '
-        Me.mnuAddDSHSSUNLOAD.Index = 6
+        Me.mnuAddDSHSSUNLOAD.Index = 8
         Me.mnuAddDSHSSUNLOAD.Text = "HSSUNLOAD"
         '
         'mnuAddDSIMS
         '
-        Me.mnuAddDSIMS.Index = 7
+        Me.mnuAddDSIMS.Index = 5
         Me.mnuAddDSIMS.Text = "IMS DB"
         '
         'mnuAddDSVSAM
         '
-        Me.mnuAddDSVSAM.Index = 8
+        Me.mnuAddDSVSAM.Index = 6
         Me.mnuAddDSVSAM.Text = "VSAM"
         '
         'MenuItem45
@@ -1509,34 +1503,14 @@ Public Class frmMain
         Me.mnuAddDSVSAMCDC.Index = 13
         Me.mnuAddDSVSAMCDC.Text = "VSAM CDC"
         '
-        'mnuAddOraCDC
-        '
-        Me.mnuAddOraCDC.Index = 14
-        Me.mnuAddOraCDC.Text = "Oracle CDC"
-        '
-        'mnuAddSQDCDC
-        '
-        Me.mnuAddSQDCDC.Index = 15
-        Me.mnuAddSQDCDC.Text = "UTSCDC"
-        '
-        'MenuItem16
-        '
-        Me.MenuItem16.Index = 16
-        Me.MenuItem16.Text = "-"
-        '
-        'mnuAddDSIBMEvent
-        '
-        Me.mnuAddDSIBMEvent.Index = 17
-        Me.mnuAddDSIBMEvent.Text = "IBM Event"
-        '
         'MenuItem17
         '
-        Me.MenuItem17.Index = 18
+        Me.MenuItem17.Index = 16
         Me.MenuItem17.Text = "-"
         '
         'mnuIncludeDS
         '
-        Me.mnuIncludeDS.Index = 19
+        Me.mnuIncludeDS.Index = 17
         Me.mnuIncludeDS.Text = "Include File"
         '
         'mnuLU
@@ -1573,7 +1547,7 @@ Public Class frmMain
         '
         Me.MenuItem9.Enabled = False
         Me.MenuItem9.Index = 7
-        Me.MenuItem9.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuMapAsBinary, Me.mnuMapAsText, Me.mnuMapAsDelimited, Me.mnuMapAsXML, Me.mnuMapAsRelational, Me.mnuMapAsVSAM, Me.mnuMapAsIMS, Me.mnuMapAsDB2LOAD, Me.mnuMapAsHSSUNLOAD, Me.mnuMapAsIBMEvent, Me.MenuItem36, Me.mnuMapAsIMSCDC, Me.mnuMapAsDB2CDC, Me.mnuMapAsVSAMCDC, Me.mnuMapAsXMLCDC, Me.mnuMapAsTriggerCDC, Me.mnuMapAsOraCDC, Me.mnuMapAsSQDCDC, Me.MenuItem4, Me.mnuMapAsIMSLE, Me.mnuMapAsIMSLEBat})
+        Me.MenuItem9.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuMapAsBinary, Me.mnuMapAsText, Me.mnuMapAsDelimited, Me.mnuMapAsXML, Me.mnuMapAsRelational, Me.mnuMapAsVSAM, Me.mnuMapAsIMS, Me.mnuMapAsDB2LOAD, Me.mnuMapAsHSSUNLOAD, Me.MenuItem36, Me.mnuMapAsIMSCDC, Me.mnuMapAsDB2CDC, Me.mnuMapAsVSAMCDC, Me.mnuMapAsXMLCDC, Me.mnuMapAsTriggerCDC, Me.mnuMapAsOraCDC, Me.mnuMapAsSQDCDC, Me.MenuItem4, Me.mnuMapAsIMSLE, Me.mnuMapAsIMSLEBat})
         Me.MenuItem9.Text = "Map As"
         Me.MenuItem9.Visible = False
         '
@@ -1622,64 +1596,59 @@ Public Class frmMain
         Me.mnuMapAsHSSUNLOAD.Index = 8
         Me.mnuMapAsHSSUNLOAD.Text = "HSSUNLOAD"
         '
-        'mnuMapAsIBMEvent
-        '
-        Me.mnuMapAsIBMEvent.Index = 9
-        Me.mnuMapAsIBMEvent.Text = "IBM EVENT"
-        '
         'MenuItem36
         '
-        Me.MenuItem36.Index = 10
+        Me.MenuItem36.Index = 9
         Me.MenuItem36.Text = "-"
         '
         'mnuMapAsIMSCDC
         '
-        Me.mnuMapAsIMSCDC.Index = 11
+        Me.mnuMapAsIMSCDC.Index = 10
         Me.mnuMapAsIMSCDC.Text = "IMS CDC"
         '
         'mnuMapAsDB2CDC
         '
-        Me.mnuMapAsDB2CDC.Index = 12
+        Me.mnuMapAsDB2CDC.Index = 11
         Me.mnuMapAsDB2CDC.Text = "DB2 CDC"
         '
         'mnuMapAsVSAMCDC
         '
-        Me.mnuMapAsVSAMCDC.Index = 13
+        Me.mnuMapAsVSAMCDC.Index = 12
         Me.mnuMapAsVSAMCDC.Text = "VSAM CDC"
         '
         'mnuMapAsXMLCDC
         '
-        Me.mnuMapAsXMLCDC.Index = 14
+        Me.mnuMapAsXMLCDC.Index = 13
         Me.mnuMapAsXMLCDC.Text = "XML CDC"
         '
         'mnuMapAsTriggerCDC
         '
-        Me.mnuMapAsTriggerCDC.Index = 15
+        Me.mnuMapAsTriggerCDC.Index = 14
         Me.mnuMapAsTriggerCDC.Text = "Trigger Based CDC"
         '
         'mnuMapAsOraCDC
         '
-        Me.mnuMapAsOraCDC.Index = 16
+        Me.mnuMapAsOraCDC.Index = 15
         Me.mnuMapAsOraCDC.Text = "Oracle CDC"
         '
         'mnuMapAsSQDCDC
         '
-        Me.mnuMapAsSQDCDC.Index = 17
+        Me.mnuMapAsSQDCDC.Index = 16
         Me.mnuMapAsSQDCDC.Text = "Generic CDC"
         '
         'MenuItem4
         '
-        Me.MenuItem4.Index = 18
+        Me.MenuItem4.Index = 17
         Me.MenuItem4.Text = "-"
         '
         'mnuMapAsIMSLE
         '
-        Me.mnuMapAsIMSLE.Index = 19
+        Me.mnuMapAsIMSLE.Index = 18
         Me.mnuMapAsIMSLE.Text = "IMS LE"
         '
         'mnuMapAsIMSLEBat
         '
-        Me.mnuMapAsIMSLEBat.Index = 20
+        Me.mnuMapAsIMSLEBat.Index = 19
         Me.mnuMapAsIMSLEBat.Text = "IMS LE Batch"
         '
         'MenuItem33
@@ -2018,9 +1987,9 @@ Public Class frmMain
         '
         Me.ctMain.AllowDrop = True
         Me.ctMain.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ctMain.Location = New System.Drawing.Point(48, 48)
+        Me.ctMain.Location = New System.Drawing.Point(70, 57)
         Me.ctMain.Name = "ctMain"
-        Me.ctMain.Size = New System.Drawing.Size(874, 611)
+        Me.ctMain.Size = New System.Drawing.Size(738, 503)
         Me.ctMain.TabIndex = 12
         '
         'ctInc
@@ -2258,6 +2227,16 @@ Public Class frmMain
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
         Me.ProgressBar1.TabIndex = 10
+        '
+        'mnuAddOraCDC
+        '
+        Me.mnuAddOraCDC.Index = 15
+        Me.mnuAddOraCDC.Text = "Oracle CDC"
+        '
+        'mnuAddSQDCDC
+        '
+        Me.mnuAddSQDCDC.Index = 14
+        Me.mnuAddSQDCDC.Text = "UTSCDC"
         '
         'frmMain
         '
@@ -6571,7 +6550,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
     End Sub
 
     '//New: 8/10/05 by Npatel
-    Private Sub OnDSAddClickIBMEvent(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuAddDSIBMEvent.Click
+    Private Sub OnDSAddClickIBMEvent(ByVal sender As System.Object, ByVal e As System.EventArgs) 
         DoDatastoreAction(modDeclares.enumAction.ACTION_NEW, modDeclares.enumDatastore.DS_IBMEVENT)
     End Sub
 
@@ -9553,7 +9532,7 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
     End Function
 
     '//////// Sub Added by TK and KS 11/6/2006 ////////
-    Private Sub MapAs(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapAsBinary.Click, mnuMapAsText.Click, mnuMapAsDelimited.Click, mnuMapAsXML.Click, mnuMapAsRelational.Click, mnuMapAsVSAM.Click, mnuMapAsIMS.Click, mnuMapAsDB2LOAD.Click, mnuMapAsHSSUNLOAD.Click, mnuMapAsIBMEvent.Click, MenuItem36.Click, mnuMapAsIMSCDC.Click, mnuMapAsDB2CDC.Click, mnuMapAsVSAMCDC.Click, mnuMapAsXMLCDC.Click, mnuMapAsTriggerCDC.Click, mnuMapAsOraCDC.Click, mnuMapAsSQDCDC.Click, mnuMapAsIMSLE.Click, mnuMapAsIMSLEBat.Click
+    Private Sub MapAs(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMapAsBinary.Click, mnuMapAsText.Click, mnuMapAsDelimited.Click, mnuMapAsXML.Click, mnuMapAsRelational.Click, mnuMapAsVSAM.Click, mnuMapAsIMS.Click, mnuMapAsDB2LOAD.Click, mnuMapAsHSSUNLOAD.Click, MenuItem36.Click, mnuMapAsIMSCDC.Click, mnuMapAsDB2CDC.Click, mnuMapAsVSAMCDC.Click, mnuMapAsXMLCDC.Click, mnuMapAsTriggerCDC.Click, mnuMapAsOraCDC.Click, mnuMapAsSQDCDC.Click, mnuMapAsIMSLE.Click, mnuMapAsIMSLEBat.Click
 
         Dim obj As INode
         Dim cNode As TreeNode

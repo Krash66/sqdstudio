@@ -1068,7 +1068,7 @@ Public Module modDatabase
                 obj.DsQueMgr = GetVal(dr.Item("QueMgr"))
                 obj.DsPort = GetVal(dr.Item("Port"))
                 obj.DsUOW = GetVal(dr.Item("UOW"))
-                obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
+                'obj.Poll = GetVal(dr.Item("SelectEvery")) '// added by TK 11/9/2006
                 'obj.IsCmmtKey = GetVal(dr.Item("OnCmmtKey")) '// added by TK 11/9/2006
                 '/// Load Globals From File
                 'If obj.Project.ProjectMetaVersion = enumMetaVersion.V2 Then

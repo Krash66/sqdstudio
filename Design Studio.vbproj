@@ -320,6 +320,12 @@
     <Compile Include="Forms\frmChangeDSN.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmDS_MTDdescriptions.Designer.vb">
+      <DependentUpon>frmDS_MTDdescriptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDS_MTDdescriptions.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmInclude.Designer.vb">
       <DependentUpon>frmInclude.vb</DependentUpon>
     </Compile>
@@ -570,6 +576,9 @@
     <EmbeddedResource Include="Forms\frmChangeDSN.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmChangeDSN.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDS_MTDdescriptions.resx">
+      <DependentUpon>frmDS_MTDdescriptions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmInclude.resx">
       <SubType>Designer</SubType>

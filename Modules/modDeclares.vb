@@ -175,7 +175,7 @@ Public Module modDeclares
     Public Const DS_ACCESSMETHOD_IP As String = "I"
     Public Const DS_ACCESSMETHOD_MQSERIES As String = "M"
     Public Const DS_ACCESSMETHOD_VSAM As String = "V"
-    Public Const DS_ACCESSMETHOD_SQDCDC As String = "S"
+    Public Const DS_ACCESSMETHOD_CDCSTORE As String = "S"
 
     Public Const DS_CHARACTERCODE_EBCDIC As String = "E"
     Public Const DS_CHARACTERCODE_ASCII As String = "A"
@@ -226,7 +226,7 @@ Public Module modDeclares
     Public Const TXT_NCHILDREN As String = "Number of Elements"
     Public Const TXT_LEVEL As String = "Level"
     Public Const TXT_TIMES As String = "Number of Occurs"
-    Public Const TXT_OCCURS As String = "Occurance number"
+    Public Const TXT_OCCURS As String = "Occurence number"
     Public Const TXT_DATATYPE As String = "Data type"
     Public Const TXT_OFFSET As String = "Field offset"
     Public Const TXT_LENGTH As String = "Internal field length"

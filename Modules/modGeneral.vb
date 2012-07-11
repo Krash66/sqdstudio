@@ -2064,6 +2064,18 @@ tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" 
 
     End Function
 
+    Function GetExtensionFromFilePath(ByVal filepath As String) As String
+
+        Dim tempstr As String = GetFileNameOnly(filepath)
+
+        If filepath.Contains(".") = True Then
+            GetExtensionFromFilePath = Strings.Right(tempstr, tempstr.IndexOf("."))
+        Else
+            GetExtensionFromFilePath = ""
+        End If
+
+    End Function
+
     '//Filename without extension
     Public Function GetFileNameWithoutExtenstionFromPath(ByVal sPath As String) As String
 

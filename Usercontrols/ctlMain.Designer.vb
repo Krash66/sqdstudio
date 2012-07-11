@@ -56,6 +56,7 @@ Partial Class ctlMain
         Me.cmdClose = New System.Windows.Forms.Button
         Me.cmdHelp = New System.Windows.Forms.Button
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox
         Me.scTask.Panel1.SuspendLayout()
         Me.scTask.Panel2.SuspendLayout()
         Me.scTask.SuspendLayout()
@@ -80,7 +81,7 @@ Partial Class ctlMain
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.scTask.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.scTask.Location = New System.Drawing.Point(4, 3)
+        Me.scTask.Location = New System.Drawing.Point(3, 3)
         Me.scTask.Name = "scTask"
         Me.scTask.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
@@ -91,8 +92,8 @@ Partial Class ctlMain
         'scTask.Panel2
         '
         Me.scTask.Panel2.Controls.Add(Me.scSrc)
-        Me.scTask.Size = New System.Drawing.Size(867, 575)
-        Me.scTask.SplitterDistance = 69
+        Me.scTask.Size = New System.Drawing.Size(698, 467)
+        Me.scTask.SplitterDistance = 56
         Me.scTask.TabIndex = 96
         '
         'gbName
@@ -105,7 +106,7 @@ Partial Class ctlMain
         Me.gbName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbName.Location = New System.Drawing.Point(0, 0)
         Me.gbName.Name = "gbName"
-        Me.gbName.Size = New System.Drawing.Size(867, 69)
+        Me.gbName.Size = New System.Drawing.Size(698, 56)
         Me.gbName.TabIndex = 90
         Me.gbName.TabStop = False
         '
@@ -136,7 +137,7 @@ Partial Class ctlMain
         Me.txtTaskDesc.Location = New System.Drawing.Point(307, 13)
         Me.txtTaskDesc.Multiline = True
         Me.txtTaskDesc.Name = "txtTaskDesc"
-        Me.txtTaskDesc.Size = New System.Drawing.Size(554, 51)
+        Me.txtTaskDesc.Size = New System.Drawing.Size(385, 38)
         Me.txtTaskDesc.TabIndex = 2
         '
         'Label2
@@ -164,8 +165,8 @@ Partial Class ctlMain
         'scSrc.Panel2
         '
         Me.scSrc.Panel2.Controls.Add(Me.gbMap)
-        Me.scSrc.Size = New System.Drawing.Size(867, 502)
-        Me.scSrc.SplitterDistance = 183
+        Me.scSrc.Size = New System.Drawing.Size(698, 407)
+        Me.scSrc.SplitterDistance = 147
         Me.scSrc.TabIndex = 0
         '
         'TabControl1
@@ -177,7 +178,7 @@ Partial Class ctlMain
         Me.TabControl1.Location = New System.Drawing.Point(0, 0)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(183, 502)
+        Me.TabControl1.Size = New System.Drawing.Size(147, 407)
         Me.TabControl1.TabIndex = 94
         '
         'TabSrc
@@ -187,7 +188,7 @@ Partial Class ctlMain
         Me.TabSrc.Location = New System.Drawing.Point(4, 22)
         Me.TabSrc.Name = "TabSrc"
         Me.TabSrc.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabSrc.Size = New System.Drawing.Size(175, 476)
+        Me.TabSrc.Size = New System.Drawing.Size(139, 381)
         Me.TabSrc.TabIndex = 0
         Me.TabSrc.Text = "Sources"
         Me.TabSrc.UseVisualStyleBackColor = True
@@ -201,7 +202,7 @@ Partial Class ctlMain
         Me.gbSrc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSrc.Location = New System.Drawing.Point(3, 3)
         Me.gbSrc.Name = "gbSrc"
-        Me.gbSrc.Size = New System.Drawing.Size(169, 470)
+        Me.gbSrc.Size = New System.Drawing.Size(133, 375)
         Me.gbSrc.TabIndex = 93
         Me.gbSrc.TabStop = False
         '
@@ -226,7 +227,7 @@ Partial Class ctlMain
         Me.tvSource.HotTracking = True
         Me.tvSource.Location = New System.Drawing.Point(3, 28)
         Me.tvSource.Name = "tvSource"
-        Me.tvSource.Size = New System.Drawing.Size(163, 439)
+        Me.tvSource.Size = New System.Drawing.Size(127, 344)
         Me.tvSource.TabIndex = 3
         '
         'TabFunct
@@ -367,7 +368,7 @@ Partial Class ctlMain
         Me.gbMap.ForeColor = System.Drawing.SystemColors.Window
         Me.gbMap.Location = New System.Drawing.Point(0, 0)
         Me.gbMap.Name = "gbMap"
-        Me.gbMap.Size = New System.Drawing.Size(680, 502)
+        Me.gbMap.Size = New System.Drawing.Size(547, 407)
         Me.gbMap.TabIndex = 92
         Me.gbMap.TabStop = False
         Me.gbMap.Text = "Script View"
@@ -382,7 +383,7 @@ Partial Class ctlMain
         Me.pnlScript.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlScript.Location = New System.Drawing.Point(3, 16)
         Me.pnlScript.Name = "pnlScript"
-        Me.pnlScript.Size = New System.Drawing.Size(674, 483)
+        Me.pnlScript.Size = New System.Drawing.Size(541, 388)
         Me.pnlScript.TabIndex = 53
         '
         'txtCodeEditor
@@ -397,7 +398,7 @@ Partial Class ctlMain
         Me.txtCodeEditor.Multiline = True
         Me.txtCodeEditor.Name = "txtCodeEditor"
         Me.txtCodeEditor.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtCodeEditor.Size = New System.Drawing.Size(668, 451)
+        Me.txtCodeEditor.Size = New System.Drawing.Size(535, 356)
         Me.txtCodeEditor.TabIndex = 6
         Me.txtCodeEditor.WordWrap = False
         '
@@ -433,7 +434,7 @@ Partial Class ctlMain
         Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdSave.Location = New System.Drawing.Point(643, 584)
+        Me.cmdSave.Location = New System.Drawing.Point(473, 484)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.Size = New System.Drawing.Size(72, 24)
         Me.cmdSave.TabIndex = 97
@@ -444,7 +445,7 @@ Partial Class ctlMain
         Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdClose.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdClose.Location = New System.Drawing.Point(721, 584)
+        Me.cmdClose.Location = New System.Drawing.Point(551, 484)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(72, 24)
         Me.cmdClose.TabIndex = 98
@@ -454,7 +455,7 @@ Partial Class ctlMain
         '
         Me.cmdHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdHelp.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdHelp.Location = New System.Drawing.Point(799, 584)
+        Me.cmdHelp.Location = New System.Drawing.Point(629, 484)
         Me.cmdHelp.Name = "cmdHelp"
         Me.cmdHelp.Size = New System.Drawing.Size(72, 24)
         Me.cmdHelp.TabIndex = 11
@@ -467,18 +468,31 @@ Partial Class ctlMain
         Me.ToolTip1.IsBalloon = True
         Me.ToolTip1.ReshowDelay = 10
         '
+        'GroupBox1
+        '
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.GroupBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.GroupBox1.ForeColor = System.Drawing.Color.White
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 471)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(698, 7)
+        Me.GroupBox1.TabIndex = 99
+        Me.GroupBox1.TabStop = False
+        '
         'ctlMain
         '
         Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.cmdHelp)
         Me.Controls.Add(Me.cmdClose)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.scTask)
         Me.Name = "ctlMain"
-        Me.Size = New System.Drawing.Size(874, 611)
+        Me.Size = New System.Drawing.Size(704, 511)
         Me.scTask.Panel1.ResumeLayout(False)
         Me.scTask.Panel2.ResumeLayout(False)
         Me.scTask.ResumeLayout(False)
@@ -533,5 +547,6 @@ Partial Class ctlMain
     Friend WithEvents cbIsMain As System.Windows.Forms.CheckBox
     Friend WithEvents txtCodeEditor As System.Windows.Forms.TextBox
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
 
 End Class
