@@ -58,6 +58,18 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe.manifest
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.application
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.DlgFlow.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Hierarchic.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Orthogonal.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.SP.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Symmetric.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Tree.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Router.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.SVG.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.GraphAlgo.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.PrnFlow.DLL
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.XMLFlow.DLL
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\ResolveAssemblyReference.cache
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmBatchFiles.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmDML.resources
@@ -66,6 +78,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmAbout.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmBlank.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmChangeDSN.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmDS_MTDdescriptions.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmInclude.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmMapList.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmMsgScreen.resources
@@ -85,6 +98,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmReport.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmRplcDescRet.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptGen.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptImport.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmStructSelection.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmStructure.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmSystem.resources
@@ -93,6 +107,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmVariable.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmXMLconv.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.Resources.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlAddFlowTab.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlConnection.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlDatastore.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlEngine.resources
@@ -113,17 +128,3 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.exe.manifest
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.application
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.exe
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.DlgFlow.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Hierarchic.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Orthogonal.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.SP.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Symmetric.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Layout.Tree.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.Router.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.Flow.SVG.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.GraphAlgo.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.PrnFlow.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Lassalle.XMLFlow.DLL
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlAddFlowTab.resources
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptImport.resources

@@ -978,7 +978,7 @@ Public Class frmDatastore
         Me.gbMultiDesc.Size = New System.Drawing.Size(285, 48)
         Me.gbMultiDesc.TabIndex = 23
         Me.gbMultiDesc.TabStop = False
-        Me.gbMultiDesc.Text = "Multi-Table Description File"
+        Me.gbMultiDesc.Text = "SQLserver Multi-Table Description File"
         '
         'cbUseFile
         '

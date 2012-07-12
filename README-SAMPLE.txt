@@ -3,12 +3,16 @@
 ****************************************************
 To use this Sample in the easiest manner, use the following Setup directions.
 
-1. Move or Copy this entire folder (\SQDataSample) to the root of c:\ as this project is based around a location of C:\SQDataSample
+1. Move or Copy this entire folder (\SQDataSample) to the root of C:\ as this project is based around a location of C:\SQDataSample.
 
-2. Create a New ODBC DSN entry for Sample.mdb. This is an MS Access Database so use the basic (.mdb)MS Access Driver in ODBC
+2. Create a New ODBC System DSN named 'SQData Sample' and select the 'Sample.mdb' in this directory. This is an MS Access Database so use the basic (.mdb) MS Access Driver in the ODBC Administrator.
 
-3. Open Design Studio, Open a Project and Click the 'Change' Button to change the ODBC DSN to the Entry you just created.
+3. Open Design Studio.
 
-4. Click the 'Change' Button at the bottom of the 'Open Project' Dialog and choose the Test Project already Built.
+4. Using the File Menu, Select Open a Project.
 
-5. Now you can experiment with the Already Built Sample Project AND Create Test Projects of your own.
+5. Click the upper Change Button in the Open Project Dialog and choose 'SQData Sample' as the MetaData Source for the ODBC entry you just created.
+
+6. Click the lower Change Button in the Open Project Dialog and choose 'Test Project'.
+
+7. Now you can experiment with the Sample Project AND Create test Projects of your own.

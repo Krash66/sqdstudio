@@ -1055,7 +1055,7 @@ Public Class ctlDatastore
         Me.gbMultiDesc.Size = New System.Drawing.Size(395, 47)
         Me.gbMultiDesc.TabIndex = 22
         Me.gbMultiDesc.TabStop = False
-        Me.gbMultiDesc.Text = "Multi-Table Description File"
+        Me.gbMultiDesc.Text = "SQLserver Multi-Table Description File"
         '
         'btnSelDesc
         '
@@ -1100,7 +1100,6 @@ Public Class ctlDatastore
         Me.txtMTD.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMTD.Location = New System.Drawing.Point(82, 21)
         Me.txtMTD.Name = "txtMTD"
-        Me.txtMTD.ReadOnly = True
         Me.txtMTD.Size = New System.Drawing.Size(210, 20)
         Me.txtMTD.TabIndex = 0
         '

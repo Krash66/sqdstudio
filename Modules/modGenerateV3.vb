@@ -64,10 +64,16 @@ Public Module modGenerateV3
 
     Dim StrList As New Collection
     Dim dbdList As New Collection
+    '/// Added 7/2012
+    Dim SQLList As New Collection
 
     Dim SynNew As Boolean
     Private DBGMap As Boolean = False
     Private OutMsg As Boolean = False
+
+    '/// Added for Multitable SQLserver files 7/2012 by TK
+    Private SQLsrcs As New Collection
+    Private SQLtgts As New Collection
 
 #End Region
 
@@ -1190,40 +1196,62 @@ ErrorGoTo:
 
     Function prtDatastores(ByRef rc As clsRcode) As Boolean
 
-        Dim i As Integer
-        Dim ds As clsDatastore
-
         Try
+            SQLsrcs.Clear()
+            SQLtgts.Clear()
 
             '/// First Sources
-            For i = 1 To ObjThis.Sources.Count
-                'wComment(rc, "---------------------------------------------------------------------")
-                ds = CType(ObjThis.Sources(i), clsDatastore)
+            For Each ds As clsDatastore In ObjThis.Sources
                 ds.LoadMe()
                 ds.LoadItems()
 
-                If ds.IsLookUp = False Then
-                    If prtDS(rc, ds) = False Then
-                        GoTo ErrorGoTo
-                    End If
+                If ds.UseMTD = True And ds.MTDfile <> "" Then
+                    'New logic for SQLserver MTD
+                    SQLsrcs.Add(ds, ds.DatastoreName)
                 Else
-                    If prtLUDS(rc, ds) = False Then
-                        GoTo ErrorGoTo
+                    '// original logic
+                    If ds.IsLookUp = False Then
+                        If prtDS(rc, ds) = False Then
+                            GoTo ErrorGoTo
+                        End If
+                    Else
+                        If prtLUDS(rc, ds) = False Then
+                            GoTo ErrorGoTo
+                        End If
                     End If
                 End If
             Next 'Source
 
+            '/// Now process DS with MTD added 7/2012 by TK
+            If SQLsrcs.Count > 0 Then
+                If prtSrcSQLserverDS(rc) = False Then
+                    GoTo ErrorGoTo
+                End If
+            End If
+
             '/// Then Targets
-            For i = 1 To ObjThis.Targets.Count
+            For Each ds As clsDatastore In ObjThis.Targets
                 'wComment(rc, "---------------------------------------------------------------------")
-                ds = CType(ObjThis.Targets(i), clsDatastore)
                 ds.LoadMe()
                 ds.LoadItems()
 
-                If prtDS(rc, ds) = False Then
-                    GoTo ErrorGoTo
+                If ds.UseMTD = True And ds.MTDfile <> "" Then
+                    'New logic for SQLserver MTD
+                    SQLtgts.Add(ds, ds.DatastoreName)
+                Else
+                    '// original logic
+                    If prtDS(rc, ds) = False Then
+                        GoTo ErrorGoTo
+                    End If
                 End If
             Next 'Target
+
+            If SQLtgts.Count > 0 Then
+                If prtTgtSQLserverDS(rc) = False Then
+                    GoTo ErrorGoTo
+                End If
+            End If
+
 
 ErrorGoTo:  '/// send returnPath or enumreturncode
 
@@ -1249,9 +1277,9 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
 
     Function prtDS(ByRef rc As clsRcode, Optional ByVal InputDS As clsDatastore = Nothing) As Boolean
 
-        Dim j As Integer
+        'Dim j As Integer
         Dim ds As clsDatastore
-        Dim dssel As clsDSSelection
+        'Dim dssel As clsDSSelection
         Dim str As clsStructure
 
         Try
@@ -1260,6 +1288,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             Else
                 ds = InputDS
             End If
+
             If ds.DatastoreType = enumDatastore.DS_INCLUDE Then
                 If prtInclude(rc, ds) = False Then
                     GoTo ErrorGoTo
@@ -1267,9 +1296,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                     GoTo ErrorGoTo
                 End If
             End If
+
+            
+            '/// Normal Datastore dump
             '// loop through all structures in Datastore and write to files
-            For j = 0 To ds.ObjSelections.Count - 1
-                dssel = CType(ds.ObjSelections(j), clsDSSelection)
+            For Each dssel As clsDSSelection In ds.ObjSelections
                 str = dssel.ObjStructure
                 str.LoadMe()
 
@@ -1330,11 +1361,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                 End If
             End If
             '/// If Restart Datastore, then write Restart Datastore Here
-            If ds.Restart.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                If wDummyReSTRT(rc, ds) = False Then
-                    GoTo ErrorGoTo
-                End If
-            End If
+            'If ds.Restart.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+            '    If wDummyReSTRT(rc, ds) = False Then
+            '        GoTo ErrorGoTo
+            '    End If
+            'End If
             '/// now write Datastore Description
             If ds.DatastoreType = enumDatastore.DS_INCLUDE Then
                 If prtInclude(rc, ds) = False Then
@@ -1364,6 +1395,7 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                     GoTo ErrorGoTo
                 End If
             End If
+
             wSemiLine(rc)
 
 ErrorGoTo:  '/// send returnPath or enumreturncode
@@ -1385,6 +1417,304 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
         End Try
 
         prtDS = Not rc.HasFatal
+
+    End Function
+
+    '// New for MSsqlServer MTD files 7/2012 by TK
+    Function prtSrcSQLserverDS(ByRef rc As clsRcode) As Boolean
+
+        Try
+            For Each ds As clsDatastore In SQLsrcs
+                Dim sqlMTDfile As String = ""
+
+                '/// First Get the MTD file Name
+                If ds.MTDfile <> "" Then
+                    sqlMTDfile = ds.MTDfile
+                Else
+                    GoTo ErrorGoTo
+                End If
+
+                '/// Now print the MTD file to the script using "sqlDescList" for the Alias Statement
+                Dim FORstr1SQD As String = String.Format("{0}{1}", "DESCRIPTION MSSQL ", Quote(sqlMTDfile))
+                Dim FORstr1INL As String = String.Format("{0}", "DESCRIPTION MSSQL ")
+                Dim PSix1INL As String = String.Format("{0}", "/+")
+                Dim PSix2INL As String = String.Format("{0}", "+/")
+
+                '/// Read in MTD and Print to INL, Print first lines for SQD
+                Dim objReadStr As System.IO.StreamReader
+                Dim InStream As System.IO.FileStream
+                Dim TempString As String
+
+                wBlankLine(rc)
+                'sqd
+                objWriteSQD.WriteLine(FORstr1SQD)
+                AddToLineNo(rc, False, , False)
+                'inl
+                objWriteINL.WriteLine(FORstr1INL)
+                AddToLineNo(rc, False, , False)
+                objWriteINL.WriteLine(PSix1INL)
+                AddToLineNo(rc, False, , False)
+
+
+                If System.IO.File.Exists(sqlMTDfile) = True Then
+                    InStream = System.IO.File.OpenRead(sqlMTDfile)
+                    objReadStr = New System.IO.StreamReader(InStream)
+                Else
+                    rc.HasError = True
+                    'rc.ObjInode = struct
+                    rc.ErrorLocation = enumErrorLocation.ModGenStruct
+                    rc.ReturnCode = "File " & rc.Path & " does not exist"
+                    rc.ErrorPath = pathINL
+                    GoTo ErrorGoTo
+                End If
+                '/// now read and write the structure file
+                While (objReadStr.Peek() > -1)
+                    TempString = objReadStr.ReadLine
+
+                    objWriteINL.WriteLine(TempString)
+
+nextTempstr:        AddToLineNo(rc, False, , False)
+                End While
+
+                '/// Write closing to INL
+SubstGoTo:      objWriteINL.WriteLine(PSix2INL)
+                AddToLineNo(rc, False, , False)
+
+                '/// Write ALIAS Statement
+                Dim count As Integer = 1
+
+                For Each dssel As clsDSSelection In ds.ObjSelections
+                    Dim dmlPath As String = dssel.ObjStructure.fPath1
+                    Dim DescAlias As String = dssel.SelectionName
+                    Dim FORaliasFirst As String = String.Format("{0,14}{1}{2}{3}", "ALIAS(", dmlPath, " AS ", DescAlias)
+                    Dim FORaliasmid As String = String.Format("{0,14}{1}{2}{3}", ",", dmlPath, " AS ", DescAlias)
+                    Dim FORaliasLast As String = String.Format("{0,14}{1}{2}{3}{4}", ",", dmlPath, " AS ", DescAlias, ");")
+
+                    If count = 1 Then
+                        objWriteINL.WriteLine(FORaliasFirst)
+                        AddToLineNo(rc, False, , False)
+                        objWriteSQD.WriteLine(FORaliasFirst)
+                        AddToLineNo(rc, False, , False)
+                    ElseIf count < ds.ObjSelections.Count Then
+                        objWriteINL.WriteLine(FORaliasmid)
+                        AddToLineNo(rc, False, , False)
+                        objWriteSQD.WriteLine(FORaliasmid)
+                        AddToLineNo(rc, False, , False)
+                    Else
+                        objWriteINL.WriteLine(FORaliasLast)
+                        AddToLineNo(rc, False, , False)
+                        objWriteSQD.WriteLine(FORaliasLast)
+                        AddToLineNo(rc, False, , False)
+                    End If
+                    count += 1
+                Next
+                wBlankLine(rc)
+                wComment(rc, " ")
+                '/// Normal Datastore dump
+                '/// If Exception Datastore, then write Description for it here
+                If ds.ExceptionDatastore.Trim <> "" Then
+                    If wDummy(rc, ds) = False Then
+                        GoTo ErrorGoTo
+                    End If
+                End If
+                '/// now write Datastore Description
+                If wDS(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// attributes exceptions
+                If wDSattribException(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// Keys
+                If wDSkey(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// now write datastore special attributes
+                If wDSattrib(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// Last write suffix
+                If wDSsuffix(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+
+                wSemiLine(rc)
+                wBlankLine(rc)
+            Next
+
+ErrorGoTo:  '/// send returnPath or enumreturncode
+
+        Catch ex As Exception
+            LogError(ex, "modGenerate prtSrcSQLserverDS")
+            rc.HasError = True
+            rc.ErrorCount += 1
+            rc.LocalErrorMsg = "Error Occured Writing MSSQLserver Datastores"
+            If rc.ReturnCode = "" Then
+                rc.ReturnCode = ex.Message
+            End If
+            If rc.ErrorLocation = enumErrorLocation.NoErrors Then
+                rc.ErrorLocation = enumErrorLocation.ModGenDS
+                rc.ErrorPath = pathSQD
+                rc.ObjInode = ObjThis
+            End If
+            ErrorComment(rc)
+        End Try
+
+        prtSrcSQLserverDS = Not rc.HasFatal
+
+    End Function
+
+    '// New for MSsqlServer MTD files 7/2012 by TK
+    Function prtTgtSQLserverDS(ByRef rc As clsRcode) As Boolean
+
+        Try
+            Dim sqlDescList As New Collection
+            Dim sqlMTDfile As String = ""
+
+            '/// First Get the MTD file Name
+            For Each ds As clsDatastore In SQLtgts
+                If ds.MTDfile <> "" Then
+                    sqlMTDfile = ds.MTDfile
+                    Exit For
+                End If
+            Next
+
+            '/// Next Build list of Target Descriptions in Target Datastores
+            For Each ds As clsDatastore In SQLtgts
+                For Each dssel As clsDSSelection In ds.ObjSelections
+                    sqlDescList.Add(dssel, dssel.SelectionName)
+                Next
+            Next
+
+            '/// Now print the MTD file to the script using "sqlDescList" for the Alias Statement
+            Dim FORstr1SQD As String = String.Format("{0}{1}", "DESCRIPTION MSSQL ", Quote(sqlMTDfile))
+            Dim FORstr1INL As String = String.Format("{0}", "DESCRIPTION MSSQL ")
+            Dim PSix1INL As String = String.Format("{0}", "/+")
+            Dim PSix2INL As String = String.Format("{0}", "+/")
+
+            '/// Read in MTD and Print to INL, Print first lines for SQD
+            Dim objReadStr As System.IO.StreamReader
+            Dim InStream As System.IO.FileStream
+            Dim TempString As String
+
+            wBlankLine(rc)
+            wComment(rc, " ")
+            'sqd
+            objWriteSQD.WriteLine(FORstr1SQD)
+            AddToLineNo(rc, False, , False)
+            'inl
+            objWriteINL.WriteLine(FORstr1INL)
+            AddToLineNo(rc, False, , False)
+            objWriteINL.WriteLine(PSix1INL)
+            AddToLineNo(rc, False, , False)
+
+
+            If System.IO.File.Exists(sqlMTDfile) = True Then
+                InStream = System.IO.File.OpenRead(sqlMTDfile)
+                objReadStr = New System.IO.StreamReader(InStream)
+            Else
+                rc.HasError = True
+                'rc.ObjInode = struct
+                rc.ErrorLocation = enumErrorLocation.ModGenStruct
+                rc.ReturnCode = "File " & rc.Path & " does not exist"
+                rc.ErrorPath = pathINL
+                GoTo ErrorGoTo
+            End If
+            '/// now read and write the structure file
+            While (objReadStr.Peek() > -1)
+                TempString = objReadStr.ReadLine
+                
+                objWriteINL.WriteLine(TempString)
+
+nextTempstr:    AddToLineNo(rc, False, , False)
+            End While
+
+            '/// Write closing to INL
+SubstGoTo:  objWriteINL.WriteLine(PSix2INL)
+            AddToLineNo(rc, False, , False)
+
+            '/// Write ALIAS Statement
+            Dim count As Integer = 1
+
+            For Each dssel As clsDSSelection In sqlDescList
+                Dim dmlPath As String = dssel.ObjStructure.fPath1
+                Dim DescAlias As String = dssel.SelectionName
+                Dim FORaliasFirst As String = String.Format("{0,14}{1}{2}{3}", "ALIAS(", dmlPath, " AS ", DescAlias)
+                Dim FORaliasmid As String = String.Format("{0,14}{1}{2}{3}", ",", dmlPath, " AS ", DescAlias)
+                Dim FORaliasLast As String = String.Format("{0,14}{1}{2}{3}{4}", ",", dmlPath, " AS ", DescAlias, ");")
+
+                If count = 1 Then
+                    objWriteINL.WriteLine(FORaliasFirst)
+                    AddToLineNo(rc, False, , False)
+                    objWriteSQD.WriteLine(FORaliasFirst)
+                    AddToLineNo(rc, False, , False)
+                ElseIf count < sqlDescList.Count Then
+                    objWriteINL.WriteLine(FORaliasmid)
+                    AddToLineNo(rc, False, , False)
+                    objWriteSQD.WriteLine(FORaliasmid)
+                    AddToLineNo(rc, False, , False)
+                Else
+                    objWriteINL.WriteLine(FORaliasLast)
+                    AddToLineNo(rc, False, , False)
+                    objWriteSQD.WriteLine(FORaliasLast)
+                    AddToLineNo(rc, False, , False)
+                End If
+                count += 1
+            Next
+            wBlankLine(rc)
+            '/// Normal Datastore dump
+            For Each ds As clsDatastore In SQLtgts
+                wComment(rc, " ")
+                '/// If Exception Datastore, then write Description for it here
+                If ds.ExceptionDatastore.Trim <> "" Then
+                    If wDummy(rc, ds) = False Then
+                        GoTo ErrorGoTo
+                    End If
+                End If
+                '/// now write Datastore Description
+                If wDS(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// attributes exceptions
+                If wDSattribException(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// Keys
+                If wDSkey(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// now write datastore special attributes
+                If wDSattrib(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+                '/// Last write suffix
+                If wDSsuffix(rc, ds) = False Then
+                    GoTo ErrorGoTo
+                End If
+
+                wSemiLine(rc)
+                wBlankLine(rc)
+            Next
+
+ErrorGoTo:  '/// send returnPath or enumreturncode
+
+        Catch ex As Exception
+            LogError(ex, "modGenerate prtTgtSQLserverDS")
+            rc.HasError = True
+            rc.ErrorCount += 1
+            rc.LocalErrorMsg = "Error Occured Writing MSSQLserver Datastores"
+            If rc.ReturnCode = "" Then
+                rc.ReturnCode = ex.Message
+            End If
+            If rc.ErrorLocation = enumErrorLocation.NoErrors Then
+                rc.ErrorLocation = enumErrorLocation.ModGenDS
+                rc.ErrorPath = pathSQD
+                rc.ObjInode = ObjThis
+            End If
+            ErrorComment(rc)
+        End Try
+
+        prtTgtSQLserverDS = Not rc.HasFatal
 
     End Function
 
@@ -2463,86 +2793,101 @@ errorgoto:
             Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
             Dim TCPport As String = ds.DsPort.Trim
             If TCPport = "" Then
-                TCPport = ObjSys.Port.Trim
+                If ds.DsPort.Trim <> "" Then
+                    TCPport = ds.DsPort.Trim
+                ElseIf ObjSys.Port.Trim <> "" Then
+                    TCPport = ObjSys.Port.Trim
+                End If
             End If
             Dim DSname As String = ds.DsPhysicalSource
             Dim i As Integer
-            Dim AccessHost As String = ObjSys.Host.Trim
-            'If AccessHost = "" Then
-            '    AccessHost = "localhost"
-            'End If
 
+            Dim AccessHost As String = "" '= ObjSys.Host.Trim
+            If ds.DsHostName.Trim <> "" Then
+                AccessHost = ds.DsHostName.Trim
+            ElseIf ObjSys.Host.Trim <> "" Then
+                AccessHost = ObjSys.Host.Trim
+            End If
 
-            If SynNew = False Then
-                '*******OLD SYNTAX *******
-                Select Case ds.DsAccessMethod
-                    Case DS_ACCESSMETHOD_FILE
-                        DSname = ds.DsPhysicalSource
-                    Case DS_ACCESSMETHOD_IP
-                        DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
-                    Case DS_ACCESSMETHOD_MQSERIES
-                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                        Strings.Left(DSname, 3) = "dD:" Then
+            If AccessHost <> "" And TCPport <> "" And ds.DsAccessMethod <> DS_ACCESSMETHOD_MQSERIES Then
+                AccessHost = AccessHost & ":" & TCPport
+            End If
+
+            If ds.DsDirection = DS_DIRECTION_SOURCE Then
+                If SynNew = False Then
+                    '*******OLD SYNTAX *******
+                    Select Case ds.DsAccessMethod
+                        Case DS_ACCESSMETHOD_FILE
                             DSname = ds.DsPhysicalSource
-                        Else
-                            If MQstr.Trim = "" Then
-                                DSname = ds.DsPhysicalSource & "@MQS"
+                        Case DS_ACCESSMETHOD_IP
+                            DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
+                        Case DS_ACCESSMETHOD_MQSERIES
+                            If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                            Strings.Left(DSname, 3) = "dD:" Then
+                                DSname = ds.DsPhysicalSource
                             Else
-                                DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                                If MQstr.Trim = "" Then
+                                    DSname = ds.DsPhysicalSource & "@MQS"
+                                Else
+                                    DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                                End If
                             End If
-                        End If
-                    Case DS_ACCESSMETHOD_CDCSTORE
-                        DSname = "cdc:///" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& ":" & TCPport.Trim
-                    Case DS_ACCESSMETHOD_VSAM
-                        DSname = ds.DsPhysicalSource
-                    Case Else
-                        DSname = ds.DsPhysicalSource
-                End Select
+                        Case DS_ACCESSMETHOD_CDCSTORE
+                            DSname = "cdc:///" & ds.DsPhysicalSource & "/" '& ds.DatastoreName '& ":" & TCPport.Trim
+                        Case DS_ACCESSMETHOD_VSAM
+                            DSname = ds.DsPhysicalSource
+                        Case Else
+                            DSname = ds.DsPhysicalSource
+                    End Select
 
-                If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                        DSname = DSname
-                    Else
-                        DSname = "'" & DSname & "'"
+                    If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                        Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                            DSname = DSname
+                        Else
+                            DSname = "'" & DSname & "'"
+                        End If
                     End If
+                Else
+                    '*********New Syntax ************
+                    Select Case ds.DsAccessMethod
+                        Case DS_ACCESSMETHOD_FILE
+                            DSname = "file:///" & Quote(ds.DsPhysicalSource) '& "/" & ds.DatastoreName
+                        Case DS_ACCESSMETHOD_IP
+                            DSname = "tcp://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName '":" & TCPport.Trim '"/"& "/" & ds.DatastoreName & 
+                        Case DS_ACCESSMETHOD_MQSERIES
+                            If Strings.Left(DSname.ToUpper, 3) = "DD:" Then  'Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or Strings.Left(DSname, 3) = "dD:"
+                                DSname = ds.DsPhysicalSource
+                            Else
+                                If MQstr.Trim = "" Then
+                                    DSname = "mqs://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
+                                Else
+                                    DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
+                                End If
+                            End If
+                        Case DS_ACCESSMETHOD_CDCSTORE
+                            DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName 'ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        Case DS_ACCESSMETHOD_VSAM
+                            DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
+                        Case Else
+                            '*************** CDCStore ??? ***********************
+                            DSname = ds.DsPhysicalSource
+                    End Select
+
+                    'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                    '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                    '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                    '        DSname = DSname
+                    '    Else
+                    '        DSname = "'" & DSname & "'"
+                    '    End If
+                    'End If
+
                 End If
             Else
-                '*********New Syntax ************
-                Select Case ds.DsAccessMethod
-                    Case DS_ACCESSMETHOD_FILE
-                        DSname = "file:///" & Quote(ds.DsPhysicalSource) '& "/" & ds.DatastoreName
-                    Case DS_ACCESSMETHOD_IP
-                        DSname = "tcp://" & AccessHost & ":" & TCPport.Trim '"/" & ds.DsPhysicalSource & "/" & ds.DatastoreName & 
-                    Case DS_ACCESSMETHOD_MQSERIES
-                        If Strings.Left(DSname.ToUpper, 3) = "DD:" Then  'Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or Strings.Left(DSname, 3) = "dD:"
-                            DSname = ds.DsPhysicalSource
-                        Else
-                            If MQstr.Trim = "" Then
-                                DSname = "mqs://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
-                            Else
-                                DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
-                            End If
-                        End If
-                    Case DS_ACCESSMETHOD_CDCSTORE
-                        DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
-                    Case DS_ACCESSMETHOD_VSAM
-                        DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
-                    Case Else
-                        '*************** CDCStore ??? ***********************
-                        DSname = ds.DsPhysicalSource
-                End Select
-
-                'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                '        DSname = DSname
-                '    Else
-                '        DSname = "'" & DSname & "'"
-                '    End If
-                'End If
 
             End If
+            
 
             '/// define formatted strings
             Dim FORds1 As String
@@ -2810,73 +3155,73 @@ ErrorGoTo:
 
     End Function
 
-    Function wDummyReSTRT(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
+    'Function wDummyReSTRT(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
 
-        Try
-            Dim commaORspace As String = " "
-            Dim selName As String = ""
-            Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
-            Dim TCPport As String = ds.DsPort
-            Dim RSname As String = ds.Restart
+    '    Try
+    '        Dim commaORspace As String = " "
+    '        Dim selName As String = ""
+    '        Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
+    '        Dim TCPport As String = ds.DsPort
+    '        Dim RSname As String = ds.Restart
 
-            Select Case ds.DsAccessMethod
-                Case DS_ACCESSMETHOD_FILE
-                    If ds.Restart <> "" Then
-                        RSname = ds.Restart
-                    End If
-                Case DS_ACCESSMETHOD_IP
-                    RSname = ds.Restart & ":" & TCPport.Trim & "@TCP"
-                Case DS_ACCESSMETHOD_MQSERIES
-                    If Strings.Left(RSname, 3) = "DD:" Or Strings.Left(RSname, 3) = "dd:" Or Strings.Left(RSname, 3) = "Dd:" Or _
-                    Strings.Left(RSname, 3) = "dD:" Then
-                        RSname = ds.Restart
-                    Else
-                        If MQstr.Trim = "" Then
-                            RSname = ds.Restart & "@MQS"
-                        Else
-                            RSname = ds.Restart & "#" & MQstr.Trim & "@MQS"
-                        End If
-                    End If
+    '        Select Case ds.DsAccessMethod
+    '            Case DS_ACCESSMETHOD_FILE
+    '                If ds.Restart <> "" Then
+    '                    RSname = ds.Restart
+    '                End If
+    '            Case DS_ACCESSMETHOD_IP
+    '                RSname = ds.Restart & ":" & TCPport.Trim & "@TCP"
+    '            Case DS_ACCESSMETHOD_MQSERIES
+    '                If Strings.Left(RSname, 3) = "DD:" Or Strings.Left(RSname, 3) = "dd:" Or Strings.Left(RSname, 3) = "Dd:" Or _
+    '                Strings.Left(RSname, 3) = "dD:" Then
+    '                    RSname = ds.Restart
+    '                Else
+    '                    If MQstr.Trim = "" Then
+    '                        RSname = ds.Restart & "@MQS"
+    '                    Else
+    '                        RSname = ds.Restart & "#" & MQstr.Trim & "@MQS"
+    '                    End If
+    '                End If
 
-                Case DS_ACCESSMETHOD_VSAM
-                    RSname = ds.Restart
-                Case Else
-                    RSname = ds.Restart
-            End Select
-            If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                If Strings.Left(RSname, 3) = "DD:" Or Strings.Left(RSname, 3) = "dd:" Or Strings.Left(RSname, 3) = "Dd:" Or _
-                Strings.Left(RSname, 3) = "dD:" Or RSname.Contains("@MQS") = True Then
-                    RSname = RSname
-                Else
-                    RSname = "'" & RSname & "'"
-                End If
-            End If
+    '            Case DS_ACCESSMETHOD_VSAM
+    '                RSname = ds.Restart
+    '            Case Else
+    '                RSname = ds.Restart
+    '        End Select
+    '        If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+    '            If Strings.Left(RSname, 3) = "DD:" Or Strings.Left(RSname, 3) = "dd:" Or Strings.Left(RSname, 3) = "Dd:" Or _
+    '            Strings.Left(RSname, 3) = "dD:" Or RSname.Contains("@MQS") = True Then
+    '                RSname = RSname
+    '            Else
+    '                RSname = "'" & RSname & "'"
+    '            End If
+    '        End If
 
-            Dim ForRstrtDummy As String = String.Format("{0}{1}{2}", "DATASTORE '" & QuoteRes(RSname), "' OF BINARY AS CDCRSRT", _
-            " DESCRIBED BY DUMMY" & semi)
+    '        Dim ForRstrtDummy As String = String.Format("{0}{1}{2}", "DATASTORE '" & QuoteRes(RSname), "' OF BINARY AS CDCRSRT", _
+    '        " DESCRIBED BY DUMMY" & semi)
 
-            wComment(rc, "-------------- *** Restart Datastore *** --------------")
-            objWriteSQD.WriteLine(ForRstrtDummy)
-            objWriteINL.WriteLine(ForRstrtDummy)
-            objWriteTMP.WriteLine(ForRstrtDummy)
-            AddToLineNo(rc)
-            wBlankLine(rc)
+    '        wComment(rc, "-------------- *** Restart Datastore *** --------------")
+    '        objWriteSQD.WriteLine(ForRstrtDummy)
+    '        objWriteINL.WriteLine(ForRstrtDummy)
+    '        objWriteTMP.WriteLine(ForRstrtDummy)
+    '        AddToLineNo(rc)
+    '        wBlankLine(rc)
 
-        Catch ex As Exception
-            LogError(ex, "modGenerate wDummyReSTRT")
-            rc.HasError = True
-            rc.ErrorCount += 1
-            rc.LocalErrorMsg = "Error while writing Restart Datastore"
-            rc.ReturnCode = ex.Message
-            rc.ErrorLocation = enumErrorLocation.ModGenDS
-            rc.ErrorPath = pathSQD
-            rc.ObjInode = ds
-            ErrorComment(rc)
-        End Try
+    '    Catch ex As Exception
+    '        LogError(ex, "modGenerate wDummyReSTRT")
+    '        rc.HasError = True
+    '        rc.ErrorCount += 1
+    '        rc.LocalErrorMsg = "Error while writing Restart Datastore"
+    '        rc.ReturnCode = ex.Message
+    '        rc.ErrorLocation = enumErrorLocation.ModGenDS
+    '        rc.ErrorPath = pathSQD
+    '        rc.ObjInode = ds
+    '        ErrorComment(rc)
+    '    End Try
 
-        wDummyReSTRT = Not rc.HasFatal
+    '    wDummyReSTRT = Not rc.HasFatal
 
-    End Function
+    'End Function
 
     Function wDSdelimited(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
 
@@ -3046,21 +3391,21 @@ ErrorGoTo:
     Function wDSattrib(ByRef rc As clsRcode, ByVal ds As clsDatastore) As Boolean
 
         Try
-            If ds.Restart.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                Dim ForRestrt As String = String.Format("{0,12}{1}", " ", "RESTART CDCRSRT")
-                objWriteSQD.WriteLine(ForRestrt)
-                objWriteINL.WriteLine(ForRestrt)
-                objWriteTMP.WriteLine(ForRestrt)
-                AddToLineNo(rc)
-            End If
+            'If ds.Restart.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+            '    Dim ForRestrt As String = String.Format("{0,12}{1}", " ", "RESTART CDCRSRT")
+            '    objWriteSQD.WriteLine(ForRestrt)
+            '    objWriteINL.WriteLine(ForRestrt)
+            '    objWriteTMP.WriteLine(ForRestrt)
+            '    AddToLineNo(rc)
+            'End If
 
-            If ds.Restart.Trim <> "" And ds.Poll.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                Dim ForPoll As String = String.Format("{0,12}{1}", " ", "POLL " & ds.Poll)
-                objWriteSQD.WriteLine(ForPoll)
-                objWriteINL.WriteLine(ForPoll)
-                objWriteTMP.WriteLine(ForPoll)
-                AddToLineNo(rc)
-            End If
+            'If ds.Restart.Trim <> "" And ds.Poll.Trim <> "" And ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+            '    Dim ForPoll As String = String.Format("{0,12}{1}", " ", "POLL " & ds.Poll)
+            '    objWriteSQD.WriteLine(ForPoll)
+            '    objWriteINL.WriteLine(ForPoll)
+            '    objWriteTMP.WriteLine(ForPoll)
+            '    AddToLineNo(rc)
+            'End If
             '/// Add UOW description to datastore if necessary
             'If ds.DatastoreType = enumDatastore.DS_DB2CDC Then
             '    If ds.DsUOW.Trim <> "" Then
@@ -3191,8 +3536,8 @@ ErrorGoTo:
             Dim FORstr1 As String = String.Format("{0}{1}{2}", "DESCRIPTION ", _
             GetStrType(struct.StructureType), Quote(GetStrPath(struct, objEng)))
             Dim FORstr2 As String = String.Format("{0}{1}", "AS ", QuoteRes(struct.StructureName))
-            Dim PSix As String = String.Format("{0}", "/+")
-            Dim PSix2 As String = String.Format("{0}", "+/")
+            'Dim PSix As String = String.Format("{0}", "/+")
+            'Dim PSix2 As String = String.Format("{0}", "+/")
 
             If struct.StructureType = enumStructure.STRUCT_REL_DML Or struct.StructureType = enumStructure.STRUCT_REL_DML_FILE Then
                 wStructDML(rc, struct, "SQD", DSsel)
