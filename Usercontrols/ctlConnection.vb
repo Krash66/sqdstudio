@@ -476,6 +476,43 @@ Public Class ctlConnection
             '    Exit Function
             'End If
 
+            '/// save to object
+            If SaveSelection() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
+                Exit Function
+            End If
+
+            '// save to meta data
+            If objThis.Save() = False Then
+                Save = False
+                Me.Cursor = Cursors.Default
+                Exit Function
+            End If
+            Me.Cursor = Cursors.Default
+
+            Save = True
+
+            cmdSave.Enabled = False
+
+            If objThis.IsRenamed = True Then
+                RaiseEvent Renamed(Me, objThis)
+            Else
+                RaiseEvent Saved(Me, objThis)
+            End If
+            objThis.IsRenamed = False
+
+        Catch ex As Exception
+            LogError(ex, "ctlConn Save")
+            Save = False
+            Me.Cursor = Cursors.Default
+        End Try
+
+    End Function
+
+    Function SaveSelection() As Boolean
+
+        Try
             If objThis.ConnectionName <> txtConnectionName.Text Then
                 objThis.IsRenamed = RenameConnection(objThis, txtConnectionName.Text)
             End If
@@ -508,28 +545,11 @@ Public Class ctlConnection
             objThis.Password = txtPassword.Text
             objThis.DateFormat = txtDateformat.Text
 
-            If objThis.Save() = False Then
-                Save = False
-                Me.Cursor = Cursors.Default
-                Exit Function
-            End If
-            Me.Cursor = Cursors.Default
-
-            Save = True
-
-            cmdSave.Enabled = False
-
-            If objThis.IsRenamed = True Then
-                RaiseEvent Renamed(Me, objThis)
-            Else
-                RaiseEvent Saved(Me, objThis)
-            End If
-            objThis.IsRenamed = False
+            SaveSelection = True
 
         Catch ex As Exception
-            LogError(ex, "ctlConn Save")
-            Save = False
-            Me.Cursor = Cursors.Default
+            LogError(ex, "ctlConn SaveSelection")
+            SaveSelection = False
         End Try
 
     End Function
@@ -988,6 +1008,11 @@ Public Class ctlConnection
 
         Try
             lblTest.Visible = True
+            If SaveSelection() = False Then
+                MsgBox("Unable to save your changes before testing your connection", MsgBoxStyle.Information)
+                Exit Try
+            End If
+
             Me.Refresh()
             If CheckConn() = True Then
                 If Load_Table() = True Then

@@ -9,12 +9,6 @@ Public Class frmMain
     '/// Added for Addflow
     Dim EnginePage As TabPage
     Dim addflowCtrl As ctlAddFlowTab
-    Friend WithEvents mnuImportScript As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModelSQDDDL As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModelDSSelSQDDDL As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuModelSSSQDDDL As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuAddSQDCDC As System.Windows.Forms.MenuItem
-    Friend WithEvents mnuAddOraCDC As System.Windows.Forms.MenuItem
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -340,6 +334,12 @@ Public Class frmMain
     Friend WithEvents DeleteItemToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents UndoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RedoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuImportScript As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSQDDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelDSSelSQDDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuModelSSSQDDDL As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuAddSQDCDC As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuAddOraCDC As System.Windows.Forms.MenuItem
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -474,15 +474,17 @@ Public Class frmMain
         Me.mnuAddDSDelimited = New System.Windows.Forms.MenuItem
         Me.mnuAddDSXML = New System.Windows.Forms.MenuItem
         Me.mnuAddDSRelational = New System.Windows.Forms.MenuItem
-        Me.mnuAddDSDB2LOAD = New System.Windows.Forms.MenuItem
-        Me.mnuAddDSHSSUNLOAD = New System.Windows.Forms.MenuItem
         Me.mnuAddDSIMS = New System.Windows.Forms.MenuItem
         Me.mnuAddDSVSAM = New System.Windows.Forms.MenuItem
+        Me.mnuAddDSDB2LOAD = New System.Windows.Forms.MenuItem
+        Me.mnuAddDSHSSUNLOAD = New System.Windows.Forms.MenuItem
         Me.MenuItem45 = New System.Windows.Forms.MenuItem
         Me.mnuAddDSIMSCDC = New System.Windows.Forms.MenuItem
         Me.mnuAddIMSLE = New System.Windows.Forms.MenuItem
         Me.mnuAddDSDB2CDC = New System.Windows.Forms.MenuItem
         Me.mnuAddDSVSAMCDC = New System.Windows.Forms.MenuItem
+        Me.mnuAddSQDCDC = New System.Windows.Forms.MenuItem
+        Me.mnuAddOraCDC = New System.Windows.Forms.MenuItem
         Me.MenuItem17 = New System.Windows.Forms.MenuItem
         Me.mnuIncludeDS = New System.Windows.Forms.MenuItem
         Me.mnuLU = New System.Windows.Forms.MenuItem
@@ -573,19 +575,19 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
-        Me.ctMain = New SQDStudio.ctlMain
-        Me.ctInc = New SQDStudio.ctlInclude
-        Me.ctFolder = New SQDStudio.ctlFolderNode
-        Me.ctTask = New SQDStudio.ctlTask
-        Me.ctVar = New SQDStudio.ctlVariable
-        Me.ctEng = New SQDStudio.ctlEngine
         Me.ctStrSel = New SQDStudio.ctlStructureSelection
-        Me.ctSys = New SQDStudio.ctlSystem
         Me.ctConn = New SQDStudio.ctlConnection
         Me.ctStr = New SQDStudio.ctlStructure
-        Me.ctEnv = New SQDStudio.ctlEnvironment
         Me.ctPrj = New SQDStudio.ctlProject
         Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ctEng = New SQDStudio.ctlEngine
+        Me.ctEnv = New SQDStudio.ctlEnvironment
+        Me.ctMain = New SQDStudio.ctlMain
+        Me.ctInc = New SQDStudio.ctlInclude
+        Me.ctSys = New SQDStudio.ctlSystem
+        Me.ctTask = New SQDStudio.ctlTask
+        Me.ctVar = New SQDStudio.ctlVariable
+        Me.ctFolder = New SQDStudio.ctlFolderNode
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.tabCtrl = New System.Windows.Forms.TabControl
@@ -602,8 +604,6 @@ Public Class frmMain
         Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
-        Me.mnuAddOraCDC = New System.Windows.Forms.MenuItem
-        Me.mnuAddSQDCDC = New System.Windows.Forms.MenuItem
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -1027,7 +1027,6 @@ Public Class frmMain
         '
         'mnuImportScript
         '
-        Me.mnuImportScript.Enabled = False
         Me.mnuImportScript.Index = 7
         Me.mnuImportScript.Text = "Import SQData Script"
         '
@@ -1458,16 +1457,6 @@ Public Class frmMain
         Me.mnuAddDSRelational.Index = 4
         Me.mnuAddDSRelational.Text = "Relational"
         '
-        'mnuAddDSDB2LOAD
-        '
-        Me.mnuAddDSDB2LOAD.Index = 7
-        Me.mnuAddDSDB2LOAD.Text = "DB2LOAD"
-        '
-        'mnuAddDSHSSUNLOAD
-        '
-        Me.mnuAddDSHSSUNLOAD.Index = 8
-        Me.mnuAddDSHSSUNLOAD.Text = "HSSUNLOAD"
-        '
         'mnuAddDSIMS
         '
         Me.mnuAddDSIMS.Index = 5
@@ -1477,6 +1466,16 @@ Public Class frmMain
         '
         Me.mnuAddDSVSAM.Index = 6
         Me.mnuAddDSVSAM.Text = "VSAM"
+        '
+        'mnuAddDSDB2LOAD
+        '
+        Me.mnuAddDSDB2LOAD.Index = 7
+        Me.mnuAddDSDB2LOAD.Text = "DB2LOAD"
+        '
+        'mnuAddDSHSSUNLOAD
+        '
+        Me.mnuAddDSHSSUNLOAD.Index = 8
+        Me.mnuAddDSHSSUNLOAD.Text = "HSSUNLOAD"
         '
         'MenuItem45
         '
@@ -1502,6 +1501,16 @@ Public Class frmMain
         '
         Me.mnuAddDSVSAMCDC.Index = 13
         Me.mnuAddDSVSAMCDC.Text = "VSAM CDC"
+        '
+        'mnuAddSQDCDC
+        '
+        Me.mnuAddSQDCDC.Index = 14
+        Me.mnuAddSQDCDC.Text = "UTSCDC"
+        '
+        'mnuAddOraCDC
+        '
+        Me.mnuAddOraCDC.Index = 15
+        Me.mnuAddOraCDC.Text = "Oracle CDC"
         '
         'MenuItem17
         '
@@ -1963,80 +1972,25 @@ Public Class frmMain
         Me.pnlProp.AllowDrop = True
         Me.pnlProp.BackColor = System.Drawing.SystemColors.Control
         Me.pnlProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.pnlProp.Controls.Add(Me.ctMain)
-        Me.pnlProp.Controls.Add(Me.ctInc)
-        Me.pnlProp.Controls.Add(Me.ctFolder)
-        Me.pnlProp.Controls.Add(Me.ctTask)
-        Me.pnlProp.Controls.Add(Me.ctVar)
-        Me.pnlProp.Controls.Add(Me.ctEng)
         Me.pnlProp.Controls.Add(Me.ctStrSel)
-        Me.pnlProp.Controls.Add(Me.ctSys)
         Me.pnlProp.Controls.Add(Me.ctConn)
         Me.pnlProp.Controls.Add(Me.ctStr)
-        Me.pnlProp.Controls.Add(Me.ctEnv)
         Me.pnlProp.Controls.Add(Me.ctPrj)
         Me.pnlProp.Controls.Add(Me.ctDs)
+        Me.pnlProp.Controls.Add(Me.ctEng)
+        Me.pnlProp.Controls.Add(Me.ctEnv)
+        Me.pnlProp.Controls.Add(Me.ctMain)
+        Me.pnlProp.Controls.Add(Me.ctInc)
+        Me.pnlProp.Controls.Add(Me.ctSys)
+        Me.pnlProp.Controls.Add(Me.ctTask)
+        Me.pnlProp.Controls.Add(Me.ctVar)
+        Me.pnlProp.Controls.Add(Me.ctFolder)
         Me.pnlProp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlProp.Location = New System.Drawing.Point(0, 0)
         Me.pnlProp.Name = "pnlProp"
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
         Me.pnlProp.Size = New System.Drawing.Size(679, 485)
         Me.pnlProp.TabIndex = 3
-        '
-        'ctMain
-        '
-        Me.ctMain.AllowDrop = True
-        Me.ctMain.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ctMain.Location = New System.Drawing.Point(70, 57)
-        Me.ctMain.Name = "ctMain"
-        Me.ctMain.Size = New System.Drawing.Size(738, 503)
-        Me.ctMain.TabIndex = 12
-        '
-        'ctInc
-        '
-        Me.ctInc.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctInc.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ctInc.Location = New System.Drawing.Point(155, 22)
-        Me.ctInc.Name = "ctInc"
-        Me.ctInc.Size = New System.Drawing.Size(653, 530)
-        Me.ctInc.TabIndex = 11
-        '
-        'ctFolder
-        '
-        Me.ctFolder.BackColor = System.Drawing.SystemColors.Desktop
-        Me.ctFolder.ForeColor = System.Drawing.Color.White
-        Me.ctFolder.Location = New System.Drawing.Point(1, 1)
-        Me.ctFolder.Name = "ctFolder"
-        Me.ctFolder.Size = New System.Drawing.Size(488, 344)
-        Me.ctFolder.TabIndex = 10
-        Me.ctFolder.Visible = False
-        '
-        'ctTask
-        '
-        Me.ctTask.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctTask.ForeColor = System.Drawing.Color.White
-        Me.ctTask.Location = New System.Drawing.Point(21, 22)
-        Me.ctTask.Name = "ctTask"
-        Me.ctTask.Size = New System.Drawing.Size(672, 472)
-        Me.ctTask.TabIndex = 9
-        '
-        'ctVar
-        '
-        Me.ctVar.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctVar.ForeColor = System.Drawing.Color.White
-        Me.ctVar.Location = New System.Drawing.Point(31, 48)
-        Me.ctVar.Name = "ctVar"
-        Me.ctVar.Size = New System.Drawing.Size(488, 344)
-        Me.ctVar.TabIndex = 8
-        '
-        'ctEng
-        '
-        Me.ctEng.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctEng.ForeColor = System.Drawing.Color.White
-        Me.ctEng.Location = New System.Drawing.Point(24, 192)
-        Me.ctEng.Name = "ctEng"
-        Me.ctEng.Size = New System.Drawing.Size(496, 344)
-        Me.ctEng.TabIndex = 7
         '
         'ctStrSel
         '
@@ -2046,15 +2000,6 @@ Public Class frmMain
         Me.ctStrSel.Name = "ctStrSel"
         Me.ctStrSel.Size = New System.Drawing.Size(608, 448)
         Me.ctStrSel.TabIndex = 6
-        '
-        'ctSys
-        '
-        Me.ctSys.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctSys.ForeColor = System.Drawing.Color.White
-        Me.ctSys.Location = New System.Drawing.Point(48, 32)
-        Me.ctSys.Name = "ctSys"
-        Me.ctSys.Size = New System.Drawing.Size(504, 352)
-        Me.ctSys.TabIndex = 5
         '
         'ctConn
         '
@@ -2077,15 +2022,6 @@ Public Class frmMain
         Me.ctStr.Size = New System.Drawing.Size(608, 456)
         Me.ctStr.TabIndex = 2
         '
-        'ctEnv
-        '
-        Me.ctEnv.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctEnv.ForeColor = System.Drawing.Color.White
-        Me.ctEnv.Location = New System.Drawing.Point(144, 152)
-        Me.ctEnv.Name = "ctEnv"
-        Me.ctEnv.Size = New System.Drawing.Size(488, 344)
-        Me.ctEnv.TabIndex = 1
-        '
         'ctPrj
         '
         Me.ctPrj.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -2100,10 +2036,85 @@ Public Class frmMain
         '
         Me.ctDs.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.ctDs.ForeColor = System.Drawing.Color.White
-        Me.ctDs.Location = New System.Drawing.Point(44, 29)
+        Me.ctDs.Location = New System.Drawing.Point(58, 29)
         Me.ctDs.Name = "ctDs"
         Me.ctDs.Size = New System.Drawing.Size(568, 648)
         Me.ctDs.TabIndex = 3
+        '
+        'ctEng
+        '
+        Me.ctEng.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ctEng.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctEng.ForeColor = System.Drawing.Color.White
+        Me.ctEng.Location = New System.Drawing.Point(21, 22)
+        Me.ctEng.Name = "ctEng"
+        Me.ctEng.Size = New System.Drawing.Size(650, 575)
+        Me.ctEng.TabIndex = 7
+        '
+        'ctEnv
+        '
+        Me.ctEnv.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctEnv.ForeColor = System.Drawing.Color.White
+        Me.ctEnv.Location = New System.Drawing.Point(8, 22)
+        Me.ctEnv.Name = "ctEnv"
+        Me.ctEnv.Size = New System.Drawing.Size(629, 518)
+        Me.ctEnv.TabIndex = 1
+        '
+        'ctMain
+        '
+        Me.ctMain.AllowDrop = True
+        Me.ctMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ctMain.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.ctMain.Location = New System.Drawing.Point(70, 22)
+        Me.ctMain.Name = "ctMain"
+        Me.ctMain.Size = New System.Drawing.Size(738, 503)
+        Me.ctMain.TabIndex = 12
+        '
+        'ctInc
+        '
+        Me.ctInc.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctInc.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.ctInc.Location = New System.Drawing.Point(31, 29)
+        Me.ctInc.Name = "ctInc"
+        Me.ctInc.Size = New System.Drawing.Size(653, 440)
+        Me.ctInc.TabIndex = 11
+        '
+        'ctSys
+        '
+        Me.ctSys.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctSys.ForeColor = System.Drawing.Color.White
+        Me.ctSys.Location = New System.Drawing.Point(107, 12)
+        Me.ctSys.Name = "ctSys"
+        Me.ctSys.Size = New System.Drawing.Size(554, 457)
+        Me.ctSys.TabIndex = 5
+        '
+        'ctTask
+        '
+        Me.ctTask.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctTask.ForeColor = System.Drawing.Color.White
+        Me.ctTask.Location = New System.Drawing.Point(21, 22)
+        Me.ctTask.Name = "ctTask"
+        Me.ctTask.Size = New System.Drawing.Size(672, 472)
+        Me.ctTask.TabIndex = 9
+        '
+        'ctVar
+        '
+        Me.ctVar.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctVar.ForeColor = System.Drawing.Color.White
+        Me.ctVar.Location = New System.Drawing.Point(31, 48)
+        Me.ctVar.Name = "ctVar"
+        Me.ctVar.Size = New System.Drawing.Size(488, 344)
+        Me.ctVar.TabIndex = 8
+        '
+        'ctFolder
+        '
+        Me.ctFolder.BackColor = System.Drawing.SystemColors.Desktop
+        Me.ctFolder.ForeColor = System.Drawing.Color.White
+        Me.ctFolder.Location = New System.Drawing.Point(8, 3)
+        Me.ctFolder.Name = "ctFolder"
+        Me.ctFolder.Size = New System.Drawing.Size(488, 344)
+        Me.ctFolder.TabIndex = 10
+        Me.ctFolder.Visible = False
         '
         'SCmain
         '
@@ -2227,16 +2238,6 @@ Public Class frmMain
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
         Me.ProgressBar1.TabIndex = 10
-        '
-        'mnuAddOraCDC
-        '
-        Me.mnuAddOraCDC.Index = 15
-        Me.mnuAddOraCDC.Text = "Oracle CDC"
-        '
-        'mnuAddSQDCDC
-        '
-        Me.mnuAddSQDCDC.Index = 14
-        Me.mnuAddSQDCDC.Text = "UTSCDC"
         '
         'frmMain
         '
@@ -6619,6 +6620,10 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
         Dim strSaveDir As String
 
         Try
+            If SavePreviousScreen(tvExplorer.SelectedNode) = False Then
+                Exit Try
+            End If
+            ShowUsercontrol(tvExplorer.SelectedNode)
             'If System.IO.Directory.Exists(GetAppPath() & "Scripts") = False Then
             '    System.IO.Directory.CreateDirectory(GetAppPath() & "Scripts")
             'End If
@@ -6626,6 +6631,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             'Me.Cursor = Cursors.WaitCursor
             '/// Get Engine Object
             obj = CType(tvExplorer.SelectedNode.Tag, clsEngine)
+            'SavePreviousScreen(tvExplorer.SelectedNode)
+
             obj.LoadMe()
             'sysobj = obj.ObjSystem
             'sysobj.LoadItems()

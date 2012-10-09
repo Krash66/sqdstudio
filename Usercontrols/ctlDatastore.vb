@@ -1072,6 +1072,7 @@ Public Class ctlDatastore
         '
         'cbUseFile
         '
+        Me.cbUseFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbUseFile.AutoSize = True
         Me.cbUseFile.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.cbUseFile.Location = New System.Drawing.Point(4, 23)
@@ -1083,7 +1084,7 @@ Public Class ctlDatastore
         '
         'btnMTD
         '
-        Me.btnMTD.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnMTD.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMTD.ForeColor = System.Drawing.Color.Black
         Me.btnMTD.Location = New System.Drawing.Point(297, 19)
         Me.btnMTD.Name = "btnMTD"
@@ -1094,7 +1095,7 @@ Public Class ctlDatastore
         '
         'txtMTD
         '
-        Me.txtMTD.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.txtMTD.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtMTD.BackColor = System.Drawing.SystemColors.Window
         Me.txtMTD.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

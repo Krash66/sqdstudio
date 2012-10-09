@@ -238,6 +238,7 @@ Public Class frmScriptGen
         Me.gbParseFiles.Enabled = False
         Me.btnOpenOutput.Enabled = False
 
+
         cmdOk.Visible = False
         cmdCancel.Text = "Close"
 
@@ -580,7 +581,7 @@ Public Class frmScriptGen
                 If Success <> "" Then
                     Process.Start(Success)
                     If System.IO.File.Exists(IO.Path.Combine(ObjEng.ObjSystem.Environment.LocalScriptDir, "Output.dat")) = True Then
-                        'btnOpenOutput.Enabled = True
+                        btnOpenOutput.Enabled = True
                     End If
                 End If
             Else
@@ -588,11 +589,11 @@ Public Class frmScriptGen
                 If Success <> "" Then
                     Process.Start(Success)
                     If System.IO.File.Exists(IO.Path.Combine(txtFolderPath.Text, "Output.dat")) = True Then
-                        'btnOpenOutput.Enabled = True
+                        btnOpenOutput.Enabled = True
                     End If
                 End If
             End If
-            btnOpenOutput.Enabled = True
+            'btnOpenOutput.Enabled = True
 
         Catch ex As Exception
             LogError(ex, "frmScriptGen btnSQData_click")

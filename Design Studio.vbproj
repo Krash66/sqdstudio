@@ -80,7 +80,7 @@
     <DebugType>full</DebugType>
     <WarningsAsErrors>
     </WarningsAsErrors>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -103,7 +103,7 @@
     <DebugType>none</DebugType>
     <WarningsAsErrors>
     </WarningsAsErrors>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ETI|AnyCPU' ">
     <DefineTrace>false</DefineTrace>
@@ -467,6 +467,7 @@
     <Compile Include="Modules\modHelp.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modules\modImport.vb" />
     <Compile Include="Modules\modModeler.vb" />
     <Compile Include="Modules\modMultiThread.vb" />
     <Compile Include="Modules\modObjects.vb">
@@ -500,6 +501,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Usercontrols\ctlConnection.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Usercontrols\ctlControlCenter.Designer.vb">
+      <DependentUpon>ctlControlCenter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Usercontrols\ctlControlCenter.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Usercontrols\ctlDatastore.vb">
@@ -698,6 +705,9 @@
     <EmbeddedResource Include="Usercontrols\ctlConnection.resx">
       <DependentUpon>ctlConnection.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usercontrols\ctlControlCenter.resx">
+      <DependentUpon>ctlControlCenter.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Usercontrols\ctlDatastore.resx">
       <DependentUpon>ctlDatastore.vb</DependentUpon>

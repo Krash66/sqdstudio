@@ -316,6 +316,7 @@ Public Module modDeclares
         STRUCT_REL_DDL = 6
         STRUCT_REL_DML = 7     '/// Tablename in fPath1
         STRUCT_REL_DML_FILE = 8  '/// path in fPath1
+        STRUCT_SQLSVR_FILE = 9
     End Enum
 
     Public Enum enumCalledFrom

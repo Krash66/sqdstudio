@@ -563,6 +563,7 @@ Partial Class frmScriptGen
         '
         'btnSQData
         '
+        Me.btnSQData.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSQData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSQData.Location = New System.Drawing.Point(12, 629)
         Me.btnSQData.Name = "btnSQData"
@@ -570,7 +571,6 @@ Partial Class frmScriptGen
         Me.btnSQData.TabIndex = 64
         Me.btnSQData.Text = "Run SQData"
         Me.btnSQData.UseVisualStyleBackColor = True
-        Me.btnSQData.Visible = False
         '
         'btnOpenOutput
         '
@@ -581,7 +581,6 @@ Partial Class frmScriptGen
         Me.btnOpenOutput.TabIndex = 65
         Me.btnOpenOutput.Text = "Open Output Data"
         Me.btnOpenOutput.UseVisualStyleBackColor = True
-        Me.btnOpenOutput.Visible = False
         '
         'gbCMDprompt
         '

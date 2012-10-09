@@ -164,7 +164,7 @@ Public Class ctlEngine
         Me.cmdSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdSave.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdSave.Location = New System.Drawing.Point(446, 611)
+        Me.cmdSave.Location = New System.Drawing.Point(446, 523)
         Me.cmdSave.Name = "cmdSave"
         Me.cmdSave.Size = New System.Drawing.Size(72, 24)
         Me.cmdSave.TabIndex = 10
@@ -175,7 +175,7 @@ Public Class ctlEngine
         Me.cmdClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdClose.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.cmdClose.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdClose.Location = New System.Drawing.Point(526, 611)
+        Me.cmdClose.Location = New System.Drawing.Point(526, 523)
         Me.cmdClose.Name = "cmdClose"
         Me.cmdClose.Size = New System.Drawing.Size(72, 24)
         Me.cmdClose.TabIndex = 11
@@ -187,7 +187,7 @@ Public Class ctlEngine
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.GroupBox1.ForeColor = System.Drawing.Color.White
-        Me.GroupBox1.Location = New System.Drawing.Point(8, 595)
+        Me.GroupBox1.Location = New System.Drawing.Point(8, 507)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(670, 7)
         Me.GroupBox1.TabIndex = 30
@@ -291,8 +291,6 @@ Public Class ctlEngine
         '
         'txtReportFile
         '
-        Me.txtReportFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtReportFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtReportFile.Location = New System.Drawing.Point(89, 72)
         Me.txtReportFile.MaxLength = 255
@@ -350,8 +348,6 @@ Public Class ctlEngine
         '
         'txtEngineName
         '
-        Me.txtEngineName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtEngineName.Location = New System.Drawing.Point(89, 19)
         Me.txtEngineName.MaxLength = 128
         Me.txtEngineName.Name = "txtEngineName"
@@ -372,7 +368,7 @@ Public Class ctlEngine
         '
         Me.cmdHelp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdHelp.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.cmdHelp.Location = New System.Drawing.Point(606, 611)
+        Me.cmdHelp.Location = New System.Drawing.Point(606, 523)
         Me.cmdHelp.Name = "cmdHelp"
         Me.cmdHelp.Size = New System.Drawing.Size(72, 24)
         Me.cmdHelp.TabIndex = 12
@@ -384,7 +380,7 @@ Public Class ctlEngine
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox2.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.GroupBox2.ForeColor = System.Drawing.Color.White
-        Me.GroupBox2.Location = New System.Drawing.Point(8, 595)
+        Me.GroupBox2.Location = New System.Drawing.Point(8, 507)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(670, 7)
         Me.GroupBox2.TabIndex = 30
@@ -402,6 +398,7 @@ Public Class ctlEngine
         '
         'gbName
         '
+        Me.gbName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.gbName.Controls.Add(Me.cbDateFormat)
         Me.gbName.Controls.Add(Me.Label2)
         Me.gbName.Controls.Add(Me.cbForceCommit)
@@ -429,8 +426,6 @@ Public Class ctlEngine
         '
         'cbDateFormat
         '
-        Me.cbDateFormat.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbDateFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbDateFormat.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbDateFormat.FormattingEnabled = True
@@ -461,8 +456,6 @@ Public Class ctlEngine
         '
         'cbConn
         '
-        Me.cbConn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbConn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbConn.FormattingEnabled = True
         Me.cbConn.Location = New System.Drawing.Point(89, 45)
@@ -472,7 +465,8 @@ Public Class ctlEngine
         '
         'gbDesc
         '
-        Me.gbDesc.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.gbDesc.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbDesc.Controls.Add(Me.txtEngineDesc)
         Me.gbDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -542,7 +536,7 @@ Public Class ctlEngine
         Me.gbMain.ForeColor = System.Drawing.Color.White
         Me.gbMain.Location = New System.Drawing.Point(405, 25)
         Me.gbMain.Name = "gbMain"
-        Me.gbMain.Size = New System.Drawing.Size(674, 132)
+        Me.gbMain.Size = New System.Drawing.Size(674, 44)
         Me.gbMain.TabIndex = 105
         Me.gbMain.TabStop = False
         Me.gbMain.Text = "Main Procedure"
@@ -554,7 +548,7 @@ Public Class ctlEngine
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(27, 104)
+        Me.Label8.Location = New System.Drawing.Point(27, 16)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(567, 18)
         Me.Label8.TabIndex = 2
@@ -565,7 +559,7 @@ Public Class ctlEngine
         Me.btnMain.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnMain.Enabled = False
         Me.btnMain.ForeColor = System.Drawing.Color.Black
-        Me.btnMain.Location = New System.Drawing.Point(8, 103)
+        Me.btnMain.Location = New System.Drawing.Point(8, 15)
         Me.btnMain.Name = "btnMain"
         Me.btnMain.Size = New System.Drawing.Size(152, 23)
         Me.btnMain.TabIndex = 1
@@ -586,7 +580,7 @@ Public Class ctlEngine
         Me.txtMain.Name = "txtMain"
         Me.txtMain.ReadOnly = True
         Me.txtMain.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtMain.Size = New System.Drawing.Size(659, 78)
+        Me.txtMain.Size = New System.Drawing.Size(659, 0)
         Me.txtMain.TabIndex = 0
         '
         'gbVersion
@@ -796,6 +790,7 @@ Public Class ctlEngine
         '
         'ctlEngine
         '
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.Controls.Add(Me.gbCreateBat)
         Me.Controls.Add(Me.GroupBox4)
@@ -811,7 +806,7 @@ Public Class ctlEngine
         Me.Controls.Add(Me.GroupBox1)
         Me.ForeColor = System.Drawing.Color.White
         Me.Name = "ctlEngine"
-        Me.Size = New System.Drawing.Size(686, 643)
+        Me.Size = New System.Drawing.Size(686, 555)
         Me.gbName.ResumeLayout(False)
         Me.gbName.PerformLayout()
         Me.gbDesc.ResumeLayout(False)

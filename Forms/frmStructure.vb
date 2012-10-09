@@ -982,6 +982,10 @@ doAgain:
 
             If IsNewObj = True Or IsChangeObj = True Then
 
+                'If objThis.StructureType = enumStructure.STRUCT_COBOL Or _
+                'objThis.StructureType = enumStructure.STRUCT_COBOL_IMS Or _
+                'objThis.StructureType = enumStructure.STRUCT_IMS Then
+
                 Dim outXMLPath As String
                 outXMLPath = GetOutDumpXML(objThis)
 
@@ -993,6 +997,11 @@ doAgain:
                 'If IO.File.Exists(outXMLPath) Then
                 '    IO.File.Delete(outXMLPath)
                 'End If
+                'Else
+                '    objThis = GetDescriptionFromFile(Me.txtFilePath.Text)
+
+                'End If
+
             Else
                 objThis.LoadItems()
                 '//This will fill out parent/child fields tree from Array of fields
@@ -2093,6 +2102,8 @@ nextFilename:   Next
     'Private Sub cmdOk_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdOk.Click
 
     'End Sub
+
+    
 End Class
 
 

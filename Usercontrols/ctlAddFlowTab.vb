@@ -292,7 +292,7 @@
                 If Proc.ismapped = False Then
                     ProcNode.DrawColor = Color.Red
                 Else
-                    ProcNode.DrawColor = Color.FromKnownColor(KnownColor.GradientInactiveCaption)
+                    ProcNode.DrawColor = Color.FromKnownColor(KnownColor.InactiveCaption)
                 End If
 
                 ProcNode.GradientColor = Color.LightCyan

@@ -109,7 +109,7 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.AutoScroll = True
         Me.tabAddFlow.AutoScrollMinSize = New System.Drawing.Size(670, 455)
         Me.tabAddFlow.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tabAddFlow.BackColor = System.Drawing.SystemColors.InactiveCaptionText
+        Me.tabAddFlow.BackColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.tabAddFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.tabAddFlow.CanDrawNode = False
         Me.tabAddFlow.CanMultiLink = False
@@ -130,7 +130,7 @@ Partial Class ctlAddFlowTab
         Me.tabAddFlow.DefLinkProp.Tag = Nothing
         Me.tabAddFlow.DefLinkProp.ZOrder = -1
         Me.tabAddFlow.DefNodeProp.BackMode = Lassalle.Flow.BackMode.Opaque
-        Me.tabAddFlow.DefNodeProp.DrawColor = System.Drawing.SystemColors.GradientInactiveCaption
+        Me.tabAddFlow.DefNodeProp.DrawColor = System.Drawing.SystemColors.InactiveCaption
         Me.tabAddFlow.DefNodeProp.DrawWidth = 5
         Me.tabAddFlow.DefNodeProp.FillColor = System.Drawing.SystemColors.InactiveCaption
         Me.tabAddFlow.DefNodeProp.Font = New System.Drawing.Font("Arial Narrow", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -637,7 +637,7 @@ Partial Class ctlAddFlowTab
         '
         'txtSelected
         '
-        Me.txtSelected.BackColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.txtSelected.BackColor = System.Drawing.SystemColors.Window
         Me.txtSelected.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSelected.Name = "txtSelected"
         Me.txtSelected.ReadOnly = True

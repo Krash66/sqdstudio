@@ -81,6 +81,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmAbout.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmBlank.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmChangeDSN.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmInclude.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMapList.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMsgScreen.resources
@@ -131,4 +132,4 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.application
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.exe
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.pdb
-C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlControlCenter.resources
