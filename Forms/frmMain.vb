@@ -4035,7 +4035,12 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '****************************************************
 
 
+
             ResetTabs()
+
+
+
+
             '//Now add and process each environment 
             'If obj.ProjectMetaVersion = enumMetaVersion.V2 Then
             '    sql = "Select * from " & obj.Project.tblEnvironments & " where ProjectName=" & obj.GetQuotedText

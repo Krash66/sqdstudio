@@ -249,7 +249,7 @@ Partial Class ctlMain
         Me.gbFun.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbFun.Location = New System.Drawing.Point(3, 3)
         Me.gbFun.Name = "gbFun"
-        Me.gbFun.Size = New System.Drawing.Size(133, 377)
+        Me.gbFun.Size = New System.Drawing.Size(151, 387)
         Me.gbFun.TabIndex = 91
         Me.gbFun.TabStop = False
         '
@@ -267,9 +267,9 @@ Partial Class ctlMain
         Me.pnlFunctionInfo.Controls.Add(Me.Label11)
         Me.pnlFunctionInfo.Controls.Add(Me.lblFunDesc)
         Me.pnlFunctionInfo.Controls.Add(Me.lblFunName)
-        Me.pnlFunctionInfo.Location = New System.Drawing.Point(2, 256)
+        Me.pnlFunctionInfo.Location = New System.Drawing.Point(2, 269)
         Me.pnlFunctionInfo.Name = "pnlFunctionInfo"
-        Me.pnlFunctionInfo.Size = New System.Drawing.Size(128, 115)
+        Me.pnlFunctionInfo.Size = New System.Drawing.Size(146, 115)
         Me.pnlFunctionInfo.TabIndex = 1
         '
         'lblFunSyntax
@@ -280,7 +280,7 @@ Partial Class ctlMain
         Me.lblFunSyntax.ForeColor = System.Drawing.Color.Blue
         Me.lblFunSyntax.Location = New System.Drawing.Point(3, 33)
         Me.lblFunSyntax.Name = "lblFunSyntax"
-        Me.lblFunSyntax.Size = New System.Drawing.Size(123, 19)
+        Me.lblFunSyntax.Size = New System.Drawing.Size(141, 19)
         Me.lblFunSyntax.TabIndex = 3
         '
         'Label9
@@ -332,7 +332,7 @@ Partial Class ctlMain
         Me.lblFunDesc.ForeColor = System.Drawing.Color.Maroon
         Me.lblFunDesc.Location = New System.Drawing.Point(1, 68)
         Me.lblFunDesc.Name = "lblFunDesc"
-        Me.lblFunDesc.Size = New System.Drawing.Size(125, 45)
+        Me.lblFunDesc.Size = New System.Drawing.Size(143, 45)
         Me.lblFunDesc.TabIndex = 1
         Me.lblFunDesc.Text = "<none>"
         '
@@ -344,16 +344,19 @@ Partial Class ctlMain
         Me.lblFunName.ForeColor = System.Drawing.Color.Blue
         Me.lblFunName.Location = New System.Drawing.Point(55, 3)
         Me.lblFunName.Name = "lblFunName"
-        Me.lblFunName.Size = New System.Drawing.Size(68, 17)
+        Me.lblFunName.Size = New System.Drawing.Size(86, 17)
         Me.lblFunName.TabIndex = 1
         '
         'tvFunctions
         '
+        Me.tvFunctions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tvFunctions.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold)
         Me.tvFunctions.HideSelection = False
-        Me.tvFunctions.Location = New System.Drawing.Point(2, 19)
+        Me.tvFunctions.Location = New System.Drawing.Point(2, 12)
         Me.tvFunctions.Name = "tvFunctions"
-        Me.tvFunctions.Size = New System.Drawing.Size(128, 222)
+        Me.tvFunctions.Size = New System.Drawing.Size(146, 257)
         Me.tvFunctions.TabIndex = 7
         '
         'gbMap
