@@ -1006,6 +1006,7 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
             '*** write Data
             XMLwrite.WriteElementString("Winstate", WinState.ToString())
             XMLwrite.WriteElementString("AppDataPath", AppDataPath)
+            XMLwrite.WriteElementString("CCurl", CCurl)
 
             '*** write closing element and close file
             XMLwrite.WriteEndElement()
@@ -1060,6 +1061,8 @@ TryAgain:   If ArrParentNodes.Contains(NewName) = True Then
                             End Select
                         Case "AppDataPath"
                             AppDataPath = TempStr
+                        Case "CCurl"
+                            CCurl = TempStr
 
                     End Select
                 Next

@@ -109,6 +109,7 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.Resources.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlAddFlowTab.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlConnection.resources
+C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlControlCenter.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlDatastore.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlEngine.resources
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\SQDStudio.ctlEnvironment.resources

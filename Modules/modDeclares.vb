@@ -67,6 +67,7 @@ Public Module modDeclares
 
     Public AppDataPath As String
     Public WinState As FormWindowState
+    Public CCurl As String
 
 
 #End Region

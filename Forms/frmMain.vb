@@ -9,6 +9,8 @@ Public Class frmMain
     '/// Added for Addflow
     Dim EnginePage As TabPage
     Dim addflowCtrl As ctlAddFlowTab
+    Dim CCPage As TabPage
+    Dim CCctrl As ctlControlCenter
 
     '//This collection holds Inode objects copied into clipboard
     Dim m_ClipObjects As New ArrayList
@@ -47,6 +49,8 @@ Public Class frmMain
         TB_MAP = TB_S6 + 1
         TB_S7 = TB_MAP + 1
         TB_TOGGLE = TB_S7 + 1
+        TB_S8 = TB_TOGGLE + 1
+        TB_CC = TB_S8 + 1
 
     End Enum
 
@@ -340,6 +344,11 @@ Public Class frmMain
     Friend WithEvents mnuModelSSSQDDDL As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddSQDCDC As System.Windows.Forms.MenuItem
     Friend WithEvents mnuAddOraCDC As System.Windows.Forms.MenuItem
+    Friend WithEvents s9 As System.Windows.Forms.ToolBarButton
+    Friend WithEvents tbCC As System.Windows.Forms.ToolBarButton
+    Friend WithEvents s8 As System.Windows.Forms.ToolBarButton
+    Friend WithEvents tbtnCC As System.Windows.Forms.ToolBarButton
+
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
@@ -575,19 +584,6 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
-        Me.ctStrSel = New SQDStudio.ctlStructureSelection
-        Me.ctConn = New SQDStudio.ctlConnection
-        Me.ctStr = New SQDStudio.ctlStructure
-        Me.ctPrj = New SQDStudio.ctlProject
-        Me.ctDs = New SQDStudio.ctlDatastore
-        Me.ctEng = New SQDStudio.ctlEngine
-        Me.ctEnv = New SQDStudio.ctlEnvironment
-        Me.ctMain = New SQDStudio.ctlMain
-        Me.ctInc = New SQDStudio.ctlInclude
-        Me.ctSys = New SQDStudio.ctlSystem
-        Me.ctTask = New SQDStudio.ctlTask
-        Me.ctVar = New SQDStudio.ctlVariable
-        Me.ctFolder = New SQDStudio.ctlFolderNode
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.tabCtrl = New System.Windows.Forms.TabControl
@@ -604,6 +600,22 @@ Public Class frmMain
         Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
+        Me.tbCC = New System.Windows.Forms.ToolBarButton
+        Me.ctStrSel = New SQDStudio.ctlStructureSelection
+        Me.ctConn = New SQDStudio.ctlConnection
+        Me.ctStr = New SQDStudio.ctlStructure
+        Me.ctPrj = New SQDStudio.ctlProject
+        Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ctEng = New SQDStudio.ctlEngine
+        Me.ctEnv = New SQDStudio.ctlEnvironment
+        Me.ctMain = New SQDStudio.ctlMain
+        Me.ctInc = New SQDStudio.ctlInclude
+        Me.ctSys = New SQDStudio.ctlSystem
+        Me.ctTask = New SQDStudio.ctlTask
+        Me.ctVar = New SQDStudio.ctlVariable
+        Me.ctFolder = New SQDStudio.ctlFolderNode
+        Me.s8 = New System.Windows.Forms.ToolBarButton
+        Me.tbtnCC = New System.Windows.Forms.ToolBarButton
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -630,7 +642,7 @@ Public Class frmMain
         '
         Me.lblStatusMsg.Font = New System.Drawing.Font("Arial", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblStatusMsg.ForeColor = System.Drawing.Color.Blue
-        Me.lblStatusMsg.Location = New System.Drawing.Point(351, 5)
+        Me.lblStatusMsg.Location = New System.Drawing.Point(351, 3)
         Me.lblStatusMsg.Name = "lblStatusMsg"
         Me.lblStatusMsg.Size = New System.Drawing.Size(595, 21)
         Me.lblStatusMsg.TabIndex = 7
@@ -638,15 +650,16 @@ Public Class frmMain
         '
         'ToolBar1
         '
-        Me.ToolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.tbtnNew, Me.s1, Me.tbtnOpen, Me.tbtnSave, Me.s2, Me.tbtnCut, Me.tbtnCopy, Me.tbtnPaste, Me.tbtnDel, Me.s3, Me.tbtnScript, Me.s4, Me.tbtnEnv, Me.tbtnStructure, Me.tbtnStructSel, Me.tbtnSystem, Me.tbtnConnection, Me.tbtnEngine, Me.tbtnDS, Me.tbtnVar, Me.tbtnProc, Me.tbtnJoin, Me.tbtnLookup, Me.tbtnMain, Me.tbtHelp, Me.tbLog, Me.s5, Me.tbtnQuery, Me.s6, Me.tbMap, Me.s7, Me.tbToggle})
+        Me.ToolBar1.Buttons.AddRange(New System.Windows.Forms.ToolBarButton() {Me.tbtnNew, Me.s1, Me.tbtnOpen, Me.tbtnSave, Me.s2, Me.tbtnCut, Me.tbtnCopy, Me.tbtnPaste, Me.tbtnDel, Me.s3, Me.tbtnScript, Me.s4, Me.tbtnEnv, Me.tbtnStructure, Me.tbtnStructSel, Me.tbtnSystem, Me.tbtnConnection, Me.tbtnEngine, Me.tbtnDS, Me.tbtnVar, Me.tbtnProc, Me.tbtnJoin, Me.tbtnLookup, Me.tbtnMain, Me.tbtHelp, Me.tbLog, Me.s5, Me.tbtnQuery, Me.s6, Me.tbMap, Me.s7, Me.tbToggle, Me.s8, Me.tbtnCC})
+        Me.ToolBar1.ButtonSize = New System.Drawing.Size(28, 24)
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolBar1.DropDownArrows = True
         Me.ToolBar1.ImageList = Me.ImageListSmall
         Me.ToolBar1.Location = New System.Drawing.Point(0, 0)
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.ShowToolTips = True
-        Me.ToolBar1.Size = New System.Drawing.Size(1016, 28)
+        Me.ToolBar1.Size = New System.Drawing.Size(1017, 28)
         Me.ToolBar1.TabIndex = 1
-        Me.ToolTip1.SetToolTip(Me.ToolBar1, "Custom Field Mapping")
         '
         'tbtnNew
         '
@@ -1992,6 +2005,133 @@ Public Class frmMain
         Me.pnlProp.Size = New System.Drawing.Size(679, 485)
         Me.pnlProp.TabIndex = 3
         '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SCmain.Location = New System.Drawing.Point(0, 27)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
+        Me.SCmain.Size = New System.Drawing.Size(1016, 516)
+        Me.SCmain.SplitterDistance = 321
+        Me.SCmain.TabIndex = 9
+        '
+        'tabCtrl
+        '
+        Me.tabCtrl.Controls.Add(Me.tpProp)
+        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tabCtrl.HotTrack = True
+        Me.tabCtrl.ImageList = Me.ImageListSmall
+        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
+        Me.tabCtrl.Name = "tabCtrl"
+        Me.tabCtrl.SelectedIndex = 0
+        Me.tabCtrl.Size = New System.Drawing.Size(691, 516)
+        Me.tabCtrl.TabIndex = 4
+        '
+        'tpProp
+        '
+        Me.tpProp.AllowDrop = True
+        Me.tpProp.AutoScroll = True
+        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.tpProp.Controls.Add(Me.pnlProp)
+        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tpProp.Location = New System.Drawing.Point(4, 23)
+        Me.tpProp.Name = "tpProp"
+        Me.tpProp.Size = New System.Drawing.Size(683, 489)
+        Me.tpProp.TabIndex = 0
+        Me.tpProp.Text = "Properties"
+        Me.tpProp.UseVisualStyleBackColor = True
+        '
+        'cms1
+        '
+        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
+        Me.cms1.Name = "cms1"
+        Me.cms1.Size = New System.Drawing.Size(200, 208)
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem1.Text = "Add Source"
+        '
+        'AddTargetToolStripMenuItem
+        '
+        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
+        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddTargetToolStripMenuItem.Text = "Add Target"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem2.Text = "Add Lookup"
+        '
+        'AddProcedureToolStripMenuItem
+        '
+        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
+        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
+        '
+        'ToolStripMenuItem3
+        '
+        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem3.Text = "Add General Procedure"
+        '
+        'AddMainToolStripMenuItem
+        '
+        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
+        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddMainToolStripMenuItem.Text = "Add Main"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
+        '
+        'DeleteItemToolStripMenuItem
+        '
+        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
+        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'RedoToolStripMenuItem
+        '
+        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.RedoToolStripMenuItem.Text = "Redo"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(700, 587)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
+        '
+        'tbCC
+        '
+        Me.tbCC.Name = "tbCC"
+        '
         'ctStrSel
         '
         Me.ctStrSel.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -2116,128 +2256,18 @@ Public Class frmMain
         Me.ctFolder.TabIndex = 10
         Me.ctFolder.Visible = False
         '
-        'SCmain
+        's8
         '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SCmain.Location = New System.Drawing.Point(0, 27)
-        Me.SCmain.Name = "SCmain"
+        Me.s8.Name = "s8"
+        Me.s8.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
         '
-        'SCmain.Panel1
+        'tbtnCC
         '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 516)
-        Me.SCmain.SplitterDistance = 321
-        Me.SCmain.TabIndex = 9
-        '
-        'tabCtrl
-        '
-        Me.tabCtrl.Controls.Add(Me.tpProp)
-        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tabCtrl.HotTrack = True
-        Me.tabCtrl.ImageList = Me.ImageListSmall
-        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
-        Me.tabCtrl.Name = "tabCtrl"
-        Me.tabCtrl.SelectedIndex = 0
-        Me.tabCtrl.Size = New System.Drawing.Size(691, 516)
-        Me.tabCtrl.TabIndex = 4
-        '
-        'tpProp
-        '
-        Me.tpProp.AllowDrop = True
-        Me.tpProp.AutoScroll = True
-        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.tpProp.Controls.Add(Me.pnlProp)
-        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tpProp.Location = New System.Drawing.Point(4, 23)
-        Me.tpProp.Name = "tpProp"
-        Me.tpProp.Size = New System.Drawing.Size(683, 489)
-        Me.tpProp.TabIndex = 0
-        Me.tpProp.Text = "Properties"
-        Me.tpProp.UseVisualStyleBackColor = True
-        '
-        'cms1
-        '
-        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
-        Me.cms1.Name = "cms1"
-        Me.cms1.Size = New System.Drawing.Size(200, 208)
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem1.Text = "Add Source"
-        '
-        'AddTargetToolStripMenuItem
-        '
-        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
-        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddTargetToolStripMenuItem.Text = "Add Target"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem2.Text = "Add Lookup"
-        '
-        'AddProcedureToolStripMenuItem
-        '
-        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
-        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
-        '
-        'ToolStripMenuItem3
-        '
-        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem3.Text = "Add General Procedure"
-        '
-        'AddMainToolStripMenuItem
-        '
-        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
-        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddMainToolStripMenuItem.Text = "Add Main"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
-        '
-        'DeleteItemToolStripMenuItem
-        '
-        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
-        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
-        '
-        'UndoToolStripMenuItem
-        '
-        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.UndoToolStripMenuItem.Text = "Undo"
-        '
-        'RedoToolStripMenuItem
-        '
-        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.RedoToolStripMenuItem.Text = "Redo"
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 587)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
+        Me.tbtnCC.ImageIndex = 6
+        Me.tbtnCC.Name = "tbtnCC"
+        Me.tbtnCC.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton
+        Me.tbtnCC.Tag = "Control Center"
+        Me.tbtnCC.ToolTipText = "Control Center"
         '
         'frmMain
         '
@@ -7018,7 +7048,8 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
                     Call OpenMapList()
                 Case "Toggle"
                     Call SCmain_DoubleClick(Me, New EventArgs)
-
+                Case "Control Center"
+                    CCtoggle()
                     '
                     '//TODO More buttons may be added here
                     '
@@ -9313,45 +9344,54 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
 
     Function SavePreviousScreen(ByVal cNode As TreeNode) As Boolean
 
-        Dim IsFolder As Boolean
-        Dim tb As ToolBarButton
+        Try
+            Dim IsFolder As Boolean = True
+            Dim tb As ToolBarButton
 
-        '//Before we switch to different view lets make sure that previous form is save
-        Dim ret As MsgBoxResult
-        ret = DoSave()
+            '//Before we switch to different view lets make sure that previous form is save
+            Dim ret As MsgBoxResult
+            ret = DoSave()
 
-        If ret = MsgBoxResult.Cancel Then
-            If Not prevNode Is Nothing Then
-                IsEventFromCode = True
-                tvExplorer.SelectedNode = prevNode
-                IsEventFromCode = False
+            If ret = MsgBoxResult.Cancel Then
+                If Not prevNode Is Nothing Then
+                    IsEventFromCode = True
+                    tvExplorer.SelectedNode = prevNode
+                    IsEventFromCode = False
+                End If
+                Exit Function
             End If
-            Exit Function
-        End If
-        IsEventFromCode = False
+            IsEventFromCode = False
 
-        prevNode = cNode
+            prevNode = cNode
 
-        For Each tb In ToolBar1.Buttons
-            tb.Enabled = False
-        Next
+            For Each tb In ToolBar1.Buttons
+                tb.Enabled = False
+            Next
 
-        IsFolder = CType(cNode.Tag, INode).IsFolderNode
+            If cNode IsNot Nothing Then
+                IsFolder = CType(cNode.Tag, INode).IsFolderNode
+                EnablePaste(IsClipboardAvailableforThisNodeType(CType(cNode.Tag, INode).Type))
+            End If
 
-        ToolBar1.Buttons(enumToolBarButtons.TB_PROJECT).Enabled = True
-        ToolBar1.Buttons(enumToolBarButtons.TB_OPEN).Enabled = True
-        ToolBar1.Buttons(enumToolBarButtons.TB_HELP).Enabled = True
-        ToolBar1.Buttons(enumToolBarButtons.TB_LOG).Enabled = True
-        ToolBar1.Buttons(enumToolBarButtons.TB_MAP).Enabled = True
-        ToolBar1.Buttons(enumToolBarButtons.TB_TOGGLE).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_PROJECT).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_OPEN).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_HELP).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_LOG).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_MAP).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_TOGGLE).Enabled = True
+            ToolBar1.Buttons(enumToolBarButtons.TB_CC).Enabled = True
 
-        EnableCopy(Not IsFolder)
-        EnablePaste(IsClipboardAvailableforThisNodeType(CType(cNode.Tag, INode).Type))
-        EnableDelete(Not IsFolder)
+            EnableCopy(Not IsFolder)
+            EnableDelete(Not IsFolder)
 
-        HideAllUC()
+            HideAllUC()
 
-        Return True
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "frmMain SavePreviousScreen")
+            Return False
+        End Try
 
     End Function
 
@@ -9362,6 +9402,10 @@ error1:             MsgBox("There was a problem modeling " & obj.Text, MsgBoxSty
         Dim DSSelObj As clsDSSelection
 
         Try
+            If nd Is Nothing Then
+                Exit Try
+            End If
+
             If CurLoadedProject Is Nothing Then
                 CurLoadedProject = CType(nd.Tag, INode).Project
                 cnn = New Odbc.OdbcConnection(CurLoadedProject.MetaConnectionString)
@@ -10086,9 +10130,16 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
         Try
             If tabCtrl.SelectedIndex <> 0 Then
-                '*** Show an addflow control
-                SavePreviousScreen(tvExplorer.SelectedNode)
-                CType(tabCtrl.SelectedTab.Tag, clsEngine).ObjAddFlowCtl.RefreshAddFlow()
+                '*** see if it's an AddFlow or the control center
+                If tabCtrl.SelectedTab.Tag Is Nothing Then
+                    '*** Show the control center tab
+                    Call SavePreviousScreen(tvExplorer.SelectedNode)
+
+                Else
+                    '*** Show an addflow control
+                    Call SavePreviousScreen(tvExplorer.SelectedNode)
+                    CType(tabCtrl.SelectedTab.Tag, clsEngine).ObjAddFlowCtl.RefreshAddFlow()
+                End If
             Else
                 '*** Show Properties Panel
                 ShowUsercontrol(tvExplorer.SelectedNode)
@@ -10100,6 +10151,53 @@ renameMain:     If taskMain.Engine.FindDupNames(taskMain) = True Then
 
     End Sub
 
+    '*** Control Center Tabs
+    Sub CCtoggle()
+
+        Try
+            If tbtnCC.Pushed = True Then
+                Call AddNewCCTab()
+            Else
+                Me.tabCtrl.TabPages.Remove(CCPage)
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmMain CCtoggle")
+        End Try
+
+    End Sub
+
+    Function AddNewCCTab() As Boolean
+
+        Try
+            '/// Create a pageTab Control for Control Center ///
+            CCPage = New TabPage("Control Center")
+            CCctrl = New ctlControlCenter
+
+            With CCctrl
+                .Parent = CCPage
+                .Dock = DockStyle.Fill
+                .Tag = Nothing
+            End With
+
+            'Eng.ObjAddFlowCtl = addflowCtrl
+            'Eng.ObjAddFlow = addflowCtrl.tabAddFlow
+            'Eng.ObjTabPage = EnginePage
+
+            CCPage.Controls.Add(CCctrl)
+            CCPage.Tag = Nothing
+            tabCtrl.TabPages.Add(CCPage)
+            tabCtrl.SelectedTab = CCPage
+
+            Return True
+
+        Catch ex As Exception
+            LogError(ex, "frmMain AddNewCCTab")
+            Return False
+        End Try
+
+    End Function
+    
 #End Region
 
 #Region "Script Importer"

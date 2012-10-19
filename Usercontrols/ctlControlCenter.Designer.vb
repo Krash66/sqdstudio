@@ -29,12 +29,17 @@ Partial Class ctlControlCenter
         Me.btnHome = New System.Windows.Forms.ToolStripButton
         Me.btnBack = New System.Windows.Forms.ToolStripButton
         Me.btnForward = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel
         Me.txtURL = New System.Windows.Forms.ToolStripTextBox
         Me.btnRefresh = New System.Windows.Forms.ToolStripButton
         Me.btnGo = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
+        Me.ProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
+        Me.TSSLabel1 = New System.Windows.Forms.ToolStripStatusLabel
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.gbControlCenter.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'WebBrowser1
@@ -43,7 +48,7 @@ Partial Class ctlControlCenter
         Me.WebBrowser1.Location = New System.Drawing.Point(3, 16)
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
-        Me.WebBrowser1.Size = New System.Drawing.Size(559, 413)
+        Me.WebBrowser1.Size = New System.Drawing.Size(533, 392)
         Me.WebBrowser1.TabIndex = 0
         '
         'gbControlCenter
@@ -56,7 +61,7 @@ Partial Class ctlControlCenter
         Me.gbControlCenter.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbControlCenter.Location = New System.Drawing.Point(3, 28)
         Me.gbControlCenter.Name = "gbControlCenter"
-        Me.gbControlCenter.Size = New System.Drawing.Size(565, 432)
+        Me.gbControlCenter.Size = New System.Drawing.Size(539, 411)
         Me.gbControlCenter.TabIndex = 1
         Me.gbControlCenter.TabStop = False
         Me.gbControlCenter.Text = "Control Center"
@@ -98,6 +103,12 @@ Partial Class ctlControlCenter
         Me.btnForward.Size = New System.Drawing.Size(23, 22)
         Me.btnForward.Text = "Forward"
         '
+        'ToolStripLabel1
+        '
+        Me.ToolStripLabel1.Name = "ToolStripLabel1"
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(26, 22)
+        Me.ToolStripLabel1.Text = "URL"
+        '
         'txtURL
         '
         Me.txtURL.AcceptsReturn = True
@@ -125,16 +136,37 @@ Partial Class ctlControlCenter
         Me.btnGo.Size = New System.Drawing.Size(23, 22)
         Me.btnGo.Text = "Go"
         '
-        'ToolStripLabel1
+        'StatusStrip1
         '
-        Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(39, 22)
-        Me.ToolStripLabel1.Text = "http://"
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ProgressBar1, Me.TSSLabel1})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 441)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(571, 22)
+        Me.StatusStrip1.SizingGrip = False
+        Me.StatusStrip1.TabIndex = 3
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(100, 16)
+        '
+        'TSSLabel1
+        '
+        Me.TSSLabel1.Name = "TSSLabel1"
+        Me.TSSLabel1.Size = New System.Drawing.Size(32, 17)
+        Me.TSSLabel1.Text = "Done"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(0, 17)
         '
         'ctlControlCenter
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.gbControlCenter)
         Me.Name = "ctlControlCenter"
@@ -142,6 +174,8 @@ Partial Class ctlControlCenter
         Me.gbControlCenter.ResumeLayout(False)
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -156,5 +190,9 @@ Partial Class ctlControlCenter
     Friend WithEvents btnRefresh As System.Windows.Forms.ToolStripButton
     Friend WithEvents btnGo As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents ProgressBar1 As System.Windows.Forms.ToolStripProgressBar
+    Friend WithEvents TSSLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
 
 End Class
