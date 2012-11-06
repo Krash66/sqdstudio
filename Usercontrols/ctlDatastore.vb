@@ -2156,6 +2156,7 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
                     'cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
                     cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+                    cmbAccessMethod.Items.Add(New Mylist("TableNameOnly", DS_ACCESSMETHOD_TABLE))
 
                     cmbAccessMethod.SelectedIndex = 0
 

@@ -1808,7 +1808,11 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
                     GoTo ErrorGoTo
                 End If
             End If
-
+            '////////////////////////////////////////////////////////////////////
+            If wDSkey(rc, ds, True) = False Then
+                GoTo ErrorGoTo
+            End If
+            '/////////////////////////////////////////////////////////////////////
             If wLookDS(rc, ds) = False Then
                 GoTo ErrorGoTo
             End If
@@ -2742,7 +2746,11 @@ errorgoto:
                     If ObjThis.Connection.ConnectionType = "ODBCwithSubstitutionVariable" Then
                         ConnType = "ODBC"
                     ElseIf ObjThis.Connection.ConnectionType = "DB2" Then
-                        ConnType = "NATIVEDB2"
+                        If ObjThis.ObjSystem.OSType = "z/OS" Then
+                            ConnType = ""
+                        Else
+                            ConnType = "NATIVEDB2"
+                        End If
                     Else
                         ConnType = ObjThis.Connection.ConnectionType
                     End If
@@ -2860,9 +2868,9 @@ errorgoto:
                                 DSname = ds.DsPhysicalSource
                             Else
                                 If MQstr.Trim = "" Then
-                                    DSname = "mqs://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
+                                    DSname = "mqs:///" & ds.DsPhysicalSource '& "@MQS" " & AccessHost & "
                                 Else
-                                    DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
+                                    DSname = "mqs://" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"& AccessHost & "/"
                                 End If
                             End If
                         Case DS_ACCESSMETHOD_CDCSTORE
@@ -2885,76 +2893,76 @@ errorgoto:
 
                 End If
             Else
-                'If SynNew = False Then
-                '    '*******OLD SYNTAX *******
-                '    Select Case ds.DsAccessMethod
-                '        Case DS_ACCESSMETHOD_FILE
-                '            DSname = ds.DsPhysicalSource
-                '        Case DS_ACCESSMETHOD_IP
-                '            DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
-                '        Case DS_ACCESSMETHOD_MQSERIES
-                '            If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                '            Strings.Left(DSname, 3) = "dD:" Then
-                '                DSname = ds.DsPhysicalSource
-                '            Else
-                '                If MQstr.Trim = "" Then
-                '                    DSname = ds.DsPhysicalSource & "@MQS"
-                '                Else
-                '                    DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
-                '                End If
-                '            End If
-                '        Case DS_ACCESSMETHOD_CDCSTORE
-                '            DSname = "cdc:///" & ds.DsPhysicalSource & "/" '& ds.DatastoreName '& ":" & TCPport.Trim
-                '        Case DS_ACCESSMETHOD_VSAM
-                '            DSname = ds.DsPhysicalSource
-                '        Case Else
-                '            DSname = ds.DsPhysicalSource
-                '    End Select
+                If SynNew = False Then
+                    '*******OLD SYNTAX *******
+                    Select Case ds.DsAccessMethod
+                        Case DS_ACCESSMETHOD_FILE
+                            DSname = ds.DsPhysicalSource
+                        Case DS_ACCESSMETHOD_IP
+                            DSname = ds.DsPhysicalSource & ":" & TCPport.Trim & "@TCP"
+                        Case DS_ACCESSMETHOD_MQSERIES
+                            If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                            Strings.Left(DSname, 3) = "dD:" Then
+                                DSname = ds.DsPhysicalSource
+                            Else
+                                If MQstr.Trim = "" Then
+                                    DSname = ds.DsPhysicalSource & "@MQS"
+                                Else
+                                    DSname = ds.DsPhysicalSource & "#" & MQstr.Trim & "@MQS"
+                                End If
+                            End If
+                        Case DS_ACCESSMETHOD_CDCSTORE
+                            DSname = "cdc:///" & ds.DsPhysicalSource & "/" '& ds.DatastoreName '& ":" & TCPport.Trim
+                        Case DS_ACCESSMETHOD_VSAM
+                            DSname = ds.DsPhysicalSource
+                        Case Else
+                            DSname = ds.DsPhysicalSource
+                    End Select
 
-                '    If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                '        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                '        Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                '            DSname = DSname
-                '        Else
-                '            DSname = "'" & DSname & "'"
-                '        End If
-                '    End If
-                'Else
-                '    '*********New Syntax ************
-                '    Select Case ds.DsAccessMethod
-                '        Case DS_ACCESSMETHOD_FILE
-                '            DSname = "file:///" & Quote(ds.DsPhysicalSource) '& "/" & ds.DatastoreName
-                '        Case DS_ACCESSMETHOD_IP
-                '            DSname = "tcp://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName '":" & TCPport.Trim '"/"& "/" & ds.DatastoreName & 
-                '        Case DS_ACCESSMETHOD_MQSERIES
-                '            If Strings.Left(DSname.ToUpper, 3) = "DD:" Then  'Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or Strings.Left(DSname, 3) = "dD:"
-                '                DSname = ds.DsPhysicalSource
-                '            Else
-                '                If MQstr.Trim = "" Then
-                '                    DSname = "mqs://" & AccessHost & "/" & ds.DsPhysicalSource '& "@MQS"
-                '                Else
-                '                    DSname = "mqs://" & AccessHost & "/" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"
-                '                End If
-                '            End If
-                '        Case DS_ACCESSMETHOD_CDCSTORE
-                '            DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName 'ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
-                '        Case DS_ACCESSMETHOD_VSAM
-                '            DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
-                '        Case Else
-                '            '*************** CDCStore ??? ***********************
-                '            DSname = ds.DsPhysicalSource
-                '    End Select
+                    If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                        If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                        Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                            DSname = DSname
+                        Else
+                            DSname = "'" & DSname & "'"
+                        End If
+                    End If
+                Else
+                    '*********New Syntax ************
+                    Select Case ds.DsAccessMethod
+                        Case DS_ACCESSMETHOD_FILE
+                            DSname = "file:///" & Quote(ds.DsPhysicalSource) '& "/" & ds.DatastoreName
+                        Case DS_ACCESSMETHOD_IP
+                            DSname = "tcp://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName '":" & TCPport.Trim '"/"& "/" & ds.DatastoreName & 
+                        Case DS_ACCESSMETHOD_MQSERIES
+                            If Strings.Left(DSname.ToUpper, 3) = "DD:" Then  'Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or Strings.Left(DSname, 3) = "dD:"
+                                DSname = ds.DsPhysicalSource
+                            Else
+                                If MQstr.Trim = "" Then
+                                    DSname = "mqs:///" & ds.DsPhysicalSource '& "@MQS"" & AccessHost & "
+                                Else
+                                    DSname = "mqs://" & MQstr.Trim & "/" & ds.DsPhysicalSource '& "#" & MQstr.Trim & "@MQS"& AccessHost & "/"
+                                End If
+                            End If
+                        Case DS_ACCESSMETHOD_CDCSTORE
+                            DSname = "cdc://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName 'ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                        Case DS_ACCESSMETHOD_VSAM
+                            DSname = "vsam://" & AccessHost & "/" & ds.DsPhysicalSource
+                        Case Else
+                            '*************** CDCStore ??? ***********************
+                            DSname = ds.DsPhysicalSource
+                    End Select
 
-                '    'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
-                '    '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
-                '    '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
-                '    '        DSname = DSname
-                '    '    Else
-                '    '        DSname = "'" & DSname & "'"
-                '    '    End If
-                '    'End If
+                    'If ds.DsAccessMethod = DS_ACCESSMETHOD_MQSERIES Or ds.DsAccessMethod = DS_ACCESSMETHOD_VSAM Then
+                    '    If Strings.Left(DSname, 3) = "DD:" Or Strings.Left(DSname, 3) = "dd:" Or Strings.Left(DSname, 3) = "Dd:" Or _
+                    '    Strings.Left(DSname, 3) = "dD:" Or DSname.Contains("@MQS") = True Then
+                    '        DSname = DSname
+                    '    Else
+                    '        DSname = "'" & DSname & "'"
+                    '    End If
+                    'End If
 
-                'End If
+                End If
             End If
             
 
@@ -3044,7 +3052,7 @@ ErrorGoTo:
 
     End Function
 
-    Function wDSkey(ByRef rc As clsRcode, ByRef ds As clsDatastore) As Boolean
+    Function wDSkey(ByRef rc As clsRcode, ByRef ds As clsDatastore, Optional ByVal isLUDS As Boolean = False) As Boolean
 
         Try
             Dim i, j As Integer
@@ -3061,7 +3069,7 @@ ErrorGoTo:
                         If fld.GetFieldAttr(enumFieldAttributes.ATTR_ISKEY) = "Yes" Then
                             Dim ForKey As String
                             Dim FldPar As String
-                            If ds.IsLookUp = True Then
+                            If ds.IsLookUp = True And isLUDS = False Then
                                 FldPar = ds.DatastoreName
                             Else
                                 FldPar = fld.ParentStructureName
@@ -4939,11 +4947,11 @@ ErrorGoTo:
             Dim TgtStr As String = ""
             Dim FORmainStr1 As String = String.Format("{0}", "PROCESS INTO")
             '/// change for CDCstore
-            If Main.Engine.Sources(1) IsNot Nothing Then
-                If CType(Main.Engine.Sources(1), clsDatastore).DsAccessMethod = DS_ACCESSMETHOD_CDCSTORE Then
-                    FORmainStr1 = String.Format("{0}", "CHANGE INTO")
-                End If
-            End If
+            'If Main.Engine.Sources(1) IsNot Nothing Then
+            '    If CType(Main.Engine.Sources(1), clsDatastore).DsAccessMethod = DS_ACCESSMETHOD_CDCSTORE Then
+            '        FORmainStr1 = String.Format("{0}", "CHANGE INTO")
+            '    End If
+            'End If
             Dim FORmainStr3 As String = String.Format("{0}", "SELECT")
             Dim FORmainFunct As String = String.Format("{0}", CType(CType(Main.ObjMappings(0), clsMapping) _
             .MappingSource, clsSQFunction).SQFunctionWithInnerText)
@@ -5118,12 +5126,11 @@ ErrorGoTo:
         Dim count As Integer = 0
 
         Try
-            If comment.Length < 69 And _
-            comment.Contains(Chr(9)) = False And _
+            If comment.Contains(Chr(9)) = False And _
             comment.Contains(Chr(10)) = False And _
             comment.Contains(Chr(12)) = False And _
             comment.Contains(Chr(13)) = False _
-            Then
+            Then        'comment.Length < 69 And _
                 objWriteSQD.WriteLine("-- " & comment)
                 objWriteINL.WriteLine("-- " & comment)
                 objWriteTMP.WriteLine("-- " & comment)
@@ -5135,8 +5142,7 @@ ErrorGoTo:
                     chara = Chr(9) Or _
                     chara = Chr(10) Or _
                     chara = Chr(12) Or _
-                    chara = Chr(13)) And _
-                    count < 69 Then
+                    chara = Chr(13)) Then       'And count < 69
                         index = count
                         If chara = Chr(9) Or _
                         chara = Chr(10) Or _

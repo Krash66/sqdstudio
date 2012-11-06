@@ -177,6 +177,7 @@ Public Module modDeclares
     Public Const DS_ACCESSMETHOD_MQSERIES As String = "M"
     Public Const DS_ACCESSMETHOD_VSAM As String = "V"
     Public Const DS_ACCESSMETHOD_CDCSTORE As String = "S"
+    Public Const DS_ACCESSMETHOD_TABLE As String = "T"
 
     Public Const DS_CHARACTERCODE_EBCDIC As String = "E"
     Public Const DS_CHARACTERCODE_ASCII As String = "A"
