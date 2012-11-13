@@ -129,6 +129,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5633AEC884214FCABCAE0746AFDE034F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_723B47DD4F0B4CCA99F1AF89136CB220"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -268,6 +274,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C3B1C14FDE2B4B4E93F4DF7689DC8719"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C3DE0159B2924DEEBD063D66399E95F7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -975,6 +987,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5633AEC884214FCABCAE0746AFDE034F"
+            {
+            "SourcePath" = "8:..\\bin\\3.8.6\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_3A44EBEAC3004200B82963105E708DA0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_723B47DD4F0B4CCA99F1AF89136CB220"
             {
             "SourcePath" = "8:..\\bin\\supporting files\\VENDOR_DDL.ddl"
@@ -1285,6 +1317,26 @@
             "TargetName" = "8:logo.BMP"
             "Tag" = "8:"
             "Folder" = "8:_B48FC0FDD1F94DD0BEE708819C08F37C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3DE0159B2924DEEBD063D66399E95F7"
+            {
+            "SourcePath" = "8:..\\bin\\3.7.39\\sqdparse.exe"
+            "TargetName" = "8:sqdparse.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_37BA7403D2DC4D8C92CA91DD5619FCD7"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1709,6 +1761,28 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_37BA7403D2DC4D8C92CA91DD5619FCD7"
+                    {
+                    "Name" = "8:3.7.39"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_D90341D93D214D01A7EB50CD922FEE89"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3A44EBEAC3004200B82963105E708DA0"
+                    {
+                    "Name" = "8:3.8.6"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_A72D1CBE08614882A2E372F0ACDB55A4"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_D8C13839BF724CF6B5763749F079AE97"
@@ -1748,20 +1822,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:Design Studio (internal)"
-        "ProductCode" = "8:{047EEC37-044B-4EE4-A7FD-6F80DADA5137}"
-        "PackageCode" = "8:{BEB47AE2-428C-4E78-B3D1-1D58C251A038}"
+        "ProductName" = "8:Design Studio x86 (int)"
+        "ProductCode" = "8:{186BE83F-8036-4CAB-BD47-7346D5614944}"
+        "PackageCode" = "8:{B0F4BD5D-250A-4D80-88FA-E5B8D78C62ED}"
         "UpgradeCode" = "8:{ECBC2F4A-B3CB-4E3A-A724-5337F324CFB9}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:3.51.7000"
+        "ProductVersion" = "8:3.51.8000"
         "Manufacturer" = "8:SQData Corporation"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.sqdata.com"
         "Title" = "8:SQDStudio Setup"
-        "Subject" = "8:Studio version 3.5.1.7 x86"
+        "Subject" = "8:Studio version 3.5.1.8 x86 (int)"
         "ARPCONTACT" = "8:SQData Corporation"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"

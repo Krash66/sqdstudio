@@ -387,6 +387,8 @@ Public Class frmMain
         Me.tbMap = New System.Windows.Forms.ToolBarButton
         Me.s7 = New System.Windows.Forms.ToolBarButton
         Me.tbToggle = New System.Windows.Forms.ToolBarButton
+        Me.s8 = New System.Windows.Forms.ToolBarButton
+        Me.tbtnCC = New System.Windows.Forms.ToolBarButton
         Me.ImageListSmall = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusBar1 = New System.Windows.Forms.StatusBar
         Me.StatusBarPanel1 = New System.Windows.Forms.StatusBarPanel
@@ -584,6 +586,19 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
+        Me.ctStrSel = New SQDStudio.ctlStructureSelection
+        Me.ctConn = New SQDStudio.ctlConnection
+        Me.ctStr = New SQDStudio.ctlStructure
+        Me.ctPrj = New SQDStudio.ctlProject
+        Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ctEng = New SQDStudio.ctlEngine
+        Me.ctEnv = New SQDStudio.ctlEnvironment
+        Me.ctMain = New SQDStudio.ctlMain
+        Me.ctInc = New SQDStudio.ctlInclude
+        Me.ctSys = New SQDStudio.ctlSystem
+        Me.ctTask = New SQDStudio.ctlTask
+        Me.ctVar = New SQDStudio.ctlVariable
+        Me.ctFolder = New SQDStudio.ctlFolderNode
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.tabCtrl = New System.Windows.Forms.TabControl
@@ -601,21 +616,6 @@ Public Class frmMain
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.tbCC = New System.Windows.Forms.ToolBarButton
-        Me.ctStrSel = New SQDStudio.ctlStructureSelection
-        Me.ctConn = New SQDStudio.ctlConnection
-        Me.ctStr = New SQDStudio.ctlStructure
-        Me.ctPrj = New SQDStudio.ctlProject
-        Me.ctDs = New SQDStudio.ctlDatastore
-        Me.ctEng = New SQDStudio.ctlEngine
-        Me.ctEnv = New SQDStudio.ctlEnvironment
-        Me.ctMain = New SQDStudio.ctlMain
-        Me.ctInc = New SQDStudio.ctlInclude
-        Me.ctSys = New SQDStudio.ctlSystem
-        Me.ctTask = New SQDStudio.ctlTask
-        Me.ctVar = New SQDStudio.ctlVariable
-        Me.ctFolder = New SQDStudio.ctlFolderNode
-        Me.s8 = New System.Windows.Forms.ToolBarButton
-        Me.tbtnCC = New System.Windows.Forms.ToolBarButton
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -894,6 +894,19 @@ Public Class frmMain
         Me.tbToggle.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton
         Me.tbToggle.Tag = "Toggle"
         Me.tbToggle.ToolTipText = "Show/Hide Main Tree"
+        '
+        's8
+        '
+        Me.s8.Name = "s8"
+        Me.s8.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
+        '
+        'tbtnCC
+        '
+        Me.tbtnCC.ImageIndex = 6
+        Me.tbtnCC.Name = "tbtnCC"
+        Me.tbtnCC.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton
+        Me.tbtnCC.Tag = "Control Center"
+        Me.tbtnCC.ToolTipText = "Control Center"
         '
         'ImageListSmall
         '
@@ -2005,6 +2018,130 @@ Public Class frmMain
         Me.pnlProp.Size = New System.Drawing.Size(679, 485)
         Me.pnlProp.TabIndex = 3
         '
+        'ctStrSel
+        '
+        Me.ctStrSel.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctStrSel.ForeColor = System.Drawing.Color.White
+        Me.ctStrSel.Location = New System.Drawing.Point(232, 112)
+        Me.ctStrSel.Name = "ctStrSel"
+        Me.ctStrSel.Size = New System.Drawing.Size(608, 448)
+        Me.ctStrSel.TabIndex = 6
+        '
+        'ctConn
+        '
+        Me.ctConn.AutoValidate = System.Windows.Forms.AutoValidate.Disable
+        Me.ctConn.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctConn.ForeColor = System.Drawing.Color.White
+        Me.ctConn.ImeMode = System.Windows.Forms.ImeMode.[On]
+        Me.ctConn.Location = New System.Drawing.Point(272, 104)
+        Me.ctConn.Name = "ctConn"
+        Me.ctConn.Size = New System.Drawing.Size(560, 352)
+        Me.ctConn.TabIndex = 4
+        '
+        'ctStr
+        '
+        Me.ctStr.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctStr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.ctStr.ForeColor = System.Drawing.Color.White
+        Me.ctStr.Location = New System.Drawing.Point(328, 48)
+        Me.ctStr.Name = "ctStr"
+        Me.ctStr.Size = New System.Drawing.Size(608, 456)
+        Me.ctStr.TabIndex = 2
+        '
+        'ctPrj
+        '
+        Me.ctPrj.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctPrj.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.ctPrj.ForeColor = System.Drawing.Color.White
+        Me.ctPrj.Location = New System.Drawing.Point(272, 168)
+        Me.ctPrj.Name = "ctPrj"
+        Me.ctPrj.Size = New System.Drawing.Size(512, 328)
+        Me.ctPrj.TabIndex = 0
+        '
+        'ctDs
+        '
+        Me.ctDs.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctDs.ForeColor = System.Drawing.Color.White
+        Me.ctDs.Location = New System.Drawing.Point(58, 29)
+        Me.ctDs.Name = "ctDs"
+        Me.ctDs.Size = New System.Drawing.Size(568, 648)
+        Me.ctDs.TabIndex = 3
+        '
+        'ctEng
+        '
+        Me.ctEng.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ctEng.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctEng.ForeColor = System.Drawing.Color.White
+        Me.ctEng.Location = New System.Drawing.Point(21, 22)
+        Me.ctEng.Name = "ctEng"
+        Me.ctEng.Size = New System.Drawing.Size(650, 575)
+        Me.ctEng.TabIndex = 7
+        '
+        'ctEnv
+        '
+        Me.ctEnv.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctEnv.ForeColor = System.Drawing.Color.White
+        Me.ctEnv.Location = New System.Drawing.Point(8, 22)
+        Me.ctEnv.Name = "ctEnv"
+        Me.ctEnv.Size = New System.Drawing.Size(629, 518)
+        Me.ctEnv.TabIndex = 1
+        '
+        'ctMain
+        '
+        Me.ctMain.AllowDrop = True
+        Me.ctMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.ctMain.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.ctMain.Location = New System.Drawing.Point(70, 22)
+        Me.ctMain.Name = "ctMain"
+        Me.ctMain.Size = New System.Drawing.Size(738, 503)
+        Me.ctMain.TabIndex = 12
+        '
+        'ctInc
+        '
+        Me.ctInc.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctInc.ImeMode = System.Windows.Forms.ImeMode.NoControl
+        Me.ctInc.Location = New System.Drawing.Point(31, 29)
+        Me.ctInc.Name = "ctInc"
+        Me.ctInc.Size = New System.Drawing.Size(653, 440)
+        Me.ctInc.TabIndex = 11
+        '
+        'ctSys
+        '
+        Me.ctSys.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctSys.ForeColor = System.Drawing.Color.White
+        Me.ctSys.Location = New System.Drawing.Point(107, 12)
+        Me.ctSys.Name = "ctSys"
+        Me.ctSys.Size = New System.Drawing.Size(554, 457)
+        Me.ctSys.TabIndex = 5
+        '
+        'ctTask
+        '
+        Me.ctTask.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctTask.ForeColor = System.Drawing.Color.White
+        Me.ctTask.Location = New System.Drawing.Point(21, 22)
+        Me.ctTask.Name = "ctTask"
+        Me.ctTask.Size = New System.Drawing.Size(672, 472)
+        Me.ctTask.TabIndex = 9
+        '
+        'ctVar
+        '
+        Me.ctVar.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.ctVar.ForeColor = System.Drawing.Color.White
+        Me.ctVar.Location = New System.Drawing.Point(31, 48)
+        Me.ctVar.Name = "ctVar"
+        Me.ctVar.Size = New System.Drawing.Size(488, 344)
+        Me.ctVar.TabIndex = 8
+        '
+        'ctFolder
+        '
+        Me.ctFolder.BackColor = System.Drawing.SystemColors.Desktop
+        Me.ctFolder.ForeColor = System.Drawing.Color.White
+        Me.ctFolder.Location = New System.Drawing.Point(8, 3)
+        Me.ctFolder.Name = "ctFolder"
+        Me.ctFolder.Size = New System.Drawing.Size(488, 344)
+        Me.ctFolder.TabIndex = 10
+        Me.ctFolder.Visible = False
+        '
         'SCmain
         '
         Me.SCmain.AllowDrop = True
@@ -2131,143 +2268,6 @@ Public Class frmMain
         'tbCC
         '
         Me.tbCC.Name = "tbCC"
-        '
-        'ctStrSel
-        '
-        Me.ctStrSel.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctStrSel.ForeColor = System.Drawing.Color.White
-        Me.ctStrSel.Location = New System.Drawing.Point(232, 112)
-        Me.ctStrSel.Name = "ctStrSel"
-        Me.ctStrSel.Size = New System.Drawing.Size(608, 448)
-        Me.ctStrSel.TabIndex = 6
-        '
-        'ctConn
-        '
-        Me.ctConn.AutoValidate = System.Windows.Forms.AutoValidate.Disable
-        Me.ctConn.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctConn.ForeColor = System.Drawing.Color.White
-        Me.ctConn.ImeMode = System.Windows.Forms.ImeMode.[On]
-        Me.ctConn.Location = New System.Drawing.Point(272, 104)
-        Me.ctConn.Name = "ctConn"
-        Me.ctConn.Size = New System.Drawing.Size(560, 352)
-        Me.ctConn.TabIndex = 4
-        '
-        'ctStr
-        '
-        Me.ctStr.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctStr.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ctStr.ForeColor = System.Drawing.Color.White
-        Me.ctStr.Location = New System.Drawing.Point(328, 48)
-        Me.ctStr.Name = "ctStr"
-        Me.ctStr.Size = New System.Drawing.Size(608, 456)
-        Me.ctStr.TabIndex = 2
-        '
-        'ctPrj
-        '
-        Me.ctPrj.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctPrj.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
-        Me.ctPrj.ForeColor = System.Drawing.Color.White
-        Me.ctPrj.Location = New System.Drawing.Point(272, 168)
-        Me.ctPrj.Name = "ctPrj"
-        Me.ctPrj.Size = New System.Drawing.Size(512, 328)
-        Me.ctPrj.TabIndex = 0
-        '
-        'ctDs
-        '
-        Me.ctDs.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctDs.ForeColor = System.Drawing.Color.White
-        Me.ctDs.Location = New System.Drawing.Point(58, 29)
-        Me.ctDs.Name = "ctDs"
-        Me.ctDs.Size = New System.Drawing.Size(568, 648)
-        Me.ctDs.TabIndex = 3
-        '
-        'ctEng
-        '
-        Me.ctEng.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ctEng.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctEng.ForeColor = System.Drawing.Color.White
-        Me.ctEng.Location = New System.Drawing.Point(21, 22)
-        Me.ctEng.Name = "ctEng"
-        Me.ctEng.Size = New System.Drawing.Size(650, 575)
-        Me.ctEng.TabIndex = 7
-        '
-        'ctEnv
-        '
-        Me.ctEnv.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctEnv.ForeColor = System.Drawing.Color.White
-        Me.ctEnv.Location = New System.Drawing.Point(8, 22)
-        Me.ctEnv.Name = "ctEnv"
-        Me.ctEnv.Size = New System.Drawing.Size(629, 518)
-        Me.ctEnv.TabIndex = 1
-        '
-        'ctMain
-        '
-        Me.ctMain.AllowDrop = True
-        Me.ctMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.ctMain.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.ctMain.Location = New System.Drawing.Point(70, 22)
-        Me.ctMain.Name = "ctMain"
-        Me.ctMain.Size = New System.Drawing.Size(738, 503)
-        Me.ctMain.TabIndex = 12
-        '
-        'ctInc
-        '
-        Me.ctInc.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctInc.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.ctInc.Location = New System.Drawing.Point(31, 29)
-        Me.ctInc.Name = "ctInc"
-        Me.ctInc.Size = New System.Drawing.Size(653, 440)
-        Me.ctInc.TabIndex = 11
-        '
-        'ctSys
-        '
-        Me.ctSys.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctSys.ForeColor = System.Drawing.Color.White
-        Me.ctSys.Location = New System.Drawing.Point(107, 12)
-        Me.ctSys.Name = "ctSys"
-        Me.ctSys.Size = New System.Drawing.Size(554, 457)
-        Me.ctSys.TabIndex = 5
-        '
-        'ctTask
-        '
-        Me.ctTask.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctTask.ForeColor = System.Drawing.Color.White
-        Me.ctTask.Location = New System.Drawing.Point(21, 22)
-        Me.ctTask.Name = "ctTask"
-        Me.ctTask.Size = New System.Drawing.Size(672, 472)
-        Me.ctTask.TabIndex = 9
-        '
-        'ctVar
-        '
-        Me.ctVar.BackColor = System.Drawing.SystemColors.AppWorkspace
-        Me.ctVar.ForeColor = System.Drawing.Color.White
-        Me.ctVar.Location = New System.Drawing.Point(31, 48)
-        Me.ctVar.Name = "ctVar"
-        Me.ctVar.Size = New System.Drawing.Size(488, 344)
-        Me.ctVar.TabIndex = 8
-        '
-        'ctFolder
-        '
-        Me.ctFolder.BackColor = System.Drawing.SystemColors.Desktop
-        Me.ctFolder.ForeColor = System.Drawing.Color.White
-        Me.ctFolder.Location = New System.Drawing.Point(8, 3)
-        Me.ctFolder.Name = "ctFolder"
-        Me.ctFolder.Size = New System.Drawing.Size(488, 344)
-        Me.ctFolder.TabIndex = 10
-        Me.ctFolder.Visible = False
-        '
-        's8
-        '
-        Me.s8.Name = "s8"
-        Me.s8.Style = System.Windows.Forms.ToolBarButtonStyle.Separator
-        '
-        'tbtnCC
-        '
-        Me.tbtnCC.ImageIndex = 6
-        Me.tbtnCC.Name = "tbtnCC"
-        Me.tbtnCC.Style = System.Windows.Forms.ToolBarButtonStyle.ToggleButton
-        Me.tbtnCC.Tag = "Control Center"
-        Me.tbtnCC.ToolTipText = "Control Center"
         '
         'frmMain
         '

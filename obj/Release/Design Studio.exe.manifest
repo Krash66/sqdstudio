@@ -4,7 +4,7 @@
   <description asmv2:iconFile="database_process.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Design Studio" version="3.5.1.7" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="Design Studio" version="3.5.1.8" language="neutral" processorArchitecture="x86" />
     <commandLine file="Design Studio.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -58,14 +58,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="2204672">
-      <assemblyIdentity name="Design Studio" version="3.5.1.7" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Design Studio.exe" size="2206208">
+      <assemblyIdentity name="Design Studio" version="3.5.1.8" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>uIymsOjYsDbkm5UQ4boLDWqfbuE=</dsig:DigestValue>
+        <dsig:DigestValue>FCrHfuegcsjjxMdAPZI1he32V48=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

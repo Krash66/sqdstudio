@@ -20,15 +20,6 @@ Public Class ctlDatastore
     Private Const SplitSrcNoDel As Integer = 298
     Private Const SplitTgtNoDel As Integer = 221
     Private Pnt As Point
-    Friend WithEvents lblHostName As System.Windows.Forms.Label
-    Friend WithEvents txtHostName As System.Windows.Forms.TextBox
-    Friend WithEvents gbMultiDesc As System.Windows.Forms.GroupBox
-    Friend WithEvents scDescriptions As System.Windows.Forms.SplitContainer
-    Friend WithEvents btnMTD As System.Windows.Forms.Button
-    Friend WithEvents txtMTD As System.Windows.Forms.TextBox
-    Friend WithEvents cbUseFile As System.Windows.Forms.CheckBox
-    Friend WithEvents btnSelDesc As System.Windows.Forms.Button
-
     Private lvItem As ListViewItem
 
 #Region " Windows Form Designer generated code "
@@ -135,7 +126,14 @@ Public Class ctlDatastore
     Friend WithEvents rbLU As System.Windows.Forms.RadioButton
     Friend WithEvents gbTarget As System.Windows.Forms.GroupBox
     Friend WithEvents cbKeyChng As System.Windows.Forms.CheckBox
-
+    Friend WithEvents lblHostName As System.Windows.Forms.Label
+    Friend WithEvents txtHostName As System.Windows.Forms.TextBox
+    Friend WithEvents gbMultiDesc As System.Windows.Forms.GroupBox
+    Friend WithEvents scDescriptions As System.Windows.Forms.SplitContainer
+    Friend WithEvents btnMTD As System.Windows.Forms.Button
+    Friend WithEvents txtMTD As System.Windows.Forms.TextBox
+    Friend WithEvents cbUseFile As System.Windows.Forms.CheckBox
+    Friend WithEvents btnSelDesc As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ctlDatastore))
@@ -252,16 +250,16 @@ Public Class ctlDatastore
         '
         Me.cmbDatastoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbDatastoreType.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbDatastoreType.Location = New System.Drawing.Point(301, 14)
+        Me.cmbDatastoreType.Location = New System.Drawing.Point(309, 14)
         Me.cmbDatastoreType.Name = "cmbDatastoreType"
-        Me.cmbDatastoreType.Size = New System.Drawing.Size(117, 21)
+        Me.cmbDatastoreType.Size = New System.Drawing.Size(109, 21)
         Me.cmbDatastoreType.TabIndex = 5
         '
         'Label15
         '
         Me.Label15.AutoSize = True
         Me.Label15.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(251, 18)
+        Me.Label15.Location = New System.Drawing.Point(269, 18)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(34, 14)
         Me.Label15.TabIndex = 0
@@ -270,10 +268,10 @@ Public Class ctlDatastore
         'txtUOW
         '
         Me.txtUOW.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUOW.Location = New System.Drawing.Point(284, 13)
+        Me.txtUOW.Location = New System.Drawing.Point(213, 38)
         Me.txtUOW.MaxLength = 128
         Me.txtUOW.Name = "txtUOW"
-        Me.txtUOW.Size = New System.Drawing.Size(134, 20)
+        Me.txtUOW.Size = New System.Drawing.Size(205, 20)
         Me.txtUOW.TabIndex = 16
         '
         'cmbOperationType
@@ -298,17 +296,17 @@ Public Class ctlDatastore
         'txtPortOrMQMgr
         '
         Me.txtPortOrMQMgr.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPortOrMQMgr.Location = New System.Drawing.Point(301, 67)
+        Me.txtPortOrMQMgr.Location = New System.Drawing.Point(309, 67)
         Me.txtPortOrMQMgr.MaxLength = 128
         Me.txtPortOrMQMgr.Name = "txtPortOrMQMgr"
-        Me.txtPortOrMQMgr.Size = New System.Drawing.Size(117, 20)
+        Me.txtPortOrMQMgr.Size = New System.Drawing.Size(109, 20)
         Me.txtPortOrMQMgr.TabIndex = 4
         '
         'lblPortorMQMgr
         '
         Me.lblPortorMQMgr.AutoSize = True
         Me.lblPortorMQMgr.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPortorMQMgr.Location = New System.Drawing.Point(251, 70)
+        Me.lblPortorMQMgr.Location = New System.Drawing.Point(273, 70)
         Me.lblPortorMQMgr.Name = "lblPortorMQMgr"
         Me.lblPortorMQMgr.Size = New System.Drawing.Size(30, 14)
         Me.lblPortorMQMgr.TabIndex = 0
@@ -317,17 +315,17 @@ Public Class ctlDatastore
         'txtException
         '
         Me.txtException.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtException.Location = New System.Drawing.Point(72, 37)
+        Me.txtException.Location = New System.Drawing.Point(213, 13)
         Me.txtException.MaxLength = 128
         Me.txtException.Name = "txtException"
-        Me.txtException.Size = New System.Drawing.Size(173, 20)
+        Me.txtException.Size = New System.Drawing.Size(205, 20)
         Me.txtException.TabIndex = 3
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(6, 40)
+        Me.Label7.Location = New System.Drawing.Point(147, 16)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(60, 14)
         Me.Label7.TabIndex = 0
@@ -338,7 +336,7 @@ Public Class ctlDatastore
         Me.chkSkipChangeCheck.AutoSize = True
         Me.chkSkipChangeCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.chkSkipChangeCheck.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkSkipChangeCheck.Location = New System.Drawing.Point(105, 15)
+        Me.chkSkipChangeCheck.Location = New System.Drawing.Point(3, 40)
         Me.chkSkipChangeCheck.Name = "chkSkipChangeCheck"
         Me.chkSkipChangeCheck.Size = New System.Drawing.Size(133, 18)
         Me.chkSkipChangeCheck.TabIndex = 12
@@ -350,7 +348,7 @@ Public Class ctlDatastore
         Me.chkIMSPathData.AutoSize = True
         Me.chkIMSPathData.CheckAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.chkIMSPathData.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkIMSPathData.Location = New System.Drawing.Point(6, 15)
+        Me.chkIMSPathData.Location = New System.Drawing.Point(3, 15)
         Me.chkIMSPathData.Name = "chkIMSPathData"
         Me.chkIMSPathData.Size = New System.Drawing.Size(93, 18)
         Me.chkIMSPathData.TabIndex = 17
@@ -472,26 +470,26 @@ Public Class ctlDatastore
         '
         Me.cmbAccessMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbAccessMethod.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbAccessMethod.Location = New System.Drawing.Point(301, 41)
+        Me.cmbAccessMethod.Location = New System.Drawing.Point(309, 41)
         Me.cmbAccessMethod.Name = "cmbAccessMethod"
-        Me.cmbAccessMethod.Size = New System.Drawing.Size(117, 21)
+        Me.cmbAccessMethod.Size = New System.Drawing.Size(109, 21)
         Me.cmbAccessMethod.TabIndex = 8
         '
         'Label1
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(251, 44)
+        Me.Label1.Location = New System.Drawing.Point(248, 38)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 14)
+        Me.Label1.Size = New System.Drawing.Size(62, 28)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Access"
+        Me.Label1.Text = "Access/" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Transport"
         '
         'txtPhysicalSource
         '
         Me.txtPhysicalSource.AcceptsTab = True
         Me.txtPhysicalSource.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPhysicalSource.Location = New System.Drawing.Point(60, 15)
+        Me.txtPhysicalSource.Location = New System.Drawing.Point(60, 41)
         Me.txtPhysicalSource.MaxLength = 128
         Me.txtPhysicalSource.Name = "txtPhysicalSource"
         Me.txtPhysicalSource.Size = New System.Drawing.Size(185, 20)
@@ -500,7 +498,7 @@ Public Class ctlDatastore
         'Label2
         '
         Me.Label2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(3, 13)
+        Me.Label2.Location = New System.Drawing.Point(4, 35)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(58, 28)
         Me.Label2.TabIndex = 0
@@ -521,7 +519,7 @@ Public Class ctlDatastore
         'txtDatastoreName
         '
         Me.txtDatastoreName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDatastoreName.Location = New System.Drawing.Point(60, 41)
+        Me.txtDatastoreName.Location = New System.Drawing.Point(60, 15)
         Me.txtDatastoreName.MaxLength = 20
         Me.txtDatastoreName.Name = "txtDatastoreName"
         Me.txtDatastoreName.Size = New System.Drawing.Size(185, 20)
@@ -531,7 +529,7 @@ Public Class ctlDatastore
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(5, 45)
+        Me.Label3.Location = New System.Drawing.Point(4, 17)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(34, 14)
         Me.Label3.TabIndex = 0
@@ -541,7 +539,7 @@ Public Class ctlDatastore
         '
         Me.lblUOW.AutoSize = True
         Me.lblUOW.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUOW.Location = New System.Drawing.Point(250, 16)
+        Me.lblUOW.Location = New System.Drawing.Point(172, 41)
         Me.lblUOW.Name = "lblUOW"
         Me.lblUOW.Size = New System.Drawing.Size(35, 14)
         Me.lblUOW.TabIndex = 0
@@ -1055,7 +1053,7 @@ Public Class ctlDatastore
         Me.gbMultiDesc.Size = New System.Drawing.Size(395, 47)
         Me.gbMultiDesc.TabIndex = 22
         Me.gbMultiDesc.TabStop = False
-        Me.gbMultiDesc.Text = "SQLserver Multi-Table Description File"
+        Me.gbMultiDesc.Text = "SQLserver/DB2 Multi-Table Description File"
         '
         'btnSelDesc
         '
@@ -2124,54 +2122,61 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
     Sub SetAccessCombo(ByVal DStype As enumDatastore)
 
         If objThis.DsDirection = DS_DIRECTION_SOURCE Then
-            Select Case DStype
-                Case enumDatastore.DS_BINARY, enumDatastore.DS_TEXT, enumDatastore.DS_DELIMITED, enumDatastore.DS_HSSUNLOAD, _
-                enumDatastore.DS_XML, enumDatastore.DS_DB2LOAD, enumDatastore.DS_IBMEVENT
-                    cmbAccessMethod.Items.Clear()
-                    cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
-                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
-                    cmbAccessMethod.SelectedIndex = 0
+            '/// Added for Lookups
+            If objThis.IsLookUp = False Then
+                Select Case DStype
+                    Case enumDatastore.DS_BINARY, enumDatastore.DS_TEXT, enumDatastore.DS_DELIMITED, enumDatastore.DS_HSSUNLOAD, _
+                    enumDatastore.DS_XML, enumDatastore.DS_DB2LOAD, enumDatastore.DS_IBMEVENT
+                        cmbAccessMethod.Items.Clear()
+                        cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                        cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                        cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+                        cmbAccessMethod.SelectedIndex = 0
 
-                Case enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
-                enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR
-                    cmbAccessMethod.Items.Clear()
-                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
-                    cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
-                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
-                    'cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
+                    Case enumDatastore.DS_UTSCDC, enumDatastore.DS_IMSCDC, enumDatastore.DS_IMSCDCLE, _
+                    enumDatastore.DS_VSAMCDC, enumDatastore.DS_SUBVAR
+                        cmbAccessMethod.Items.Clear()
+                        cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
+                        cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                        cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                        cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+                        'cmbAccessMethod.Items.Add(New Mylist("VSAM CDCStore", DS_ACCESSMETHOD_VSAM))
 
-                    cmbAccessMethod.SelectedIndex = 0
+                        cmbAccessMethod.SelectedIndex = 0
 
-                    'added July 2012
-                Case enumDatastore.DS_DB2CDC
-                    cmbAccessMethod.Items.Clear()
-                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.SelectedIndex = 0
+                        'added July 2012
+                    Case enumDatastore.DS_DB2CDC
+                        cmbAccessMethod.Items.Clear()
+                        cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                        cmbAccessMethod.SelectedIndex = 0
 
-                Case enumDatastore.DS_RELATIONAL
-                    cmbAccessMethod.Items.Clear()
-                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
-                    'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
-                    'cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
-                    cmbAccessMethod.Items.Add(New Mylist("TableNameOnly", DS_ACCESSMETHOD_TABLE))
+                    Case enumDatastore.DS_RELATIONAL
+                        cmbAccessMethod.Items.Clear()
+                        cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
+                        'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                        'cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                        cmbAccessMethod.Items.Add(New Mylist("TableNameOnly", DS_ACCESSMETHOD_TABLE))
+                        cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
 
-                    cmbAccessMethod.SelectedIndex = 0
+                        cmbAccessMethod.SelectedIndex = 0
 
-                Case enumDatastore.DS_ORACLECDC
-                    cmbAccessMethod.Items.Clear()
-                    cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
-                    'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
-                    cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
-                    cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
+                    Case enumDatastore.DS_ORACLECDC
+                        cmbAccessMethod.Items.Clear()
+                        cmbAccessMethod.Items.Add(New Mylist("CDC Store", DS_ACCESSMETHOD_CDCSTORE))
+                        'cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                        cmbAccessMethod.Items.Add(New Mylist("MQSeries", DS_ACCESSMETHOD_MQSERIES))
+                        cmbAccessMethod.Items.Add(New Mylist("TCP/IP", DS_ACCESSMETHOD_IP))
 
-                    cmbAccessMethod.SelectedIndex = 0
+                        cmbAccessMethod.SelectedIndex = 0
 
-                Case Else
-                    cmbAccessMethod.Items.Clear()
-            End Select
+                    Case Else
+                        cmbAccessMethod.Items.Clear()
+                End Select
+            Else
+                cmbAccessMethod.Items.Clear()
+                cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
+                cmbAccessMethod.Items.Add(New Mylist("TableNameOnly", DS_ACCESSMETHOD_TABLE))
+            End If
         Else
             cmbAccessMethod.Items.Clear()
             cmbAccessMethod.Items.Add(New Mylist("File", DS_ACCESSMETHOD_FILE))
@@ -2180,9 +2185,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
             cmbAccessMethod.SelectedIndex = 0
         End If
 
-        If cmbAccessMethod.Enabled = True Then
-            SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
-        End If
+            If cmbAccessMethod.Enabled = True Then
+                SetListItemByValue(cmbAccessMethod, objThis.DsAccessMethod, False)
+            End If
 
 
     End Sub
@@ -2200,7 +2205,9 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 cmbOperationType.Items.Add(New Mylist("Delete", DS_OPERATION_DELETE))
                 cmbOperationType.Items.Add(New Mylist("Change", DS_OPERATION_CHANGE))
                 cmbOperationType.Items.Add(New Mylist("Modify", DS_OPERATION_MODIFY))
-                cmbOperationType.Items.Add(New Mylist("Replace", DS_OPERATION_REPLACE))
+                If objThis.DatastoreType <> enumDatastore.DS_RELATIONAL Then
+                    cmbOperationType.Items.Add(New Mylist("Replace", DS_OPERATION_REPLACE))
+                End If
             Case Else
                 cmbOperationType.Items.Clear()
                 cmbOperationType.Items.Add(New Mylist("", ""))
@@ -2275,6 +2282,12 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                     check4key = True                'added 7/2012 by TK
                     cbKeyChng.Enabled = True
             End Select
+            '/// added for lookup
+            If objThis.IsLookUp = True Then
+                check4key = True
+            End If
+
+            OnChange(Me, New EventArgs)
 
         Catch ex As Exception
             LogError(ex, "ctlDatastore cmbOperationType_SelectedIndexChanged")
@@ -3854,9 +3867,20 @@ recurse:                For x = 0 To childSel.ObjDSSelections.Count - 1
                 Next
             Next
 
-            MsgBox("At least one Key Field must be set in any Relational, IMSDB or VSAM Target Datastore." & Chr(13) & _
-            "No key fields have been set in this Datastore. Please set at least one key field.", _
-            MsgBoxStyle.Exclamation, "Please Set a key field")
+            'MsgBox("At least one Key Field must be set in any Relational, IMSDB or VSAM Target Datastore." & Chr(13) & _
+            '"No key fields have been set in this Datastore. Please set at least one key field.", _
+            'MsgBoxStyle.Exclamation, "Please Set a key field")
+            If objThis.OperationType <> DS_OPERATION_INSERT And objThis.IsLookUp = False Then
+                MsgBox("At least one Key Field must be set in any Relational Target Datastore." & Chr(13) & _
+                       "No key fields have been set in this Datastore. Please set at least one key field.", _
+                       MsgBoxStyle.Exclamation, "Please Set a key field")
+            End If
+
+            If objThis.IsLookUp = True Then
+                MsgBox("At least one Key Field must be set in a Lookup Datastore." & Chr(13) & _
+                       "No key fields have been set in this Datastore. Please set at least one key field.", _
+                       MsgBoxStyle.Exclamation, "Please Set a key field")
+            End If
 
             HasKeyForRel = False
 

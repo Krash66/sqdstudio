@@ -534,7 +534,7 @@ Public Class ctlEngine
         Me.gbMain.Controls.Add(Me.txtMain)
         Me.gbMain.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMain.ForeColor = System.Drawing.Color.White
-        Me.gbMain.Location = New System.Drawing.Point(405, 25)
+        Me.gbMain.Location = New System.Drawing.Point(402, 101)
         Me.gbMain.Name = "gbMain"
         Me.gbMain.Size = New System.Drawing.Size(674, 44)
         Me.gbMain.TabIndex = 105
@@ -588,13 +588,12 @@ Public Class ctlEngine
         Me.gbVersion.Controls.Add(Me.cmbEngVer)
         Me.gbVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbVersion.ForeColor = System.Drawing.Color.White
-        Me.gbVersion.Location = New System.Drawing.Point(435, 163)
+        Me.gbVersion.Location = New System.Drawing.Point(387, 3)
         Me.gbVersion.Name = "gbVersion"
         Me.gbVersion.Size = New System.Drawing.Size(204, 57)
         Me.gbVersion.TabIndex = 106
         Me.gbVersion.TabStop = False
-        Me.gbVersion.Text = "Parser/Engine Version"
-        Me.gbVersion.Visible = False
+        Me.gbVersion.Text = "Parser Version"
         '
         'cmbEngVer
         '
@@ -885,10 +884,10 @@ Public Class ctlEngine
             objThis.BATdir = txtBAT.Text
             objThis.CDCdir = txtCDC.Text
 
-            'objThis.EngVersion = cmbEngVer.Text
+            objThis.EngVersion = cmbEngVer.Text
 
 
-            objThis.EngVersion = "3.7.17"
+            'objThis.EngVersion = "3.7.17"
 
             Dim temp As Mylist = cbConn.SelectedItem
 
@@ -1144,12 +1143,12 @@ Public Class ctlEngine
         Try
             cmbEngVer.Items.Clear()
 
-            'cmbEngVer.Items.Add(New Mylist("3.8.0", "3.8.0"))
-            cmbEngVer.Items.Add(New Mylist("3.7.17", "3.7.17"))
+            cmbEngVer.Items.Add(New Mylist("3.7.39", "3.7.39"))
             'cmbEngVer.Items.Add(New Mylist("3.7.12", "3.7.12"))
             'cmbEngVer.Items.Add(New Mylist("3.7.7", "3.7.7"))
             'cmbEngVer.Items.Add(New Mylist("3.7.6", "3.7.6"))
             'cmbEngVer.Items.Add(New Mylist("3.6.14", "3.6.14"))
+            cmbEngVer.Items.Add(New Mylist("3.8.6", "3.8.6"))
 
             If objThis.EngVersion <> "" Then
                 SetListItemByValue(cmbEngVer, objThis.EngVersion, False)
