@@ -183,6 +183,7 @@ Public Class clsDatastore
             obj.DsAccessMethod = Me.DsAccessMethod
             obj.DsDirection = Me.DsDirection
             obj.DsPhysicalSource = Me.DsPhysicalSource
+            obj.DsHostName = Me.DsHostName
             obj.Poll = Me.Poll '// added by TK and KS 11/3/06
             obj.DsPort = Me.DsPort
             obj.DsQueMgr = Me.DsQueMgr

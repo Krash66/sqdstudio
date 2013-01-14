@@ -43,7 +43,6 @@ Partial Class frmScriptGen
         Me.cbMapDebug = New System.Windows.Forms.CheckBox
         Me.cbNewSyn = New System.Windows.Forms.CheckBox
         Me.cbOldSyn = New System.Windows.Forms.CheckBox
-        Me.Label4 = New System.Windows.Forms.Label
         Me.gbTarget = New System.Windows.Forms.GroupBox
         Me.rbAlltgt = New System.Windows.Forms.RadioButton
         Me.rbFieldtgt = New System.Windows.Forms.RadioButton
@@ -64,6 +63,7 @@ Partial Class frmScriptGen
         Me.btnOpenOutput = New System.Windows.Forms.Button
         Me.gbCMDprompt = New System.Windows.Forms.GroupBox
         Me.btnCMD = New System.Windows.Forms.Button
+        Me.cbTablespace = New System.Windows.Forms.CheckBox
         Me.Panel1.SuspendLayout()
         Me.gbPath.SuspendLayout()
         Me.gbStudioFiles.SuspendLayout()
@@ -305,12 +305,12 @@ Partial Class frmScriptGen
         '
         'gbScriptOptions
         '
+        Me.gbScriptOptions.Controls.Add(Me.cbTablespace)
         Me.gbScriptOptions.Controls.Add(Me.cbUseEXEpath)
         Me.gbScriptOptions.Controls.Add(Me.cbBATdir)
         Me.gbScriptOptions.Controls.Add(Me.cbMapDebug)
         Me.gbScriptOptions.Controls.Add(Me.cbNewSyn)
         Me.gbScriptOptions.Controls.Add(Me.cbOldSyn)
-        Me.gbScriptOptions.Controls.Add(Me.Label4)
         Me.gbScriptOptions.Controls.Add(Me.gbTarget)
         Me.gbScriptOptions.Controls.Add(Me.gbSource)
         Me.gbScriptOptions.Controls.Add(Me.Label9)
@@ -381,15 +381,6 @@ Partial Class frmScriptGen
         Me.cbOldSyn.TabIndex = 15
         Me.cbOldSyn.Text = "Traditional Syntax"
         Me.cbOldSyn.UseVisualStyleBackColor = True
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(465, 13)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(141, 13)
-        Me.Label4.TabIndex = 14
-        Me.Label4.Text = "Datastore Script Syntax"
         '
         'gbTarget
         '
@@ -603,6 +594,16 @@ Partial Class frmScriptGen
         Me.btnCMD.Text = "CMD at Bat Dir"
         Me.btnCMD.UseVisualStyleBackColor = True
         '
+        'cbTablespace
+        '
+        Me.cbTablespace.AutoSize = True
+        Me.cbTablespace.Location = New System.Drawing.Point(469, 12)
+        Me.cbTablespace.Name = "cbTablespace"
+        Me.cbTablespace.Size = New System.Drawing.Size(120, 17)
+        Me.cbTablespace.TabIndex = 20
+        Me.cbTablespace.Text = "Use TableSpace"
+        Me.cbTablespace.UseVisualStyleBackColor = True
+        '
         'frmScriptGen
         '
         Me.ClientSize = New System.Drawing.Size(640, 668)
@@ -688,11 +689,11 @@ Partial Class frmScriptGen
     Friend WithEvents btnOpenOutput As System.Windows.Forms.Button
     Friend WithEvents cbNewSyn As System.Windows.Forms.CheckBox
     Friend WithEvents cbOldSyn As System.Windows.Forms.CheckBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents cbMapDebug As System.Windows.Forms.CheckBox
     Friend WithEvents cbBATdir As System.Windows.Forms.CheckBox
     Friend WithEvents gbCMDprompt As System.Windows.Forms.GroupBox
     Friend WithEvents btnCMD As System.Windows.Forms.Button
     Friend WithEvents cbUseEXEpath As System.Windows.Forms.CheckBox
+    Friend WithEvents cbTablespace As System.Windows.Forms.CheckBox
 
 End Class

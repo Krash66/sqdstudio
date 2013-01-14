@@ -129,6 +129,7 @@ Public Class clsEngine
             obj.EXEdir = Me.EXEdir
             obj.BATdir = Me.BATdir
             obj.CDCdir = Me.CDCdir
+            obj.EngVersion = Me.EngVersion
 
             If Cascade = True Then
 

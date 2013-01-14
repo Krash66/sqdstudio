@@ -1,0 +1,300 @@
+Updates for version 3.5.1.9
+-- Form, object and script mods for Tablespace Name at Description Level
+-- Generator Updates for new syntax and Description Libraries.
+-- NEW builds: one for x64 and one for x86.
+-- Changes for multiple parser versions.
+-- Changes for v3.8.x backend.
+
+
+*** PREVIOUS UPDATES ***
+Updates for version 3.5.1.7 & 8
+-- Form modifications for better visual look for Datastore
+-- Generator Updates and bug fixes.
+-- FOUR NEW builds: one for x64 and one for x86. and a version of each for internal use only.
+-- Changes for multiple parser versions.
+-- Changes for v3.8.x backend.
+
+Updates for version 3.5.1.6
+-- Form modifications for better visual look for Win7.
+-- Modeler Update bug fixes.
+-- Two NEW builds: one for x64 and one for x86. This will cause less confusion.
+-- Internal build with RunSQData button enabled.
+
+Updates for version 3.5.1.5
+-- Comprehensive Update to Datastores, including adding and deleting properties and adding ability to handle Multi-Table MSSQL description files.
+-- Large addition and update to Generator for CDCstore and for MSSQL descriptions.
+-- Modeler Update bug fixes.
+-- Updated Parser Version from 3.7.7-R32 to 3.7.39.
+-- Two builds generated, one for x64OS with x86 MSOffice, and one for all other platform combinations.
+
+Updates for version 3.5.1.4
+-- Created two distinct builds, one for x64OS with x86 MSOffice, and one for all other platform combinations.
+-- Modeler Update bug fixes, and Generator changes.
+-- Fixed Sample Project with Metadata, Folders, Descriptions, and instructions.
+
+Updates for version 3.5.1.3
+-- Corrected Many Small Bugs to correct Visual and Filepath Issues.
+-- Major Modeler Update to incorporate all possible Datatypes.
+-- Added Complete Sample Project with Metadata, Folders, Descriptions, and instructions.
+
+Updates for version 3.5.1.2
+-- Corrected issue with Source Datastore Operation type Prompt.
+-- Added or changed some look and feel issues for better User interaction.
+-- Added New form for Script Importing... Disabled on Main toolbar menu.
+
+Updates for version 3.5.1.1
+-- Corrected small bugs.
+-- Added or changed some look and feel issues for better User interaction.
+-- Mapping procedures now bordered in red when all targets are not mapped.
+
+Updates for version 3.5.1.0
+-- debugged version after testing by multiple people.
+-- temporarily disabled "Map As" until it can be made better.
+-- Bug fix for Link drawing of Logic Procs.
+-- Updated Help for Engine Diagrams.
+
+Updates for version 3.5.0.7 and 3.5.0.8
+-- debugging of all aspects of program. 
+-- temporarily disabled "Map As" until it can be made better.
+-- Visual changes to Addflow diagrams.
+-- Functionality increased.
+-- Modelling datatypes overhaul, so Qracle and DB2 models will import.
+-- removed and tested unused AddFlow components to save size.
+
+Updates for version 3.5.0.6
+-- User Link creation, deletion, etc. is complete
+-- Interactive features now working at a fully functional level
+-- Metadata is kept in sync with object model, tree and diagram.
+-- Copy/paste is now repaired and updated for Addflow and is fully functional
+-- Node positions are kept and stored in Metadata so diagrams stay as the user leaves them
+
+Updates for version 3.5.0.5
+-- User Link creation, deletion, etc. is preliminarily complete
+-- Interactive features now working at a good basic level
+-- Metadata is kept in sync with object model, tree and diagram.
+-- color coding of changed diagram nodes when linking or deleting links
+
+Updates for version 3.5.0.4
+-- User Link creation is working, with a few minor issues
+-- Interactive features now working at 90%+
+-- Programatic link creation works but will be better.
+
+Updates for version 3.5.0.3
+-- AddFlow fully functioning except for link creation by user.
+-- Bugs fixed in SQfunctions and Proc rename.
+-- Programatic link creation works but will be better when Function parser completed.
+
+Updates for version 3.5.0.0, 3.5.0.1, 3.5.0.2
+-- Addtion of TabsPages to Main Form
+-- Addition of ADDFLOW diagrams to Main GUI
+-- Added AddFlow control. This control is added as a new TabPage for each Engine.
+3.5.0.1
+-- Added functionality to addflow for objects added, deleted, etc.
+3.5.0.2
+-- Added some of the toolbar item functionality, including Print and Zoom
+-- Improved visual style.
+-- Debugged control, object, metadata interaction.
+
+Updates for version 3.4.1.4
+-- Changed installation directories for user data, metadata, backups, projects, etc. DEBUGGED
+-- Removed all program properties from the registry and put them into XML files
+-- rerouted all Logs, teporary files, projects, metadata into a user's data directory that can be moved or copied for different computers or users.
+-- Comprehensive Help changes.
+
+Updates for version 3.4.1.3 
+-- Changed installation directories for user data, metadata, backups, projects, etc. 
+-- Integrated XML Message Translator into direct importing of XML Messages into Studio as DTD descriptions. 
+-- DTD descriptions created from XML messages are created and stored in the DTD directory defined in the environment.
+
+Updates for version 3.4.1.1 and 3.4.1.2
+-- Updated New Project and Open Project forms
+-- Updated and fixed Copy and Paste in the main Form
+-- Updated the procedural logic of copy, paste, load, showUsercontrol, etc. in Main Form
+-- Increased availability of copy and Paste for ALL tree nodes including projects and folders.
+-- Copy and Paste of entire Projects, now available!
+
+Updates for version 3.4.1.0
+-- Updated Input Forms for Description, Connection, System, Engine, Variable
+-- Updated and fixed Copy and Paste, including Cloning of all objects
+-- Updated and fixed Rename
+-- Updated all Objects' Add, Delete, Update, Save and Rename
+-- Fixed Script Generation, for exception Datastore, OutMsg's, debugging, Field Attributes and Global Attributes
+-- Reminder for Access Meta Back up
+-- Minor Upgrade Version
+
+Updates for version 3.4.0.5
+-- Changed some output syntax in Script Generator and XML Translator
+
+Updates for version 3.4.0.4
+-- Added XML Message to DTD file translator
+
+Updates for version 3.4.0.3
+-- changed "SQD CDC" to "UTSCDC" as Datastore type in Main form, DS form, and DS control.
+-- corrected Script Generation for Datastores URL syntax for tcp, MQseries, CDC access.
+-- Fixed Modeling of SQLserver DDL to importable syntax.
+-- Changed script generation for Description Subsets
+-- changed script generation syntax for datastore URL format (quoting of names, etc.)
+-- fixed exception errors for scripting of Datastores and Procs.
+-- fixed right-click menus on Main form.
+-- fixed names prefix on modeled descriptions and importing of DML.
+-- fixed small bug with delete project, and creation date.
+
+Updates for version 3.4.0.2
+-- Corrected bugs in previous version
+-- Script Generation for Datastores URL syntax for tcp, MQseries, CDC access.
+-- Fixed prefixes for DML import and Modeling of all relational types.
+-- Changed form for script generation
+-- Corrected DML import for field length and field length while mapping DML type.
+
+Updates for version 3.4.0.1
+-- Corrected bugs in previous version
+-- Added new form to make Batch files for CDCstore, Windows system types.
+-- Added more features to Script generation
+-- Changed form for script generation
+-- added properties to Engine object and Engine form and User control.
+-- added Multi-model form... NOT in use
+-- corrected all versions of metadata
+
+Updates for version 3.3.3.7001
+-- Change sizes of object fields in Metadata in MSaccess, MSSQLserver, Oracle, DB2
+-- Changed modeler to allow modeling of entire folder of descriptions into one large file, or individual files.
+
+Updates for version 3.3.3.7
+-- extended Debugging of Script Generation when Mapping a source Function to a target field.
+-- Support for COBOL copybook importing when file name of copybook does not match segment name.
+-- continuing addition of ODBC error checking.
+-- Changed script generation for CDC store.
+-- Changed Modeling for SQLserver
+
+Updates for version 3.3.3.6
+-- support for new SQLserver2005
+-- Fixed bugs for DML addition and Datastore DML support
+-- Modified the following forms: DMLinfo, modDeclares, frmMain, frmScriptGen, modGenerateV3, clsDatastore, ModRename, clsObjects
+-- Extra Debugging for ODBC connections and Script Generation of Mapping Functions to Target fields
+
+Updates for version 3.3.3.5
+-- Added comprehensive ODBC error reporting
+-- Fixed Main form menu bug found by PB
+-- Modified the following forms: ChangeProj, OpenProj, NewProj, DMLinfo, clsLogging, modDeclares, frmLog, frmMain
+
+Updates for version 3.3.3.4
+-- Added Pre-built SQLserver 2005 Metadata File: SQDmeta.mdf
+-- Added MQ Trigger Capability for Modeler. 
+-- Also modified Generator, Main Form, and Decsription UserControl.
+
+Updates for version 3.3.3.3
+-- Checked for Theme related Visual Problems
+-- Changed each contol and form to better utilize Wait Cursors, to show user that program is active in the background.
+-- Added Libraries for DBD files in Engine and System forms and controls
+-- Added new DBD Libraries into Object model and Metadata
+-- Modified Script Generator to reflect DBD Library changes
+-- Modified Script Generation form to be Modal instead of Non-Modal
+-- Fixed Problem with creation Date in project form, control, Object, Metadata, and Registry
+
+
+Updates for version 3.3.3.1 & 3.3.3.2
+-- Changes to Registry Use to correct Rights issues
+-- Changes to Environment Paths Usage, so All Description Paths reflect Environment Cahnges.
+-- Corrections to Script Generator
+
+Updates for version 3.3.3.0 
+Correction to registry read and write errors, related to User Rights Issues.
+
+Updates for version 3.3.2.9 
+This revision Includes a Parser Update to version 3.7.17
+Also the exclusion of Unused Executable files.
+
+Updates for version 3.3.1.0  
+-- Updates to Script Generator to correct problem with Variable Target scripting
+
+Updates for version 3.3.0.9  
+--  Updates to Script Generator to correct problem with General Procedure scripting
+--  Changes to Main object tree to remove global datastores and procedures
+--  Added Numbering to folders for Sources, Targets and Procs to show number of each in folder
+--  Eleiminated some logic to support V2 metadata. Now V3 metadata will ONLY be supported
+
+Updates for version 3.3.0.8  
+--  Updates to Datastore Object, form, and control to correct problem with character code
+--  Corrected Problem with Datastore delete from top of object tree.
+
+Updates for version 3.3.0.7  
+--  Updates to Datastore Object to allow more Datastore-wide field properties.
+--  Updated Datatore Form to add more field properties.
+--  Updated Datatore Usercontrol to add more field properties.
+--  Updated Script Generator to Add new field properties.
+--  Updated how Datastore properties are stored in MetaData.
+
+Updates for version 3.3.0.6  
+--  Updates to GUI Help and Adobe Acrobat Help
+--  Updated Functions available to Procedures
+--  Added CASE Template to Function List and to Main and Mapping Procedures.
+--  Entered all Source Code into New Source Control.
+
+Updates for version 3.3.0.5  
+--  Added availability to manually edit Column, Row, and text delimiters in Datastores
+--  Completely cleaned all unused code and projects in the Design Studio Solution.
+--  Upgraded Version of Visual Studio and converted Design Studio to upgraded Development Environment.
+
+Updates for version 3.3.0.4  
+--  Updated help file 
+
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Updated how Datastores control displays restart and poll based on Access.
+
+Updates for version 3.3.0.3  
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Updated how Datastores are scripted
+--  Updated how Fields of type: GroupItem are mapped in a procedure
+
+Updates for version 3.3.0.1&2  
+--  Updated how Exception Datastores are scripted
+--  Updated how Restart Datastores are scripted
+--  Changed how Invalid Field attributes are scripted.
+
+Updates for version 3.3.0.0 
+--  Updated Datastore Screen for Delimited Datastores to "Record Delimiter" from "Row Delimiter"
+--  Updated Script Generator for Exception Datastores and Restarts
+--  Updated Main and General Procedure Screens
+
+Updates for version 3.2.9.9 
+--  Updated Parser
+
+Updates for version 3.2.9.8  
+--  Made General Procedure available as normal or Main Procedure and changed it's storage in MetaData
+--  Changed Available features and attributes of different Datastore Types.
+--  Changed and corrected Script Generator to reflect new Changes to Main and General Procedures.
+-- Incorporated New Importer, Modeler, and Parser into Build to reflect different design for Occurs clause, etc.
+
+Updates for version 3.2.9.7  
+--  Modified Menu in Main Program for adding either Mapping Procs or General Procs.
+--  Made General Procedure available as normal or Main Procedure
+--  Added ability to change procedure type of General procedures to switch between Main and General Procedure type.
+--  Modified Engine screen to allow older Main procedures to be copied and pasted into a new General Procedure.
+--  Modified Script Generator to reflect all changes.
+
+
+Updates for version 3.2.9.6  
+--  Added ability to give Out Message to individual Mappings
+--  corrected Availablity in Datastore for Restart Que
+--  Updated Datastore Matrix of options. Proper Operation types are now available
+--  Corrected internal bugs, revamped background operation for modeler and importer
+--  Made multiple upgrades to Script Generator to allow for more user options when building procedures.
+--- Modified Use of MetaData to allow for Out Message Use.
+
+
+Updates for version 3.2.9.5 and back to 1/1/10
+--  Removed Main Procedure from Engine
+--  Added New Object for Routing Procedures
+--  Added new form, User Control, for Routing Procedures
+--  Added new Templates in Procedures for Set Image, Lookup, Main, and Procedure.
+--- Modified Script Generator to work with new Routing Procedures
+-- Modified Use of MetaData for Routing Procedures
+--  Rebuilt Parsing procedure to Multi-thread Parser OutPut and better handle errors.
+
+
+*** December 09
+-- Completely rebuilt Datasores and all of there options, forms and User Controls to work with updated Parser and Scripting.
+--  Added Lookup Datastores and their Scripting Templates. 
+---  Modified Script Generator for new Syntax in Datastores and Procs

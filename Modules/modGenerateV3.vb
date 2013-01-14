@@ -75,6 +75,8 @@ Public Module modGenerateV3
     Private SQLsrcs As New Collection
     Private SQLtgts As New Collection
 
+    Private DoTablespace As String
+
 #End Region
 
 #Region " Main Processes "
@@ -90,7 +92,8 @@ Public Module modGenerateV3
                                         Optional ByVal ParseSQD As Boolean = False, _
                                         Optional ByVal NewSyn As Boolean = True, _
                                         Optional ByVal MapDBG As Boolean = False, _
-                                        Optional ByVal UseEXE As Boolean = False) _
+                                        Optional ByVal UseEXE As Boolean = False, _
+                                        Optional ByVal UseTablespace As Boolean = False) _
                                         As clsRcode
 
         Log("********* Script Generation Start : " & Date.Now & " & " & Date.Now.Millisecond & " Milliseconds")
@@ -119,6 +122,7 @@ Public Module modGenerateV3
         DBGMap = MapDBG
         OutMsg = debug
         UseEXEpath = UseEXE
+        DoTablespace = UseTablespace
 
 
         Try
@@ -316,7 +320,15 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Public Function GenerateProcScriptV3(ByVal ProcObj As clsTask, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal NewSyn As Boolean = True) As clsRcode
+    Public Function GenerateProcScriptV3(ByVal ProcObj As clsTask, _
+                                         ByVal SavePath As String, _
+                                         Optional ByVal NoParse As Boolean = False, _
+                                         Optional ByVal debug As Boolean = False, _
+                                         Optional ByVal UseUID As Boolean = False, _
+                                         Optional ByVal MappingLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                         Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                         Optional ByVal NewSyn As Boolean = True, _
+                                         Optional ByVal UseTablespace As Boolean = False) As clsRcode
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -337,6 +349,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
         SourceLevel = MappingLevel
         TargetLevel = TgtLevel
         SynNew = NewSyn
+        DoTablespace = UseTablespace
 
         Try
             ObjProc = ProcObj
@@ -509,7 +522,15 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
 
     End Function
 
-    Public Function GenerateDSScriptV3(ByVal DSObj As clsDatastore, ByVal SavePath As String, Optional ByVal NoParse As Boolean = False, Optional ByVal debug As Boolean = False, Optional ByVal UseUID As Boolean = False, Optional ByVal SrcLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, Optional ByVal NewSyn As Boolean = True) As clsRcode
+    Public Function GenerateDSScriptV3(ByVal DSObj As clsDatastore, _
+                                       ByVal SavePath As String, _
+                                       Optional ByVal NoParse As Boolean = False, _
+                                       Optional ByVal debug As Boolean = False, _
+                                       Optional ByVal UseUID As Boolean = False, _
+                                       Optional ByVal SrcLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                       Optional ByVal TgtLevel As enumMappingLevel = enumMappingLevel.ShowAll, _
+                                       Optional ByVal NewSyn As Boolean = True, _
+                                       Optional ByVal UseTablespace As Boolean = False) As clsRcode
 
         '/// initialize return code object
         Dim RC As clsRcode
@@ -530,6 +551,7 @@ ErrorGoTo2:  '/// send returnPath or enumreturncode
         SourceLevel = SrcLevel
         TargetLevel = TgtLevel
         SynNew = NewSyn
+        DoTablespace = UseTablespace
 
         Try
             ObjDS = DSObj
@@ -1485,6 +1507,9 @@ SubstGoTo:      objWriteINL.WriteLine(PSix2INL)
 
                 For Each dssel As clsDSSelection In ds.ObjSelections
                     Dim dmlPath As String = dssel.ObjStructure.fPath1
+                    If dssel.ObjStructure.StructureType <> enumStructure.STRUCT_REL_DML Then
+                        dmlPath = dssel.SelectionName
+                    End If
                     Dim DescAlias As String = dssel.SelectionName
                     Dim FORaliasFirst As String = String.Format("{0,14}{1}{2}{3}", "ALIAS(", dmlPath, " AS ", DescAlias)
                     Dim FORaliasmid As String = String.Format("{0,14}{1}{2}{3}", ",", dmlPath, " AS ", DescAlias)
@@ -1582,7 +1607,9 @@ ErrorGoTo:  '/// send returnPath or enumreturncode
             '/// Next Build list of Target Descriptions in Target Datastores
             For Each ds As clsDatastore In SQLtgts
                 For Each dssel As clsDSSelection In ds.ObjSelections
-                    sqlDescList.Add(dssel, dssel.SelectionName)
+                    If sqlDescList.Contains(dssel.SelectionName) = False Then
+                        sqlDescList.Add(dssel, dssel.SelectionName)
+                    End If
                 Next
             Next
 
@@ -1637,7 +1664,11 @@ SubstGoTo:  objWriteINL.WriteLine(PSix2INL)
             Dim count As Integer = 1
 
             For Each dssel As clsDSSelection In sqlDescList
+
                 Dim dmlPath As String = dssel.ObjStructure.fPath1
+                If dssel.ObjStructure.StructureType <> enumStructure.STRUCT_REL_DML Then
+                    dmlPath = dssel.SelectionName
+                End If
                 Dim DescAlias As String = dssel.SelectionName
                 Dim FORaliasFirst As String = String.Format("{0,14}{1}{2}{3}", "ALIAS(", dmlPath, " AS ", DescAlias)
                 Dim FORaliasmid As String = String.Format("{0,14}{1}{2}{3}", ",", dmlPath, " AS ", DescAlias)
@@ -2743,35 +2774,51 @@ errorgoto:
             Else
                 If ObjThis.Connection IsNot Nothing Then
                     wBlankLine(rc)
+                    Dim fullConn As String = ""
                     If ObjThis.Connection.ConnectionType = "ODBCwithSubstitutionVariable" Then
                         ConnType = "ODBC"
+                        If PrintUID = True Then
+                            fullConn = instr & ConnType & " " & ObjThis.Connection.Database & " " & _
+                            ObjThis.Connection.UserId & " " & ObjThis.Connection.Password & semi
+                        Else
+                            fullConn = instr & ConnType & " " & ObjThis.Connection.Database & semi
+                        End If
                     ElseIf ObjThis.Connection.ConnectionType = "DB2" Then
                         If ObjThis.ObjSystem.OSType = "z/OS" Then
                             ConnType = ""
+                            fullConn = instr & ConnType & " " & QuoteRes(ObjThis.Connection.Database) & " DUMMY DUMMY " & semi
                         Else
                             ConnType = "NATIVEDB2"
+                            If PrintUID = True Then
+                                fullConn = instr & ConnType & " " & ObjThis.Connection.Database & " " & _
+                                ObjThis.Connection.UserId & " " & ObjThis.Connection.Password & semi
+                            Else
+                                fullConn = instr & ConnType & " " & ObjThis.Connection.Database & semi
+                            End If
                         End If
                     Else
                         ConnType = ObjThis.Connection.ConnectionType
+                        If PrintUID = True Then
+                            fullConn = instr & ConnType & " " & ObjThis.Connection.Database & " " & _
+                            ObjThis.Connection.UserId & " " & ObjThis.Connection.Password & semi
+                        Else
+                            fullConn = instr & ConnType & " " & ObjThis.Connection.Database & semi
+                        End If
                     End If
-                    If PrintUID = True Then
-                        objWriteSQD.WriteLine(instr & ConnType & " " & _
-                        ObjThis.Connection.Database & " " & ObjThis.Connection.UserId & " " & _
-                        ObjThis.Connection.Password & semi)
-                        objWriteINL.WriteLine(instr & ConnType & " " & _
-                        ObjThis.Connection.Database & " " & ObjThis.Connection.UserId & " " & _
-                        ObjThis.Connection.Password & semi)
-                        objWriteTMP.WriteLine(instr & ConnType & " " & _
-                        ObjThis.Connection.Database & " " & ObjThis.Connection.UserId & " " & _
-                        ObjThis.Connection.Password & semi)
-                    Else
-                        objWriteSQD.WriteLine(instr & ConnType & " " & _
-                        QuoteRes(ObjThis.Connection.Database) & " dummy dummy " & semi)
-                        objWriteINL.WriteLine(instr & ConnType & " " & _
-                        QuoteRes(ObjThis.Connection.Database) & " dummy dummy " & semi)
-                        objWriteTMP.WriteLine(instr & ConnType & " " & _
-                        QuoteRes(ObjThis.Connection.Database) & " dummy dummy " & semi)
-                    End If
+                    objWriteSQD.WriteLine(fullConn)
+                    objWriteINL.WriteLine(fullConn)
+                    objWriteTMP.WriteLine(fullConn)
+                    'If PrintUID = True Then
+                    '    objWriteSQD.WriteLine(fullConn)
+                    '    objWriteINL.WriteLine(fullConn)
+                    '    objWriteTMP.WriteLine(fullConn)
+                    'Else
+                    '    objWriteSQD.WriteLine(fullConn)
+                    '    objWriteINL.WriteLine(instr & ConnType & " " & _
+                    '    QuoteRes(ObjThis.Connection.Database) & " DUMMY DUMMY " & semi)
+                    '    objWriteTMP.WriteLine(instr & ConnType & " " & _
+                    '    QuoteRes(ObjThis.Connection.Database) & " DUMMY DUMMY " & semi)
+                    'End If
 
                     AddToLineNo(rc)
                 End If
@@ -3019,7 +3066,7 @@ errorgoto:
                     commaORspace = ","
                 End If
                 selName = CType(ds.ObjSelections(i), clsDSSelection).ObjStructure.StructureName
-                Dim FORds4 As String = String.Format("{0,21}{1}{2}", " ", commaORspace, QuoteRes(selName))
+                Dim FORds4 As String = String.Format("{0,19}{1}{2}", " ", commaORspace, QuoteRes(selName))
                 objWriteSQD.WriteLine(FORds4)
                 objWriteINL.WriteLine(FORds4)
                 objWriteTMP.WriteLine(FORds4)
@@ -3028,7 +3075,7 @@ errorgoto:
             Next
             '/// Now add UOW if Used
             If ds.DsUOW.Trim <> "" And ds.DatastoreType = enumDatastore.DS_DB2CDC Then
-                Dim FORds5 As String = String.Format("{0,21}{1}{2}", " ", commaORspace, "UOW")
+                Dim FORds5 As String = String.Format("{0,19}{1}{2}", " ", commaORspace, "UOW")
                 objWriteSQD.WriteLine(FORds5)
                 objWriteINL.WriteLine(FORds5)
                 objWriteTMP.WriteLine(FORds5)
@@ -3081,11 +3128,11 @@ ErrorGoTo:
                                 objWriteINL.Write(ForKeyIs)
                                 objWriteTMP.Write(ForKeyIs)
                                 AddToLineNo(rc)
-                                ForKey = String.Format("{0,1}{1}{2}", prefix, FldPar, "." & fld.FieldName)
+                                ForKey = String.Format("{0,1}{1}", prefix, QuoteRes(fld.FieldName)) 'FldPar, "." &
                                 first = False
                             Else
                                 prefix = ","
-                                ForKey = String.Format("{0,19}{1}{2}", prefix, FldPar, "." & fld.FieldName)
+                                ForKey = String.Format("{0,19}{1}", prefix, QuoteRes(fld.FieldName)) 'FldPar, "." &
                             End If
                             objWriteSQD.WriteLine(ForKey)
                             objWriteINL.WriteLine(ForKey)
@@ -3426,23 +3473,55 @@ ErrorGoTo:
             Dim MQstr As String = ds.Engine.ObjSystem.QueueManager
             Dim TCPport As String = ds.DsPort
             Dim DSname As String = ""
+            Dim ForDummy As String
 
-            Select Case ds.DsAccessMethod
-                Case DS_ACCESSMETHOD_FILE
-                    Exit Try
-                Case DS_ACCESSMETHOD_IP
-                    DSname = ds.DsUOW & ":" & TCPport.Trim & "@TCP"
-                Case DS_ACCESSMETHOD_MQSERIES
-                    If MQstr.Trim = "" Then
-                        DSname = ds.DsUOW & "@MQS"
-                    Else
-                        DSname = ds.DsUOW & "#" & MQstr.Trim & "@MQS"
-                    End If
-                Case DS_ACCESSMETHOD_VSAM
-                    DSname = ds.DsUOW
-            End Select
+            Dim AccessHost As String = "" '= ObjSys.Host.Trim
+            If ds.DsHostName.Trim <> "" Then
+                AccessHost = ds.DsHostName.Trim
+            ElseIf ObjSys.Host.Trim <> "" Then
+                AccessHost = ObjSys.Host.Trim
+            End If
+            If TCPport <> "" Then
+                AccessHost = AccessHost & ":" & TCPport
+            End If
 
-            Dim ForDummy As String = String.Format("{0}{1}", "DESCRIPTION DB2CDCURQ '" & QuoteRes(DSname), "' AS UOW" & semi)
+            If SynNew = False Then
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        DSname = ds.DsUOW
+                    Case DS_ACCESSMETHOD_IP
+                        DSname = ds.DsUOW & ":" & TCPport.Trim & "@TCP"
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If MQstr.Trim = "" Then
+                            DSname = ds.DsUOW & "@MQS"
+                        Else
+                            DSname = ds.DsUOW & "#" & MQstr.Trim & "@MQS"
+                        End If
+                    Case DS_ACCESSMETHOD_VSAM
+                        DSname = ds.DsUOW
+                End Select
+                ForDummy = String.Format("{0}{1}", "DESCRIPTION DB2CDCURQ '" & QuoteRes(DSname), "' AS UOW" & semi)
+            Else
+                Select Case ds.DsAccessMethod
+                    Case DS_ACCESSMETHOD_FILE
+                        DSname = ds.DsUOW
+                    Case DS_ACCESSMETHOD_IP
+                        DSname = "tcp://" & AccessHost & "/" & ds.DsPhysicalSource & "/" & ds.Engine.EngineName
+                        DSname = ds.DsUOW & ":" & TCPport.Trim & "@TCP"
+                    Case DS_ACCESSMETHOD_MQSERIES
+                        If MQstr.Trim = "" Then
+                            DSname = "mqs:///" & ds.DsPhysicalSource '& "@MQS"" & AccessHost & "
+                        Else
+                            DSname = "mqs://" & MQstr.Trim & "/" & ds.DsUOW '& "#" & MQstr.Trim & "@MQS"& AccessHost & "/"
+                        End If
+                    Case DS_ACCESSMETHOD_VSAM
+                        DSname = "vsam://" & AccessHost & "/" & ds.DsUOW
+                    Case DS_ACCESSMETHOD_CDCSTORE
+                        DSname = "cdc://" & AccessHost & "/" & ds.DsUOW '& "/" & ds.Engine.EngineName 'ds.DatastoreName '& "/" & ds.DatastoreName '& ":" & TCPport.Trim
+                End Select
+                ForDummy = String.Format("{0}{1}", "DESCRIPTION DB2CDCURQ " & QuoteRes(DSname), " AS UOW" & semi)
+            End If
+
 
             wComment(rc, "-------------- *** Unit Of Work Description *** ---------------")
             objWriteSQD.WriteLine(ForDummy)
@@ -3613,8 +3692,17 @@ ErrorGoTo:
 
             objSys.LoadMe()
 
-            Dim FORstr1 As String = String.Format("{0}{1}{2}", "DESCRIPTION ", _
-            GetStrType(struct.StructureType), Quote(GetStrPath(struct, objEng)))
+            Dim FORstr1 As String
+            'If SynNew = True Then
+            '    FORstr1 = String.Format("{0}{1}{2}", "DESCRIPTION ", _
+            '                            GetStrType(struct.StructureType), _
+            '                            GetStrPath(struct, objEng, , DSsel.ObjDatastore.DsDirection))
+            'Else
+            FORstr1 = String.Format("{0}{1}{2}", "DESCRIPTION ", _
+                                    GetStrType(struct.StructureType), _
+                                    Quote(GetStrPath(struct, objEng, , DSsel.ObjDatastore.DsDirection)))
+            'End If
+
             Dim FORstr2 As String = String.Format("{0}{1}", "AS ", QuoteRes(struct.StructureName))
             'Dim PSix As String = String.Format("{0}", "/+")
             'Dim PSix2 As String = String.Format("{0}", "+/")
@@ -3754,8 +3842,14 @@ ErrorGoTo:
     Function wStructTMP(ByRef rc As clsRcode, ByVal struct As clsStructure, ByVal DSsel As clsDSSelection) As Boolean
 
         Try
-            Dim FORstr1 As String = String.Format("{0}{1}", "DESCRIPTION " & GetStrType(struct.StructureType), _
-            Quote(GetStrPath(struct, DSsel.ObjDatastore.Engine)))
+            Dim FORstr1 As String
+            'If SynNew = True Then
+            '    FORstr1 = String.Format("{0}{1}", "DESCRIPTION " & GetStrType(struct.StructureType), _
+            '                            GetStrPath(struct, DSsel.ObjDatastore.Engine, , DSsel.ObjDatastore.DsDirection))
+            'Else
+            FORstr1 = String.Format("{0}{1}", "DESCRIPTION " & GetStrType(struct.StructureType), _
+                                    Quote(GetStrPath(struct, DSsel.ObjDatastore.Engine, , DSsel.ObjDatastore.DsDirection)))
+            'End If
             Dim FORstr2 As String = String.Format("{0,15}{1}", "AS ", QuoteRes(struct.StructureName))
             Dim PSix As String = String.Format("{0}", "/+")
             Dim PSix2 As String = String.Format("{0}", "+/")
@@ -3826,7 +3920,7 @@ ErrorGoTo:
             Dim PSix2 As String = String.Format("{0}", "+/")
             Dim FORdml1 As String = String.Format("{0}{1}", "DESCRIPTION ", GetStrType(struct.StructureType))
             Dim FORdml2 As String = String.Format("{0,25}{1}{2}", BuildString.ToString, _
-            GetStrPath(struct, dssel.ObjDatastore.Engine), semi)   'Quote()
+            GetStrPath(struct, dssel.ObjDatastore.Engine, , dssel.ObjDatastore.DsDirection), semi)   'Quote()
 
             Select Case CalledFrom
                 Case "TMP"
@@ -5249,7 +5343,7 @@ ErrorGoTo:
 
     End Function
 
-    Public Function GetStrPath(ByVal str As clsStructure, ByVal eng As clsEngine, Optional ByVal IsDBD As Boolean = False) As String
+    Public Function GetStrPath(ByVal str As clsStructure, ByVal eng As clsEngine, Optional ByVal IsDBD As Boolean = False, Optional ByVal DSdir As String = DS_DIRECTION_SOURCE) As String
 
         Dim DDstr As String = ""
         Dim objSys As clsSystem = eng.ObjSystem
@@ -5258,29 +5352,36 @@ ErrorGoTo:
         Dim dtdLib As String = ""
         Dim incLib As String = ""
         Dim descLib As String = ""
+        Dim PhysName As String = ""
 
-        'Get CopyBook path on target
-        If objSys.CopybookLib.Trim <> "" Then
-            cobLib = objSys.CopybookLib
-        End If
-        If eng.CopybookLib.Trim <> "" Then
-            cobLib = eng.CopybookLib
-        End If
-
-        'Get ddl path on target
-        If objSys.DDLLib.Trim <> "" Then
-            ddlLib = objSys.DDLLib
-        End If
-        If eng.DDLLib.Trim <> "" Then
-            ddlLib = eng.DDLLib
-        End If
-
-        'Get dtd path on target
-        If objSys.DTDLib.Trim <> "" Then
-            dtdLib = objSys.DTDLib
-        End If
-        If eng.DTDLib.Trim <> "" Then
-            dtdLib = eng.DTDLib
+        'Get Lib Paths for Sources from System
+        If DSdir = DS_DIRECTION_SOURCE Then
+            'Get CopyBook path on source
+            If objSys.CopybookLib.Trim <> "" Then
+                cobLib = objSys.CopybookLib
+            End If
+            'Get ddl path on source
+            If objSys.DDLLib.Trim <> "" Then
+                ddlLib = objSys.DDLLib
+            End If
+            'Get dtd path on source
+            If objSys.DTDLib.Trim <> "" Then
+                dtdLib = objSys.DTDLib
+            End If
+            'Get Lib Paths for Targets from System
+        Else
+            'Get CopyBook path on target
+            If eng.CopybookLib.Trim <> "" Then
+                cobLib = eng.CopybookLib
+            End If
+            'Get ddl path on target
+            If eng.DDLLib.Trim <> "" Then
+                ddlLib = eng.DDLLib
+            End If
+            'Get dtd path on target
+            If eng.DTDLib.Trim <> "" Then
+                dtdLib = eng.DTDLib
+            End If
         End If
 
         Select Case str.StructureType
@@ -5300,16 +5401,26 @@ ErrorGoTo:
             Select Case objSys.OSType
                 Case "z/OS"
                     If IsDBD = False Then
-                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
-                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath1)) & ")"
+                        If DoTablespace = True Then
+                            PhysName = str.Tablespace
                         Else
-                            DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath1))
+                            PhysName = GetFileNameWithoutExtenstionFromPath(str.fPath1)
+                        End If
+                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
+                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(PhysName) & ")"
+                        Else
+                            DDstr = "DD:" & QuoteRes(PhysName)
                         End If
                     Else
-                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
-                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2)) & ")"
+                        If DoTablespace = True Then
+                            PhysName = str.Tablespace
                         Else
-                            DDstr = "DD:" & QuoteRes(GetFileNameWithoutExtenstionFromPath(str.fPath2))
+                            PhysName = GetFileNameWithoutExtenstionFromPath(str.fPath2)
+                        End If
+                        If descLib.Trim <> "" And descLib.Contains("/") = False And descLib.Contains("\") = False Then
+                            DDstr = "DD:" & QuoteRes(descLib) & "(" & QuoteRes(PhysName) & ")"
+                        Else
+                            DDstr = "DD:" & QuoteRes(PhysName)
                         End If
                     End If
                 Case "UNIX"

@@ -14,6 +14,7 @@ Public Class ctlStructure
     Dim prevFld As clsField
     Private Split As Integer
 
+
     Dim colSkipNodes As New ArrayList
 
 #Region " Windows Form Designer generated code "
@@ -96,6 +97,8 @@ Public Class ctlStructure
     Friend WithEvents gbProp As System.Windows.Forms.GroupBox
     Friend WithEvents txtLength As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
+    Friend WithEvents txtTablespace As System.Windows.Forms.TextBox
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ctlStructure))
@@ -151,6 +154,8 @@ Public Class ctlStructure
         Me.scFldDesc = New System.Windows.Forms.SplitContainer
         Me.gbAttr = New System.Windows.Forms.GroupBox
         Me.gbFldDesc = New System.Windows.Forms.GroupBox
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox
+        Me.txtTablespace = New System.Windows.Forms.TextBox
         Me.ContextMenuStrip1.SuspendLayout()
         Me.scStr.Panel1.SuspendLayout()
         Me.scStr.Panel2.SuspendLayout()
@@ -172,6 +177,7 @@ Public Class ctlStructure
         Me.scFldDesc.SuspendLayout()
         Me.gbAttr.SuspendLayout()
         Me.gbFldDesc.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtConn
@@ -515,6 +521,7 @@ Public Class ctlStructure
         '
         'scStr.Panel1
         '
+        Me.scStr.Panel1.Controls.Add(Me.GroupBox2)
         Me.scStr.Panel1.Controls.Add(Me.gbProp)
         Me.scStr.Panel1.Controls.Add(Me.gbConn)
         Me.scStr.Panel1.Controls.Add(Me.gbFile)
@@ -537,7 +544,7 @@ Public Class ctlStructure
         Me.gbProp.ForeColor = System.Drawing.Color.White
         Me.gbProp.Location = New System.Drawing.Point(326, 3)
         Me.gbProp.Name = "gbProp"
-        Me.gbProp.Size = New System.Drawing.Size(137, 124)
+        Me.gbProp.Size = New System.Drawing.Size(137, 63)
         Me.gbProp.TabIndex = 82
         Me.gbProp.TabStop = False
         Me.gbProp.Text = "Record Properties"
@@ -774,6 +781,25 @@ Public Class ctlStructure
         Me.gbFldDesc.TabStop = False
         Me.gbFldDesc.Text = "Field Description"
         '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.txtTablespace)
+        Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.ForeColor = System.Drawing.Color.White
+        Me.GroupBox2.Location = New System.Drawing.Point(326, 72)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(137, 55)
+        Me.GroupBox2.TabIndex = 83
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Tablespace"
+        '
+        'txtTablespace
+        '
+        Me.txtTablespace.Location = New System.Drawing.Point(7, 20)
+        Me.txtTablespace.Name = "txtTablespace"
+        Me.txtTablespace.Size = New System.Drawing.Size(124, 20)
+        Me.txtTablespace.TabIndex = 0
+        '
         'ctlStructure
         '
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
@@ -817,6 +843,8 @@ Public Class ctlStructure
         Me.gbAttr.ResumeLayout(False)
         Me.gbFldDesc.ResumeLayout(False)
         Me.gbFldDesc.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -853,7 +881,7 @@ Public Class ctlStructure
     End Sub
 
     '//modified on 8/15/05
-    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAddDBD.CheckedChanged, txtCobolFilePath.TextChanged, txtStructName.TextChanged, txtDBDFilePath.TextChanged, txtStructDesc.TextChanged, txtFilePath.TextChanged
+    Private Sub OnChange(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAddDBD.CheckedChanged, txtCobolFilePath.TextChanged, txtStructName.TextChanged, txtDBDFilePath.TextChanged, txtStructDesc.TextChanged, txtFilePath.TextChanged, txtTablespace.TextChanged
 
         If IsEventFromCode = True Then Exit Sub
         objThis.IsModified = True
@@ -1538,6 +1566,7 @@ Public Class ctlStructure
             End If
 
             objThis.StructureDescription = txtStructDesc.Text '//new : 8/15/05
+            objThis.Tablespace = txtTablespace.Text  '//new : 1/6/2013
 
             '//Make all file path case-sensitive : Unix uses case sensitive names so if user enters c:\wrseg.cob and on disk name appears WRSeg.cob then correct it to WRSeg.cob
             If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Or objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS Then
@@ -1624,6 +1653,7 @@ Public Class ctlStructure
         Try
             txtStructName.Text = objThis.StructureName
             txtStructDesc.Text = objThis.StructureDescription
+            txtTablespace.Text = objThis.Tablespace
 
             If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL_IMS Or objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Then
                 If objThis.StructureType = modDeclares.enumStructure.STRUCT_COBOL Then

@@ -1072,6 +1072,8 @@ Public Class ctlMain
                     If draggedNode.Tag.GetType.Name = GetType(clsSQFunction).Name Then
                         If draggedNode.Text = "Route" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainText(objThis.Engine)) 'GetScriptForMainTemplateV3
+                        ElseIf draggedNode.Text = "RouteTraditional" Then
+                            txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetMainTextTrad(objThis.Engine))
                         ElseIf draggedNode.Text = "Procedure" Then
                             txtCodeEditor.Text = txtCodeEditor.Text.Insert(prevSel, GetScriptForProcV3)
                         ElseIf draggedNode.Text = "LOOK" Then

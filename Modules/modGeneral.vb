@@ -2350,7 +2350,14 @@ tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" 
 
                 'sb.AppendLine("{")
                 If sDs.IsLookUp = False Then
-                    sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+                    Dim recn As String = ""
+                    If sDs.DatastoreType = enumDatastore.DS_DB2CDC Or _
+                    sDs.DatastoreType = enumDatastore.DS_DB2LOAD Then
+                        recn = "DB2TBLNAME"
+                    Else
+                        recn = "CDC_TBNAME"
+                    End If
+                    sb.AppendLine("CASE " & recn & "(" & sDs.Text & ")")
                     For Each sel In sDs.ObjSelections
                         'count += 1
                         'If count <= objThis.Procs.Count Then
@@ -2383,6 +2390,86 @@ tryagain:   diares = MsgBox("The 'Design Studio' Data directory has been moved" 
         Catch ex As Exception
             LogError(ex, "modGeneral GetMainText")
             GetMainText = ""
+        End Try
+
+    End Function
+
+    Function GetMainTextTrad(ByVal ObjEng As clsEngine) As String
+
+        Dim sb As New System.Text.StringBuilder
+        Dim sel As clsDSSelection
+        'Dim i As Integer
+        Dim taskName As String
+        Dim sDs As clsDatastore = Nothing
+        Dim nDs As clsDatastore = Nothing
+        Dim count As Integer = 0
+        Dim SrcCount As Integer = 0
+
+        Try
+            While SrcCount < ObjEng.Sources.Count
+
+                sDs = ObjEng.Sources(SrcCount + 1)
+
+
+                If SrcCount > 0 Then
+                    nDs = ObjEng.Sources(SrcCount)
+                    If sDs.IsLookUp = False Then
+                        sb.AppendLine("}")   '& inDsNode.Text
+                        sb.AppendLine("FROM " & nDs.DatastoreName)
+                        sb.AppendLine("UNION")
+                        sb.AppendLine("{")
+                    End If
+                End If
+                SrcCount += 1
+
+                'sb.Append("CASE" & vbCrLf)
+                'sb.Append("(" & vbCrLf)
+
+                'For i = 0 To sDs.ObjSelections.Count - 1
+                '    sel = sDs.ObjSelections(i)
+                '    taskName = "P_" & sel.Text
+                '    sb.Append(vbTab & IIf(i = 0, "", ",") & "EQ(RECNAME(" & sDs.Text & "),'" & sel.Text & "')" & vbCrLf)
+                '    sb.Append(vbTab & ",CALLPROC(" & taskName & ")" & vbCrLf)
+                '    sb.Append(vbCrLf)
+                'Next
+
+                'sb.Append(")" & vbCrLf)
+
+                'sb.AppendLine("{")
+                If sDs.IsLookUp = False Then
+                    sb.AppendLine("CASE RECNAME(" & sDs.Text & ")")
+                    For Each sel In sDs.ObjSelections
+                        'count += 1
+                        'If count <= objThis.Procs.Count Then
+                        '    taskName = CType(objThis.Procs(count), clsTask).TaskName
+                        'Else
+                        taskName = ""
+                        'End If
+                        For Each proc As clsTask In ObjEng.Procs
+                            If proc.TaskName.Contains(sel.Text) = True Then
+                                taskName = proc.TaskName
+                                Exit For
+                            End If
+                        Next
+
+                        sb.AppendLine(TAB & "WHEN '" & sel.Text & "'") '& IIf(nd.Index = 0, "", ",")
+                        sb.AppendLine(TAB & "DO")
+                        sb.AppendLine(TAB & TAB & "CALLPROC(" & taskName & ")")
+                        sb.AppendLine(TAB & "END") '& vbCrLf)
+                        'sb.Append(vbCrLf)
+                    Next
+                End If
+
+                'sb.Append(")" & vbCrLf)
+                'sb.AppendLine("}")   '& inDsNode.Text
+                'sb.AppendLine("FROM " & sDs.DatastoreName)
+            End While
+
+            GetMainTextTrad = sb.ToString
+
+        Catch ex As Exception
+            LogError(ex, "modGeneral GetMainTextTrad")
+            GetMainTextTrad = ""
         End Try
 
     End Function

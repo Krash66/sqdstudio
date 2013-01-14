@@ -21,6 +21,7 @@ Public Class clsStructure
     Private m_GUID As String
     Private m_SeqNo As Integer = 0
     Private m_IsLoaded As Boolean = False
+    Private m_Tablespace As String = ""
 
     
 #Region "INode Implementation"
@@ -113,6 +114,7 @@ Public Class clsStructure
             obj.Parent = NewParent 'Me.Parent '//set the parent environment
             obj.IsModified = Me.IsModified
             obj.Connection = Me.Connection
+            obj.Tablespace = Me.Tablespace
 
             'If Me.ObjFields IsNot Nothing Then
 
@@ -934,6 +936,8 @@ Public Class clsStructure
                         Me.SegmentName = GetVal(dr("DESCRIPTIONATTRBVALUE"))
                     Case "STRUCTURETYPE"
                         Me.StructureType = GetVal(dr("DESCRIPTIONATTRBVALUE"))
+                    Case "TABLESPACE"
+                        Me.Tablespace = GetVal(dr("DESCRIPTIONATTRBVALUE"))
                 End Select
             Next
 
@@ -1109,6 +1113,15 @@ Public Class clsStructure
         End Set
     End Property
 
+    Public Property Tablespace() As String
+        Get
+            Return m_Tablespace
+        End Get
+        Set(ByVal value As String)
+            m_Tablespace = value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Methods"
@@ -1149,7 +1162,7 @@ Public Class clsStructure
                 cmd.Connection = cnn
             End If
 
-            For i As Integer = 0 To 5
+            For i As Integer = 0 To 6
                 Select Case i
                     Case 0
                         Attrib = "CONNECTIONNAME"
@@ -1173,6 +1186,9 @@ Public Class clsStructure
                     Case 5
                         Attrib = "STRUCTURETYPE"
                         Value = Me.StructureType
+                    Case 6
+                        Attrib = "TABLESPACE"
+                        Value = Me.Tablespace
                 End Select
 
                 sql = "INSERT INTO " & Me.Project.tblDescriptionsATTR & _

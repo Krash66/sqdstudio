@@ -1580,11 +1580,9 @@ Public Class frmMain
         '
         'MenuItem9
         '
-        Me.MenuItem9.Enabled = False
         Me.MenuItem9.Index = 7
         Me.MenuItem9.MenuItems.AddRange(New System.Windows.Forms.MenuItem() {Me.mnuMapAsBinary, Me.mnuMapAsText, Me.mnuMapAsDelimited, Me.mnuMapAsXML, Me.mnuMapAsRelational, Me.mnuMapAsVSAM, Me.mnuMapAsIMS, Me.mnuMapAsDB2LOAD, Me.mnuMapAsHSSUNLOAD, Me.MenuItem36, Me.mnuMapAsIMSCDC, Me.mnuMapAsDB2CDC, Me.mnuMapAsVSAMCDC, Me.mnuMapAsXMLCDC, Me.mnuMapAsTriggerCDC, Me.mnuMapAsOraCDC, Me.mnuMapAsSQDCDC, Me.MenuItem4, Me.mnuMapAsIMSLE, Me.mnuMapAsIMSLEBat})
         Me.MenuItem9.Text = "Map As"
-        Me.MenuItem9.Visible = False
         '
         'mnuMapAsBinary
         '
