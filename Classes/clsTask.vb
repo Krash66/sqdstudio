@@ -210,9 +210,9 @@ Public Class clsTask
     Public ReadOnly Property Key() As String Implements INode.Key
         Get
             If Me.Engine IsNot Nothing Then
-                Key = Me.Project.Text & KEY_SAP & Me.Environment.Text & KEY_SAP & Me.Engine.ObjSystem.Text & KEY_SAP & Me.Engine.Text & KEY_SAP & Me.Text & KEY_SAP & Me.TaskType.ToString
+                Key = Me.Project.Text & KEY_SAP & Me.Environment.Text & KEY_SAP & Me.Engine.ObjSystem.Text & KEY_SAP & Me.Engine.Text & KEY_SAP & Me.Text '& KEY_SAP & Me.TaskType.ToString
             Else
-                Key = Me.Project.Text & KEY_SAP & Me.Environment.Text & KEY_SAP & Me.Text & KEY_SAP & Me.TaskType.ToString
+                Key = Me.Project.Text & KEY_SAP & Me.Environment.Text & KEY_SAP & Me.Text '& KEY_SAP & Me.TaskType.ToString
             End If
         End Get
     End Property

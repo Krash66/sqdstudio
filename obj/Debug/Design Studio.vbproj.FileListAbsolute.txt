@@ -133,3 +133,133 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.application
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.exe
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.pdb
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe.config
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe.manifest
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.application
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.pdb
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmBatchFiles.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDML.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDMLInfo.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmChangeProj.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmAbout.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmBlank.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmChangeDSN.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmInclude.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMapList.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMsgScreen.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMultiMod.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmNewProj.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmODBCconnect.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmProjOpen.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmConnection.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDatastore.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmDependency.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmEngine.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmEnvironment.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmFTPClient.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmLog.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmMain.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmODBCLogin.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmReport.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmRplcDescRet.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptGen.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptImport.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructSelection.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructure.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmSystem.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmTask.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmThread.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmVariable.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.frmXMLconv.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.Resources.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlAddFlowTab.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlConnection.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlControlCenter.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlDatastore.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlEngine.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlEnvironment.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlFolderNode.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlInclude.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlMain.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlProject.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlSelectTab.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlStructureSelection.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlStructure.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlSystem.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlTask.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\SQDStudio.ctlVariable.resources
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.vbproj.GenerateResource.Cache
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.exe.licenses
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.TrustInfo.xml
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.exe.manifest
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.application
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.exe
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.pdb
+C:\Users\tkarasc\Documents\Visual Studio 2008\Projects\sqdstudio\obj\Debug\Design Studio.vbprojResolveAssemblyReference.cache
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe.config
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.pdb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe.manifest
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.application
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.pdb
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.vbprojResolveAssemblyReference.cache
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmBatchFiles.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmDML.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmDMLInfo.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmChangeProj.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmAbout.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmBlank.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmChangeDSN.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmInclude.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmMapList.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmMsgScreen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmMultiMod.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmNewProj.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmODBCconnect.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmProjOpen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmConnection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmDatastore.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmDependency.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmEngine.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmEnvironment.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmFTPClient.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmLog.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmMain.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmODBCLogin.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmReport.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmRplcDescRet.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptGen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmScriptImport.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructSelection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmStructure.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmSystem.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmTask.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmThread.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmVariable.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.frmXMLconv.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.Resources.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlAddFlowTab.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlConnection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlControlCenter.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlDatastore.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlEngine.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlEnvironment.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlFolderNode.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlInclude.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlMain.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlProject.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlSelectTab.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlStructureSelection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlStructure.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlSystem.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlTask.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\SQDStudio.ctlVariable.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.vbproj.GenerateResource.Cache
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.exe.licenses
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.TrustInfo.xml
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.exe.manifest
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.application

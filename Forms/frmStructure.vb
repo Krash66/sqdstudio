@@ -139,32 +139,32 @@ Public Class frmStructure
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(607, 68)
+        Me.Panel1.Size = New System.Drawing.Size(608, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 394)
-        Me.GroupBox1.Size = New System.Drawing.Size(605, 10)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 399)
+        Me.GroupBox1.Size = New System.Drawing.Size(606, 10)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(340, 412)
+        Me.cmdOk.Location = New System.Drawing.Point(341, 417)
         Me.cmdOk.TabIndex = 13
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(426, 412)
+        Me.cmdCancel.Location = New System.Drawing.Point(427, 417)
         Me.cmdCancel.TabIndex = 14
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(512, 412)
+        Me.cmdHelp.Location = New System.Drawing.Point(513, 417)
         Me.cmdHelp.TabIndex = 15
         '
         'Label1
@@ -173,14 +173,14 @@ Public Class frmStructure
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(517, 39)
+        Me.Label2.Size = New System.Drawing.Size(518, 39)
         Me.Label2.Text = "Enter a unique Description name, and specify the file containing the Description " & _
             "definition."
         '
         'cmdShowHideFieldAttr
         '
         Me.cmdShowHideFieldAttr.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.cmdShowHideFieldAttr.Location = New System.Drawing.Point(51, 412)
+        Me.cmdShowHideFieldAttr.Location = New System.Drawing.Point(51, 417)
         Me.cmdShowHideFieldAttr.Name = "cmdShowHideFieldAttr"
         Me.cmdShowHideFieldAttr.Size = New System.Drawing.Size(152, 24)
         Me.cmdShowHideFieldAttr.TabIndex = 12
@@ -201,7 +201,7 @@ Public Class frmStructure
         Me.pnlFields.Location = New System.Drawing.Point(49, 71)
         Me.pnlFields.Name = "pnlFields"
         Me.pnlFields.Padding = New System.Windows.Forms.Padding(5)
-        Me.pnlFields.Size = New System.Drawing.Size(596, 318)
+        Me.pnlFields.Size = New System.Drawing.Size(597, 323)
         Me.pnlFields.TabIndex = 32
         '
         'lblFieldName
@@ -253,7 +253,7 @@ Public Class frmStructure
                     Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.tvFields.Location = New System.Drawing.Point(8, 32)
         Me.tvFields.Name = "tvFields"
-        Me.tvFields.Size = New System.Drawing.Size(215, 278)
+        Me.tvFields.Size = New System.Drawing.Size(215, 283)
         Me.tvFields.TabIndex = 34
         '
         'lvFieldAttrs
@@ -267,7 +267,7 @@ Public Class frmStructure
         Me.lvFieldAttrs.Location = New System.Drawing.Point(227, 32)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
         Me.lvFieldAttrs.Scrollable = CType(configurationAppSettings.GetValue("lvFieldAttrs.Scrollable", GetType(Boolean)), Boolean)
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(363, 278)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(364, 283)
         Me.lvFieldAttrs.TabIndex = 33
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -291,7 +291,7 @@ Public Class frmStructure
         Me.pnlSelect.Controls.Add(Me.gbSeg)
         Me.pnlSelect.Location = New System.Drawing.Point(3, 74)
         Me.pnlSelect.Name = "pnlSelect"
-        Me.pnlSelect.Size = New System.Drawing.Size(596, 314)
+        Me.pnlSelect.Size = New System.Drawing.Size(597, 319)
         Me.pnlSelect.TabIndex = 33
         '
         'gbProp
@@ -312,7 +312,7 @@ Public Class frmStructure
         Me.gbProp.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbProp.Location = New System.Drawing.Point(3, 3)
         Me.gbProp.Name = "gbProp"
-        Me.gbProp.Size = New System.Drawing.Size(414, 307)
+        Me.gbProp.Size = New System.Drawing.Size(415, 307)
         Me.gbProp.TabIndex = 77
         Me.gbProp.TabStop = False
         Me.gbProp.Text = "Description Properties"
@@ -384,7 +384,7 @@ Public Class frmStructure
         Me.txtStructName.Location = New System.Drawing.Point(50, 19)
         Me.txtStructName.MaxLength = 128
         Me.txtStructName.Name = "txtStructName"
-        Me.txtStructName.Size = New System.Drawing.Size(358, 20)
+        Me.txtStructName.Size = New System.Drawing.Size(359, 20)
         Me.txtStructName.TabIndex = 1
         '
         'gbCOBOL
@@ -402,7 +402,7 @@ Public Class frmStructure
         Me.gbCOBOL.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbCOBOL.Location = New System.Drawing.Point(6, 125)
         Me.gbCOBOL.Name = "gbCOBOL"
-        Me.gbCOBOL.Size = New System.Drawing.Size(402, 95)
+        Me.gbCOBOL.Size = New System.Drawing.Size(403, 95)
         Me.gbCOBOL.TabIndex = 74
         Me.gbCOBOL.TabStop = False
         Me.gbCOBOL.Text = "COBOL Description Files"
@@ -414,14 +414,14 @@ Public Class frmStructure
         Me.txtCobolFilePath.Location = New System.Drawing.Point(85, 67)
         Me.txtCobolFilePath.MaxLength = 255
         Me.txtCobolFilePath.Name = "txtCobolFilePath"
-        Me.txtCobolFilePath.Size = New System.Drawing.Size(280, 20)
+        Me.txtCobolFilePath.Size = New System.Drawing.Size(281, 20)
         Me.txtCobolFilePath.TabIndex = 6
         '
         'cmdBrowseCobolFile
         '
         Me.cmdBrowseCobolFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseCobolFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseCobolFile.Location = New System.Drawing.Point(371, 66)
+        Me.cmdBrowseCobolFile.Location = New System.Drawing.Point(372, 66)
         Me.cmdBrowseCobolFile.Name = "cmdBrowseCobolFile"
         Me.cmdBrowseCobolFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseCobolFile.TabIndex = 7
@@ -454,7 +454,7 @@ Public Class frmStructure
         Me.txtDBDFilePath.Location = New System.Drawing.Point(85, 41)
         Me.txtDBDFilePath.MaxLength = 255
         Me.txtDBDFilePath.Name = "txtDBDFilePath"
-        Me.txtDBDFilePath.Size = New System.Drawing.Size(280, 20)
+        Me.txtDBDFilePath.Size = New System.Drawing.Size(281, 20)
         Me.txtDBDFilePath.TabIndex = 8
         '
         'chkAddDBD
@@ -470,7 +470,7 @@ Public Class frmStructure
         '
         Me.cmdBrowseDBDFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseDBDFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseDBDFile.Location = New System.Drawing.Point(371, 40)
+        Me.cmdBrowseDBDFile.Location = New System.Drawing.Point(372, 40)
         Me.cmdBrowseDBDFile.Name = "cmdBrowseDBDFile"
         Me.cmdBrowseDBDFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseDBDFile.TabIndex = 9
@@ -498,7 +498,7 @@ Public Class frmStructure
         Me.gbName.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbName.Location = New System.Drawing.Point(6, 67)
         Me.gbName.Name = "gbName"
-        Me.gbName.Size = New System.Drawing.Size(402, 51)
+        Me.gbName.Size = New System.Drawing.Size(403, 51)
         Me.gbName.TabIndex = 75
         Me.gbName.TabStop = False
         Me.gbName.Text = "Description File"
@@ -521,14 +521,14 @@ Public Class frmStructure
         Me.txtFilePath.Location = New System.Drawing.Point(38, 19)
         Me.txtFilePath.MaxLength = 255
         Me.txtFilePath.Name = "txtFilePath"
-        Me.txtFilePath.Size = New System.Drawing.Size(327, 20)
+        Me.txtFilePath.Size = New System.Drawing.Size(328, 20)
         Me.txtFilePath.TabIndex = 4
         '
         'cmdBrowseFile
         '
         Me.cmdBrowseFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cmdBrowseFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdBrowseFile.Location = New System.Drawing.Point(371, 18)
+        Me.cmdBrowseFile.Location = New System.Drawing.Point(372, 18)
         Me.cmdBrowseFile.Name = "cmdBrowseFile"
         Me.cmdBrowseFile.Size = New System.Drawing.Size(25, 21)
         Me.cmdBrowseFile.TabIndex = 5
@@ -553,7 +553,7 @@ Public Class frmStructure
         Me.gbDesc.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbDesc.Location = New System.Drawing.Point(6, 226)
         Me.gbDesc.Name = "gbDesc"
-        Me.gbDesc.Size = New System.Drawing.Size(402, 75)
+        Me.gbDesc.Size = New System.Drawing.Size(403, 75)
         Me.gbDesc.TabIndex = 73
         Me.gbDesc.TabStop = False
         Me.gbDesc.Text = "Description"
@@ -569,7 +569,7 @@ Public Class frmStructure
         Me.txtStructDesc.Multiline = True
         Me.txtStructDesc.Name = "txtStructDesc"
         Me.txtStructDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtStructDesc.Size = New System.Drawing.Size(390, 50)
+        Me.txtStructDesc.Size = New System.Drawing.Size(391, 50)
         Me.txtStructDesc.TabIndex = 10
         '
         'gbSeg
@@ -578,7 +578,7 @@ Public Class frmStructure
         Me.gbSeg.Controls.Add(Me.tvSegments)
         Me.gbSeg.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSeg.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbSeg.Location = New System.Drawing.Point(423, 3)
+        Me.gbSeg.Location = New System.Drawing.Point(424, 3)
         Me.gbSeg.Name = "gbSeg"
         Me.gbSeg.Size = New System.Drawing.Size(168, 307)
         Me.gbSeg.TabIndex = 76
@@ -603,11 +603,11 @@ Public Class frmStructure
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Nothing
-        Me.ClientSize = New System.Drawing.Size(604, 448)
+        Me.ClientSize = New System.Drawing.Size(605, 453)
         Me.Controls.Add(Me.pnlSelect)
         Me.Controls.Add(Me.cmdShowHideFieldAttr)
         Me.Controls.Add(Me.pnlFields)
-        Me.MinimumSize = New System.Drawing.Size(550, 0)
+        Me.MinimumSize = New System.Drawing.Size(613, 487)
         Me.Name = "frmStructure"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent

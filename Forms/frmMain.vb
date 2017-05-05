@@ -586,19 +586,6 @@ Public Class frmMain
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog
         Me.pnlProp = New System.Windows.Forms.Panel
-        Me.ctStrSel = New SQDStudio.ctlStructureSelection
-        Me.ctConn = New SQDStudio.ctlConnection
-        Me.ctStr = New SQDStudio.ctlStructure
-        Me.ctPrj = New SQDStudio.ctlProject
-        Me.ctDs = New SQDStudio.ctlDatastore
-        Me.ctEng = New SQDStudio.ctlEngine
-        Me.ctEnv = New SQDStudio.ctlEnvironment
-        Me.ctMain = New SQDStudio.ctlMain
-        Me.ctInc = New SQDStudio.ctlInclude
-        Me.ctSys = New SQDStudio.ctlSystem
-        Me.ctTask = New SQDStudio.ctlTask
-        Me.ctVar = New SQDStudio.ctlVariable
-        Me.ctFolder = New SQDStudio.ctlFolderNode
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SCmain = New System.Windows.Forms.SplitContainer
         Me.tabCtrl = New System.Windows.Forms.TabControl
@@ -616,6 +603,19 @@ Public Class frmMain
         Me.RedoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar
         Me.tbCC = New System.Windows.Forms.ToolBarButton
+        Me.ctStrSel = New SQDStudio.ctlStructureSelection
+        Me.ctConn = New SQDStudio.ctlConnection
+        Me.ctStr = New SQDStudio.ctlStructure
+        Me.ctPrj = New SQDStudio.ctlProject
+        Me.ctDs = New SQDStudio.ctlDatastore
+        Me.ctEng = New SQDStudio.ctlEngine
+        Me.ctEnv = New SQDStudio.ctlEnvironment
+        Me.ctMain = New SQDStudio.ctlMain
+        Me.ctInc = New SQDStudio.ctlInclude
+        Me.ctSys = New SQDStudio.ctlSystem
+        Me.ctTask = New SQDStudio.ctlTask
+        Me.ctVar = New SQDStudio.ctlVariable
+        Me.ctFolder = New SQDStudio.ctlFolderNode
         Me.Panel1.SuspendLayout()
         CType(Me.StatusBarPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlProp.SuspendLayout()
@@ -635,7 +635,7 @@ Public Class frmMain
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1016, 27)
+        Me.Panel1.Size = New System.Drawing.Size(929, 27)
         Me.Panel1.TabIndex = 2
         '
         'lblStatusMsg
@@ -965,11 +965,11 @@ Public Class frmMain
         'StatusBar1
         '
         Me.StatusBar1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.StatusBar1.Location = New System.Drawing.Point(0, 542)
+        Me.StatusBar1.Location = New System.Drawing.Point(0, 617)
         Me.StatusBar1.Name = "StatusBar1"
         Me.StatusBar1.Panels.AddRange(New System.Windows.Forms.StatusBarPanel() {Me.StatusBarPanel1})
         Me.StatusBar1.ShowPanels = True
-        Me.StatusBar1.Size = New System.Drawing.Size(1016, 24)
+        Me.StatusBar1.Size = New System.Drawing.Size(929, 24)
         Me.StatusBar1.TabIndex = 5
         '
         'StatusBarPanel1
@@ -993,7 +993,7 @@ Public Class frmMain
         Me.tvExplorer.Name = "tvExplorer"
         Me.tvExplorer.SelectedImageIndex = 7
         Me.tvExplorer.ShowNodeToolTips = True
-        Me.tvExplorer.Size = New System.Drawing.Size(321, 516)
+        Me.tvExplorer.Size = New System.Drawing.Size(248, 584)
         Me.tvExplorer.TabIndex = 2
         '
         'OpenFileDialog1
@@ -2013,8 +2013,135 @@ Public Class frmMain
         Me.pnlProp.Location = New System.Drawing.Point(0, 0)
         Me.pnlProp.Name = "pnlProp"
         Me.pnlProp.Padding = New System.Windows.Forms.Padding(5, 0, 0, 0)
-        Me.pnlProp.Size = New System.Drawing.Size(679, 485)
+        Me.pnlProp.Size = New System.Drawing.Size(665, 553)
         Me.pnlProp.TabIndex = 3
+        '
+        'SCmain
+        '
+        Me.SCmain.AllowDrop = True
+        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SCmain.Location = New System.Drawing.Point(0, 27)
+        Me.SCmain.Name = "SCmain"
+        '
+        'SCmain.Panel1
+        '
+        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
+        '
+        'SCmain.Panel2
+        '
+        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
+        Me.SCmain.Size = New System.Drawing.Size(929, 584)
+        Me.SCmain.SplitterDistance = 248
+        Me.SCmain.TabIndex = 9
+        '
+        'tabCtrl
+        '
+        Me.tabCtrl.Controls.Add(Me.tpProp)
+        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tabCtrl.HotTrack = True
+        Me.tabCtrl.ImageList = Me.ImageListSmall
+        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
+        Me.tabCtrl.Name = "tabCtrl"
+        Me.tabCtrl.SelectedIndex = 0
+        Me.tabCtrl.Size = New System.Drawing.Size(677, 584)
+        Me.tabCtrl.TabIndex = 4
+        '
+        'tpProp
+        '
+        Me.tpProp.AllowDrop = True
+        Me.tpProp.AutoScroll = True
+        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.tpProp.Controls.Add(Me.pnlProp)
+        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.tpProp.Location = New System.Drawing.Point(4, 23)
+        Me.tpProp.Name = "tpProp"
+        Me.tpProp.Size = New System.Drawing.Size(669, 557)
+        Me.tpProp.TabIndex = 0
+        Me.tpProp.Text = "Properties"
+        Me.tpProp.UseVisualStyleBackColor = True
+        '
+        'cms1
+        '
+        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
+        Me.cms1.Name = "cms1"
+        Me.cms1.Size = New System.Drawing.Size(200, 208)
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem1.Text = "Add Source"
+        '
+        'AddTargetToolStripMenuItem
+        '
+        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
+        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddTargetToolStripMenuItem.Text = "Add Target"
+        '
+        'ToolStripMenuItem2
+        '
+        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem2.Text = "Add Lookup"
+        '
+        'AddProcedureToolStripMenuItem
+        '
+        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
+        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
+        '
+        'ToolStripMenuItem3
+        '
+        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
+        Me.ToolStripMenuItem3.Text = "Add General Procedure"
+        '
+        'AddMainToolStripMenuItem
+        '
+        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
+        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.AddMainToolStripMenuItem.Text = "Add Main"
+        '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
+        '
+        'DeleteItemToolStripMenuItem
+        '
+        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
+        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'RedoToolStripMenuItem
+        '
+        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
+        Me.RedoToolStripMenuItem.Text = "Redo"
+        '
+        'ProgressBar1
+        '
+        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ProgressBar1.Location = New System.Drawing.Point(613, 641)
+        Me.ProgressBar1.Name = "ProgressBar1"
+        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
+        Me.ProgressBar1.TabIndex = 10
+        '
+        'tbCC
+        '
+        Me.tbCC.Name = "tbCC"
         '
         'ctStrSel
         '
@@ -2140,145 +2267,20 @@ Public Class frmMain
         Me.ctFolder.TabIndex = 10
         Me.ctFolder.Visible = False
         '
-        'SCmain
-        '
-        Me.SCmain.AllowDrop = True
-        Me.SCmain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SCmain.Location = New System.Drawing.Point(0, 27)
-        Me.SCmain.Name = "SCmain"
-        '
-        'SCmain.Panel1
-        '
-        Me.SCmain.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel1.Controls.Add(Me.tvExplorer)
-        '
-        'SCmain.Panel2
-        '
-        Me.SCmain.Panel2.BackColor = System.Drawing.SystemColors.Control
-        Me.SCmain.Panel2.Controls.Add(Me.tabCtrl)
-        Me.SCmain.Size = New System.Drawing.Size(1016, 516)
-        Me.SCmain.SplitterDistance = 321
-        Me.SCmain.TabIndex = 9
-        '
-        'tabCtrl
-        '
-        Me.tabCtrl.Controls.Add(Me.tpProp)
-        Me.tabCtrl.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tabCtrl.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tabCtrl.HotTrack = True
-        Me.tabCtrl.ImageList = Me.ImageListSmall
-        Me.tabCtrl.Location = New System.Drawing.Point(0, 0)
-        Me.tabCtrl.Name = "tabCtrl"
-        Me.tabCtrl.SelectedIndex = 0
-        Me.tabCtrl.Size = New System.Drawing.Size(691, 516)
-        Me.tabCtrl.TabIndex = 4
-        '
-        'tpProp
-        '
-        Me.tpProp.AllowDrop = True
-        Me.tpProp.AutoScroll = True
-        Me.tpProp.BackColor = System.Drawing.SystemColors.ActiveCaption
-        Me.tpProp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.tpProp.Controls.Add(Me.pnlProp)
-        Me.tpProp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.tpProp.Location = New System.Drawing.Point(4, 23)
-        Me.tpProp.Name = "tpProp"
-        Me.tpProp.Size = New System.Drawing.Size(683, 489)
-        Me.tpProp.TabIndex = 0
-        Me.tpProp.Text = "Properties"
-        Me.tpProp.UseVisualStyleBackColor = True
-        '
-        'cms1
-        '
-        Me.cms1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.AddTargetToolStripMenuItem, Me.ToolStripMenuItem2, Me.AddProcedureToolStripMenuItem, Me.ToolStripMenuItem3, Me.AddMainToolStripMenuItem, Me.ToolStripSeparator1, Me.DeleteItemToolStripMenuItem, Me.UndoToolStripMenuItem, Me.RedoToolStripMenuItem})
-        Me.cms1.Name = "cms1"
-        Me.cms1.Size = New System.Drawing.Size(200, 208)
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem1.Text = "Add Source"
-        '
-        'AddTargetToolStripMenuItem
-        '
-        Me.AddTargetToolStripMenuItem.Name = "AddTargetToolStripMenuItem"
-        Me.AddTargetToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddTargetToolStripMenuItem.Text = "Add Target"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem2.Text = "Add Lookup"
-        '
-        'AddProcedureToolStripMenuItem
-        '
-        Me.AddProcedureToolStripMenuItem.Name = "AddProcedureToolStripMenuItem"
-        Me.AddProcedureToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddProcedureToolStripMenuItem.Text = "Add Mapping Procedure"
-        '
-        'ToolStripMenuItem3
-        '
-        Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(199, 22)
-        Me.ToolStripMenuItem3.Text = "Add General Procedure"
-        '
-        'AddMainToolStripMenuItem
-        '
-        Me.AddMainToolStripMenuItem.Name = "AddMainToolStripMenuItem"
-        Me.AddMainToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.AddMainToolStripMenuItem.Text = "Add Main"
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(196, 6)
-        '
-        'DeleteItemToolStripMenuItem
-        '
-        Me.DeleteItemToolStripMenuItem.Name = "DeleteItemToolStripMenuItem"
-        Me.DeleteItemToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.DeleteItemToolStripMenuItem.Text = "Delete Item"
-        '
-        'UndoToolStripMenuItem
-        '
-        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.UndoToolStripMenuItem.Text = "Undo"
-        '
-        'RedoToolStripMenuItem
-        '
-        Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(199, 22)
-        Me.RedoToolStripMenuItem.Text = "Redo"
-        '
-        'ProgressBar1
-        '
-        Me.ProgressBar1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ProgressBar1.Location = New System.Drawing.Point(700, 587)
-        Me.ProgressBar1.Name = "ProgressBar1"
-        Me.ProgressBar1.Size = New System.Drawing.Size(234, 19)
-        Me.ProgressBar1.TabIndex = 10
-        '
-        'tbCC
-        '
-        Me.tbCC.Name = "tbCC"
-        '
         'frmMain
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(1016, 566)
+        Me.AutoScroll = True
+        Me.ClientSize = New System.Drawing.Size(929, 641)
         Me.Controls.Add(Me.ProgressBar1)
         Me.Controls.Add(Me.SCmain)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.StatusBar1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Menu = Me.mnuMain
-        Me.MinimumSize = New System.Drawing.Size(800, 600)
+        Me.MinimumSize = New System.Drawing.Size(937, 675)
         Me.Name = "frmMain"
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = " "
         Me.Panel1.ResumeLayout(False)
@@ -2657,6 +2659,7 @@ Public Class frmMain
                     '/////////////////////////////
                 End If
             End If
+            tvExplorer_AfterExpandAfterCollapse(sender, e)
 
 
         Catch ex As Exception
@@ -2668,9 +2671,12 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub tvExplorer_AfterExpandAfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterExpand, tvExplorer.AfterCollapse
+    Private Sub tvExplorer_AfterExpandAfterCollapse(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvExplorer.AfterExpand, tvExplorer.AfterCollapse ', tvExplorer.BeforeCollapse, tvExplorer.BeforeExpand
 
         Try
+            'If tvExplorer.GetNodeAt(MousePosition) IsNot Nothing Then
+
+            'End If
             If tvExplorer.SelectedNode IsNot Nothing Then
                 Dim Nodetype As String = CType(tvExplorer.SelectedNode.Tag, INode).Type
                 Dim NodeText As String = tvExplorer.SelectedNode.Text
@@ -5001,6 +5007,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             '/// Add Count to Folder Title
             cNodeProc.Text = "(" & ProcCount.ToString & ")" & " Procedures"
 
+            'cNodeProc.Collapse()
             If CurLoadedProject.PROCexpanded = True Then
                 cNodeProc.Expand()
             Else
@@ -5008,6 +5015,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End If
             tvExplorer.Refresh()
 
+            'cNodeMain.Collapse()
             If CurLoadedProject.MAINexpanded = True Then
                 cNodeMain.Expand()
             Else
@@ -5015,6 +5023,7 @@ tryAgain:                                   If objstr.ValidateNewObject() = Fals
             End If
             tvExplorer.Refresh()
 
+            'cNode.Collapse()
             If CurLoadedProject.ENGexpanded = True Then
                 cNode.Expand()
             Else

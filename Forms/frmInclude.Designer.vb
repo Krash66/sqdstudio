@@ -19,45 +19,42 @@ Partial Class frmInclude
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmInclude))
         Me.gbInclude = New System.Windows.Forms.GroupBox
         Me.txtName = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.btnBrowse = New System.Windows.Forms.Button
         Me.Label3 = New System.Windows.Forms.Label
         Me.txtFile = New System.Windows.Forms.TextBox
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.gbInclude.SuspendLayout()
         Me.SuspendLayout()
         '
-        'PictureBox1
+        'Panel1
         '
-        'Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        'Me.PictureBox1.ImageLocation = "C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2005\Projects\sqdstu" & _
-        '    "dio\images\FormTop\sq_skyblue.jpg"
+        Me.Panel1.Size = New System.Drawing.Size(433, 68)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 233)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 236)
+        Me.GroupBox1.Size = New System.Drawing.Size(435, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(232, 256)
+        Me.cmdOk.Location = New System.Drawing.Point(151, 259)
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(328, 256)
+        Me.cmdCancel.Location = New System.Drawing.Point(247, 259)
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(424, 256)
+        Me.cmdHelp.Location = New System.Drawing.Point(343, 259)
         '
         'Label1
         '
@@ -65,11 +62,14 @@ Partial Class frmInclude
         '
         'Label2
         '
+        Me.Label2.Size = New System.Drawing.Size(357, 39)
         Me.Label2.Text = "Add a Datastore or Procedure from an existing script. Add the inline script of a " & _
             "datastore or procedure to be referenced in this Project."
         '
         'gbInclude
         '
+        Me.gbInclude.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbInclude.Controls.Add(Me.txtName)
         Me.gbInclude.Controls.Add(Me.Label4)
         Me.gbInclude.Controls.Add(Me.btnBrowse)
@@ -79,7 +79,7 @@ Partial Class frmInclude
         Me.gbInclude.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbInclude.Location = New System.Drawing.Point(12, 74)
         Me.gbInclude.Name = "gbInclude"
-        Me.gbInclude.Size = New System.Drawing.Size(490, 151)
+        Me.gbInclude.Size = New System.Drawing.Size(409, 151)
         Me.gbInclude.TabIndex = 58
         Me.gbInclude.TabStop = False
         '
@@ -102,9 +102,10 @@ Partial Class frmInclude
         '
         'btnBrowse
         '
-        Me.btnBrowse.Location = New System.Drawing.Point(315, 112)
+        Me.btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnBrowse.Location = New System.Drawing.Point(266, 112)
         Me.btnBrowse.Name = "btnBrowse"
-        Me.btnBrowse.Size = New System.Drawing.Size(168, 23)
+        Me.btnBrowse.Size = New System.Drawing.Size(136, 23)
         Me.btnBrowse.TabIndex = 2
         Me.btnBrowse.Text = "Browse for File"
         Me.btnBrowse.UseVisualStyleBackColor = True
@@ -120,25 +121,27 @@ Partial Class frmInclude
         '
         'txtFile
         '
+        Me.txtFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtFile.Location = New System.Drawing.Point(6, 86)
         Me.txtFile.Name = "txtFile"
-        Me.txtFile.Size = New System.Drawing.Size(477, 20)
+        Me.txtFile.Size = New System.Drawing.Size(396, 20)
         Me.txtFile.TabIndex = 0
         '
         'frmInclude
         '
-        Me.ClientSize = New System.Drawing.Size(514, 295)
+        Me.ClientSize = New System.Drawing.Size(433, 298)
         Me.Controls.Add(Me.gbInclude)
+        Me.MinimumSize = New System.Drawing.Size(441, 332)
         Me.Name = "frmInclude"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "SQData Studio V3 "
         Me.Controls.SetChildIndex(Me.gbInclude, 0)
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdOk, 0)
         Me.Controls.SetChildIndex(Me.cmdCancel, 0)
-        'Me.Controls.SetChildIndex(Me.PictureBox1, 0)
         Me.Controls.SetChildIndex(Me.cmdHelp, 0)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.gbInclude.ResumeLayout(False)
         Me.gbInclude.PerformLayout()

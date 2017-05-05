@@ -19,31 +19,31 @@ Partial Class frmDMLInfo
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle
-        Me.btnNext = New System.Windows.Forms.Button
-        Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel
-        Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel
-        Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel
-        Me.LeftToolStripPanel = New System.Windows.Forms.ToolStripPanel
-        Me.ContentPanel = New System.Windows.Forms.ToolStripContentPanel
-        Me.TabSelectTable = New System.Windows.Forms.TabPage
-        Me.gbChseConn = New System.Windows.Forms.GroupBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.cbConn = New System.Windows.Forms.ComboBox
-        Me.gbTableList = New System.Windows.Forms.GroupBox
-        Me.dgvTables = New System.Windows.Forms.DataGridView
-        Me.gbNarrowSearch = New System.Windows.Forms.GroupBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.txtSchemaTab2 = New System.Windows.Forms.TextBox
-        Me.txtPartTableName = New System.Windows.Forms.TextBox
-        Me.btnRefresh = New System.Windows.Forms.Button
-        Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.btnRemoveTab = New System.Windows.Forms.Button
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
+        Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
+        Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
+        Me.LeftToolStripPanel = New System.Windows.Forms.ToolStripPanel()
+        Me.ContentPanel = New System.Windows.Forms.ToolStripContentPanel()
+        Me.TabSelectTable = New System.Windows.Forms.TabPage()
+        Me.gbChseConn = New System.Windows.Forms.GroupBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.cbConn = New System.Windows.Forms.ComboBox()
+        Me.gbTableList = New System.Windows.Forms.GroupBox()
+        Me.dgvTables = New System.Windows.Forms.DataGridView()
+        Me.gbNarrowSearch = New System.Windows.Forms.GroupBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtSchemaTab2 = New System.Windows.Forms.TextBox()
+        Me.txtPartTableName = New System.Windows.Forms.TextBox()
+        Me.btnRefresh = New System.Windows.Forms.Button()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.btnRemoveTab = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.TabSelectTable.SuspendLayout()
         Me.gbChseConn.SuspendLayout()
@@ -55,48 +55,63 @@ Partial Class frmDMLInfo
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(600, 68)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
+        Me.Panel1.Size = New System.Drawing.Size(800, 84)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 601)
-        Me.GroupBox1.Size = New System.Drawing.Size(602, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 740)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(803, 9)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(318, 624)
+        Me.cmdOk.Location = New System.Drawing.Point(424, 768)
+        Me.cmdOk.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmdOk.Size = New System.Drawing.Size(107, 30)
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(414, 624)
+        Me.cmdCancel.Location = New System.Drawing.Point(552, 768)
+        Me.cmdCancel.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmdCancel.Size = New System.Drawing.Size(107, 30)
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(510, 624)
+        Me.cmdHelp.Location = New System.Drawing.Point(680, 768)
+        Me.cmdHelp.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmdHelp.Size = New System.Drawing.Size(107, 30)
         '
         'Label1
         '
+        Me.Label1.Location = New System.Drawing.Point(96, 6)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label1.Size = New System.Drawing.Size(576, 20)
         Me.Label1.Text = "Choose Table Properties for new DML Structure"
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(524, 39)
+        Me.Label2.Location = New System.Drawing.Point(96, 30)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Size = New System.Drawing.Size(699, 48)
         Me.Label2.Text = "Select ODBC Source, Table Name, and Columns from an existing Oracle or DB2 Databa" & _
-            "se. These will be used to Model a custom Structure."
+    "se. These will be used to Model a custom Structure."
         '
         'btnNext
         '
         Me.btnNext.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnNext.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNext.Location = New System.Drawing.Point(16, 623)
+        Me.btnNext.Location = New System.Drawing.Point(21, 767)
+        Me.btnNext.Margin = New System.Windows.Forms.Padding(4)
         Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(163, 27)
+        Me.btnNext.Size = New System.Drawing.Size(217, 33)
         Me.btnNext.TabIndex = 36
         Me.btnNext.Text = "&Next >>>"
         Me.btnNext.UseVisualStyleBackColor = True
@@ -144,24 +159,27 @@ Partial Class frmDMLInfo
         Me.TabSelectTable.Controls.Add(Me.gbTableList)
         Me.TabSelectTable.Controls.Add(Me.gbNarrowSearch)
         Me.TabSelectTable.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TabSelectTable.Location = New System.Drawing.Point(4, 22)
+        Me.TabSelectTable.Location = New System.Drawing.Point(4, 26)
+        Me.TabSelectTable.Margin = New System.Windows.Forms.Padding(4)
         Me.TabSelectTable.Name = "TabSelectTable"
-        Me.TabSelectTable.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabSelectTable.Size = New System.Drawing.Size(568, 496)
+        Me.TabSelectTable.Padding = New System.Windows.Forms.Padding(4)
+        Me.TabSelectTable.Size = New System.Drawing.Size(760, 612)
         Me.TabSelectTable.TabIndex = 1
         Me.TabSelectTable.Text = "Select Tables"
         '
         'gbChseConn
         '
         Me.gbChseConn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbChseConn.Controls.Add(Me.Label5)
         Me.gbChseConn.Controls.Add(Me.Label4)
         Me.gbChseConn.Controls.Add(Me.cbConn)
         Me.gbChseConn.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbChseConn.Location = New System.Drawing.Point(6, 6)
+        Me.gbChseConn.Location = New System.Drawing.Point(8, 7)
+        Me.gbChseConn.Margin = New System.Windows.Forms.Padding(4)
         Me.gbChseConn.Name = "gbChseConn"
-        Me.gbChseConn.Size = New System.Drawing.Size(556, 65)
+        Me.gbChseConn.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbChseConn.Size = New System.Drawing.Size(741, 80)
         Me.gbChseConn.TabIndex = 80
         Me.gbChseConn.TabStop = False
         Me.gbChseConn.Text = "Choose a Connection"
@@ -170,41 +188,46 @@ Partial Class frmDMLInfo
         '
         Me.Label5.AutoSize = True
         Me.Label5.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Label5.Location = New System.Drawing.Point(6, 45)
+        Me.Label5.Location = New System.Drawing.Point(8, 55)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(238, 13)
+        Me.Label5.Size = New System.Drawing.Size(303, 17)
         Me.Label5.TabIndex = 2
         Me.Label5.Text = "This will only support ODBC Connections"
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(6, 22)
+        Me.Label4.Location = New System.Drawing.Point(8, 27)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(169, 13)
+        Me.Label4.Size = New System.Drawing.Size(213, 17)
         Me.Label4.TabIndex = 1
         Me.Label4.Text = "Select Database Connection"
         '
         'cbConn
         '
         Me.cbConn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbConn.FormattingEnabled = True
-        Me.cbConn.Location = New System.Drawing.Point(261, 19)
+        Me.cbConn.Location = New System.Drawing.Point(348, 23)
+        Me.cbConn.Margin = New System.Windows.Forms.Padding(4)
         Me.cbConn.Name = "cbConn"
-        Me.cbConn.Size = New System.Drawing.Size(289, 21)
+        Me.cbConn.Size = New System.Drawing.Size(384, 25)
         Me.cbConn.TabIndex = 0
         '
         'gbTableList
         '
         Me.gbTableList.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbTableList.Controls.Add(Me.dgvTables)
         Me.gbTableList.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbTableList.Location = New System.Drawing.Point(6, 191)
+        Me.gbTableList.Location = New System.Drawing.Point(8, 235)
+        Me.gbTableList.Margin = New System.Windows.Forms.Padding(4)
         Me.gbTableList.Name = "gbTableList"
-        Me.gbTableList.Size = New System.Drawing.Size(556, 299)
+        Me.gbTableList.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbTableList.Size = New System.Drawing.Size(741, 368)
         Me.gbTableList.TabIndex = 77
         Me.gbTableList.TabStop = False
         Me.gbTableList.Text = "List of Tables"
@@ -216,9 +239,9 @@ Partial Class frmDMLInfo
         Me.dgvTables.AllowUserToOrderColumns = True
         Me.dgvTables.AllowUserToResizeRows = False
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.InactiveCaptionText
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.InactiveBorder
         DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.ActiveCaptionText
         DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvTables.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
@@ -227,7 +250,7 @@ Partial Class frmDMLInfo
         Me.dgvTables.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
         Me.dgvTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.InactiveCaptionText
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.InactiveBorder
         DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle2.NullValue = Nothing
@@ -238,7 +261,8 @@ Partial Class frmDMLInfo
         Me.dgvTables.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvTables.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.dgvTables.GridColor = System.Drawing.SystemColors.InactiveCaption
-        Me.dgvTables.Location = New System.Drawing.Point(3, 16)
+        Me.dgvTables.Location = New System.Drawing.Point(4, 20)
+        Me.dgvTables.Margin = New System.Windows.Forms.Padding(4)
         Me.dgvTables.Name = "dgvTables"
         Me.dgvTables.ReadOnly = True
         Me.dgvTables.RowHeadersVisible = False
@@ -255,14 +279,14 @@ Partial Class frmDMLInfo
         Me.dgvTables.ShowCellToolTips = False
         Me.dgvTables.ShowEditingIcon = False
         Me.dgvTables.ShowRowErrors = False
-        Me.dgvTables.Size = New System.Drawing.Size(550, 280)
+        Me.dgvTables.Size = New System.Drawing.Size(733, 344)
         Me.dgvTables.StandardTab = True
         Me.dgvTables.TabIndex = 1
         '
         'gbNarrowSearch
         '
         Me.gbNarrowSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbNarrowSearch.Controls.Add(Me.Label7)
         Me.gbNarrowSearch.Controls.Add(Me.Label3)
         Me.gbNarrowSearch.Controls.Add(Me.Label8)
@@ -270,9 +294,11 @@ Partial Class frmDMLInfo
         Me.gbNarrowSearch.Controls.Add(Me.txtPartTableName)
         Me.gbNarrowSearch.Controls.Add(Me.btnRefresh)
         Me.gbNarrowSearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbNarrowSearch.Location = New System.Drawing.Point(6, 77)
+        Me.gbNarrowSearch.Location = New System.Drawing.Point(8, 95)
+        Me.gbNarrowSearch.Margin = New System.Windows.Forms.Padding(4)
         Me.gbNarrowSearch.Name = "gbNarrowSearch"
-        Me.gbNarrowSearch.Size = New System.Drawing.Size(556, 108)
+        Me.gbNarrowSearch.Padding = New System.Windows.Forms.Padding(4)
+        Me.gbNarrowSearch.Size = New System.Drawing.Size(741, 133)
         Me.gbNarrowSearch.TabIndex = 76
         Me.gbNarrowSearch.TabStop = False
         Me.gbNarrowSearch.Text = "Narrow Your Search"
@@ -280,55 +306,61 @@ Partial Class frmDMLInfo
         'Label7
         '
         Me.Label7.ForeColor = System.Drawing.SystemColors.ActiveCaption
-        Me.Label7.Location = New System.Drawing.Point(6, 73)
+        Me.Label7.Location = New System.Drawing.Point(8, 90)
+        Me.Label7.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(428, 30)
+        Me.Label7.Size = New System.Drawing.Size(571, 37)
         Me.Label7.TabIndex = 75
         Me.Label7.Text = "Enter a Schema Name and/or partial table name to narrow your search, then click R" & _
-            "efresh Table. NOTE: ""%"" is the wildcard for Partial Names."
+    "efresh Table. NOTE: ""%"" is the wildcard for Partial Names."
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 22)
+        Me.Label3.Location = New System.Drawing.Point(8, 27)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(190, 13)
+        Me.Label3.Size = New System.Drawing.Size(243, 17)
         Me.Label3.TabIndex = 71
         Me.Label3.Text = "Enter a Schema (case sensitive)"
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(6, 48)
+        Me.Label8.Location = New System.Drawing.Point(8, 59)
+        Me.Label8.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(249, 13)
+        Me.Label8.Size = New System.Drawing.Size(320, 17)
         Me.Label8.TabIndex = 73
         Me.Label8.Text = "Enter a Partial TableName (case sensitive)"
         '
         'txtSchemaTab2
         '
         Me.txtSchemaTab2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSchemaTab2.Location = New System.Drawing.Point(261, 19)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSchemaTab2.Location = New System.Drawing.Point(348, 23)
+        Me.txtSchemaTab2.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSchemaTab2.Name = "txtSchemaTab2"
-        Me.txtSchemaTab2.Size = New System.Drawing.Size(289, 20)
+        Me.txtSchemaTab2.Size = New System.Drawing.Size(384, 23)
         Me.txtSchemaTab2.TabIndex = 70
         '
         'txtPartTableName
         '
         Me.txtPartTableName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtPartTableName.Location = New System.Drawing.Point(261, 45)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtPartTableName.Location = New System.Drawing.Point(348, 55)
+        Me.txtPartTableName.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPartTableName.Name = "txtPartTableName"
-        Me.txtPartTableName.Size = New System.Drawing.Size(289, 20)
+        Me.txtPartTableName.Size = New System.Drawing.Size(384, 23)
         Me.txtPartTableName.TabIndex = 72
         '
         'btnRefresh
         '
         Me.btnRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRefresh.Location = New System.Drawing.Point(441, 73)
+        Me.btnRefresh.Location = New System.Drawing.Point(588, 90)
+        Me.btnRefresh.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRefresh.Name = "btnRefresh"
-        Me.btnRefresh.Size = New System.Drawing.Size(110, 29)
+        Me.btnRefresh.Size = New System.Drawing.Size(147, 36)
         Me.btnRefresh.TabIndex = 74
         Me.btnRefresh.Text = "&Refresh Table"
         Me.btnRefresh.UseVisualStyleBackColor = True
@@ -336,15 +368,16 @@ Partial Class frmDMLInfo
         'TabControl1
         '
         Me.TabControl1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabSelectTable)
         Me.TabControl1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.HotTrack = True
-        Me.TabControl1.Location = New System.Drawing.Point(12, 74)
+        Me.TabControl1.Location = New System.Drawing.Point(16, 91)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(576, 522)
+        Me.TabControl1.Size = New System.Drawing.Size(768, 642)
         Me.TabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
         Me.TabControl1.TabIndex = 1
         '
@@ -352,22 +385,24 @@ Partial Class frmDMLInfo
         '
         Me.btnRemoveTab.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnRemoveTab.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveTab.Location = New System.Drawing.Point(190, 625)
+        Me.btnRemoveTab.Location = New System.Drawing.Point(253, 769)
+        Me.btnRemoveTab.Margin = New System.Windows.Forms.Padding(4)
         Me.btnRemoveTab.Name = "btnRemoveTab"
-        Me.btnRemoveTab.Size = New System.Drawing.Size(109, 23)
+        Me.btnRemoveTab.Size = New System.Drawing.Size(145, 28)
         Me.btnRemoveTab.TabIndex = 59
         Me.btnRemoveTab.Text = "Remove Tab"
         Me.btnRemoveTab.UseVisualStyleBackColor = True
         '
         'frmDMLInfo
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(600, 663)
+        Me.ClientSize = New System.Drawing.Size(800, 816)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.btnRemoveTab)
-        Me.MinimumSize = New System.Drawing.Size(608, 697)
+        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.MinimumSize = New System.Drawing.Size(805, 847)
         Me.Name = "frmDMLInfo"
         Me.Text = "Add Relational DML Structure"
         Me.Controls.SetChildIndex(Me.btnRemoveTab, 0)

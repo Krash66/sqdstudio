@@ -519,7 +519,7 @@ doAgain:
         cmbCnnType.Items.Add(New Mylist("ODBCwithSubstitutionVariable", "ODBCwithSubstitutionVariable"))
         cmbCnnType.Items.Add(New Mylist("DB2", "DB2"))
         cmbCnnType.Items.Add(New Mylist("OCI", "OCI"))
-        cmbCnnType.Items.Add(New Mylist("NATIVEORI", "NATIVEORI"))
+        cmbCnnType.Items.Add(New Mylist("NATIVEORA", "NATIVEORA"))
         cmbCnnType.SelectedIndex = 0
 
         SetComboConn()

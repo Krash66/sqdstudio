@@ -129,3 +129,67 @@ C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdst
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.exe.manifest
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.application
 C:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.exe
+E:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\bin\Design Studio.exe.config
+E:\Documents and Settings\tkarasc\My Documents\Visual Studio 2008\Projects\sqdstudio\obj\Release\Design Studio.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe.config
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe.manifest
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.application
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\Design Studio.exe
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmBatchFiles.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmDML.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmDMLInfo.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmChangeProj.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmAbout.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmBlank.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmChangeDSN.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmDS_MTDdescriptions.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmInclude.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmMapList.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmMsgScreen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmMultiMod.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmNewProj.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmODBCconnect.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmProjOpen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmConnection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmDatastore.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmDependency.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmEngine.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmEnvironment.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmFTPClient.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmLog.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmMain.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmODBCLogin.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmReport.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmRplcDescRet.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptGen.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmScriptImport.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmStructSelection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmStructure.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmSystem.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmTask.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmThread.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmVariable.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.frmXMLconv.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.Resources.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlAddFlowTab.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlConnection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlControlCenter.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlDatastore.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlEngine.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlEnvironment.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlFolderNode.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlInclude.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlMain.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlProject.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlSelectTab.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlStructureSelection.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlStructure.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlSystem.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlTask.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\SQDStudio.ctlVariable.resources
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.vbproj.GenerateResource.Cache
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.exe.licenses
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.TrustInfo.xml
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.exe.manifest
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Release\Design Studio.application

@@ -341,9 +341,12 @@ Public Class frmDMLInfo
     Public Function GetInfo(ByVal Envobj As clsEnvironment) As Collection
 
         ObjEnv = Envobj
-
+        If SetComboConn() = False Then
+            Return Nothing
+            Me.Close()
+            Exit Function
+        End If
         StartLoad()
-
         EndLoad()
 
 doAgain:
@@ -740,8 +743,6 @@ DoMsg:      If MBtext <> "" Then
     Private Sub StartLoad()
 
         IsEventFromCode = True
-
-        SetComboConn()
 
         gbChseConn.Enabled = True
         gbNarrowSearch.Enabled = True

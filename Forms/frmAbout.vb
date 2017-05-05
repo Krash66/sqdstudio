@@ -129,7 +129,7 @@ Public Class frmAbout
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(264, 17)
         Me.Label3.TabIndex = 7
-        Me.Label3.Text = "2002-2012 SQData Corporation.  All rights reserved"
+        Me.Label3.Text = "2002-2013 SQData Corporation.  All rights reserved"
         '
         'cmdOK
         '
@@ -222,7 +222,7 @@ Public Class frmAbout
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(61, 13)
         Me.Label7.TabIndex = 11
-        Me.Label7.Text = "3.5.1.900"
+        Me.Label7.Text = "3.5.2.400"
         '
         'Label6
         '
@@ -288,7 +288,7 @@ Public Class frmAbout
         Me.lblBuildDate.Name = "lblBuildDate"
         Me.lblBuildDate.Size = New System.Drawing.Size(68, 13)
         Me.lblBuildDate.TabIndex = 5
-        Me.lblBuildDate.Text = "1/14/2013"
+        Me.lblBuildDate.Text = "4/18/2013"
         '
         'Label8
         '
@@ -310,7 +310,7 @@ Public Class frmAbout
         Me.lblBuildNumber.Name = "lblBuildNumber"
         Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
         Me.lblBuildNumber.TabIndex = 3
-        Me.lblBuildNumber.Text = "3.5.1.9"
+        Me.lblBuildNumber.Text = "3.5.2.4"
         '
         'frmAbout
         '

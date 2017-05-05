@@ -9,7 +9,7 @@
                 PageURL = New Uri(CCurl)
                 txtURL.Text = PageURL.AbsoluteUri
             Else
-                PageURL = New Uri("http://sqdmonwww.darwin.lab.sqdata.com/")
+                PageURL = New Uri("http://www.sqdata.com/")
                 txtURL.Text = PageURL.AbsoluteUri
             End If
             WebBrowser1.Navigate(PageURL)
@@ -129,7 +129,9 @@
 
         Try
             ProgressBar1.Maximum = e.MaximumProgress
-            ProgressBar1.Value = e.CurrentProgress
+            If ProgressBar1.Value > 0 Then
+                ProgressBar1.Value = e.CurrentProgress
+            End If
             TSSLabel1.Text = WebBrowser1.StatusText
 
         Catch ex As Exception

@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Design Studio", "Design Studio.vbproj", "{EC5586F9-B34B-4B53-AF30-7AA70F060F01}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SQDStudioSetup", "Setup\SQDStudioSetup.vdproj", "{6B347DDF-DA4E-45B0-880C-177A5333F2A9}"

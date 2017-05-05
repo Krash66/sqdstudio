@@ -216,32 +216,32 @@ Public Class frmDatastore
         '
         Me.Panel1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Size = New System.Drawing.Size(741, 76)
+        Me.Panel1.Size = New System.Drawing.Size(738, 76)
         '
         'GroupBox1
         '
         Me.GroupBox1.Location = New System.Drawing.Point(0, 609)
-        Me.GroupBox1.Size = New System.Drawing.Size(749, 7)
+        Me.GroupBox1.Size = New System.Drawing.Size(746, 7)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(469, 625)
+        Me.cmdOk.Location = New System.Drawing.Point(466, 625)
         Me.cmdOk.TabIndex = 21
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(557, 625)
+        Me.cmdCancel.Location = New System.Drawing.Point(554, 625)
         Me.cmdCancel.TabIndex = 22
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(645, 625)
+        Me.cmdHelp.Location = New System.Drawing.Point(642, 625)
         Me.cmdHelp.TabIndex = 23
         '
         'Label1
@@ -290,7 +290,7 @@ Public Class frmDatastore
         Me.tvFields.Location = New System.Drawing.Point(3, 16)
         Me.tvFields.Name = "tvFields"
         Me.tvFields.SelectedImageIndex = 0
-        Me.tvFields.Size = New System.Drawing.Size(219, 113)
+        Me.tvFields.Size = New System.Drawing.Size(218, 113)
         Me.tvFields.TabIndex = 34
         '
         'ImageList1
@@ -306,7 +306,7 @@ Public Class frmDatastore
         Me.lvFieldAttrs.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvFieldAttrs.Location = New System.Drawing.Point(3, 16)
         Me.lvFieldAttrs.Name = "lvFieldAttrs"
-        Me.lvFieldAttrs.Size = New System.Drawing.Size(485, 113)
+        Me.lvFieldAttrs.Size = New System.Drawing.Size(483, 113)
         Me.lvFieldAttrs.TabIndex = 33
         Me.lvFieldAttrs.UseCompatibleStateImageBehavior = False
         Me.lvFieldAttrs.View = System.Windows.Forms.View.Details
@@ -472,7 +472,7 @@ Public Class frmDatastore
         Me.txtDatastoreDesc.Multiline = True
         Me.txtDatastoreDesc.Name = "txtDatastoreDesc"
         Me.txtDatastoreDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtDatastoreDesc.Size = New System.Drawing.Size(202, 35)
+        Me.txtDatastoreDesc.Size = New System.Drawing.Size(199, 35)
         Me.txtDatastoreDesc.TabIndex = 15
         Me.ToolTip1.SetToolTip(Me.txtDatastoreDesc, "User defined description " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "for this Datastore")
         '
@@ -541,7 +541,7 @@ Public Class frmDatastore
         Me.tvDatastoreStructures.HideSelection = False
         Me.tvDatastoreStructures.Location = New System.Drawing.Point(6, 13)
         Me.tvDatastoreStructures.Name = "tvDatastoreStructures"
-        Me.tvDatastoreStructures.Size = New System.Drawing.Size(273, 146)
+        Me.tvDatastoreStructures.Size = New System.Drawing.Size(270, 146)
         Me.tvDatastoreStructures.TabIndex = 106
         Me.ToolTip1.SetToolTip(Me.tvDatastoreStructures, "Available Structures")
         '
@@ -635,7 +635,7 @@ Public Class frmDatastore
         Me.btnSelDesc.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnSelDesc.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSelDesc.ForeColor = System.Drawing.Color.Black
-        Me.btnSelDesc.Location = New System.Drawing.Point(221, 20)
+        Me.btnSelDesc.Location = New System.Drawing.Point(218, 20)
         Me.btnSelDesc.Name = "btnSelDesc"
         Me.btnSelDesc.Size = New System.Drawing.Size(58, 23)
         Me.btnSelDesc.TabIndex = 3
@@ -858,7 +858,7 @@ Public Class frmDatastore
         Me.gbStruct.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbStruct.Location = New System.Drawing.Point(0, 0)
         Me.gbStruct.Name = "gbStruct"
-        Me.gbStruct.Size = New System.Drawing.Size(285, 207)
+        Me.gbStruct.Size = New System.Drawing.Size(282, 207)
         Me.gbStruct.TabIndex = 143
         Me.gbStruct.TabStop = False
         Me.gbStruct.Text = "Descriptions"
@@ -878,7 +878,7 @@ Public Class frmDatastore
         Me.gbDel.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbDel.Location = New System.Drawing.Point(3, 389)
         Me.gbDel.Name = "gbDel"
-        Me.gbDel.Size = New System.Drawing.Size(726, 57)
+        Me.gbDel.Size = New System.Drawing.Size(723, 57)
         Me.gbDel.TabIndex = 144
         Me.gbDel.TabStop = False
         Me.gbDel.Text = "File Properties"
@@ -893,7 +893,7 @@ Public Class frmDatastore
         Me.gbField.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbField.Location = New System.Drawing.Point(3, 452)
         Me.gbField.Name = "gbField"
-        Me.gbField.Size = New System.Drawing.Size(726, 151)
+        Me.gbField.Size = New System.Drawing.Size(723, 151)
         Me.gbField.TabIndex = 145
         Me.gbField.TabStop = False
         Me.gbField.Text = "Field Properties"
@@ -911,8 +911,8 @@ Public Class frmDatastore
         'SplitContainer1.Panel2
         '
         Me.SplitContainer1.Panel2.Controls.Add(Me.gbAtt)
-        Me.SplitContainer1.Size = New System.Drawing.Size(720, 132)
-        Me.SplitContainer1.SplitterDistance = 225
+        Me.SplitContainer1.Size = New System.Drawing.Size(717, 132)
+        Me.SplitContainer1.SplitterDistance = 224
         Me.SplitContainer1.TabIndex = 0
         '
         'gbFldname
@@ -922,7 +922,7 @@ Public Class frmDatastore
         Me.gbFldname.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbFldname.Location = New System.Drawing.Point(0, 0)
         Me.gbFldname.Name = "gbFldname"
-        Me.gbFldname.Size = New System.Drawing.Size(225, 132)
+        Me.gbFldname.Size = New System.Drawing.Size(224, 132)
         Me.gbFldname.TabIndex = 0
         Me.gbFldname.TabStop = False
         Me.gbFldname.Text = "Field Names"
@@ -936,7 +936,7 @@ Public Class frmDatastore
         Me.gbAtt.ForeColor = System.Drawing.SystemColors.ControlText
         Me.gbAtt.Location = New System.Drawing.Point(0, 0)
         Me.gbAtt.Name = "gbAtt"
-        Me.gbAtt.Size = New System.Drawing.Size(491, 132)
+        Me.gbAtt.Size = New System.Drawing.Size(489, 132)
         Me.gbAtt.TabIndex = 0
         Me.gbAtt.TabStop = False
         Me.gbAtt.Text = "Field Attributes"
@@ -958,7 +958,7 @@ Public Class frmDatastore
         'scDescriptions.Panel2
         '
         Me.scDescriptions.Panel2.Controls.Add(Me.gbMultiDesc)
-        Me.scDescriptions.Size = New System.Drawing.Size(285, 259)
+        Me.scDescriptions.Size = New System.Drawing.Size(282, 259)
         Me.scDescriptions.SplitterDistance = 207
         Me.scDescriptions.TabIndex = 146
         '
@@ -973,7 +973,7 @@ Public Class frmDatastore
         Me.gbMultiDesc.ForeColor = System.Drawing.Color.Black
         Me.gbMultiDesc.Location = New System.Drawing.Point(0, 0)
         Me.gbMultiDesc.Name = "gbMultiDesc"
-        Me.gbMultiDesc.Size = New System.Drawing.Size(285, 48)
+        Me.gbMultiDesc.Size = New System.Drawing.Size(282, 48)
         Me.gbMultiDesc.TabIndex = 23
         Me.gbMultiDesc.TabStop = False
         Me.gbMultiDesc.Text = "SQLserver/DB2 Multi-Table Description File"
@@ -993,7 +993,7 @@ Public Class frmDatastore
         '
         Me.btnMTD.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMTD.ForeColor = System.Drawing.Color.Black
-        Me.btnMTD.Location = New System.Drawing.Point(187, 19)
+        Me.btnMTD.Location = New System.Drawing.Point(184, 19)
         Me.btnMTD.Name = "btnMTD"
         Me.btnMTD.Size = New System.Drawing.Size(28, 23)
         Me.btnMTD.TabIndex = 1
@@ -1009,14 +1009,14 @@ Public Class frmDatastore
         Me.txtMTD.Location = New System.Drawing.Point(82, 21)
         Me.txtMTD.Name = "txtMTD"
         Me.txtMTD.ReadOnly = True
-        Me.txtMTD.Size = New System.Drawing.Size(100, 20)
+        Me.txtMTD.Size = New System.Drawing.Size(97, 20)
         Me.txtMTD.TabIndex = 0
         '
         'frmDatastore
         '
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
         Me.CancelButton = Nothing
-        Me.ClientSize = New System.Drawing.Size(741, 663)
+        Me.ClientSize = New System.Drawing.Size(738, 663)
         Me.Controls.Add(Me.gbProp)
         Me.Controls.Add(Me.gbExtProps)
         Me.Controls.Add(Me.gbSource)
@@ -1026,8 +1026,9 @@ Public Class frmDatastore
         Me.Controls.Add(Me.rbLookup)
         Me.Controls.Add(Me.scDescriptions)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MinimumSize = New System.Drawing.Size(712, 528)
+        Me.MinimumSize = New System.Drawing.Size(746, 697)
         Me.Name = "frmDatastore"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Datastore Properties"
         Me.Controls.SetChildIndex(Me.scDescriptions, 0)
         Me.Controls.SetChildIndex(Me.rbLookup, 0)

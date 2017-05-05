@@ -92,13 +92,13 @@ Public Class frmNewProj
                     End If
                 Else
                     DialogResult = Windows.Forms.DialogResult.Retry
-                    cnn.Close()
+                    'cnn.Close()
                     Me.Cursor = Cursors.Default
                     Exit Sub
                 End If
             Else
                 DialogResult = Windows.Forms.DialogResult.Retry
-                cnn.Close()
+                'cnn.Close()
                 Me.Cursor = Cursors.Default
                 Exit Sub
             End If
@@ -222,7 +222,7 @@ Public Class frmNewProj
             End If
 
             IsCodeEvent = False
-            cmdOk.Enabled = True
+            cmdOk.Enabled = False
 
             Return True
 
@@ -352,4 +352,18 @@ doAgain:
 
     End Sub
 
+    Private Sub txtProj_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtProj.TextChanged
+
+        Try
+            If txtProj.Text.Trim = "" Then
+                cmdOk.Enabled = False
+            Else
+                cmdOk.Enabled = True
+            End If
+
+        Catch ex As Exception
+            LogError(ex, "frmNewProj txtProj_TextChanged")
+        End Try
+
+    End Sub
 End Class

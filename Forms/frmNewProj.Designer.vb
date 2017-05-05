@@ -54,6 +54,7 @@ Partial Class frmNewProj
         '
         'cmdOk
         '
+        Me.cmdOk.Enabled = False
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.cmdOk.Location = New System.Drawing.Point(185, 308)

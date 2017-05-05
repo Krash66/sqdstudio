@@ -69,41 +69,41 @@ Public Class frmEngine
     Friend WithEvents btnCDC As System.Windows.Forms.Button
     Friend WithEvents fbdWIN As System.Windows.Forms.FolderBrowserDialog
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.txtEngineDesc = New System.Windows.Forms.TextBox
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.txtReportFile = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.txtCommitEvery = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.txtReportEvery = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.txtEngineName = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.txtDDLLib = New System.Windows.Forms.TextBox
-        Me.Label9 = New System.Windows.Forms.Label
-        Me.txtDTDLib = New System.Windows.Forms.TextBox
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.txtIncludeLib = New System.Windows.Forms.TextBox
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.txtCopybookLib = New System.Windows.Forms.TextBox
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.cbConn = New System.Windows.Forms.ComboBox
-        Me.Label12 = New System.Windows.Forms.Label
-        Me.cbForceCommit = New System.Windows.Forms.CheckBox
-        Me.txtDBDLib = New System.Windows.Forms.TextBox
-        Me.Label13 = New System.Windows.Forms.Label
-        Me.gbLib = New System.Windows.Forms.GroupBox
-        Me.gbWin = New System.Windows.Forms.GroupBox
-        Me.btnBAT = New System.Windows.Forms.Button
-        Me.btnEXE = New System.Windows.Forms.Button
-        Me.btnCDC = New System.Windows.Forms.Button
-        Me.txtBAT = New System.Windows.Forms.TextBox
-        Me.txtEXE = New System.Windows.Forms.TextBox
-        Me.txtCDC = New System.Windows.Forms.TextBox
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.Label15 = New System.Windows.Forms.Label
-        Me.Label14 = New System.Windows.Forms.Label
-        Me.fbdWIN = New System.Windows.Forms.FolderBrowserDialog
+        Me.txtEngineDesc = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtReportFile = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtCommitEvery = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtReportEvery = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtEngineName = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtDDLLib = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtDTDLib = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.txtIncludeLib = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtCopybookLib = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.cbConn = New System.Windows.Forms.ComboBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.cbForceCommit = New System.Windows.Forms.CheckBox()
+        Me.txtDBDLib = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.gbLib = New System.Windows.Forms.GroupBox()
+        Me.gbWin = New System.Windows.Forms.GroupBox()
+        Me.btnBAT = New System.Windows.Forms.Button()
+        Me.btnEXE = New System.Windows.Forms.Button()
+        Me.btnCDC = New System.Windows.Forms.Button()
+        Me.txtBAT = New System.Windows.Forms.TextBox()
+        Me.txtEXE = New System.Windows.Forms.TextBox()
+        Me.txtCDC = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.fbdWIN = New System.Windows.Forms.FolderBrowserDialog()
         Me.Panel1.SuspendLayout()
         Me.gbLib.SuspendLayout()
         Me.gbWin.SuspendLayout()
@@ -111,93 +111,99 @@ Public Class frmEngine
         '
         'Panel1
         '
-        Me.Panel1.Size = New System.Drawing.Size(532, 68)
+        Me.Panel1.Size = New System.Drawing.Size(630, 78)
         '
         'GroupBox1
         '
-        Me.GroupBox1.Location = New System.Drawing.Point(1, 471)
-        Me.GroupBox1.Size = New System.Drawing.Size(534, 7)
+        Me.GroupBox1.Location = New System.Drawing.Point(1, 535)
+        Me.GroupBox1.Size = New System.Drawing.Size(633, 9)
         '
         'cmdOk
         '
         Me.cmdOk.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdOk.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdOk.Location = New System.Drawing.Point(250, 494)
+        Me.cmdOk.Location = New System.Drawing.Point(292, 562)
+        Me.cmdOk.Size = New System.Drawing.Size(96, 28)
         Me.cmdOk.TabIndex = 10
         '
         'cmdCancel
         '
         Me.cmdCancel.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdCancel.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdCancel.Location = New System.Drawing.Point(346, 494)
+        Me.cmdCancel.Location = New System.Drawing.Point(407, 562)
+        Me.cmdCancel.Size = New System.Drawing.Size(96, 28)
         Me.cmdCancel.TabIndex = 11
         '
         'cmdHelp
         '
         Me.cmdHelp.FlatAppearance.BorderColor = System.Drawing.Color.Silver
         Me.cmdHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.cmdHelp.Location = New System.Drawing.Point(442, 494)
+        Me.cmdHelp.Location = New System.Drawing.Point(522, 562)
+        Me.cmdHelp.Size = New System.Drawing.Size(96, 28)
         Me.cmdHelp.TabIndex = 12
         '
         'Label1
         '
+        Me.Label1.Location = New System.Drawing.Point(86, 6)
+        Me.Label1.Size = New System.Drawing.Size(519, 18)
         Me.Label1.Text = "Engine definition"
         '
         'Label2
         '
-        Me.Label2.Size = New System.Drawing.Size(456, 39)
+        Me.Label2.Location = New System.Drawing.Point(86, 28)
+        Me.Label2.Size = New System.Drawing.Size(540, 45)
         Me.Label2.Text = "Enter a unique engine name within a system, and the engine attributes.  You can a" & _
-            "lso override the directories (DDNAMEs) where structure files reside."
+    "lso override the directories (DDNAMEs) where structure files reside."
         '
         'txtEngineDesc
         '
         Me.txtEngineDesc.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtEngineDesc.Location = New System.Drawing.Point(96, 152)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtEngineDesc.Location = New System.Drawing.Point(115, 175)
         Me.txtEngineDesc.MaxLength = 1000
         Me.txtEngineDesc.Multiline = True
         Me.txtEngineDesc.Name = "txtEngineDesc"
         Me.txtEngineDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtEngineDesc.Size = New System.Drawing.Size(420, 51)
+        Me.txtEngineDesc.Size = New System.Drawing.Size(496, 59)
         Me.txtEngineDesc.TabIndex = 5
         '
         'Label8
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(12, 155)
+        Me.Label8.Location = New System.Drawing.Point(14, 179)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(70, 14)
+        Me.Label8.Size = New System.Drawing.Size(89, 16)
         Me.Label8.TabIndex = 38
         Me.Label8.Text = "Description"
         '
         'txtReportFile
         '
         Me.txtReportFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtReportFile.Location = New System.Drawing.Point(96, 126)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtReportFile.Location = New System.Drawing.Point(115, 145)
         Me.txtReportFile.MaxLength = 255
         Me.txtReportFile.Name = "txtReportFile"
-        Me.txtReportFile.Size = New System.Drawing.Size(234, 20)
+        Me.txtReportFile.Size = New System.Drawing.Size(273, 22)
         Me.txtReportFile.TabIndex = 4
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(12, 129)
+        Me.Label5.Location = New System.Drawing.Point(14, 149)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(66, 14)
+        Me.Label5.Size = New System.Drawing.Size(86, 16)
         Me.Label5.TabIndex = 34
         Me.Label5.Text = "Report File"
         '
         'txtCommitEvery
         '
         Me.txtCommitEvery.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCommitEvery.Location = New System.Drawing.Point(427, 74)
+        Me.txtCommitEvery.Location = New System.Drawing.Point(504, 85)
         Me.txtCommitEvery.MaxLength = 255
         Me.txtCommitEvery.Name = "txtCommitEvery"
-        Me.txtCommitEvery.Size = New System.Drawing.Size(88, 20)
+        Me.txtCommitEvery.Size = New System.Drawing.Size(106, 22)
         Me.txtCommitEvery.TabIndex = 3
         '
         'Label6
@@ -205,19 +211,19 @@ Public Class frmEngine
         Me.Label6.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(337, 77)
+        Me.Label6.Location = New System.Drawing.Point(396, 89)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(84, 14)
+        Me.Label6.Size = New System.Drawing.Size(104, 16)
         Me.Label6.TabIndex = 32
         Me.Label6.Text = "Commit Every"
         '
         'txtReportEvery
         '
         Me.txtReportEvery.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtReportEvery.Location = New System.Drawing.Point(427, 126)
+        Me.txtReportEvery.Location = New System.Drawing.Point(504, 145)
         Me.txtReportEvery.MaxLength = 255
         Me.txtReportEvery.Name = "txtReportEvery"
-        Me.txtReportEvery.Size = New System.Drawing.Size(88, 20)
+        Me.txtReportEvery.Size = New System.Drawing.Size(106, 22)
         Me.txtReportEvery.TabIndex = 2
         '
         'Label4
@@ -225,130 +231,130 @@ Public Class frmEngine
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(337, 129)
+        Me.Label4.Location = New System.Drawing.Point(396, 149)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(77, 14)
+        Me.Label4.Size = New System.Drawing.Size(100, 16)
         Me.Label4.TabIndex = 30
         Me.Label4.Text = "Report Every"
         '
         'txtEngineName
         '
         Me.txtEngineName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtEngineName.Location = New System.Drawing.Point(96, 74)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtEngineName.Location = New System.Drawing.Point(115, 85)
         Me.txtEngineName.MaxLength = 255
         Me.txtEngineName.Name = "txtEngineName"
-        Me.txtEngineName.Size = New System.Drawing.Size(234, 20)
+        Me.txtEngineName.Size = New System.Drawing.Size(273, 22)
         Me.txtEngineName.TabIndex = 1
         '
         'Label3
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(12, 77)
+        Me.Label3.Location = New System.Drawing.Point(14, 89)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(78, 14)
+        Me.Label3.Size = New System.Drawing.Size(100, 16)
         Me.Label3.TabIndex = 28
         Me.Label3.Text = "Engine Name"
         '
         'txtDDLLib
         '
         Me.txtDDLLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDDLLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDDLLib.Location = New System.Drawing.Point(105, 123)
+        Me.txtDDLLib.Location = New System.Drawing.Point(126, 142)
         Me.txtDDLLib.MaxLength = 255
         Me.txtDDLLib.Name = "txtDDLLib"
-        Me.txtDDLLib.Size = New System.Drawing.Size(396, 20)
+        Me.txtDDLLib.Size = New System.Drawing.Size(467, 23)
         Me.txtDDLLib.TabIndex = 9
         '
         'Label9
         '
         Me.Label9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(9, 126)
+        Me.Label9.Location = New System.Drawing.Point(11, 145)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(96, 17)
+        Me.Label9.Size = New System.Drawing.Size(115, 20)
         Me.Label9.TabIndex = 79
         Me.Label9.Text = "DDL Lib"
         '
         'txtDTDLib
         '
         Me.txtDTDLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDTDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDTDLib.Location = New System.Drawing.Point(105, 97)
+        Me.txtDTDLib.Location = New System.Drawing.Point(126, 112)
         Me.txtDTDLib.MaxLength = 255
         Me.txtDTDLib.Name = "txtDTDLib"
-        Me.txtDTDLib.Size = New System.Drawing.Size(396, 20)
+        Me.txtDTDLib.Size = New System.Drawing.Size(467, 23)
         Me.txtDTDLib.TabIndex = 8
         '
         'Label10
         '
         Me.Label10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(9, 100)
+        Me.Label10.Location = New System.Drawing.Point(11, 115)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(96, 17)
+        Me.Label10.Size = New System.Drawing.Size(115, 20)
         Me.Label10.TabIndex = 77
         Me.Label10.Text = "DTD Lib"
         '
         'txtIncludeLib
         '
         Me.txtIncludeLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtIncludeLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtIncludeLib.Location = New System.Drawing.Point(105, 71)
+        Me.txtIncludeLib.Location = New System.Drawing.Point(126, 82)
         Me.txtIncludeLib.MaxLength = 255
         Me.txtIncludeLib.Name = "txtIncludeLib"
-        Me.txtIncludeLib.Size = New System.Drawing.Size(396, 20)
+        Me.txtIncludeLib.Size = New System.Drawing.Size(467, 23)
         Me.txtIncludeLib.TabIndex = 7
         '
         'Label7
         '
         Me.Label7.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(9, 74)
+        Me.Label7.Location = New System.Drawing.Point(11, 85)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(96, 17)
+        Me.Label7.Size = New System.Drawing.Size(115, 20)
         Me.Label7.TabIndex = 75
         Me.Label7.Text = "Include Lib"
         '
         'txtCopybookLib
         '
         Me.txtCopybookLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtCopybookLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCopybookLib.Location = New System.Drawing.Point(105, 45)
+        Me.txtCopybookLib.Location = New System.Drawing.Point(126, 52)
         Me.txtCopybookLib.MaxLength = 255
         Me.txtCopybookLib.Name = "txtCopybookLib"
-        Me.txtCopybookLib.Size = New System.Drawing.Size(396, 20)
+        Me.txtCopybookLib.Size = New System.Drawing.Size(467, 23)
         Me.txtCopybookLib.TabIndex = 6
         '
         'Label11
         '
         Me.Label11.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(9, 48)
+        Me.Label11.Location = New System.Drawing.Point(11, 55)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(96, 17)
+        Me.Label11.Size = New System.Drawing.Size(115, 20)
         Me.Label11.TabIndex = 73
         Me.Label11.Text = "Copybook Lib"
         '
         'cbConn
         '
         Me.cbConn.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbConn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbConn.FormattingEnabled = True
-        Me.cbConn.Location = New System.Drawing.Point(96, 100)
+        Me.cbConn.Location = New System.Drawing.Point(115, 115)
         Me.cbConn.Name = "cbConn"
-        Me.cbConn.Size = New System.Drawing.Size(234, 21)
+        Me.cbConn.Size = New System.Drawing.Size(273, 24)
         Me.cbConn.TabIndex = 80
         '
         'Label12
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(12, 103)
+        Me.Label12.Location = New System.Drawing.Point(14, 119)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(71, 13)
+        Me.Label12.Size = New System.Drawing.Size(89, 17)
         Me.Label12.TabIndex = 81
         Me.Label12.Text = "Connection"
         '
@@ -358,9 +364,9 @@ Public Class frmEngine
         Me.cbForceCommit.AutoSize = True
         Me.cbForceCommit.CheckAlign = System.Drawing.ContentAlignment.BottomRight
         Me.cbForceCommit.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbForceCommit.Location = New System.Drawing.Point(336, 102)
+        Me.cbForceCommit.Location = New System.Drawing.Point(390, 118)
         Me.cbForceCommit.Name = "cbForceCommit"
-        Me.cbForceCommit.Size = New System.Drawing.Size(102, 17)
+        Me.cbForceCommit.Size = New System.Drawing.Size(128, 21)
         Me.cbForceCommit.TabIndex = 82
         Me.cbForceCommit.Text = "Force Commit"
         Me.cbForceCommit.UseVisualStyleBackColor = True
@@ -368,27 +374,27 @@ Public Class frmEngine
         'txtDBDLib
         '
         Me.txtDBDLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtDBDLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDBDLib.Location = New System.Drawing.Point(105, 19)
+        Me.txtDBDLib.Location = New System.Drawing.Point(126, 22)
         Me.txtDBDLib.MaxLength = 255
         Me.txtDBDLib.Name = "txtDBDLib"
-        Me.txtDBDLib.Size = New System.Drawing.Size(396, 20)
+        Me.txtDBDLib.Size = New System.Drawing.Size(467, 23)
         Me.txtDBDLib.TabIndex = 83
         '
         'Label13
         '
         Me.Label13.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(9, 22)
+        Me.Label13.Location = New System.Drawing.Point(11, 25)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(96, 17)
+        Me.Label13.Size = New System.Drawing.Size(115, 20)
         Me.Label13.TabIndex = 84
         Me.Label13.Text = "DBD Lib"
         '
         'gbLib
         '
         Me.gbLib.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbLib.Controls.Add(Me.txtDBDLib)
         Me.gbLib.Controls.Add(Me.Label13)
         Me.gbLib.Controls.Add(Me.txtCopybookLib)
@@ -401,9 +407,9 @@ Public Class frmEngine
         Me.gbLib.Controls.Add(Me.txtDTDLib)
         Me.gbLib.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbLib.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbLib.Location = New System.Drawing.Point(15, 209)
+        Me.gbLib.Location = New System.Drawing.Point(18, 241)
         Me.gbLib.Name = "gbLib"
-        Me.gbLib.Size = New System.Drawing.Size(511, 153)
+        Me.gbLib.Size = New System.Drawing.Size(605, 177)
         Me.gbLib.TabIndex = 85
         Me.gbLib.TabStop = False
         Me.gbLib.Text = "Target System Libraries"
@@ -411,7 +417,7 @@ Public Class frmEngine
         'gbWin
         '
         Me.gbWin.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.gbWin.Controls.Add(Me.btnBAT)
         Me.gbWin.Controls.Add(Me.btnEXE)
         Me.gbWin.Controls.Add(Me.btnCDC)
@@ -423,9 +429,9 @@ Public Class frmEngine
         Me.gbWin.Controls.Add(Me.Label14)
         Me.gbWin.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbWin.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.gbWin.Location = New System.Drawing.Point(15, 368)
+        Me.gbWin.Location = New System.Drawing.Point(18, 425)
         Me.gbWin.Name = "gbWin"
-        Me.gbWin.Size = New System.Drawing.Size(511, 100)
+        Me.gbWin.Size = New System.Drawing.Size(605, 115)
         Me.gbWin.TabIndex = 86
         Me.gbWin.TabStop = False
         Me.gbWin.Text = "Windows System SQData Paths"
@@ -433,9 +439,9 @@ Public Class frmEngine
         'btnBAT
         '
         Me.btnBAT.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnBAT.Location = New System.Drawing.Point(473, 69)
+        Me.btnBAT.Location = New System.Drawing.Point(560, 80)
         Me.btnBAT.Name = "btnBAT"
-        Me.btnBAT.Size = New System.Drawing.Size(27, 23)
+        Me.btnBAT.Size = New System.Drawing.Size(32, 26)
         Me.btnBAT.TabIndex = 8
         Me.btnBAT.Text = "..."
         Me.btnBAT.UseVisualStyleBackColor = True
@@ -443,9 +449,9 @@ Public Class frmEngine
         'btnEXE
         '
         Me.btnEXE.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEXE.Location = New System.Drawing.Point(473, 42)
+        Me.btnEXE.Location = New System.Drawing.Point(560, 48)
         Me.btnEXE.Name = "btnEXE"
-        Me.btnEXE.Size = New System.Drawing.Size(27, 23)
+        Me.btnEXE.Size = New System.Drawing.Size(32, 27)
         Me.btnEXE.TabIndex = 7
         Me.btnEXE.Text = "..."
         Me.btnEXE.UseVisualStyleBackColor = True
@@ -453,9 +459,9 @@ Public Class frmEngine
         'btnCDC
         '
         Me.btnCDC.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnCDC.Location = New System.Drawing.Point(473, 15)
+        Me.btnCDC.Location = New System.Drawing.Point(560, 17)
         Me.btnCDC.Name = "btnCDC"
-        Me.btnCDC.Size = New System.Drawing.Size(27, 23)
+        Me.btnCDC.Size = New System.Drawing.Size(32, 27)
         Me.btnCDC.TabIndex = 6
         Me.btnCDC.Text = "..."
         Me.btnCDC.UseVisualStyleBackColor = True
@@ -463,61 +469,61 @@ Public Class frmEngine
         'txtBAT
         '
         Me.txtBAT.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtBAT.Location = New System.Drawing.Point(114, 71)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtBAT.Location = New System.Drawing.Point(137, 82)
         Me.txtBAT.Name = "txtBAT"
-        Me.txtBAT.Size = New System.Drawing.Size(353, 20)
+        Me.txtBAT.Size = New System.Drawing.Size(415, 23)
         Me.txtBAT.TabIndex = 5
         '
         'txtEXE
         '
         Me.txtEXE.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtEXE.Location = New System.Drawing.Point(114, 44)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtEXE.Location = New System.Drawing.Point(137, 51)
         Me.txtEXE.Name = "txtEXE"
-        Me.txtEXE.Size = New System.Drawing.Size(353, 20)
+        Me.txtEXE.Size = New System.Drawing.Size(415, 23)
         Me.txtEXE.TabIndex = 4
         '
         'txtCDC
         '
         Me.txtCDC.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCDC.Location = New System.Drawing.Point(114, 17)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtCDC.Location = New System.Drawing.Point(137, 20)
         Me.txtCDC.Name = "txtCDC"
-        Me.txtCDC.Size = New System.Drawing.Size(353, 20)
+        Me.txtCDC.Size = New System.Drawing.Size(415, 23)
         Me.txtCDC.TabIndex = 3
         '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(9, 74)
+        Me.Label16.Location = New System.Drawing.Point(11, 85)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(70, 13)
+        Me.Label16.Size = New System.Drawing.Size(88, 17)
         Me.Label16.TabIndex = 2
         Me.Label16.Text = "Batch Files"
         '
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(9, 47)
+        Me.Label15.Location = New System.Drawing.Point(11, 54)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(99, 13)
+        Me.Label15.Size = New System.Drawing.Size(122, 17)
         Me.Label15.TabIndex = 1
         Me.Label15.Text = "SQData Bin/exe"
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(9, 20)
+        Me.Label14.Location = New System.Drawing.Point(11, 23)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(60, 13)
+        Me.Label14.Size = New System.Drawing.Size(76, 17)
         Me.Label14.TabIndex = 0
         Me.Label14.Text = "CDCstore"
         '
         'frmEngine
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-        Me.ClientSize = New System.Drawing.Size(532, 533)
+        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
+        Me.ClientSize = New System.Drawing.Size(630, 607)
         Me.Controls.Add(Me.gbWin)
         Me.Controls.Add(Me.gbLib)
         Me.Controls.Add(Me.cbForceCommit)
@@ -533,7 +539,7 @@ Public Class frmEngine
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.txtEngineName)
         Me.Controls.Add(Me.Label3)
-        Me.MinimumSize = New System.Drawing.Size(540, 567)
+        Me.MinimumSize = New System.Drawing.Size(648, 654)
         Me.Name = "frmEngine"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Engine Properties"

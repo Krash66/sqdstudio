@@ -34,9 +34,10 @@ Partial Class ctlControlCenter
         Me.btnRefresh = New System.Windows.Forms.ToolStripButton
         Me.btnGo = New System.Windows.Forms.ToolStripButton
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.ProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
         Me.TSSLabel1 = New System.Windows.Forms.ToolStripStatusLabel
-        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
+        Me.btnFav = New System.Windows.Forms.ToolStripButton
         Me.gbControlCenter.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -68,7 +69,7 @@ Partial Class ctlControlCenter
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnHome, Me.btnBack, Me.btnForward, Me.ToolStripLabel1, Me.txtURL, Me.btnRefresh, Me.btnGo})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnHome, Me.btnBack, Me.btnForward, Me.ToolStripLabel1, Me.txtURL, Me.btnRefresh, Me.btnGo, Me.btnFav})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -146,6 +147,11 @@ Partial Class ctlControlCenter
         Me.StatusStrip1.TabIndex = 3
         Me.StatusStrip1.Text = "StatusStrip1"
         '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(0, 17)
+        '
         'ProgressBar1
         '
         Me.ProgressBar1.Name = "ProgressBar1"
@@ -157,10 +163,15 @@ Partial Class ctlControlCenter
         Me.TSSLabel1.Size = New System.Drawing.Size(32, 17)
         Me.TSSLabel1.Text = "Done"
         '
-        'ToolStripStatusLabel1
+        'btnFav
         '
-        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(0, 17)
+        Me.btnFav.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.btnFav.Image = CType(resources.GetObject("btnFav.Image"), System.Drawing.Image)
+        Me.btnFav.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.btnFav.Name = "btnFav"
+        Me.btnFav.Size = New System.Drawing.Size(23, 22)
+        Me.btnFav.Text = "btnFav"
+        Me.btnFav.ToolTipText = "Favorites"
         '
         'ctlControlCenter
         '
@@ -194,5 +205,6 @@ Partial Class ctlControlCenter
     Friend WithEvents ProgressBar1 As System.Windows.Forms.ToolStripProgressBar
     Friend WithEvents TSSLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents btnFav As System.Windows.Forms.ToolStripButton
 
 End Class

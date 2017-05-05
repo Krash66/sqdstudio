@@ -29,6 +29,7 @@ doAgain:
 
         Catch ex As Exception
             LogError(ex, "frmDS_MTDdescriptions EditObj")
+            Return Nothing
         End Try
 
     End Function

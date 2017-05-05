@@ -233,6 +233,7 @@ Public Class frmTask
         Me.Controls.Add(Me.gbTaskProp)
         Me.MinimumSize = New System.Drawing.Size(401, 457)
         Me.Name = "frmTask"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Task Properties"
         Me.Controls.SetChildIndex(Me.Panel1, 0)
         Me.Controls.SetChildIndex(Me.GroupBox1, 0)
