@@ -1,0 +1,21 @@
+  <Segment ID="EMPLOYEE" Att="~SQDTSTDB~18">
+    <Field ID="EMPLOYEE-REC" OrgName="" Parent="EMPLOYEE" Att="17~1~1~0~GROUPITEM~0~87~0~1~0~~~~~~~">
+      <Field ID="EMPNO" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~0~6~0~0~1~~~~~~~"/>
+      <Field ID="EMPL-FIRST" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~6~12~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-MID" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~18~1~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-LAST" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~19~15~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-DEPT" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~34~3~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-PHONE" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~37~4~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-HIREDT" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~41~10~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-JOB" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~51~8~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-EDLEVEL" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~SMALLINT~59~2~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-SEX" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~61~1~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-DOB" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~62~10~0~1~0~~~~~~~"/>
+      <Field ID="EMPL-SALARY" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~DECIMAL~72~5~2~1~0~~~~~~~"/>
+      <Field ID="EMPL-BONUS" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~DECIMAL~77~5~2~1~0~~~~~~~"/>
+      <Field ID="EMPL-COMM" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~DECIMAL~82~5~2~1~0~~~~~~~"/>
+      <Field ID="EMPED" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~BINARY~59~2~0~0~0~~~~~~~"/>
+      <Field ID="PFK_DEPTNO" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~-9~3~0~0~1~~~~~~~"/>
+      <Field ID="PFK_COMPNAME" OrgName="" Parent="EMPLOYEE-REC" Att="0~2~1~0~CHAR~-19~10~0~0~1~~~~~~~"/>
+    </Field>
+  </Segment>

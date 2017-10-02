@@ -1,0 +1,13 @@
+  <Segment ID="VENDOR" Att="~SQDTSTDB~10">
+    <Field ID="VENDOR-REC" OrgName="" Parent="VENDOR" Att="9~1~1~0~GROUPITEM~0~60~0~1~0~~~~~~~">
+      <Field ID="VENDID" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~0~3~0~0~1~~~~~~~"/>
+      <Field ID="VEND-NAME" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~3~10~0~1~0~~~~~~~"/>
+      <Field ID="VEND-COMPANY" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~13~10~0~1~0~~~~~~~"/>
+      <Field ID="VEND-ADDRESS" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~23~20~0~1~0~~~~~~~"/>
+      <Field ID="VEND-CITY" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~43~10~0~1~0~~~~~~~"/>
+      <Field ID="VEND-STATE" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~53~2~0~1~0~~~~~~~"/>
+      <Field ID="VEND-ZIP" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~55~5~0~1~0~~~~~~~"/>
+      <Field ID="VENDZIP" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~54~5~0~0~0~~~~~~~"/>
+      <Field ID="PFK_COMPNAME" OrgName="" Parent="VENDOR-REC" Att="0~2~1~0~CHAR~-13~10~0~0~1~~~~~~~"/>
+    </Field>
+  </Segment>

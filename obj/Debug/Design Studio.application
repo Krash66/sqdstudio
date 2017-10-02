@@ -11,14 +11,14 @@
     <deploymentProvider codebase="ftp://sqdtkarasch/Updates/Design%20Studio.application" />
   </deployment>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Design Studio.exe.manifest" size="26159">
+    <dependentAssembly dependencyType="install" codebase="Design Studio.exe.manifest" size="30844">
       <assemblyIdentity name="Design Studio.exe" version="1.0.0.3" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>gvSZJVbVGL2XM3eFHq+jBUpmIGw=</dsig:DigestValue>
+        <dsig:DigestValue>mUXW2qAQIPDx1+mUaMMI6KEf2fI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

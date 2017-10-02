@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!--AddFlow.net diagram-->
+<AddFlow Nodes="12" Links="11">
+  <Version>2.3.2.1</Version>
+  <DefaultNode>
+    <Logical>False</Logical>
+    <Gradient>True</Gradient>
+    <XSizeable>False</XSizeable>
+    <YSizeable>False</YSizeable>
+    <LabelEdit>False</LabelEdit>
+    <Shape Style="Octogon" Orientation="so_0" />
+    <BackMode>Opaque</BackMode>
+    <Alignment>CenterTOP</Alignment>
+    <GradientMode>Vertical</GradientMode>
+    <DrawWidth>5</DrawWidth>
+    <FillColor>-13538619</FillColor>
+    <DrawColor>-8743201</DrawColor>
+    <TextColor>-31</TextColor>
+    <GradientColor>-6440469</GradientColor>
+    <Font Name="Microsoft Sans Serif" Size="8.25" Bold="True" Italic="False" Strikeout="False" Underline="False" />
+    <ImageIndex>13</ImageIndex>
+  </DefaultNode>
+  <DefaultLink>
+    <AdjustDst>True</AdjustDst>
+    <Line Style="Spline" OrthogonalDynamic="True" RoundedCorner="True" DoubleLine="False" />
+    <ArrowDst Head="Arrow" Size="Large" Angle="deg15" Filled="False" />
+    <StartCap>Round</StartCap>
+    <EndCap>ArrowAnchor</EndCap>
+    <Jump>Arc</Jump>
+    <DrawWidth>2</DrawWidth>
+    <DrawColor>-16777077</DrawColor>
+  </DefaultLink>
+  <Node Index="0" Left="20" Top="20" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-5383962</GradientColor>
+    <Text>CDCIN</Text>
+    <ImageIndex>0</ImageIndex>
+  </Node>
+  <Node Index="1" Left="20" Top="110" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-7278960</GradientColor>
+    <Text>EMPLOYEE_L</Text>
+    <ImageIndex>0</ImageIndex>
+  </Node>
+  <Node Index="2" Left="130" Top="20" Width="65" Height="65">
+    <Shape Style="Preparation" Orientation="so_90" />
+    <GradientColor>-7278960</GradientColor>
+    <Text>Main1</Text>
+    <ImageIndex>1</ImageIndex>
+  </Node>
+  <Node Index="3" Left="130" Top="140" Width="85" Height="55">
+    <Shape Style="Ellipse" Orientation="so_0" />
+    <GradientColor>-32</GradientColor>
+    <Text>L_Proc1_WHSESYNC</Text>
+    <ImageIndex>2</ImageIndex>
+  </Node>
+  <Node Index="4" Left="350" Top="20" Width="55" Height="55">
+    <Shape Style="AlternateProcess" Orientation="so_0" />
+    <GradientColor>-2031617</GradientColor>
+    <Text>P_COMPANY_DDL</Text>
+    <ImageIndex>2</ImageIndex>
+  </Node>
+  <Node Index="5" Left="350" Top="110" Width="55" Height="55">
+    <Shape Style="AlternateProcess" Orientation="so_0" />
+    <GradientColor>-2031617</GradientColor>
+    <Text>P_DEPTMENT_DDL</Text>
+    <ImageIndex>2</ImageIndex>
+  </Node>
+  <Node Index="6" Left="350" Top="200" Width="55" Height="55">
+    <Shape Style="AlternateProcess" Orientation="so_0" />
+    <GradientColor>-2031617</GradientColor>
+    <Text>P_VENDOR_DDL</Text>
+    <ImageIndex>2</ImageIndex>
+  </Node>
+  <Node Index="7" Left="350" Top="290" Width="55" Height="55">
+    <Shape Style="AlternateProcess" Orientation="so_0" />
+    <GradientColor>-2031617</GradientColor>
+    <Text>P_EMPLOYEE_DDL</Text>
+    <ImageIndex>2</ImageIndex>
+  </Node>
+  <Node Index="8" Left="460" Top="20" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-1015680</GradientColor>
+    <Text>T_COMPANY_DDL</Text>
+    <ImageIndex>3</ImageIndex>
+  </Node>
+  <Node Index="9" Left="460" Top="110" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-1015680</GradientColor>
+    <Text>T_DEPTMENT_DDL</Text>
+    <ImageIndex>3</ImageIndex>
+  </Node>
+  <Node Index="10" Left="460" Top="200" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-1015680</GradientColor>
+    <Text>T_EMPLOYEE_DDL</Text>
+    <ImageIndex>3</ImageIndex>
+  </Node>
+  <Node Index="11" Left="460" Top="290" Width="55" Height="55">
+    <Shape Style="DirectAccessStorage" Orientation="so_270" />
+    <GradientColor>-1015680</GradientColor>
+    <Text>T_VENDOR_DDL</Text>
+    <ImageIndex>3</ImageIndex>
+  </Node>
+  <Link Index="12" Org="0" Dst="2">
+    <Point X="136.531174" Y="51.3709221" />
+  </Link>
+  <Link Index="13" Org="2" Dst="4">
+    <Point X="350" Y="48.139534" />
+  </Link>
+  <Link Index="14" Org="2" Dst="5">
+    <Point X="350" Y="126.627907" />
+  </Link>
+  <Link Index="15" Org="2" Dst="6">
+    <Point X="349.723145" Y="204.89093" />
+  </Link>
+  <Link Index="16" Org="2" Dst="3">
+    <Point X="170.112473" Y="140.043427" />
+  </Link>
+  <Link Index="17" Org="3" Dst="7">
+    <Point X="350" Y="297.378052" />
+  </Link>
+  <Link Index="18" Org="1" Dst="3">
+    <Point X="132.652679" Y="157.936646" />
+  </Link>
+  <Link Index="19" Org="4" Dst="8">
+    <Point X="460" Y="47.5" />
+  </Link>
+  <Link Index="20" Org="5" Dst="9">
+    <Point X="460" Y="137.5" />
+  </Link>
+  <Link Index="21" Org="6" Dst="11">
+    <Point X="460" Y="295" />
+  </Link>
+  <Link Index="22" Org="7" Dst="10">
+    <Point X="460" Y="250" />
+  </Link>
+</AddFlow>

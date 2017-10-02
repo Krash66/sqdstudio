@@ -1,0 +1,9 @@
+<Structure ID="DEPTMENT" Name="DEPTMENT" Parent="" Att="0~6">
+  <Field ID="DEPTMENT-REC" OrgName="" Parent="DEPTMENT" Att="5~1~1~0~GROUPITEM~0~57~0~1~0~~~~~~~">
+    <Field ID="DEPTNO" OrgName="" Parent="DEPTMENT-REC" Att="0~2~1~0~CHAR~0~3~0~1~0~~~~~~~"/>
+    <Field ID="DEPT-NAME" OrgName="" Parent="DEPTMENT-REC" Att="0~2~1~0~CHAR~3~29~0~1~0~~~~~~~"/>
+    <Field ID="DEPT-MGRNO" OrgName="" Parent="DEPTMENT-REC" Att="0~2~1~0~CHAR~32~6~0~1~0~~~~~~~"/>
+    <Field ID="DEPT-ADMRDEP" OrgName="" Parent="DEPTMENT-REC" Att="0~2~1~0~CHAR~38~3~0~1~0~~~~~~~"/>
+    <Field ID="DEPT-LOC" OrgName="" Parent="DEPTMENT-REC" Att="0~2~1~0~CHAR~41~16~0~1~0~~~~~~~"/>
+  </Field>
+</Structure>

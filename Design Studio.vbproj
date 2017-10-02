@@ -219,6 +219,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <BaseApplicationManifest Include="My Project\app.manifest" />
+    <None Include="bin\Lassalle.Flow.AddFlow.LIC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\DataSources\frmFTPClient.datasource" />
     <None Include="My Project\DataSources\FTPClient.datasource" />
     <None Include="My Project\Settings.settings">
@@ -768,6 +771,42 @@
       <DependentUpon>ctlVariable.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="bin\Lassalle.DlgFlow.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Layout.Hierarchic.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Layout.Orthogonal.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Layout.SP.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Layout.Symmetric.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Layout.Tree.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.Router.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.Flow.SVG.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.GraphAlgo.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.PrnFlow.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Lassalle.XMLFlow.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="database_process.ico" />
     <Content Include="images\1.ico" />
     <Content Include="images\105.ico" />
@@ -838,6 +877,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\x86\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

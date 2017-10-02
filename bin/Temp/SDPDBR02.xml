@@ -1,0 +1,25 @@
+<Database ID="PDBR02" Name="PDBR02" Att="~17~0">
+  <Segment ID="PSR02101" Att="PDBR02~9~1">
+    <Segment ID="PSR02210" Att="PSR02101~2~1">
+      <Segment ID="PSR02320" Att="PSR02210~1~0">
+        <Segment ID="PSR02420" Att="PSR02320~0~1"/>
+      </Segment>
+      <Segment ID="PSR02330" Att="PSR02210~0~1"/>
+    </Segment>
+    <Segment ID="PSR02220" Att="PSR02101~0~1"/>
+    <Segment ID="PSR02230" Att="PSR02101~0~1"/>
+    <Segment ID="PSR02240" Att="PSR02101~0~1"/>
+    <Segment ID="PSR02250" Att="PSR02101~2~4">
+      <Segment ID="PSR02345" Att="PSR02250~0~1"/>
+      <Segment ID="PSR02350" Att="PSR02250~0~1"/>
+    </Segment>
+    <Segment ID="PSR02260" Att="PSR02101~0~1"/>
+    <Segment ID="PSR02280" Att="PSR02101~0~1"/>
+    <Segment ID="PSR02285" Att="PSR02101~1~1">
+      <Segment ID="PSR02385" Att="PSR02285~0~1"/>
+    </Segment>
+    <Segment ID="PSR02290" Att="PSR02101~1~0">
+      <Segment ID="PSR02395" Att="PSR02290~0~1"/>
+    </Segment>
+  </Segment>
+</Database>

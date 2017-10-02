@@ -1,0 +1,155 @@
+<Functions NODETYPE="Heading">
+  <Date NODETYPE="Heading">
+    <AFTER NODETYPE="Func" NPARM="-1" SYNTAX="AFTER(date | time | timestamp,[nYY],[nMM],[nDD],[nHH],[nMI],[nSS])" DESC="returns the value of a date, time or timestamp after adding a specified number of days, months, years, minutes, hours and/or seconds or years to a source date, time or timestamp."/>
+    <BEFORE NODETYPE="Func" NPARM="-1" SYNTAX="BEFORE(date | time | timestamp,[nYY],[nMM],[nDD],[nHH],[nMI],[nSS])" DESC="returns the value of a date, time or timestamp resulting from subtracting a specified number of days, months, years, minutes, hours and/or seconds or years from a source date."/>
+    <BIGTIME NODETYPE="Func" NPARM="0" SYNTAX="BIGTIME()" DESC="returns the current time in HH.MM.SS.mmmmmm format."/>
+    <DATE2SMALLJUL NODETYPE="Func" NPARM="1" SYNTAX="DATE2SMALLJUL(source_date)" DESC="converts a conventional date (YYYYMMDD) to julian date format, returning only the day number."/>
+    <DATEFMT NODETYPE="Func" NPARM="3" SYNTAX="DATEFMT(source_date,source_format,target_format)" DESC="formats/reformats a date value. also converts a two (2) digit year to a four (4) digit year by adding (greater-than) 2000 for sources and adding (less-than)1900 for sources. The formats are specified by three mandatory characters: YMD, which can be in any order, and may optionally be seperated by other characters such as / or -"/>
+    <DATETIME NODETYPE="Func" NPARM="0" SYNTAX="DATETIME()" DESC="returns the current date and time in YYYY-MM-DD-HH-MM--SS format."/>
+    <DAY NODETYPE="Func" NPARM="1" SYNTAX="DAY(date)" DESC="returns the day portion of a source date."/>
+    <DAYNAME NODETYPE="Func" NPARM="1" SYNTAX="DAYNAME(num)" DESC="returns the name of a day from a number (1 through 7). (see DAYOFWEEK for determining based on date)"/>
+    <DAYOFWEEK NODETYPE="Func" NPARM="0" SYNTAX="DAYOFWEEK()" DESC="returns the day number (1 through 7) from the current date."/>
+    <GMT2LOCAL NODETYPE="Func" NPARM="1" SYNTAX="GMT2LOCAL(CDCTSTMP(CDCIN))" DESC="converts GMT to Local Time."/>
+    <IS_ISO_DATE NODETYPE="Func" NPARM="0" SYNTAX="IS_ISO_DATE()" DESC="Returns true if the data is in YYYY-MM-DD format."/>
+    <JULIAN NODETYPE="Func" NPARM="0" SYNTAX="JULIAN()" DESC="derive a Julian date value (YYYYDDD format) from the current date."/>
+    <JULIAN2DATE NODETYPE="Func" NPARM="1" SYNTAX="JULIAN2DATE(date)" DESC="converts Julian date to a conventional date in YYYYMMDD format."/>
+    <MONTH NODETYPE="Func" NPARM="1" SYNTAX="MONTH(date)" DESC="returns the number of a month from a specific date."/>
+    <MONTHNAME NODETYPE="Func" NPARM="1" SYNTAX="MONTHNAME(number)" DESC="returns the name of month from a number (1 through 12)"/>
+    <SECONDS NODETYPE="Func" NPARM="1" SYNTAX="SECONDS(time)" DESC="converts the time value in HH:MM:SS format into the equivalent number of seconds that the time represents."/>
+    <SMALLJUL NODETYPE="Func" NPARM="0" SYNTAX="SMALLJUL()" DESC="returns the day portion of a Julian date from the current date."/>
+    <SMALLJUL2DATE NODETYPE="Func" NPARM="1" SYNTAX="SMALLJUL2DATE(julian_day)" DESC="converts the day portion of a Julian date into a date formatted as YYYYMMDD. The YYYY value is derived from the current year."/>
+    <STORECLOCK NODETYPE="Func" NPARM="0" SYNTAX="STORECLOCK()" DESC="returns the current eight (8) byte MVS storeclock (STCK) value in a hexadecimal character format (i.e. 16 bytes)."/>
+    <TIME NODETYPE="Func" NPARM="0" SYNTAX="TIME()" DESC="returns the current time in HH.MM.SS format."/>
+    <TIMESTAMP NODETYPE="Func" NPARM="0" SYNTAX="TIMESTAMP()" DESC="returns a timestamp value from the current date/time in YYYY-MM-DD-HH.MM.SS.mmmmmm format."/>
+    <TODAY NODETYPE="Func" NPARM="0" SYNTAX="TODAY()" DESC="returns the current date in YYYYMMDD format."/>
+    <WEEK NODETYPE="Func" NPARM="1" SYNTAX="WEEK(date)" DESC="returns the number of a week within the year from a specified date in YYYYMMDD format."/>
+    <WEEKDAY NODETYPE="Func" NPARM="1" SYNTAX="WEEKDAY(date)" DESC=""/>
+    <YEAR NODETYPE="Func" NPARM="1" SYNTAX="YEAR()" DESC="returns the current year value in YYYY format."/>
+  </Date>
+  <String NODETYPE="Heading">
+    <B2D NODETYPE="Func" NPARM="2" SYNTAX="B2D(binary_field,field_length)" DESC="Returns the decimal representation of the content of a binary field."/>
+    <B2X NODETYPE="Func" NPARM="2" SYNTAX="B2X(binary_field,field_length)" DESC="converts a binary value to its hexadecimal equivalent in character format."/>
+    <BITCHR NODETYPE="Func" NPARM="2" SYNTAX="BITCHAR(binary_field,field_length)" DESC=""/>
+    <C2X NODETYPE="Func" NPARM="1" SYNTAX="C2X(character_string)" DESC="converts a character data string into a hexadecimal format. The code page of the hexadecimal translation is determined by the platform in which the C2X function was executed (i.e. EBCDIC for z/OS)."/>
+    <CHRBIT NODETYPE="Func" NPARM="2" SYNTAX="CHRBIT(binary_field,field_length)" DESC=""/>
+    <DSDIR NODETYPE="Func" NPARM="1" SYNTAX="DSDIR(datastore)" DESC="returns the name of the directory in which a file type datastore resides."/>
+    <DSNAME NODETYPE="Func" NPARM="1" SYNTAX="DSNAME(datastore_alias)" DESC="returns the name of the physical datastore file."/>
+    <EXCLUDE NODETYPE="Func" NPARM="3" SYNTAX="EXCLUDE(data_string,inclusion_character_string,'ANY'|'MATCH')" DESC="returns the data_string with any chracters not found in the inclusion_string removed. If 'MATCH' is specified, only parts of the data_string which match the inclusion_string exactly will be returned."/>
+    <FIX NODETYPE="Func" NPARM="1" SYNTAX="FIX(text_string)" DESC="capitalizes the first letter of each word in text_string."/>
+    <LEFT NODETYPE="Func" NPARM="-1" SYNTAX="LEFT(data string,length)" DESC="returns the first length characters in data_string"/>
+    <LENGTH NODETYPE="Func" NPARM="1" SYNTAX="LENGTH(data_string)" DESC="returns the number of characters in data_string"/>
+    <LOWER NODETYPE="Func" NPARM="1" SYNTAX="LOWER(text_string)" DESC="returns text_string with all characters converted to lower case"/>
+    <LTRIM NODETYPE="Func" NPARM="3" SYNTAX="LTRIM(data_string,character_string,'ANY'|'MATCH')" DESC="removes any characters found in character_string from the begining of data_string. If 'MATCH' is specified, only removes an occurance of the exact character_string from the beginning of data_string"/>
+    <MID NODETYPE="Func" NPARM="-1" SYNTAX="MID(data_string,start_position,length)" DESC="returns the substring of data_string starting at character start_position (1-based) and continuing for length characters."/>
+    <MTRIM NODETYPE="Func" NPARM="3" SYNTAX="MTRIM(data_string,character_string,'ANY'|'MATCH')" DESC="this is the opposite of EXCLUDE, returning all characters not found in character_string."/>
+    <RIGHT NODETYPE="Func" NPARM="-1" SYNTAX="RIGHT(string,length)" DESC="returns the last length characters in string"/>
+    <RTRIM NODETYPE="Func" NPARM="3" SYNTAX="RTRIM(data_string,character_string,'ANY'|'MATCH')" DESC="removes any characters found in character_string from the begining of data_string. If 'MATCH' is specified, only removes an occurance of the exact character_string from the end of data_string"/>
+    <SEARCH NODETYPE="Func" NPARM="2" SYNTAX="SEARCH(data_string,search_data_string)" DESC="examines a source data string and compares it against a second `search' data string. If the search data string is found within the source data string, SQData returns the position of the matching characters within the source data string. If no match is found, a value of zero (0) is returned."/>
+    <STRING NODETYPE="Func" NPARM="-1" SYNTAX="STRING(string[,string,...])" DESC="returns a string literal, concatenating any arguments"/>
+    <TRANSLATE NODETYPE="Func" NPARM="3" SYNTAX="TRANSLATE(data_string,original_character,replacement_character)" DESC="allows you to translate a specific character within a data string with another character. This function examines the data string and replaces all occurrences of a specific character with a user specified replacement character."/>
+    <TRIM NODETYPE="Func" NPARM="3" SYNTAX="TRIM(data_string,character_string,'ANY'|'MATCH')" DESC="removes characters specified in character_string from the input data_string, or returns an empty string if no matching characters are found."/>
+    <UPPER NODETYPE="Func" NPARM="1" SYNTAX="UPPER(text_string)" DESC="returns text_string with all characters converted to upper case"/>
+    <WORD NODETYPE="Func" NPARM="2" SYNTAX="WORD(string,position)" DESC="returns substring of string, starting at character position and reading until the first space or end-of-string is found."/>
+    <WORDS NODETYPE="Func" NPARM="1" SYNTAX="WORDS(string)" DESC="returns the number of words (seperated by at least one(1) space) are in the input string"/>
+    <X2B NODETYPE="Func" NPARM="1" SYNTAX="X2B(HEX_string" DESC="The X2B function converts a hexadecimal to its binary value equivalent. The return length is half of the input length."/>
+    <X2C NODETYPE="Func" NPARM="1" SYNTAX="X2C(data_string)" DESC="converts a data string in hexadecimal format into a character data string."/>
+  </String>
+  <Logical NODETYPE="Heading">
+    <AND NODETYPE="Func" NPARM="-1" SYNTAX="AND(boolean_functions)" DESC="logical AND, returns true(1) if all arguments evaluate TRUE, or false(0) if any evaluate FALSE."/>
+    <BETWEEN NODETYPE="Func" NPARM="3" SYNTAX="BETWEEN(source_value,lower_value,upper_value)" DESC="determines whether or not a value is greater than one value and less than another value, inclusive"/>
+    <EQ NODETYPE="Func" NPARM="2" SYNTAX="EQ(value1,value2)" DESC="logical equivilence test. Returns TRUE(1) if both values are equal, and FALSE(0) if they are not."/>
+    <FLDCHG NODETYPE="Func" NPARM="1" SYNTAX="FLDCHG(source field)" DESC="determines whether or not a field/column has changed by comparing the before image with the after image."/>
+    <GE NODETYPE="Func" NPARM="2" SYNTAX="GE(value1,value2)" DESC="logical greater-than-or-equal-to test. Returns TRUE(1) if value1 >= value2, and FALSE(0) otherwise."/>
+    <GT NODETYPE="Func" NPARM="2" SYNTAX="GT(value1,value2)" DESC="logical greater-than test. Returns TRUE(1) if value1 > value2, and FALSE(0) otherwise."/>
+    <IF NODETYPE="Func" NPARM="1" SYNTAX="IF(value1)" DESC="logical IF. Can be used with ELSE, ELSE IF, OTHERWISE"/>
+    <ELSE NODETYPE="Func" NPARM="0" SYNTAX="ELSE" DESC="logical ELSE. Used in an IF statement with DO (some task) END."/>
+    <INSIDE NODETYPE="Func" NPARM="3" SYNTAX="INSIDE(source_value,lower_value,upper_value)" DESC="determines whether or not a value is greater than one value and less than another value, exclusive"/>
+    <ISDEC NODETYPE="Func" NPARM="1" SYNTAX="ISDEC(value)" DESC="determines whether or not a source value is a decimal number, returning TRUE(1) if it is and FALSE(0) if it is not."/>
+    <ISINT NODETYPE="Func" NPARM="1" SYNTAX="ISINT(value)" DESC="determines whether or not a source value is an integer, returning TRUE(1) if it is and FALSE(0) if it is not."/>
+    <ISNULL NODETYPE="Func" NPARM="1" SYNTAX="ISNULL(value)" DESC="determines whether or not a source value is null, returning TRUE(1) if it is and FALSE(0) if it is not."/>
+    <ISNUM NODETYPE="Func" NPARM="1" SYNTAX="ISNUM(value)" DESC="determines whether or not a source value is numeric, returning TRUE(1) if it is and FALSE(0) if it is not."/>
+    <ISTEXT NODETYPE="Func" NPARM="1" SYNTAX="ISTEXT(value)" DESC="determines whether or not a source value is text, returning TRUE(1) if it is and FALSE(0) if it is not."/>
+    <LE NODETYPE="Func" NPARM="2" SYNTAX="LE(value1,value2)" DESC="logical less-than-or-equal-to test. Returns TRUE(1) if value1 less-than-or-equal-to value2, and FALSE(0) otherwise."/>
+    <LT NODETYPE="Func" NPARM="2" SYNTAX="LT(value1,value2)" DESC="logical less-than test. Returns TRUE(1) if value1less-than value2, and FALSE(0) otherwise."/>
+    <NE NODETYPE="Func" NPARM="2" SYNTAX="NE(value1,value2)" DESC="logical reverse-equivilence test. Returns FALSE(0) if both values are equal, and TRUE(1) if they are not."/>
+    <NOT NODETYPE="Func" NPARM="1" SYNTAX="NOT(boolean_function)" DESC="logical NOT, reverses the value of the input, so a logical FALSE becomes TRUE and a logical TRUE becomes FALSE"/>
+    <ONEOF NODETYPE="Func" NPARM="-1" SYNTAX="ONEOF(value,comparison_value1,comparision_value2[,comparison_valuex])" DESC="Determines whether or not a value matches one or more search values."/>
+    <OR NODETYPE="Func" NPARM="-1" SYNTAX="OR(boolean_function)" DESC="logical OR, returns true(1) if any argument evaluate TRUE, or false(0) if all evaluate FALSE."/>
+    <RID NODETYPE="Func" NPARM="0" SYNTAX="RID()" DESC="returns the relative number of the record in a source datastore."/>
+    <WHERE NODETYPE="Func" NPARM="1" SYNTAX="WHERE(function)" DESC="If the result of the function(s) within the WHERE clause are true (1), the functions that appear below the WHERE function are executed. Otherwise, the functions below the WHERE function are not executed."/>
+  </Logical>
+  <Math NODETYPE="Heading">
+    <ABS NODETYPE="Func" NPARM="1" SYNTAX="ABS(numeric_field)" DESC="returns the absolute value of numeric_field"/>
+    <ADD NODETYPE="Func" NPARM="-1" SYNTAX="ADD(addend1,addend2[,addendx])" DESC="returns the input values mathematically added together"/>
+    <DECREMENT NODETYPE="Func" NPARM="1" SYNTAX="DECREMENT(numeric value)" DESC="returns numeric value, minus one(1)"/>
+    <DIV NODETYPE="Func" NPARM="3" SYNTAX="DIV(dividend,divisior,scale)" DESC="returns dividend divided by divisor, with precision scale."/>
+    <INCREMENT NODETYPE="Func" NPARM="1" SYNTAX="INCREMENT(numeric_value)" DESC="returns numeric value, plus one(1)"/>
+    <MOD NODETYPE="Func" NPARM="2" SYNTAX="MOD(numeric_value,numeric_value)" DESC="returns the first argument modulo the second argument"/>
+    <MULTIPLY NODETYPE="Func" NPARM="-1" SYNTAX="MULTIPLY(numeric_value1,numeric_value2[,numeric_valuex])" DESC="returns the result of mathematically multiplying the arguments"/>
+    <ROUND NODETYPE="Func" NPARM="2" SYNTAX="ROUND(decimal_value,scale)" DESC="returns decimal_value, rounded to precision scale."/>
+    <SUBTRACT NODETYPE="Func" NPARM="-1" SYNTAX="SUBTRACT(numeric_value,subtraction_value[,subtraction_value,...])" DESC="subtracts one number from another and returns the difference of the subtraction."/>
+  </Math>
+  <Aggregate NODETYPE="Heading">
+    <COUNT NODETYPE="Func" NPARM="1" SYNTAX="COUNT()" DESC="returns the number of records/rows in a particular group as specified within the SQData SELECT subcommand."/>
+    <FIRST NODETYPE="Func" NPARM="1" SYNTAX="FIRST(field_name)" DESC="returns the first occurrence of a particular data element within a group of records/rows."/>
+    <LAST NODETYPE="Func" NPARM="1" SYNTAX="LAST(field_name)" DESC="returns the last occurrence of a particular data element within a group of records/rows."/>
+    <MAX NODETYPE="Func" NPARM="1" SYNTAX="MAX(data_element)" DESC="returns the largest value of a particular data element within a group of records/rows."/>
+    <MIN NODETYPE="Func" NPARM="1" SYNTAX="MIN(data_element)" DESC="returns the smallest value of a particular data element within a group of records/rows."/>
+    <SUM NODETYPE="Func" NPARM="1" SYNTAX="SUM(data_element)" DESC="totals each occurrence of a numeric data element within a group of records/rows."/>
+  </Aggregate>
+  <Specialized NODETYPE="Heading">
+    <CALLPROC NODETYPE="Func" NPARM="1" SYNTAX="CALLPROC(proc_name)" DESC="invokes a predefined SQData mapping procedure (PROC) within an SQData command script."/>
+    <CLOSEDS NODETYPE="Func" NPARM="1" SYNTAX="CLOSEDS(datastore_name)" DESC="The CLOSEDS function closes a target datastore."/>
+    <DB2QUAL NODETYPE="Func" NPARM="1" SYNTAX="DB2QUAL(CDCIN)" DESC="returns the qualifier of the DB2 table that is currently being processed via a DB2 datastore or a DB2 changed data capture (CDC) datastore."/>
+    <DB2TBLNAME NODETYPE="Func" NPARM="1" SYNTAX="DB2TBLNAME(CDCIN)" DESC="returns the name of the DB2 table that is currently being processed via a DB2 datastore or a DB2 changed data capture (CDC) datastore."/>
+    <EMPTY NODETYPE="Func" NPARM="0" SYNTAX="EMPTY()" DESC="The EMPTY function returns a null value."/>
+    <FLDMAX NODETYPE="Func" NPARM="-1" SYNTAX="FLDMAX(value1,value2 [,valuex])" DESC="examines a set of values and returns the largest value in the set."/>
+    <FLDMIN NODETYPE="Func" NPARM="-1" SYNTAX="FLDMIN(value1,value2[,valuex])" DESC="examines a set of numeric values and returns the smallest number in the set."/>
+    <FULLKEY NODETYPE="Func" NPARM="0" SYNTAX="FULLKEY() " DESC="The FULLKEY function returns the fully concatenated key of the current IMS segment. This function is useful for appending key data to child segments prior to writing the data to an output datastore. Also, see the PFK_ function."/>
+    <IMSDBNAME NODETYPE="Func" NPARM="1" SYNTAX="IMSDBNAME(CDCIN)" DESC="returns name of the IMS database that is currently being processed via an IMS datastore or an IMS changed data capture (CDC) datastore."/>
+    <IMSSEGNAME NODETYPE="Func" NPARM="1" SYNTAX="IMSSEGNAME(CDCIN)" DESC="returns name of the IMS segment that is currently being processed via an IMS datastore or an IMS changed data capture (CDC) datastore."/>
+    <LOOKFLD NODETYPE="Func" NPARM="2" SYNTAX="LOOKFLD(lookup_name,lookup_field)" DESC="retrieves a single field from a lookup or Join table based on the position of the lookup pointer returned from the LOOK function. The data returned by the LOOKFLD function can be mapped into a field of a target datastore."/>
+    <LOOKFOUND NODETYPE="Func" NPARM="1" SYNTAX="LOOKFOUND(lookup_name)" DESC="checks the result of a lookup or join table search to determine whether or not a lookup key was found or not. LOOKFOUND returns a found (1) or a not found (0) value based on the results of the search via a LOOK function."/>
+    <LOOP NODETYPE="Func" NPARM="1" SYNTAX="LOOP(condition)" DESC="executes a function or group of functions a specified number of times."/>
+    <MAP NODETYPE="Func" NPARM="2" SYNTAX="MAP(source_value,'target_field')" DESC="used to perform source to target data mapping within a function or nested set of functions. This function maps a source field/column, variable or function output to a target field."/>
+    <MAP_BEFORE NODETYPE="Func" NPARM="2" SYNTAX="MAP_BEFORE(source_value,'target_field')" DESC=""/>
+    <NORM NODETYPE="Func" NPARM="-1" SYNTAX="NORM(proc_name,repeating_group_item,'STOPINIT'|'NOSTOP')" DESC="used to `normalize' the contents of a source datastore record into one (1) or more target datastores. This function is typically used when the target datastore(s) is a relational table and the source datastore records contain de-normalized data (i.e. repeating groups/occurs)."/>
+    <NULL NODETYPE="Func" NPARM="0" SYNTAX="NULL()" DESC="returns NULL"/>
+    <OS NODETYPE="Func" NPARM="1" SYNTAX="OS(command_text)" DESC="executes a command that can normally be issued from a UNIX or Windows command prompt. SQData waits for the command to complete and then continues processing."/>
+    <OUTDS NODETYPE="Func" NPARM="1" SYNTAX="OUTDS (target_datastore)" DESC="The OUTDS function is used to explicitly write records/rows to a target datastore without waiting for all of the target fields to be mapped (which happens automatically within the Integration Engine)."/>
+    <OUTDSNAME NODETYPE="Func" NPARM="2" SYNTAX="OUTDSNAME(wildcard_data_store,replacement_value)" DESC="returns the alias name of a source or target datastore as defined within the SQData script."/>
+    <OUTMSG NODETYPE="Func" NPARM="2" SYNTAX="OUTMSG(rc,text_to_output)" DESC="display text_to_output in the report output. If rc is non-zero, will stop proccessing and exit with the return code rc."/>
+    <PFK_ NODETYPE="Func" NPARM="0" SYNTAX="PFK_DBDkeyfieldname" DESC="The PFK_ function returns a parent ;apos;s full key (PFK) of the current IMS segment. This segment must be a dependent segment (i.e. not a root segment)."/>
+    <READ NODETYPE="Func" NPARM="1" SYNTAX="READ('HOLD'|'RESUME')" DESC="Either HOLDs or RESUMEs the reading of records from the primary datastore"/>
+    <RECNAME NODETYPE="Func" NPARM="1" SYNTAX="RECNAME(CDCIN)" DESC="The RECNAME function returns the name of the object associated with a DESCRIPTION alias. In the case of IMS, this object is the segment name, which can also be obtained using the IMSSEGNAME function. For VSAM CDC records, this is the eight (8) byte file name. For relational tables, this is the name of the source table."/>
+    <REPLICATE NODETYPE="Func" NPARM="1" SYNTAX="REPLICATE(CDCIN)" DESC=""/>
+    <SEQNUM NODETYPE="Func" NPARM="2" SYNTAX="SEQNUM(start_value,increment_value)" DESC="increments a number by the value of a second numeric value. Each time that the SEQNUM function is called for the same numeric value(s), the SEQNUM function continues to increment the value from its previous state."/>
+    <SETPCBNAME NODETYPE="Func" NPARM="2" SYNTAX="SETPCBNAME()" DESC=""/>
+    <TERMINATE NODETYPE="Func" NPARM="1" SYNTAX="TERMINATE(rc)" DESC="stop proccessing and exit with return code rc"/>
+    <UEXIT NODETYPE="Func" NPARM="-1" SYNTAX="UEXIT(exit_name[,parm1,parm2,...])" DESC="The UEXIT function allows you to include C functions/programs in SQDATA. The C program is complied and included as a .dll and included in the sqdata program."/>
+    <VALUE NODETYPE="Func" NPARM="1" SYNTAX="VALUE(work_variable)" DESC="references a function alias. Please note that the function alias being referenced by VALUE must appear before the VALUE function in the command script."/>
+  </Specialized>
+  <CDC NODETYPE="Heading">
+    <CDCBEFORE NODETYPE="Func" NPARM="1" SYNTAX="CDCBEFORE(source_field)" DESC="returns the before image of a source field involved in a transaction update or delete. For insert operations, a null value is returned."/>
+    <CDCOP NODETYPE="Func" NPARM="1" SYNTAX="CDCOP(CDCIN)" DESC="returns the change operation of the transaction insert, update or delete operation. I for Inserts, R for updates, or D for deletes."/>
+    <CDCRAW NODETYPE="Func" NPARM="1" SYNTAX="CDCRAW(CDCIN)" DESC="returns the entire unaltered changed data capture (CDC) record from a CDC type datastore."/>
+    <CDCSTCK NODETYPE="Func" NPARM="1" SYNTAX="CDCSTCK(CDCIN)" DESC="returns the eight (8) byte MVS storeclock value (STCK) from the changed data capture (CDC) record in a CDC type datastore. This storeclock value reflects the time that the data was changed within a transaction or program."/>
+    <CDCTSTMP NODETYPE="Func" NPARM="1" SYNTAX="CDCTSTMP(CDCIN)" DESC="returns a 26 byte timstamp from a changed data capture (CDC) record. The timestamp is in YYYY-MM-DD-HH.MM.SSSSSS format. This value reflects the time that the update took place."/>
+    <CDCTSTMPPK NODETYPE="Func" NPARM="1" SYNTAX="CDCTSTMPPK(CDCIN)" DESC="returns a 20 byte packed (without punctuation) timestamp from a changed data capture (CDC) record. The timestamp is in YYYYMMDDHHMMSSSSSS format. This value reflects the time that the source record was updated."/>
+    <CDCUID NODETYPE="Func" NPARM="1" SYNTAX="CDCUID(CDCIN)" DESC="returns the user ID of the individual/group that initiated the change to the source record within a transaction or program."/>
+    <CDCUOW NODETYPE="Func" NPARM="1" SYNTAX="CDCUOW(CDCIN)" DESC="returns the unit-of-work identifier (recovery token) from the changed data capture (CDC) record in a CDC type datastore."/>
+    <IMSPGMNAME NODETYPE="Func" NPARM="1" SYNTAX="IMSPGMNAME(CDCIN)" DESC="returns name of the IMS program that made the change to the source data that was subsequently captured by one of the SQData IMD data capture agents."/>
+    <IMSPSBNAME NODETYPE="Func" NPARM="1" SYNTAX="IMSPSBNAME(CDCIN)" DESC="returns name of the IMS PSB that was used to make the change to the source data that was subsequently captured by one of the SQData IMD data capture agents."/>
+    <IMSTRANNAME NODETYPE="Func" NPARM="1" SYNTAX="IMSTRANNAME(CDCIN)" DESC="returns name of the IMS transaction that was used to make the change to the source data that was subsequently captured by one of the SQData IMD data capture agents."/>
+    <SETIMAGE NODETYPE="Func" NPARM="0" SYNTAX="SETIMAGE" DESC="With the SETIMAGE function, you set the image to either 'BEFORE' or 'AFTER', and then use the same PROC for both images. The SETIMAGE function returns FALSE if you are asking for BEFORE and the change is not an update."/>
+  </CDC>
+  <Templates NODETYPE="Heading">
+    <CASE NODETYPE="Template" NPARM="-1" SYNTAX="Template for CASE/OTHERWISE Function"/>
+    <Route NODETYPE="Template" NPARM="0" SYNTAX="Template for Main Routing Procedure"/>
+    <Procedure NODETYPE="Template" NPARM="0" SYNTAX="Template for Procedure"/>
+    <LOOK NODETYPE="Template" NPARM="-1" SYNTAX="LOOK(lookup_name,search_key[,search_key])" DESC="performs a search on a pre-defined lookup or join table and sets the position (pointer) of the lookup table to the row that meets the criteria of the search."/>
+    <SetImage NODETYPE="Template" NPARM="0" SYNTAX="Template for SetImage"/>
+    <CURRENTDATE NODETYPE="Template" NPARM="0" SYNTAX="LEFT (DATETIME(),10)" DESC="returns the current date in YYY-MM-DD format."/>
+    <MAPBEFOREkeyChng NODETYPE="Template" NPARM="0" SYNTAX="Template for MAPBEFOREkeyChng. Used when target keys can change."/>
+  </Templates>
+</Functions>

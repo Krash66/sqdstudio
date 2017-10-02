@@ -1,0 +1,9 @@
+<Database ID="PDBN05" Name="PDBN05" Att="~4~0">
+  <Segment ID="PSN05101" Att="PDBN05~1~2">
+    <Segment ID="PSN05210" Att="PSN05101~1~1">
+      <Segment ID="PSN05320" Att="PSN05210~1~1">
+        <Segment ID="PSN05430" Att="PSN05320~0~0"/>
+      </Segment>
+    </Segment>
+  </Segment>
+</Database>

@@ -53,27 +53,27 @@ Public Class frmAbout
     Friend WithEvents HelpProvider1 As System.Windows.Forms.HelpProvider
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAbout))
-        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.cmdOK = New System.Windows.Forms.Button
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.HelpProvider1 = New System.Windows.Forms.HelpProvider
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.lblVersion = New System.Windows.Forms.Label
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.Label7 = New System.Windows.Forms.Label
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.lblCompany = New System.Windows.Forms.Label
-        Me.lblOwner = New System.Windows.Forms.Label
-        Me.Label11 = New System.Windows.Forms.Label
-        Me.Label10 = New System.Windows.Forms.Label
-        Me.lblBuildDate = New System.Windows.Forms.Label
-        Me.Label8 = New System.Windows.Forms.Label
-        Me.lblBuildNumber = New System.Windows.Forms.Label
+        Me.LinkLabel1 = New System.Windows.Forms.LinkLabel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.cmdOK = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.HelpProvider1 = New System.Windows.Forms.HelpProvider()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblVersion = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.lblCompany = New System.Windows.Forms.Label()
+        Me.lblOwner = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.lblBuildDate = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.lblBuildNumber = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -81,9 +81,9 @@ Public Class frmAbout
         '
         'LinkLabel1
         '
-        Me.LinkLabel1.Location = New System.Drawing.Point(336, 32)
+        Me.LinkLabel1.Location = New System.Drawing.Point(403, 37)
         Me.LinkLabel1.Name = "LinkLabel1"
-        Me.LinkLabel1.Size = New System.Drawing.Size(100, 16)
+        Me.LinkLabel1.Size = New System.Drawing.Size(120, 18)
         Me.LinkLabel1.TabIndex = 0
         Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "www.sqdata.com"
@@ -91,9 +91,9 @@ Public Class frmAbout
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.SQDStudio.My.Resources.Resources.Ball
-        Me.PictureBox1.Location = New System.Drawing.Point(8, 8)
+        Me.PictureBox1.Location = New System.Drawing.Point(10, 9)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(55, 55)
+        Me.PictureBox1.Size = New System.Drawing.Size(66, 64)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 4
         Me.PictureBox1.TabStop = False
@@ -101,14 +101,14 @@ Public Class frmAbout
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel2.BackColor = System.Drawing.Color.White
         Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Controls.Add(Me.Label3)
         Me.Panel2.Controls.Add(Me.LinkLabel1)
         Me.Panel2.Location = New System.Drawing.Point(0, 0)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(466, 68)
+        Me.Panel2.Size = New System.Drawing.Size(466, 78)
         Me.Panel2.TabIndex = 3
         '
         'Label1
@@ -116,40 +116,40 @@ Public Class frmAbout
         Me.Label1.BackColor = System.Drawing.Color.White
         Me.Label1.Font = New System.Drawing.Font("Arial", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Blue
-        Me.Label1.Location = New System.Drawing.Point(72, 8)
+        Me.Label1.Location = New System.Drawing.Point(86, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(387, 16)
+        Me.Label1.Size = New System.Drawing.Size(465, 19)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Design Studio V3"
         '
         'Label3
         '
         Me.Label3.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(72, 32)
+        Me.Label3.Location = New System.Drawing.Point(86, 37)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(264, 17)
+        Me.Label3.Size = New System.Drawing.Size(317, 20)
         Me.Label3.TabIndex = 7
         Me.Label3.Text = "2002-2013 SQData Corporation.  All rights reserved"
         '
         'cmdOK
         '
         Me.cmdOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmdOK.Location = New System.Drawing.Point(376, 280)
+        Me.cmdOK.Location = New System.Drawing.Point(358, 275)
         Me.cmdOK.Name = "cmdOK"
-        Me.cmdOK.Size = New System.Drawing.Size(75, 23)
+        Me.cmdOK.Size = New System.Drawing.Size(90, 27)
         Me.cmdOK.TabIndex = 5
         Me.cmdOK.Text = "&OK"
         '
         'Label2
         '
         Me.Label2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.BackColor = System.Drawing.Color.Transparent
         Me.Label2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.Color.Blue
-        Me.Label2.Location = New System.Drawing.Point(8, 225)
+        Me.Label2.Location = New System.Drawing.Point(10, 212)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(448, 52)
+        Me.Label2.Size = New System.Drawing.Size(444, 60)
         Me.Label2.TabIndex = 6
         Me.Label2.Text = resources.GetString("Label2.Text")
         '
@@ -162,9 +162,9 @@ Public Class frmAbout
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.Label4.Location = New System.Drawing.Point(8, 10)
+        Me.Label4.Location = New System.Drawing.Point(10, 12)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(101, 13)
+        Me.Label4.Size = New System.Drawing.Size(129, 17)
         Me.Label4.TabIndex = 2
         Me.Label4.Text = "Product Version:"
         '
@@ -173,9 +173,9 @@ Public Class frmAbout
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label5.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.Label5.Location = New System.Drawing.Point(8, 33)
+        Me.Label5.Location = New System.Drawing.Point(10, 38)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(90, 13)
+        Me.Label5.Size = New System.Drawing.Size(115, 17)
         Me.Label5.TabIndex = 1
         Me.Label5.Text = "Build Number: "
         '
@@ -183,17 +183,17 @@ Public Class frmAbout
         '
         Me.lblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblVersion.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblVersion.Location = New System.Drawing.Point(117, 10)
+        Me.lblVersion.Location = New System.Drawing.Point(140, 12)
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(129, 12)
+        Me.lblVersion.Size = New System.Drawing.Size(155, 13)
         Me.lblVersion.TabIndex = 0
         Me.lblVersion.Text = "Version 3 x86"
         '
         'Panel1
         '
         Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel1.BackColor = System.Drawing.SystemColors.Desktop
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Panel1.Controls.Add(Me.Label7)
@@ -208,9 +208,9 @@ Public Class frmAbout
         Me.Panel1.Controls.Add(Me.Label4)
         Me.Panel1.Controls.Add(Me.Label5)
         Me.Panel1.Controls.Add(Me.lblVersion)
-        Me.Panel1.Location = New System.Drawing.Point(8, 74)
+        Me.Panel1.Location = New System.Drawing.Point(10, 85)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(448, 148)
+        Me.Panel1.Size = New System.Drawing.Size(444, 123)
         Me.Panel1.TabIndex = 7
         '
         'Label7
@@ -218,9 +218,9 @@ Public Class frmAbout
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label7.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label7.Location = New System.Drawing.Point(117, 55)
+        Me.Label7.Location = New System.Drawing.Point(140, 63)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(61, 13)
+        Me.Label7.Size = New System.Drawing.Size(77, 17)
         Me.Label7.TabIndex = 11
         Me.Label7.Text = "3.5.2.400"
         '
@@ -229,9 +229,9 @@ Public Class frmAbout
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label6.Location = New System.Drawing.Point(8, 55)
+        Me.Label6.Location = New System.Drawing.Point(10, 63)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(87, 13)
+        Me.Label6.Size = New System.Drawing.Size(112, 17)
         Me.Label6.TabIndex = 10
         Me.Label6.Text = "File Assembly:"
         '
@@ -240,9 +240,9 @@ Public Class frmAbout
         Me.lblCompany.AutoSize = True
         Me.lblCompany.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCompany.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblCompany.Location = New System.Drawing.Point(117, 121)
+        Me.lblCompany.Location = New System.Drawing.Point(140, 140)
         Me.lblCompany.Name = "lblCompany"
-        Me.lblCompany.Size = New System.Drawing.Size(58, 13)
+        Me.lblCompany.Size = New System.Drawing.Size(74, 17)
         Me.lblCompany.TabIndex = 9
         Me.lblCompany.Text = "Company"
         '
@@ -251,9 +251,9 @@ Public Class frmAbout
         Me.lblOwner.AutoSize = True
         Me.lblOwner.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblOwner.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblOwner.Location = New System.Drawing.Point(117, 99)
+        Me.lblOwner.Location = New System.Drawing.Point(140, 114)
         Me.lblOwner.Name = "lblOwner"
-        Me.lblOwner.Size = New System.Drawing.Size(43, 13)
+        Me.lblOwner.Size = New System.Drawing.Size(54, 17)
         Me.lblOwner.TabIndex = 8
         Me.lblOwner.Text = "Owner"
         '
@@ -262,9 +262,9 @@ Public Class frmAbout
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label11.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label11.Location = New System.Drawing.Point(8, 121)
+        Me.Label11.Location = New System.Drawing.Point(10, 140)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(62, 13)
+        Me.Label11.Size = New System.Drawing.Size(79, 17)
         Me.Label11.TabIndex = 7
         Me.Label11.Text = "Company:"
         '
@@ -273,9 +273,9 @@ Public Class frmAbout
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label10.Location = New System.Drawing.Point(8, 99)
+        Me.Label10.Location = New System.Drawing.Point(10, 114)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(47, 13)
+        Me.Label10.Size = New System.Drawing.Size(59, 17)
         Me.Label10.TabIndex = 6
         Me.Label10.Text = "Owner:"
         '
@@ -284,9 +284,9 @@ Public Class frmAbout
         Me.lblBuildDate.AutoSize = True
         Me.lblBuildDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBuildDate.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblBuildDate.Location = New System.Drawing.Point(117, 77)
+        Me.lblBuildDate.Location = New System.Drawing.Point(140, 89)
         Me.lblBuildDate.Name = "lblBuildDate"
-        Me.lblBuildDate.Size = New System.Drawing.Size(68, 13)
+        Me.lblBuildDate.Size = New System.Drawing.Size(81, 17)
         Me.lblBuildDate.TabIndex = 5
         Me.lblBuildDate.Text = "4/18/2013"
         '
@@ -295,9 +295,9 @@ Public Class frmAbout
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.ForeColor = System.Drawing.SystemColors.Window
-        Me.Label8.Location = New System.Drawing.Point(8, 77)
+        Me.Label8.Location = New System.Drawing.Point(10, 89)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(70, 13)
+        Me.Label8.Size = New System.Drawing.Size(88, 17)
         Me.Label8.TabIndex = 4
         Me.Label8.Text = "Build Date:"
         '
@@ -306,15 +306,15 @@ Public Class frmAbout
         Me.lblBuildNumber.AutoSize = True
         Me.lblBuildNumber.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBuildNumber.ForeColor = System.Drawing.SystemColors.Window
-        Me.lblBuildNumber.Location = New System.Drawing.Point(117, 33)
+        Me.lblBuildNumber.Location = New System.Drawing.Point(140, 38)
         Me.lblBuildNumber.Name = "lblBuildNumber"
-        Me.lblBuildNumber.Size = New System.Drawing.Size(47, 13)
+        Me.lblBuildNumber.Size = New System.Drawing.Size(59, 17)
         Me.lblBuildNumber.TabIndex = 3
         Me.lblBuildNumber.Text = "3.5.2.4"
         '
         'frmAbout
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
+        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
         Me.ClientSize = New System.Drawing.Size(464, 309)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label2)

@@ -1,0 +1,9 @@
+  <Segment ID="COMPANY" Att="~SQDTSTDB~6">
+    <Field ID="COMPANY-REC" OrgName="" Parent="COMPANY" Att="5~1~1~0~GROUPITEM~0~47~0~1~0~~~~~~~">
+      <Field ID="COMPNAME" OrgName="" Parent="COMPANY-REC" Att="0~2~1~0~CHAR~0~10~0~0~1~~~~~~~"/>
+      <Field ID="COMP-ADDRESS" OrgName="" Parent="COMPANY-REC" Att="0~2~1~0~CHAR~10~20~0~1~0~~~~~~~"/>
+      <Field ID="COMP-CITY" OrgName="" Parent="COMPANY-REC" Att="0~2~1~0~CHAR~30~10~0~1~0~~~~~~~"/>
+      <Field ID="COMP-STATE" OrgName="" Parent="COMPANY-REC" Att="0~2~1~0~CHAR~40~2~0~1~0~~~~~~~"/>
+      <Field ID="COMP-ZIP" OrgName="" Parent="COMPANY-REC" Att="0~2~1~0~CHAR~42~5~0~1~0~~~~~~~"/>
+    </Field>
+  </Segment>

@@ -1,0 +1,1 @@
+SELECT colname, typename, length, scale FROM syscat.columns WHERE typename = 'DECFLOAT(16)' order by colno

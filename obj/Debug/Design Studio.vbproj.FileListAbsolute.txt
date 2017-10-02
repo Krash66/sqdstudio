@@ -263,3 +263,16 @@ C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design St
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.TrustInfo.xml
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.exe.manifest
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\obj\Debug\Design Studio.application
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.DlgFlow.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Layout.Hierarchic.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Layout.Orthogonal.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Layout.SP.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Layout.Symmetric.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Layout.Tree.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.Router.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.SVG.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.GraphAlgo.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.PrnFlow.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.XMLFlow.DLL
+C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.AddFlow.LIC
