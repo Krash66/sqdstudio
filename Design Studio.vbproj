@@ -29,7 +29,7 @@
     <MyType>WindowsForms</MyType>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <ManifestCertificateThumbprint>E3AC3E3B43D834C649C8959C306966A69EB6BA6D</ManifestCertificateThumbprint>
     <ManifestKeyFile>SQDStudio_TemporaryKey.pfx</ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
@@ -40,9 +40,9 @@
     <SignAssembly>false</SignAssembly>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <PublishUrl>ftp://sqdtkarasch/Updates/</PublishUrl>
+    <PublishUrl>C:\Users\akarasch\Documents\Visual Studio 2017\repos\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
+    <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -50,13 +50,17 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost:8080/SQDStudio/</InstallUrl>
     <SupportUrl>http://www.sqdata.com</SupportUrl>
     <ProductName>SQDStudio</ProductName>
     <PublisherName>SQData</PublisherName>
     <MinimumRequiredVersion>1.0.0.2</MinimumRequiredVersion>
-    <ApplicationRevision>3</ApplicationRevision>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>false</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
   </PropertyGroup>
@@ -174,6 +178,7 @@
       <Name>System</Name>
     </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -222,6 +227,7 @@
     <None Include="bin\Lassalle.Flow.AddFlow.LIC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="ClassDiagram1.cd" />
     <None Include="My Project\DataSources\frmFTPClient.datasource" />
     <None Include="My Project\DataSources\FTPClient.datasource" />
     <None Include="My Project\Settings.settings">

@@ -276,3 +276,82 @@ C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Gr
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.PrnFlow.DLL
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.XMLFlow.DLL
 C:\Users\Tom\Documents\Visual Studio 2010\Projects\sqdstudio\bin\bin\Lassalle.Flow.AddFlow.LIC
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.DlgFlow.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Layout.Hierarchic.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Layout.Orthogonal.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Layout.SP.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Layout.Symmetric.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Layout.Tree.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.Router.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.SVG.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.GraphAlgo.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.PrnFlow.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.XMLFlow.DLL
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\bin\Lassalle.Flow.AddFlow.LIC
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\Design Studio.exe.config
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\Design Studio.exe.manifest
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\Design Studio.application
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\Design Studio.exe
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\bin\Design Studio.pdb
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.vbprojResolveAssemblyReference.cache
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmBatchFiles.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmDML.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmDMLInfo.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmChangeProj.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmAbout.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmBlank.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmChangeDSN.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmInclude.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmMapList.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmMsgScreen.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmMultiMod.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmNewProj.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmODBCconnect.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmProjOpen.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmConnection.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmDatastore.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmDependency.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmEngine.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmEnvironment.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmFTPClient.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmLog.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmMain.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmODBCLogin.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmReport.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmRplcDescRet.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmScriptGen.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmScriptImport.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmStructSelection.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmStructure.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmSystem.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmTask.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmThread.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmVariable.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.frmXMLconv.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.Resources.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlAddFlowTab.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlConnection.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlControlCenter.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlDatastore.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlEngine.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlEnvironment.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlFolderNode.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlInclude.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlMain.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlProject.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlSelectTab.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlStructureSelection.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlStructure.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlSystem.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlTask.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\SQDStudio.ctlVariable.resources
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.vbproj.GenerateResource.Cache
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.exe.licenses
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.vbproj.CoreCompileInputs.cache
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.TrustInfo.xml
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.exe.manifest
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.application
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.exe
+C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.pdb

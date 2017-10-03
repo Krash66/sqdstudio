@@ -1,0 +1,11 @@
+{
+  "User": {
+    "id": 1615455,
+    "username": "TKarasch",
+    "name": "Thomas Karasch",
+    "email": "tom.karasch@dnr.ga.gov",
+    "new_portrait": null,
+    "host": "https://gitlab.com",
+    "two_factor_enabled": false
+  }
+}

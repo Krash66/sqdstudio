@@ -8,7 +8,7 @@
         <beforeApplicationStartup />
       </update>
     </subscription>
-    <deploymentProvider codebase="ftp://sqdtkarasch/Updates/Design%20Studio.application" />
+    <deploymentProvider codebase="http://dnr-6rxryz1:8080/SQDStudio/Design%20Studio.application" />
   </deployment>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="Design Studio.exe.manifest" size="30844">
@@ -18,7 +18,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>mUXW2qAQIPDx1+mUaMMI6KEf2fI=</dsig:DigestValue>
+        <dsig:DigestValue>c1Sks7u9ubht6msOzTf33ZOVuqY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

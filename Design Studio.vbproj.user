@@ -12,8 +12,8 @@
     <CopyProjectOption>0</CopyProjectOption>
     <ProjectView>ShowAllFiles</ProjectView>
     <ProjectTrust>0</ProjectTrust>
-    <PublishUrlHistory>ftp://sqdtkarasch/Updates/|C:\Inetpub\ftproot\Updates\|P:\current build\InstPack\|C:\Documents and Settings\tkarasc\Desktop\|http://localhost/SQDStudio/</PublishUrlHistory>
-    <InstallUrlHistory>http://localhost/SQDStudio/</InstallUrlHistory>
+    <PublishUrlHistory>C:\Users\akarasch\Documents\Visual Studio 2017\repos\|ftp://sqdtkarasch/Updates/|C:\Inetpub\ftproot\Updates\|P:\current build\InstPack\|C:\Documents and Settings\tkarasc\Desktop\</PublishUrlHistory>
+    <InstallUrlHistory>http://localhost:8080/SQDStudio/|http://localhost/SQDStudio/</InstallUrlHistory>
     <SupportUrlHistory>http://www.sqdata.com</SupportUrlHistory>
     <UpdateUrlHistory>
     </UpdateUrlHistory>
