@@ -355,3 +355,83 @@ C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design 
 C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.application
 C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.exe
 C:\Users\akarasch\Documents\Visual Studio 2017\repos\sqdstudio\obj\Debug\Design Studio.pdb
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.DlgFlow.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Layout.Hierarchic.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Layout.Orthogonal.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Layout.SP.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Layout.Symmetric.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Layout.Tree.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.Router.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.SVG.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.GraphAlgo.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.PrnFlow.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.XMLFlow.DLL
+D:\source\GitHub\sqdstudio\bin\bin\Lassalle.Flow.AddFlow.LIC
+D:\source\GitHub\sqdstudio\bin\Design Studio.exe.config
+D:\source\GitHub\sqdstudio\bin\Design Studio.exe.manifest
+D:\source\GitHub\sqdstudio\bin\Design Studio.application
+D:\source\GitHub\sqdstudio\bin\Design Studio.exe
+D:\source\GitHub\sqdstudio\bin\Design Studio.pdb
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.vbprojResolveAssemblyReference.cache
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmBatchFiles.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmDML.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmDMLInfo.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmChangeProj.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmAbout.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmBlank.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmChangeDSN.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmDS_MTDdescriptions.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmInclude.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmMapList.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmMsgScreen.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmMultiMod.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmNewProj.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmODBCconnect.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmProjOpen.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmConnection.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmDatastore.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmDependency.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmEngine.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmEnvironment.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmFTPClient.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmLog.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmMain.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmODBCLogin.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmReport.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmRplcDescRet.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmScriptGen.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmScriptImport.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmStructSelection.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmStructure.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmSystem.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmTask.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmThread.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmVariable.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.frmXMLconv.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.Resources.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlAddFlowTab.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlConnection.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlControlCenter.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlDatastore.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlEngine.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlEnvironment.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlFolderNode.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlInclude.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlMain.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlProject.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlSelectTab.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlStructureSelection.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlStructure.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlSystem.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlTask.resources
+D:\source\GitHub\sqdstudio\obj\Debug\SQDStudio.ctlVariable.resources
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.vbproj.GenerateResource.cache
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.exe.licenses
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.vbproj.CoreCompileInputs.cache
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.TrustInfo.xml
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.exe.manifest
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.application
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.vbproj.CopyComplete
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.exe
+D:\source\GitHub\sqdstudio\obj\Debug\Design Studio.pdb

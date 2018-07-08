@@ -503,6 +503,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Settings.vb" />
+    <Compile Include="SQDInstaller.Designer.vb">
+      <DependentUpon>SQDInstaller.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SQDInstaller.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Usercontrols\ctlAddFlowTab.Designer.vb">
       <DependentUpon>ctlAddFlowTab.vb</DependentUpon>
     </Compile>
